@@ -4,7 +4,7 @@ export const jacoboContent = {
       altSlug: 'ai-agent-jacobo',
       readingTime: '35 min de lectura',
       seo: {
-        title: 'Jacobo: Agente IA Multi-Agente con Tool Calling y Voice AI — Case Study de Producción | santifer.io',
+        title: 'Jacobo: Agente IA Multi-Agente con Tool Calling y Voice AI · Case Study de Producción | santifer.io',
         description: 'Case study: cómo un FDE construyó un agente IA omnicanal con sub-agentes, tool calling, HITL y Voice AI (n8n + ElevenLabs) que logra 90% de autoservicio. Workflows descargables.',
       },
       nav: {
@@ -12,10 +12,10 @@ export const jacoboContent = {
         breadcrumbCurrent: 'Agente IA Jacobo',
       },
       header: {
-        kicker: 'Case Study: Santifer iRepair (búscalo en Google — sigue operando hoy)',
+        kicker: 'Case Study: Santifer iRepair (búscalo en Google, sigue operando hoy)',
         h1: 'Jacobo: Agente IA Omnicanal con Sub-agentes y Tool Calling',
         subtitle: 'Cómo construí un agente IA que atiende por WhatsApp y teléfono fijo, orquesta sub-agentes especializados vía webhooks y logra ~90% de autoservicio en un negocio de reparación de móviles.',
-        badge: 'Sistema vendido con el negocio en 2025 — sigue en producción hoy',
+        badge: 'Sistema vendido con el negocio en 2025. Sigue en producción hoy',
         date: '25 feb 2026',
       },
       heroMetrics: [
@@ -42,7 +42,7 @@ export const jacoboContent = {
       ],
       tldr: 'Un sistema multi-agente de IA que resuelve ~90% de las consultas sin intervención humana, 24/7, por <200€/mes. 4 agentes + 3 tools, dual-channel (WhatsApp + teléfono fijo). Construido en <1 mes sobre un Business OS de 5 años. Vendido con el negocio en 2025. Los 7 workflows de n8n son descargables al final.',
       intro: {
-        hook: '~15 interrupciones al día. Cada una, una reparación parada. Cada WhatsApp sin responder, un cliente que se iba a la competencia. Construí un agente IA que gestiona ambos canales — ~90% de las interacciones, 24/7, por menos de 200€/mes.',
+        hook: '~15 interrupciones al día. Cada una, una reparación parada. Cada WhatsApp sin responder, un cliente que se iba a la competencia. Construí un agente IA que gestiona ambos canales: ~90% de las interacciones, 24/7, por menos de 200€/mes.',
         body: 'No un chatbot con respuestas enlatadas. Un agente que consulta precios reales, verifica stock, gestiona citas y sabe cuándo escalar a un humano con todo el contexto. Así nació Jacobo. En este artículo comparto la arquitectura completa y los workflows de producción para que puedas replicarlo.',
       },
       internalLinks: {
@@ -89,7 +89,7 @@ export const jacoboContent = {
         },
         architecture: {
           heading: 'La Arquitectura',
-          body: 'Jacobo no es un chatbot con un prompt largo. Es un sistema de sub-agentes especializados, cada uno desplegado como un webhook independiente en n8n, orquestados mediante tool calling desde un router central. Cada workflow que ves en este artículo es descargable — podrás importarlo directamente en n8n.',
+          body: 'Jacobo no es un chatbot con un prompt largo. Es un sistema de sub-agentes especializados, cada uno desplegado como un webhook independiente en n8n, orquestados mediante tool calling desde un router central. Cada workflow que ves en este artículo es descargable: podrás importarlo directamente en n8n.',
           whySubAgents: {
             heading: '¿Por qué sub-agentes en vez de un prompt monolítico?',
             reasons: [
@@ -221,21 +221,21 @@ export const jacoboContent = {
           },
           debugTools: {
             heading: 'Herramientas de debug en producción',
-            body: 'Dos comandos ocultos para depurar la memoria en producción sin tocar n8n. "Borrar memoria" reseteaba el buffer del cliente, útil cuando una conversación se corrompía o el LLM entraba en bucle. "HISTORIAL" volcaba el JSON crudo del buffer — y eso fue lo que nos enseñó a sanitizar las respuestas: el LLM devolvía el JSON completo al cliente si no se filtraba.',
+            body: 'Dos comandos ocultos para depurar la memoria en producción sin tocar n8n. "Borrar memoria" reseteaba el buffer del cliente, útil cuando una conversación se corrompía o el LLM entraba en bucle. "HISTORIAL" volcaba el JSON crudo del buffer. Y eso fue lo que nos enseñó a sanitizar las respuestas: el LLM devolvía el JSON completo al cliente si no se filtraba.',
           },
           pseudoStreaming: {
             heading: 'Pseudo-Streaming en WhatsApp',
             body: 'WhatsApp no soporta streaming. Un párrafo largo se siente como un bot; mensajes secuenciales se sienten como una persona escribiendo. El router divide cada respuesta por saltos de línea y envía cada fragmento con 1 segundo de espera entre ellos vía la API de WATI. El resultado: la experiencia de "está escribiendo..." sin infraestructura de streaming.',
           },
-          stackIntro: 'Jacobo se apoya en 8 servicios que cubren desde la entrada del cliente hasta el escalado humano. Cada uno tiene un rol único — ninguno es reemplazable sin cambiar la arquitectura.',
+          stackIntro: 'Jacobo se apoya en 8 servicios que cubren desde la entrada del cliente hasta el escalado humano. Cada uno tiene un rol único; ninguno es reemplazable sin cambiar la arquitectura.',
           stack: [
             {
               name: 'WATI',
-              role: 'WhatsApp Business API — canal principal de entrada',
+              role: 'WhatsApp Business API: canal principal de entrada',
             },
             {
               name: 'Aircall',
-              role: 'Cloud PBX — Jacobo como compañero en la centralita',
+              role: 'Cloud PBX: Jacobo como compañero en la centralita',
             },
             {
               name: 'n8n',
@@ -356,7 +356,7 @@ export const jacoboContent = {
           },
           ycbmApi: {
             heading: 'YCBM API (3 llamadas)',
-            body: 'Pipeline secuencial de 3 HTTP Requests contra la API de YouCanBookMe. Cada llamada depende de la anterior — no se puede paralelizar:',
+            body: 'Pipeline secuencial de 3 HTTP Requests contra la API de YouCanBookMe. Cada llamada depende de la anterior; no se puede paralelizar:',
             steps: [
               { label: 'POST /v1/intents', detail: 'Envía el subdomain → crea un intent de reserva y devuelve un ID único' },
               { label: 'GET /v1/intents/{id}/availabilitykey', detail: 'Con el ID del intent → obtiene la clave de disponibilidad' },
@@ -364,8 +364,8 @@ export const jacoboContent = {
             ],
           },
           filterSlots: {
-            heading: 'FilterSlots — El Cruce',
-            body: 'Un nodo Code puro que realiza la intersección de conjuntos: rangos del LLM × slots reales de YCBM. Convierte timestamps Unix a Europe/Madrid usando Intl.DateTimeFormat, luego filtra: localDate === r.date && localTime >= r.start && localTime < r.end. El output es un array [{date, timestamp, start}] que puede contener 0, 1, o N slots. Es el nodo más elegante del workflow: pura lógica de conjuntos, sin LLM, sin API — solo matemáticas temporales.',
+            heading: 'FilterSlots: El Cruce',
+            body: 'Un nodo Code puro que realiza la intersección de conjuntos: rangos del LLM × slots reales de YCBM. Convierte timestamps Unix a Europe/Madrid usando Intl.DateTimeFormat, luego filtra: localDate === r.date && localTime >= r.start && localTime < r.end. El output es un array [{date, timestamp, start}] que puede contener 0, 1, o N slots. Es el nodo más elegante del workflow: pura lógica de conjuntos, sin LLM, sin API. Solo matemáticas temporales.',
           },
           autoBooking: {
             heading: 'Auto-booking Condicional',
@@ -469,12 +469,12 @@ export const jacoboContent = {
           },
           cocaColaAnecdote: {
             heading: 'Incidente de producción: la Coca-Cola',
-            body: 'Un cliente estaba hablando de una reparación de móvil. A mitad de conversación, se giró para pedir una Coca-Cola a un camarero. Jacobo escuchó — y le dijo que no servimos Coca-Colas.',
+            body: 'Un cliente estaba hablando de una reparación de móvil. A mitad de conversación, se giró para pedir una Coca-Cola a un camarero. Jacobo escuchó. Y le dijo que no servimos Coca-Colas.',
             diagnosis: {
               heading: 'Diagnóstico: tres señales que el sistema ignoró',
               items: [
-                { label: 'Volumen', detail: 'Cayó ~40% — se alejó del teléfono' },
-                { label: 'Spectral tilt', detail: 'Cambió — voz off-axis pierde frecuencias altas' },
+                { label: 'Volumen', detail: 'Cayó ~40%: se alejó del teléfono' },
+                { label: 'Spectral tilt', detail: 'Cambió: voz off-axis pierde frecuencias altas' },
                 { label: 'Relevancia semántica', detail: '"Coca-Cola" tenía cero relación con reparaciones de móviles' },
               ],
             },
@@ -490,7 +490,7 @@ export const jacoboContent = {
           },
           unifiedVoiceUx: {
             heading: 'UX Unificada: Una Sola Voz',
-            body: 'Todos los audios de la centralita — bienvenida, menú IVR, buzón de voz — fueron generados con ElevenLabs usando la misma voz que Jacobo. Cuando el cliente pulsa 3 o nadie puede atender y salta el agente real, la voz es idéntica. No hay ruptura. Y si nadie atiende y Jacobo le escribe por WhatsApp tras la llamada perdida, la identidad sigue siendo la misma. Una experiencia unificada de principio a fin, da igual el canal.',
+            body: 'Todos los audios de la centralita (bienvenida, menú IVR, buzón de voz) fueron generados con ElevenLabs usando la misma voz que Jacobo. Cuando el cliente pulsa 3 o nadie puede atender y salta el agente real, la voz es idéntica. No hay ruptura. Y si nadie atiende y Jacobo le escribe por WhatsApp tras la llamada perdida, la identidad sigue siendo la misma. Una experiencia unificada de principio a fin, da igual el canal.',
           },
           eventRouting: {
             heading: 'Pre-filtrado: ¿Debe Jacobo Responder?',
@@ -569,7 +569,7 @@ export const jacoboContent = {
           },
           roi: 'El ROI no es solo el ahorro directo. Es la disponibilidad 24/7, las citas que antes se perdían fuera de horario, y los técnicos que ahora reparan en vez de contestar preguntas.',
           benchmarks: 'Benchmark de industria: los contact centers enterprise promedian un 20-30% de resolución por IA. Los asistentes virtuales más avanzados alcanzan un 15%. Jacobo logró ~90% en un dominio especializado. La diferencia: sub-agentes con acceso a datos en tiempo real vs chatbots genéricos.',
-          exitNarrative: 'Jacobo sigue operando 24/7 bajo nuevo dueño desde septiembre de 2025. El comprador lo adquirió funcionando — la mejor prueba de un sistema: funciona sin su creador. Los patrones de arquitectura documentados aquí son los mismos que llevaría a tu equipo.',
+          exitNarrative: 'Jacobo sigue operando 24/7 bajo nuevo dueño desde septiembre de 2025. El comprador lo adquirió funcionando. La mejor prueba de un sistema: funciona sin su creador. Los patrones de arquitectura documentados aquí son los mismos que llevaría a tu equipo.',
         },
         decisions: {
           heading: 'Decisiones Técnicas (ADRs)',
@@ -660,9 +660,9 @@ export const jacoboContent = {
               detail: 'Jacobo lleva activo 24/7 desde su lanzamiento. Formó parte de la venta del negocio como activo operativo: el comprador lo adquirió funcionando. Cinco años de arquitectura limpia lo hicieron inevitable.',
             },
           ],
-          coda: 'Jacobo no fue un experimento. Fue la pieza que cerró un ciclo de 16 años: construir un negocio, sistematizarlo hasta que funcionara solo, y venderlo como empresa en marcha. Los sistemas que construí — incluido Jacobo — siguen operando hoy bajo nuevo dueño.',
+          coda: 'Jacobo no fue un experimento. Fue la pieza que cerró un ciclo de 16 años: construir un negocio, sistematizarlo hasta que funcionara solo, y venderlo como empresa en marcha. Los sistemas que construí, incluido Jacobo, siguen operando hoy bajo nuevo dueño.',
           crossLink: {
-            text: 'Jacobo se construyó sobre el Business OS que diseñé durante 5 años — lee el case study completo →',
+            text: 'Jacobo se construyó sobre el Business OS que diseñé durante 5 años. Lee el case study completo →',
             href: '/business-os-para-airtable',
           },
         },
@@ -1110,7 +1110,7 @@ Input: "lunes a las 10"
           },
           voiceRouter: {
             heading: 'Router Voz (ElevenLabs)',
-            body: 'El cerebro de voz: un agente conversacional en ElevenLabs con Gemini 2.5 Flash, knowledge bases con la documentación del negocio, y los mismos tools expuestos como webhooks. El cliente habla por teléfono y Jacobo responde en tiempo real, consultando precios, disponibilidad y gestionando citas — exactamente igual que por WhatsApp.',
+            body: 'El cerebro de voz: un agente conversacional en ElevenLabs con Gemini 2.5 Flash, knowledge bases con la documentación del negocio, y los mismos tools expuestos como webhooks. El cliente habla por teléfono y Jacobo responde en tiempo real, consultando precios, disponibilidad y gestionando citas, exactamente igual que por WhatsApp.',
           },
         },
         deepDiveQuotes: {
@@ -1121,13 +1121,13 @@ Input: "lunes a las 10"
             body: 'El cliente escribe "cuánto cuesta cambiar la pantalla de un iPhone 15 Pro Max". El router necesita un JSON con precio, stock, URLs de cita y pieza. El sub-agente conecta lenguaje natural con la base de datos de Airtable en tiempo real.',
           },
           cleanModel: {
-            heading: 'CleanModel — Codificar conocimiento tácito',
-            body: 'Los clientes no escriben modelos como una base de datos. Escriben "iphone 15", "iPhone15 pro max", "ip 15 pro", "I-Phone 15Pro Max". Un técnico humano resolvía esto con experiencia — sabía que "el grande negro" probablemente era un Pro Max. Ese conocimiento tácito se pierde si no se diseña para ello.',
+            heading: 'CleanModel: Codificar conocimiento tácito',
+            body: 'Los clientes no escriben modelos como una base de datos. Escriben "iphone 15", "iPhone15 pro max", "ip 15 pro", "I-Phone 15Pro Max". Un técnico humano resolvía esto con experiencia: sabía que "el grande negro" probablemente era un Pro Max. Ese conocimiento tácito se pierde si no se diseña para ello.',
             detail: 'CleanModel normaliza el input: elimina espacios, paréntesis, guiones y pasa a minúsculas. "iPhone 15 Pro Max" → "iphone15promax". Esto alimenta una búsqueda con SEARCH() en Airtable por campo modeloLimpio (también normalizado), permitiendo fuzzy matching sin depender de escritura exacta.',
-            insight: 'Este nodo codifica conocimiento tácito de negocio. Sin él, el agente fallaría con la mayoría de inputs reales — porque los clientes no hablan como bases de datos. Es un ejemplo de por qué construir agentes requiere entender el dominio, no solo conectar APIs.',
+            insight: 'Este nodo codifica conocimiento tácito de negocio. Sin él, el agente fallaría con la mayoría de inputs reales, porque los clientes no hablan como bases de datos. Es un ejemplo de por qué construir agentes requiere entender el dominio, no solo conectar APIs.',
           },
           aiAgent: {
-            heading: 'AI Agent — GPT-4.1 mini vía OpenRouter',
+            heading: 'AI Agent: GPT-4.1 mini vía OpenRouter',
             body: 'El cerebro del sub-agente. System prompt con ROL ultra-scoped: "agente especializado en buscar precios". Incluye Think tool para razonamiento explícito antes de cada tool call y Simple Memory (buffer window) con sessionKey estática.',
             tools: [
               {
@@ -1143,23 +1143,23 @@ Input: "lunes a las 10"
                 detail: 'Formatea a JSON con schema: modelo, reparación, precio, stock, urlSantifer, urlCita, urlPresupuesto, urlDiagnostico, idPiezaAirtable, idModeloAirtable.',
               },
             ],
-            fallback: 'Si no encuentra coincidencia, el system prompt instruye: "tienes que ir acotando el modelo para obtener más resultados, hasta que te quedes con el que corresponda" — replicando el razonamiento de un humano experimentado.',
+            fallback: 'Si no encuentra coincidencia, el system prompt instruye: "tienes que ir acotando el modelo para obtener más resultados, hasta que te quedes con el que corresponda", replicando el razonamiento de un humano experimentado.',
           },
           filtrarRespuesta: {
-            heading: 'FiltrarRespuesta — Post-procesado determinista',
+            heading: 'FiltrarRespuesta: Post-procesado determinista',
             body: 'Nodo Code que valida y limpia la respuesta del AI Agent antes de devolverla al router. Valida que urlSantifer apunte al dominio correcto (si no contiene "santiferirepair.es" → "NO DISPONIBLE EN WEB AUN"). Después aplica 3 paths de eliminación de campos según estado:',
             rules: [
               {
                 condition: 'stock === true',
-                action: 'Elimina urlPresupuesto, idPieza, idModelo — el cliente puede reservar cita directamente.',
+                action: 'Elimina urlPresupuesto, idPieza, idModelo: el cliente puede reservar cita directamente.',
               },
               {
                 condition: 'stock === false',
-                action: 'Elimina urlCita y urlPresupuesto — necesita pedir pieza antes de reparar.',
+                action: 'Elimina urlCita y urlPresupuesto: necesita pedir pieza antes de reparar.',
               },
               {
                 condition: 'precio === "PRESUPUESTO"',
-                action: 'Elimina urlCita e idPieza — la reparación no está catalogada, requiere valoración manual.',
+                action: 'Elimina urlCita e idPieza: la reparación no está catalogada, requiere valoración manual.',
               },
             ],
           },
@@ -1372,11 +1372,11 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
           },
           {
             q: '¿Jacobo sigue funcionando?',
-            a: 'Sí. Vendí el negocio en 2025 y Jacobo se vendió con él — sigue en producción atendiendo clientes hoy. Es la mejor validación posible: el comprador mantuvo el sistema porque funciona.',
+            a: 'Sí. Vendí el negocio en 2025 y Jacobo se vendió con él. Sigue en producción atendiendo clientes hoy. Es la mejor validación posible: el comprador mantuvo el sistema porque funciona.',
           },
           {
             q: '¿Cómo pasaste de negocio propio a buscar rol en enterprise?',
-            a: 'Construí un negocio de 16 años con sistemas que escalan: ERP custom, agente IA, SEO programático, CRM con gamificación. Ahora quiero aplicar ese mismo pensamiento de sistemas a problemas más grandes — como FDE, Solutions Architect o AI Production Manager.',
+            a: 'Construí un negocio de 16 años con sistemas que escalan: ERP custom, agente IA, SEO programático, CRM con gamificación. Ahora quiero aplicar ese mismo pensamiento de sistemas a problemas más grandes: como FDE, Solutions Architect o AI Production Manager.',
           },
         ],
       },
@@ -1384,33 +1384,33 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
         heading: 'Recursos',
         items: [
           {
-            label: 'n8n — Workflow Automation',
+            label: 'n8n · Workflow Automation',
             url: 'https://n8n.io',
           },
           {
-            label: 'OpenRouter — Model Gateway',
+            label: 'OpenRouter · Model Gateway',
             url: 'https://openrouter.ai',
           },
           {
-            label: 'ElevenLabs — Conversational AI',
+            label: 'ElevenLabs · Conversational AI',
             url: 'https://elevenlabs.io',
           },
           {
-            label: 'WATI — WhatsApp Business API',
+            label: 'WATI · WhatsApp Business API',
             url: 'https://www.wati.io',
           },
           {
-            label: 'Aircall — Cloud PBX',
+            label: 'Aircall · Cloud PBX',
             url: 'https://aircall.io',
           },
           {
-            label: 'Airtable — Database Platform',
+            label: 'Airtable · Database Platform',
             url: 'https://airtable.com',
           },
         ],
       },
       downloads: {
-        badge: '7 workflows de producción descargables — open source by default',
+        badge: '7 workflows de producción descargables. Open source by default',
         inlineLabel: 'Ver en GitHub',
         inlineHint: 'Importa en n8n en 1 click',
         section: {
@@ -1501,12 +1501,12 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
             nodes: '3 nodos',
           },
         ],
-        githubNote: 'Todos los workflows están en GitHub — haz fork, dale star, o descarga directamente.',
+        githubNote: 'Todos los workflows están en GitHub: haz fork, dale star, o descarga directamente.',
         githubCta: 'Ver repo en GitHub',
       },
       footer: {
         role: 'AI Product Manager · Solutions Architect',
-        bio: 'Construyó y vendió un negocio de 16 años en 2025. Ahora aplica el mismo pensamiento de sistemas a AI enterprise — como FDE, Solutions Architect o AI Production Manager.',
+        bio: 'Construyó y vendió un negocio de 16 años en 2025. Ahora aplica el mismo pensamiento de sistemas a AI enterprise: como FDE, Solutions Architect o AI Production Manager.',
         fellowAt: 'Teaching Fellow en',
         fellowLink: 'AI Product Academy',
         copyright: 'Todos los derechos reservados.',
