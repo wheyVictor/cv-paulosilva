@@ -89,7 +89,12 @@ function useAutoToc(): TocItem[] {
 
     for (const el of headings) {
       const id = el.id
-      const label = el.textContent?.replace(/#/g, '').trim() ?? id
+      // Clone, remove anchor-hash spans, then read text
+      const clone = el.cloneNode(true) as HTMLElement
+      clone.querySelectorAll('span').forEach(s => {
+        if (s.textContent?.trim() === '#') s.remove()
+      })
+      const label = clone.textContent?.trim() ?? id
       if (el.tagName === 'H2') {
         currentH2 = { id, label, children: [] }
         tree.push(currentH2)
