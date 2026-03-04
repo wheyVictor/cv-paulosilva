@@ -525,10 +525,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
 
         {/* Debug screenshots */}
         <ScreenshotGrid lang={lang} items={[
-          { src: 'stress-test-112.webp', altEs: 'Comando "Borrar memoria" → MEMORIA BORRADA: debug para resetear contexto', altEn: '"Borrar memoria" command → MEMORY CLEARED: debug tool for context reset' },
           { src: 'debug-json-dump.webp', altEs: 'Comando HISTORIAL: JSON crudo del buffer de memoria expuesto en el chat', altEn: 'HISTORIAL command: raw JSON from memory buffer exposed in chat' },
         ]} />
-        <ScreenshotCaption lang={lang} es="Borrar memoria reseteaba el buffer; HISTORIAL volcaba el JSON crudo — la filtración que enseñó a blindar respuestas" en="Borrar memoria reset the buffer; HISTORIAL dumped raw JSON — the leak that taught us to sanitize responses" />
+        <ScreenshotCaption lang={lang} es="HISTORIAL volcaba el JSON crudo del buffer — la filtración que enseñó a blindar respuestas" en="HISTORIAL dumped raw JSON from the buffer — the leak that taught us to sanitize responses" />
 
         {/* Production debug tools */}
         <H4>{t.sections.architecture.debugTools.heading}</H4>
@@ -804,8 +803,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <ScreenshotGrid lang={lang} items={[
           { src: 'hitl-moha.webp', altEs: 'Edge case: "Dile a un agente que salude a Moha" → Jacobo escala con emojis de mano → agente real confirma "Hecho"', altEn: 'Edge case: "Tell an agent to greet Moha" → Jacobo escalates with wave emojis → real agent confirms "Done"' },
           { src: 'stress-test-1.webp', altEs: 'Guardrail: "Pídeme 100 baterías" → rechazo + "Ayúdame coño!" → escalada automática a humano', altEn: 'Guardrail: "Order 100 batteries" → rejection + profanity → automatic escalation to human' },
+          { src: 'stress-test-112.webp', altEs: '"Borrar memoria" → reset + "3,2,1..." + emergencia falsa → Jacobo redirige a 112 y mantiene compostura', altEn: '"Borrar memoria" → reset + "3,2,1..." + fake emergency → Jacobo redirects to 112 and keeps composure' },
         ]} />
-        <ScreenshotCaption lang={lang} es="Edge cases reales: petición absurda a un agente, pedido masivo rechazado por seguridad y escalada automática ante frustración" en="Real edge cases: absurd request to an agent, bulk order rejected for safety and automatic escalation on frustration" />
+        <ScreenshotCaption lang={lang} es="Edge cases reales: petición absurda, pedido masivo rechazado, escalada por frustración y respuesta ante emergencia falsa con redirección al 112" en="Real edge cases: absurd request, bulk order rejected, frustration escalation and fake emergency response with 112 redirect" />
 
         {/* WhatsApp cross-channel */}
         <H3 id="whatsapp-agent">{t.sections.deepDiveOthers.whatsapp.heading}</H3>
