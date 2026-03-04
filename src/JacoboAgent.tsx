@@ -539,10 +539,8 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <H4>{t.sections.architecture.pseudoStreaming.heading}</H4>
         <Prose>{t.sections.architecture.pseudoStreaming.body}</Prose>
 
-        {/* ================================================================ */}
-        {/*  CHANNELS                                                        */}
-        {/* ================================================================ */}
-        <H2 id="channels">{t.sections.channels.heading}</H2>
+        {/* Channels (H3 under Architecture) */}
+        <H3 id="channels">{t.sections.channels.heading}</H3>
         <Prose>{t.sections.channels.body}</Prose>
 
         {/* Dual orchestrator — callout card */}
@@ -569,7 +567,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <BulletList items={t.sections.channels.voice.highlights} className="mb-8" />
 
         {/* Missed call recovery */}
-        <H3 id="missed-call-recovery" icon={<PhoneMissed className="w-5 h-5 text-primary" />}>{t.sections.channels.missedCallRecovery.heading}</H3>
+        <H4 id="missed-call-recovery" icon={<PhoneMissed className="w-5 h-5 text-primary" />}>{t.sections.channels.missedCallRecovery.heading}</H4>
         <Prose>{t.sections.channels.missedCallRecovery.body}</Prose>
 
         <ScreenshotGrid lang={lang} items={[
@@ -579,15 +577,15 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <ScreenshotCaption lang={lang} es="Aircall → Make.com → template WhatsApp con botones → Jacobo retoma la conversación con contexto completo" en="Aircall → Make.com → WhatsApp template with buttons → Jacobo picks up the conversation with full context" />
 
         {/* Event routing / Pre-filtering */}
-        <H3 id="pre-filtering">{t.sections.channels.eventRouting.heading}</H3>
+        <H4 id="pre-filtering">{t.sections.channels.eventRouting.heading}</H4>
         <Prose>{t.sections.channels.eventRouting.body}</Prose>
         <StepList items={t.sections.channels.eventRouting.steps} />
         <Callout className="mb-8">{t.sections.channels.eventRouting.punchline}</Callout>
 
         {/* ================================================================ */}
-        {/*  E2E FLOWS (render as expandable cards)                          */}
+        {/*  E2E FLOWS                                                       */}
         {/* ================================================================ */}
-        <H3>{t.sections.e2eFlows.heading}</H3>
+        <H2 id="e2e-flows">{t.sections.e2eFlows.heading}</H2>
         <Prose>{t.sections.e2eFlows.body}</Prose>
         <Accordion
           variant="rich"
