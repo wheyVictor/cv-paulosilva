@@ -491,6 +491,21 @@ export const jacoboContent = {
           unifiedVoiceUx: {
             heading: 'UX Unificada: Una Sola Voz',
             body: 'Todos los audios de la centralita (bienvenida, menú IVR, buzón de voz) fueron generados con ElevenLabs usando la misma voz que Jacobo. Cuando el cliente pulsa 3 o nadie puede atender y salta el agente real, la voz es idéntica. No hay ruptura. Y si nadie atiende y Jacobo le escribe por WhatsApp tras la llamada perdida, la identidad sigue siendo la misma. Una experiencia unificada de principio a fin, da igual el canal.',
+            punchline: '"Marca 3 para hablar conmigo, Jacobo." Esa es la voz de la centralita presentando al agente IA en primera persona. La misma voz que luego te atiende. Un agente que se anuncia a sí mismo.',
+            audioIntro: 'Escucha la centralita real. La misma voz de Jacobo en bienvenida, IVR y agente en vivo:',
+            audios: [
+              {
+                src: '/jacobo/pbx-welcome.mp3',
+                label: 'Bienvenida',
+                transcript: '"A continuación, atenderemos tu llamada. Gracias por llamar a Santifer iRepair. Para asegurar la calidad del servicio, tu llamada puede ser grabada."',
+              },
+              {
+                src: '/jacobo/pbx-ivr.mp3',
+                label: 'Menú IVR',
+                transcript: '"Marca 1 para solicitar una nueva reparación. Marca 2 para consultar el estado de tu reparación. Marca 3 para hablar conmigo, Jacobo. Tu asistente virtual 24/7 en Santifer iRepair. Obtendrás presupuesto y cita al instante."',
+                highlight: 'Marca 3 para hablar conmigo, Jacobo',
+              },
+            ],
           },
           eventRouting: {
             heading: 'Pre-filtrado: ¿Debe Jacobo Responder?',
@@ -2004,6 +2019,23 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
           unifiedVoiceUx: {
             heading: 'Unified UX: One Voice',
             body: 'Every PBX audio — welcome greeting, IVR menu, voicemail — was generated with ElevenLabs using Jacobo\'s same voice. When the customer presses 3 or no one can answer and the live agent picks up, the voice is identical. No break. And if no one picks up and Jacobo texts them on WhatsApp after the missed call, the identity stays the same. A unified experience from start to finish, regardless of channel.',
+            punchline: '"Press 3 to talk to me, Jacobo." That\'s the PBX introducing the AI agent in first person. The same voice that then picks up. An agent that announces itself.',
+            audioIntro: 'Listen to the actual PBX. Jacobo\'s same voice across welcome, IVR menu, and live agent:',
+            audios: [
+              {
+                src: '/jacobo/pbx-welcome.mp3',
+                label: 'Welcome',
+                transcript: '"We\'ll be right with you. Thank you for calling Santifer iRepair. For quality assurance, your call may be recorded."',
+                transcriptOriginal: '"A continuación, atenderemos tu llamada. Gracias por llamar a Santifer iRepair. Para asegurar la calidad del servicio, tu llamada puede ser grabada."',
+              },
+              {
+                src: '/jacobo/pbx-ivr.mp3',
+                label: 'IVR Menu',
+                transcript: '"Press 1 for a new repair. Press 2 to check your repair status. Press 3 to talk to me, Jacobo. Your 24/7 virtual assistant at Santifer iRepair. Get a quote and book an appointment instantly."',
+                transcriptOriginal: '"Marca 1 para solicitar una nueva reparación. Marca 2 para consultar el estado de tu reparación. Marca 3 para hablar conmigo, Jacobo. Tu asistente virtual 24/7 en Santifer iRepair. Obtendrás presupuesto y cita al instante."',
+                highlight: 'Press 3 to talk to me, Jacobo',
+              },
+            ],
           },
           eventRouting: {
             heading: 'Pre-filtering: Should Jacobo Respond?',

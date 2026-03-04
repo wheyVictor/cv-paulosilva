@@ -998,3 +998,58 @@ export function FloatingToc() {
     </>
   )
 }
+
+// ---------------------------------------------------------------------------
+// AudioPlayer — inline audio with transcript
+// ---------------------------------------------------------------------------
+
+interface AudioItem {
+  src: string
+  label: string
+  transcript: string
+  transcriptOriginal?: string
+  highlight?: string
+}
+
+export function AudioPlayer({ editorId, items, lang }: { editorId?: string; items: AudioItem[]; lang?: string }) {
+  return (
+    <EditorLabel name="AudioPlayer" id={editorId}>
+      <div className="space-y-4 mb-6">
+        {items.map((item, i) => (
+          <div key={i} className="rounded-xl border border-border bg-card/50 p-4">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">{item.label}</span>
+            </div>
+            <audio controls preload="metadata" className="w-full h-10 mb-3" style={{ colorScheme: 'dark' }}>
+              <source src={item.src} type="audio/mpeg" />
+            </audio>
+            <p className="text-sm text-muted-foreground leading-relaxed italic">
+              {item.highlight
+                ? formatHighlight(item.transcriptOriginal ?? item.transcript, lang === 'en' ? item.highlight : item.highlight)
+                : (item.transcriptOriginal ?? item.transcript)}
+            </p>
+            {lang === 'en' && item.transcriptOriginal && (
+              <p className="text-xs text-muted-foreground/70 leading-relaxed mt-1.5">
+                {item.highlight
+                  ? formatHighlight(item.transcript, item.highlight)
+                  : item.transcript}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </EditorLabel>
+  )
+}
+
+function formatHighlight(text: string, highlight: string) {
+  const idx = text.indexOf(highlight)
+  if (idx === -1) return text
+  return (
+    <>
+      {text.slice(0, idx)}
+      <span className="text-primary font-semibold not-italic">{highlight}</span>
+      {text.slice(idx + highlight.length)}
+    </>
+  )
+}

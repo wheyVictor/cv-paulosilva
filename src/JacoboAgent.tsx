@@ -40,6 +40,7 @@ import {
   ScreenshotCaption,
   DetailCard,
   FloatingToc,
+  AudioPlayer,
 } from './articles/content-types'
 import { jacoboContent } from './jacobo-i18n'
 
@@ -368,7 +369,10 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         {/* Unified Voice UX */}
         <H4 id="unified-voice-ux">{t.sections.channels.unifiedVoiceUx.heading}</H4>
         <Prose editorId="unified-voice-ux-body">{t.sections.channels.unifiedVoiceUx.body}</Prose>
-        <Photo1 editorId="aircall-dashboard-detail" src="/jacobo/aircall-dashboard-detail.webp" alt={lang === 'es' ? 'Detalle de Aircall: audios de bienvenida e IVR generados con ElevenLabs con la voz de Jacobo' : 'Aircall detail: welcome and IVR audio generated with ElevenLabs using Jacobo\'s voice'} caption={lang === 'es' ? 'Los nodos "ElevenLabs" son audios pregrabados con la misma voz de Jacobo — bienvenida, IVR y buzón. Cuando salta el agente real, la voz es idéntica' : 'The "ElevenLabs" nodes are pre-recorded audio using Jacobo\'s same voice — welcome, IVR and voicemail. When the live agent picks up, the voice is identical'} className="mb-4" />
+        <Callout editorId="unified-voice-punchline">{(t.sections.channels.unifiedVoiceUx as any).punchline}</Callout>
+        <Prose editorId="unified-voice-audio-intro">{(t.sections.channels.unifiedVoiceUx as any).audioIntro}</Prose>
+        <AudioPlayer editorId="pbx-audio" items={(t.sections.channels.unifiedVoiceUx as any).audios} lang={lang} />
+        <Photo1 editorId="aircall-dashboard-detail" src="/jacobo/aircall-dashboard-detail.webp" alt={lang === 'es' ? 'Detalle de Aircall: audios de bienvenida e IVR generados con ElevenLabs con la voz de Jacobo' : 'Aircall detail: welcome and IVR audio generated with ElevenLabs using Jacobo\'s voice'} caption={lang === 'es' ? 'Los nodos "ElevenLabs" son audios pregrabados con la misma voz de Jacobo: bienvenida, IVR y buzón. Cuando salta el agente real, la voz es idéntica' : 'The "ElevenLabs" nodes are pre-recorded audio using Jacobo\'s same voice: welcome, IVR and voicemail. When the live agent picks up, the voice is identical'} className="mb-4" />
 
         {/* Event routing / Pre-filtering */}
         <H4 id="pre-filtering">{t.sections.channels.eventRouting.heading}</H4>
