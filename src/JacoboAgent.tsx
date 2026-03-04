@@ -141,7 +141,6 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
     const altLang = lang === 'es' ? 'en' : 'es'
 
     document.title = t.seo.title
-    document.documentElement.lang = lang
 
     const metaTags: Record<string, string> = {
       description: t.seo.description,
@@ -217,7 +216,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
 
   // ---- Render ----
   return (
-    <ArticleLayout>
+    <ArticleLayout lang={lang}>
       <FloatingToc />
       <ArticleHeader editorId="hero-header" kicker={t.header.kicker} h1={t.header.h1} subtitle={t.header.subtitle} date={t.header.date} readingTime={t.readingTime} />
 

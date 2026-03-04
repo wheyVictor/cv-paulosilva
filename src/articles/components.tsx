@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Download, Copy, Check, ExternalLink, Clock, ChevronRight } from 'lucide-react'
 import { EditorModeProvider, EditorLabel, H2 } from './content-types'
@@ -45,7 +45,11 @@ export { H2 as AnchorHeading } from './content-types'
 // Layout shells
 // ---------------------------------------------------------------------------
 
-export function ArticleLayout({ children }: { children: React.ReactNode }) {
+export function ArticleLayout({ lang, children }: { lang?: 'es' | 'en'; children: React.ReactNode }) {
+  useEffect(() => {
+    if (lang) document.documentElement.lang = lang
+  }, [lang])
+
   return (
     <EditorModeProvider>
       <div className="min-h-screen bg-background text-foreground">

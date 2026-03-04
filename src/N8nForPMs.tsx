@@ -63,7 +63,6 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
     const altLang = lang === 'es' ? 'en' : 'es'
 
     document.title = t.seo.title
-    document.documentElement.lang = lang
 
     const metaTags: Record<string, string> = {
       description: t.seo.description,
@@ -142,7 +141,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
   const BOOTCAMP_URL = 'https://maven.com/marily-nika/ai-pm-bootcamp?utm_source=santifer&utm_medium=cheatsheet&utm_campaign=n8n-for-pms'
 
   return (
-    <ArticleLayout>
+    <ArticleLayout lang={lang}>
         <ArticleHeader
           kicker={t.header.kicker}
           kickerLink={BOOTCAMP_URL}
