@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, type ReactNode } from 'react'
+import { useEffect, useState, useCallback, useMemo, type ReactNode } from 'react'
 import { type N8nLang as Lang } from './n8n-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
 import { Compass, Mic, CalendarDays, Receipt, Package, Calculator, HandHelping, List, Smartphone, MessageCircle, PhoneMissed, Download } from 'lucide-react'
@@ -72,116 +72,53 @@ const stackIcons: Record<string, ReactNode> = {
 
 
 // ---------------------------------------------------------------------------
-// TOC_SECTIONS
+// ---------------------------------------------------------------------------
+// FloatingToc — auto-generated from DOM headings (h2[id], h3[id])
 // ---------------------------------------------------------------------------
 interface TocItem { id: string; label: string; children?: TocItem[] }
 
-const TOC_SECTIONS: Record<Lang, TocItem[]> = {
-  es: [
-    { id: 'the-problem', label: 'El Problema' },
-    { id: 'architecture', label: 'Arquitectura', children: [
-      { id: 'stack', label: 'Stack' },
-      { id: 'why-sub-agents', label: 'Por qué sub-agentes' },
-      { id: 'the-seven-agents', label: 'Los 7 Agentes' },
-      { id: 'memory', label: 'Memoria' },
-    ]},
-    { id: 'channels', label: 'Los Dos Canales', children: [
-      { id: 'missed-call-recovery', label: 'Llamadas Perdidas' },
-      { id: 'pre-filtering', label: 'Pre-filtrado' },
-    ]},
-    { id: 'main-router', label: 'Router Principal (n8n)', children: [
-      { id: 'tool-calling', label: 'Tool Calling' },
-      { id: 'prompt-engineering', label: 'Prompt Engineering' },
-      { id: 'business-hours', label: 'Horario comercial' },
-      { id: 'main-prompt', label: 'Prompt principal' },
-      { id: 'voice-prompt', label: 'Prompt de voz' },
-      { id: 'iteration-examples', label: 'Iteraciones reales' },
-    ]},
-    { id: 'natural-language-booking', label: 'Deep Dive: Citas', children: [
-      { id: 'appointments-prompt', label: 'Prompt de citas' },
-      { id: 'repair-appointment', label: 'Flujo: Cita de reparación' },
-    ]},
-    { id: 'deep-dive-quotes', label: 'Deep Dive: Presupuestos', children: [
-      { id: 'quotes-prompt', label: 'Prompt de presupuestos' },
-      { id: 'price-inquiry', label: 'Flujo: Consulta de precios' },
-    ]},
-    { id: 'deep-dive-others', label: 'Deep Dive: Tools', children: [
-      { id: 'orders-agent', label: 'Pedidos' },
-      { id: 'calculator-agent', label: 'Calculadora' },
-      { id: 'hitl-agent', label: 'HITL Handoff' },
-      { id: 'whatsapp-agent', label: 'Cross-Channel' },
-    ]},
-    { id: 'results', label: 'Resultados', children: [
-      { id: 'before-after', label: 'Antes vs Después' },
-    ]},
-    { id: 'decisions', label: 'ADRs' },
-    { id: 'platform-evolution', label: 'Evolución' },
-    { id: 'what-id-do-differently', label: 'Qué Haría Diferente' },
-    { id: 'enterprise-patterns', label: 'Enterprise Patterns', children: [
-      { id: 'applicability', label: 'Por industria' },
-    ]},
-    { id: 'run-it-yourself', label: 'Descarga los Workflows' },
-    { id: 'faq', label: 'FAQ' },
-  ],
-  en: [
-    { id: 'the-problem', label: 'The Problem' },
-    { id: 'architecture', label: 'Architecture', children: [
-      { id: 'stack', label: 'Stack' },
-      { id: 'why-sub-agents', label: 'Why Sub-agents' },
-      { id: 'the-seven-agents', label: 'The 7 Agents' },
-      { id: 'memory', label: 'Memory' },
-    ]},
-    { id: 'channels', label: 'The Two Channels', children: [
-      { id: 'missed-call-recovery', label: 'Missed Calls' },
-      { id: 'pre-filtering', label: 'Pre-filtering' },
-    ]},
-    { id: 'main-router', label: 'Main Router (n8n)', children: [
-      { id: 'tool-calling', label: 'Tool Calling' },
-      { id: 'prompt-engineering', label: 'Prompt Engineering' },
-      { id: 'business-hours', label: 'Business Hours' },
-      { id: 'main-prompt', label: 'Main Prompt' },
-      { id: 'voice-prompt', label: 'Voice Prompt' },
-      { id: 'iteration-examples', label: 'Real Iterations' },
-    ]},
-    { id: 'natural-language-booking', label: 'Deep Dive: Appointments', children: [
-      { id: 'appointments-prompt', label: 'Appointments Prompt' },
-      { id: 'repair-appointment', label: 'Flow: Repair Appointment' },
-    ]},
-    { id: 'deep-dive-quotes', label: 'Deep Dive: Quotes', children: [
-      { id: 'quotes-prompt', label: 'Quotes Prompt' },
-      { id: 'price-inquiry', label: 'Flow: Price Inquiry' },
-    ]},
-    { id: 'deep-dive-others', label: 'Deep Dive: Tools', children: [
-      { id: 'orders-agent', label: 'Orders' },
-      { id: 'calculator-agent', label: 'Calculator' },
-      { id: 'hitl-agent', label: 'HITL Handoff' },
-      { id: 'whatsapp-agent', label: 'Cross-Channel' },
-    ]},
-    { id: 'results', label: 'Results', children: [
-      { id: 'before-after', label: 'Before vs After' },
-    ]},
-    { id: 'decisions', label: 'ADRs' },
-    { id: 'platform-evolution', label: 'Evolution' },
-    { id: 'what-id-do-differently', label: "What I'd Do Differently" },
-    { id: 'enterprise-patterns', label: 'Enterprise Patterns', children: [
-      { id: 'applicability', label: 'By industry' },
-    ]},
-    { id: 'run-it-yourself', label: 'Download Workflows' },
-    { id: 'faq', label: 'FAQ' },
-  ],
+function useAutoToc(): TocItem[] {
+  const [sections, setSections] = useState<TocItem[]>([])
+
+  useEffect(() => {
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('main h2[id], main h3[id]'),
+    )
+    const tree: TocItem[] = []
+    let currentH2: TocItem | null = null
+
+    for (const el of headings) {
+      const id = el.id
+      const label = el.textContent?.replace(/#/g, '').trim() ?? id
+      if (el.tagName === 'H2') {
+        currentH2 = { id, label, children: [] }
+        tree.push(currentH2)
+      } else if (el.tagName === 'H3' && currentH2) {
+        currentH2.children!.push({ id, label })
+      }
+    }
+    // Remove empty children arrays
+    tree.forEach(s => { if (s.children?.length === 0) delete s.children })
+    setSections(tree)
+  }, [])
+
+  return sections
 }
 
-// ---------------------------------------------------------------------------
-// FloatingToc — sticky sidebar on xl, drawer on mobile
-// ---------------------------------------------------------------------------
-function FloatingToc({ lang }: { lang: Lang }) {
-  const sections = TOC_SECTIONS[lang]
+function FloatingToc() {
+  const sections = useAutoToc()
   const [activeId, setActiveId] = useState('')
   const [tocOpen, setTocOpen] = useState(false)
 
-  const allIds = sections.flatMap(s => [s.id, ...(s.children?.map(c => c.id) ?? [])])
-  const parentMap = new Map<string, string>()
-  sections.forEach(s => s.children?.forEach(c => parentMap.set(c.id, s.id)))
+  const allIds = useMemo(
+    () => sections.flatMap(s => [s.id, ...(s.children?.map(c => c.id) ?? [])]),
+    [sections],
+  )
+  const parentMap = useMemo(() => {
+    const map = new Map<string, string>()
+    sections.forEach(s => s.children?.forEach(c => map.set(c.id, s.id)))
+    return map
+  }, [sections])
 
   const scrollTo = useCallback((id: string) => {
     setTocOpen(false)
@@ -207,6 +144,8 @@ function FloatingToc({ lang }: { lang: Lang }) {
   }, [allIds])
 
   const activeParent = parentMap.get(activeId) ?? activeId
+
+  if (sections.length === 0) return null
 
   const tocNav = (
     <nav aria-label="Table of contents">
@@ -418,7 +357,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
   // ---- Render ----
   return (
     <ArticleLayout>
-      <FloatingToc lang={lang} />
+      <FloatingToc />
       <ArticleHeader kicker={t.header.kicker} h1={t.header.h1} subtitle={t.header.subtitle} date={t.header.date} readingTime={t.readingTime} />
 
       {/* Proof of exit badge */}
