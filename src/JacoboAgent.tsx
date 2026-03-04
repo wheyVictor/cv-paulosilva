@@ -244,9 +244,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
 
       {/* Hero images */}
       <Photo2 editorId="hero-photos" items={[
-        { src: '/jacobo/shop-counter-smart-displays.webp', alt: lang === 'es' ? 'Mostrador de Santifer iRepair con smart displays' : 'Santifer iRepair counter with smart displays', loading: 'eager' },
-        { src: '/jacobo/shop-diagnostic-screen.webp', alt: lang === 'es' ? 'Pantalla de diagnóstico en la tienda' : 'Diagnostic screen in the shop', loading: 'eager' },
-      ]} />
+        { src: '/jacobo/santiago-headphones-thinking.webp', alt: 'Santiago Fernández de Valderrama', loading: 'eager' },
+        { src: '/jacobo/shop-microsoldering-station.webp', alt: lang === 'es' ? 'Estación de microsoldadura en Santifer iRepair' : 'Microsoldering station at Santifer iRepair', loading: 'eager' },
+      ]} caption={lang === 'es' ? 'Cada llamada interrumpe una reparación en curso: el técnico deja la microsoldadura para atender al teléfono' : 'Every call interrupts a repair in progress: the technician leaves the microsoldering station to answer the phone'} />
 
       <article className="prose-custom">
         {/* ---- Intro ---- */}
@@ -264,11 +264,11 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
           <BulletList editorId="problem-pain-points-list" items={t.sections.theProblem.painPoints} variant="in-card" />
         </InfoCard>
 
-        {/* Santiago + Microsoldering */}
-        <Photo2 editorId="problem-santiago-microsoldering" items={[
-          { src: '/jacobo/santiago-headphones-thinking.webp', alt: 'Santiago Fernández de Valderrama' },
-          { src: '/jacobo/shop-microsoldering-station.webp', alt: lang === 'es' ? 'Estación de microsoldadura en Santifer iRepair' : 'Microsoldering station at Santifer iRepair' },
-        ]} caption={lang === 'es' ? 'Cada llamada interrumpe una reparación en curso: el técnico deja la microsoldadura para atender al teléfono' : 'Every call interrupts a repair in progress: the technician leaves the microsoldering station to answer the phone'} />
+        {/* Counter + Diagnostic screen */}
+        <Photo2 editorId="problem-shop-counter" items={[
+          { src: '/jacobo/shop-counter-smart-displays.webp', alt: lang === 'es' ? 'Mostrador de Santifer iRepair con smart displays' : 'Santifer iRepair counter with smart displays' },
+          { src: '/jacobo/shop-diagnostic-screen.webp', alt: lang === 'es' ? 'Pantalla de diagnóstico en la tienda' : 'Diagnostic screen in the shop' },
+        ]} caption={lang === 'es' ? 'El mostrador con smart displays y la pantalla de diagnóstico: el negocio que necesitaba un agente IA' : 'The counter with smart displays and the diagnostic screen: the business that needed an AI agent'} />
 
         {/* Alternatives */}
         <Prose editorId="problem-alternatives-body">{t.sections.theProblem.alternatives.body}</Prose>
