@@ -63,6 +63,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
     const altLang = lang === 'es' ? 'en' : 'es'
 
     document.title = t.seo.title
+    document.documentElement.lang = lang
 
     const metaTags: Record<string, string> = {
       description: t.seo.description,
