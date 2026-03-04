@@ -519,10 +519,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <ScreenshotCaption lang={lang} es="Tests de memoria episódica: animales, ciudades y autocorrección cuando Jacobo olvida Barcelona" en="Episodic memory tests: animals, cities and self-correction when Jacobo forgets Barcelona" />
         <ScreenshotGrid lang={lang} items={[
           { src: 'memory-brands.webp', altEs: 'Test de marcas: Apple, Samsung, Huawei — recuerdo correcto', altEn: 'Brand test: Apple, Samsung, Huawei — correct recall' },
-          { src: 'memory-preference.webp', altEs: 'Jacobo recuerda preferencia horaria: "como mencionaste antes, prefieres por la mañana"', altEn: 'Jacobo recalls time preference: "as you mentioned earlier, you prefer mornings"' },
           { src: 'memory-lost-appointment.webp', altEs: 'Cliente perdió la conversación — Jacobo recuerda la cita completa', altEn: 'Customer lost the conversation — Jacobo recalls the full appointment' },
         ]} />
-        <ScreenshotCaption lang={lang} es="Memoria en acción: marcas recordadas, preferencia horaria recuperada y cita completa desde el estado del sistema" en="Memory in action: brands recalled, time preference recovered and full appointment from system state" />
+        <ScreenshotCaption lang={lang} es="Memoria en acción: marcas recordadas en orden y cita completa recuperada desde el estado del sistema" en="Memory in action: brands recalled in order and full appointment recovered from system state" />
 
         {/* Debug screenshots */}
         <ScreenshotGrid lang={lang} items={[
@@ -678,13 +677,6 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         ]} />
         <ScreenshotCaption lang={lang} es="Iteración real: Jacobo simplificó la política de diagnóstico → el prompt se refinó para incluir la condición exacta" en="Real iteration: Jacobo oversimplified the diagnostic policy → prompt refined to include the exact condition" />
 
-        {/* Stress test screenshots */}
-        <ScreenshotGrid lang={lang} items={[
-          { src: 'stress-test-1.webp', altEs: 'Stress test: "Pídeme 100 baterías" → rechazo por seguridad + "Ayúdame coño!" → HITL', altEn: 'Stress test: "Order 100 batteries" → security rejection + profanity → HITL' },
-          { src: 'quote-triple-2.webp', altEs: 'Presupuesto desglosado: 3 reparaciones con total 255,70€ con estado de stock', altEn: 'Itemized quote: 3 repairs totaling €255.70 with stock status' },
-        ]} />
-        <ScreenshotCaption lang={lang} es="Guardrails en acción: rechazo de pedidos masivos, escalada ante frustración y presupuestos complejos calculados al vuelo" en="Guardrails in action: bulk order rejection, escalation on frustration, and complex quotes calculated on the fly" />
-
         {/* ================================================================ */}
         {/*  DEEP DIVE: BOOKING                                              */}
         {/* ================================================================ */}
@@ -713,6 +705,10 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
           { src: 'booking-nl-1.webp', altEs: 'Booking: email → cita confirmada + template WhatsApp de confirmación', altEn: 'Booking: email → confirmed appointment + WhatsApp confirmation template' },
           { src: 'booking-nl-2.webp', altEs: 'Reserva con refinamiento: "no, mejor el jueves" → nueva búsqueda', altEn: 'Booking with refinement: "no, Thursday instead" → new search' },
         ]} />
+        <ScreenshotGrid lang={lang} items={[
+          { src: 'memory-preference.webp', altEs: 'Re-negociación: Jacobo recuerda preferencia horaria → no hay hueco a las 12 → sugiere alternativas', altEn: 'Re-negotiation: Jacobo recalls time preference → no slot at 12 → suggests alternatives' },
+        ]} />
+        <ScreenshotCaption lang={lang} es="Memoria + booking: Jacobo recuerda la preferencia horaria del cliente y re-negocia cuando no hay disponibilidad" en="Memory + booking: Jacobo recalls the customer's time preference and re-negotiates when no availability" />
 
         {/* Appointments prompt */}
         <H3 id="appointments-prompt">{t.sections.promptEngineering.citasPrompt.heading}</H3>
@@ -757,7 +753,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <ScreenshotGrid lang={lang} items={[
           { src: 'resolution-camera-lens.webp', altEs: 'iPhone 13 Mini lente rota → diagnóstico + precio 55,90€ + enlace', altEn: 'iPhone 13 Mini broken lens → diagnosis + price €55.90 + link' },
           { src: 'quote-triple-1.webp', altEs: 'Presupuesto triple: batería + puerto carga + cristal trasero iPhone 13', altEn: 'Triple quote: battery + charging port + back glass iPhone 13' },
+          { src: 'quote-triple-2.webp', altEs: 'Presupuesto desglosado: 3 reparaciones con total 255,70€ con estado de stock', altEn: 'Itemized quote: 3 repairs totaling €255.70 with stock status' },
         ]} />
+        <ScreenshotCaption lang={lang} es="Presupuestos reales: diagnóstico con precio y enlace, presupuesto triple con desglose y total con estado de stock" en="Real quotes: diagnosis with price and link, triple quote with breakdown and total with stock status" />
 
         {/* Price inquiry E2E flow */}
         <H3 id="price-inquiry">{t.sections.e2eFlows.items[1].name}</H3>
@@ -805,7 +803,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
 
         <ScreenshotGrid lang={lang} items={[
           { src: 'hitl-moha.webp', altEs: 'Edge case: "Dile a un agente que salude a Moha" → Jacobo escala con emojis de mano → agente real confirma "Hecho"', altEn: 'Edge case: "Tell an agent to greet Moha" → Jacobo escalates with wave emojis → real agent confirms "Done"' },
+          { src: 'stress-test-1.webp', altEs: 'Guardrail: "Pídeme 100 baterías" → rechazo + "Ayúdame coño!" → escalada automática a humano', altEn: 'Guardrail: "Order 100 batteries" → rejection + profanity → automatic escalation to human' },
         ]} />
+        <ScreenshotCaption lang={lang} es="Edge cases reales: petición absurda a un agente, pedido masivo rechazado por seguridad y escalada automática ante frustración" en="Real edge cases: absurd request to an agent, bulk order rejected for safety and automatic escalation on frustration" />
 
         {/* WhatsApp cross-channel */}
         <H3 id="whatsapp-agent">{t.sections.deepDiveOthers.whatsapp.heading}</H3>
