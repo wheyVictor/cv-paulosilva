@@ -488,6 +488,10 @@ export const jacoboContent = {
             heading: 'Arquitectura Dual-Orquestador',
             body: 'Este es el patrón clave: n8n orquesta WhatsApp, ElevenLabs orquesta voz, pero ambos llaman a los mismos sub-agentes webhook. Es un patrón de microservicios real aplicado a agentes IA. Los sub-agentes no saben quién los llama, y no necesitan saberlo.',
           },
+          unifiedVoiceUx: {
+            heading: 'UX Unificada: Una Sola Voz',
+            body: 'Todos los audios de la centralita — bienvenida, menú IVR, buzón de voz — fueron generados con ElevenLabs usando la misma voz que Jacobo. Cuando el cliente pulsa 3 o nadie puede atender y salta el agente real, la voz es idéntica. No hay ruptura. Y si nadie atiende y Jacobo le escribe por WhatsApp tras la llamada perdida, la identidad sigue siendo la misma. Una experiencia unificada de principio a fin, da igual el canal.',
+          },
           eventRouting: {
             heading: 'Pre-filtrado: ¿Debe Jacobo Responder?',
             body: 'Antes de que el mensaje llegue al AI Agent, tres switches filtran el ruido y deciden quién debe responder:',
@@ -1996,6 +2000,10 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
           dualOrchestrator: {
             heading: 'Dual-Orchestrator Architecture',
             body: 'This is the key pattern: n8n orchestrates WhatsApp, ElevenLabs orchestrates voice, but both hit the same sub-agent webhooks. A real microservices pattern applied to AI agents. The sub-agents don\'t know who\'s calling them. They don\'t need to.',
+          },
+          unifiedVoiceUx: {
+            heading: 'Unified UX: One Voice',
+            body: 'Every PBX audio — welcome greeting, IVR menu, voicemail — was generated with ElevenLabs using Jacobo\'s same voice. When the customer presses 3 or no one can answer and the live agent picks up, the voice is identical. No break. And if no one picks up and Jacobo texts them on WhatsApp after the missed call, the identity stays the same. A unified experience from start to finish, regardless of channel.',
           },
           eventRouting: {
             heading: 'Pre-filtering: Should Jacobo Respond?',

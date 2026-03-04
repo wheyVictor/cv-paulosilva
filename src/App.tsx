@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Users, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Download, Github, Package, MessageSquare, Receipt, CalendarCheck, Shield, FileText, GitBranch, Terminal, Lock, Network, Calendar, Percent, UserCheck, Image, TrendingUp, Timer, SkipForward, ThumbsUp, MessageCircle, Share2, ChevronRight } from 'lucide-react'
 import { translations, seo, type Lang } from './i18n'
+import { useHomeSeo } from './articles/use-article-seo'
 
 
 function LinkedInLogo({ className = "w-4 h-4" }: { className?: string }) {
@@ -1059,27 +1060,8 @@ function App() {
   }, [location.hash])
 
   // SEO: Dynamic meta tags based on language
-  useEffect(() => {
-    const seoData = seo[lang]
-    document.title = seoData.title
-
-    // Update meta description
-    const metaDesc = document.querySelector('meta[name="description"]')
-    if (metaDesc) metaDesc.setAttribute('content', seoData.description)
-
-    // Update OG tags
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content', seoData.title)
-    document.querySelector('meta[property="og:description"]')?.setAttribute('content', seoData.description)
-    document.querySelector('meta[property="og:locale"]')?.setAttribute('content', lang === 'en' ? 'en_US' : 'es_ES')
-
-    // Update canonical
-    const canonical = lang === 'en' ? 'https://santifer.io/en' : 'https://santifer.io/'
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical)
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical)
-
-    // Update html lang
-    document.documentElement.lang = lang
-  }, [lang])
+  const seoData = seo[lang]
+  useHomeSeo({ lang, title: seoData.title, description: seoData.description })
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-200" role="main">

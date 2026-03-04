@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { motion } from 'motion/react'
 import { type N8nLang as Lang } from './n8n-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
+import { useArticleSeo } from './articles/use-article-seo'
 
 function ReelCard({ reelId, caption }: { reelId: string; caption: string }) {
   return (
@@ -92,83 +93,18 @@ function buildJsonLd(lang: Lang) {
 export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
   const t = businessOsContent[lang]
 
-  useEffect(() => {
-    const url = `https://santifer.io/${t.slug}`
-    const altUrl = `https://santifer.io/${t.altSlug}`
-    const altLang = lang === 'es' ? 'en' : 'es'
-
-    document.title = t.seo.title
-
-    const metaTags: Record<string, string> = {
-      description: t.seo.description,
-      author: 'Santiago Fernández de Valderrama',
-      robots: 'index, follow',
-    }
-    const ogTags: Record<string, string> = {
-      'og:type': 'article',
-      'og:url': url,
-      'og:title': t.seo.title,
-      'og:description': t.seo.description,
-      'og:site_name': 'santifer.io',
-      'og:locale': lang === 'es' ? 'es_ES' : 'en_US',
-      'og:locale:alternate': lang === 'es' ? 'en_US' : 'es_ES',
-      'og:image': 'https://santifer.io/business-os/og-business-os.png',
-      'article:published_time': '2026-02-25',
-      'article:author': 'https://www.linkedin.com/in/santifer',
-      'article:tag': 'Business OS,Airtable,n8n,ERP,CRM,automation,phone repair',
-    }
-    const twitterTags: Record<string, string> = {
-      'twitter:card': 'summary_large_image',
-      'twitter:title': t.seo.title,
-      'twitter:description': t.seo.description,
-      'twitter:image': 'https://santifer.io/business-os/og-business-os.png',
-    }
-
-    Object.entries(metaTags).forEach(([name, content]) => {
-      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el) }
-      el.content = content
-    })
-    Object.entries(ogTags).forEach(([prop, content]) => {
-      let el = document.querySelector(`meta[property="${prop}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el) }
-      el.content = content
-    })
-    Object.entries(twitterTags).forEach(([name, content]) => {
-      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el) }
-      el.content = content
-    })
-
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
-    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical) }
-    canonical.href = url
-
-    const hreflangTags = [
-      { hreflang: lang, href: url },
-      { hreflang: altLang, href: altUrl },
-      { hreflang: 'x-default', href: `https://santifer.io/business-os-para-airtable` },
-    ]
-    const createdLinks: HTMLLinkElement[] = []
-    hreflangTags.forEach(({ hreflang, href }) => {
-      const link = document.createElement('link')
-      link.rel = 'alternate'
-      link.hreflang = hreflang
-      link.href = href
-      document.head.appendChild(link)
-      createdLinks.push(link)
-    })
-
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.textContent = JSON.stringify(buildJsonLd(lang))
-    document.head.appendChild(script)
-
-    return () => {
-      script.remove()
-      createdLinks.forEach((link) => link.remove())
-    }
-  }, [lang, t])
+  useArticleSeo({
+    lang,
+    slug: t.slug,
+    altSlug: t.altSlug,
+    title: t.seo.title,
+    description: t.seo.description,
+    image: 'https://santifer.io/business-os/og-business-os.png',
+    publishedTime: '2026-02-25',
+    articleTags: 'Business OS,Airtable,n8n,ERP,CRM,automation,phone repair',
+    jsonLd: buildJsonLd(lang),
+    xDefaultSlug: 'business-os-para-airtable',
+  })
 
   // Scroll to hash anchor (e.g. #repair-lifecycle from home page links)
   // Two-pass: instant jump early, then corrective smooth scroll after images settle

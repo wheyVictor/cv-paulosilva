@@ -1,6 +1,7 @@
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { type N8nLang as Lang } from './n8n-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
+import { useArticleSeo } from './articles/use-article-seo'
 import { Compass, Mic, CalendarDays, Receipt, Package, Calculator, HandHelping, Smartphone, MessageCircle, PhoneMissed, Download } from 'lucide-react'
 import {
   ArticleLayout,
@@ -134,85 +135,19 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
   const t = jacoboContent[lang]
   const wfById = Object.fromEntries(t.downloads.workflows.map(w => [w.id, w]))
 
-  // ---- SEO meta tags ----
-  useEffect(() => {
-    const url = `https://santifer.io/${t.slug}`
-    const altUrl = `https://santifer.io/${t.altSlug}`
-    const altLang = lang === 'es' ? 'en' : 'es'
-
-    document.title = t.seo.title
-
-    const metaTags: Record<string, string> = {
-      description: t.seo.description,
-      author: 'Santiago Fernández de Valderrama',
-      robots: 'index, follow',
-    }
-    const ogTags: Record<string, string> = {
-      'og:type': 'article',
-      'og:url': url,
-      'og:title': t.seo.title,
-      'og:description': t.seo.description,
-      'og:image': 'https://santifer.io/jacobo/og-jacobo-agent.png',
-      'og:site_name': 'santifer.io',
-      'og:locale': lang === 'es' ? 'es_ES' : 'en_US',
-      'og:locale:alternate': lang === 'es' ? 'en_US' : 'es_ES',
-      'article:published_time': '2026-02-25',
-      'article:modified_time': '2026-03-02',
-      'article:author': 'https://www.linkedin.com/in/santifer',
-      'article:tag': 'AI agent,multi-agent,n8n,ElevenLabs,HITL,tool calling,WhatsApp,voice AI',
-    }
-    const twitterTags: Record<string, string> = {
-      'twitter:card': 'summary_large_image',
-      'twitter:title': t.seo.title,
-      'twitter:description': t.seo.description,
-      'twitter:image': 'https://santifer.io/jacobo/og-jacobo-agent.png',
-    }
-
-    Object.entries(metaTags).forEach(([name, content]) => {
-      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el) }
-      el.content = content
-    })
-    Object.entries(ogTags).forEach(([prop, content]) => {
-      let el = document.querySelector(`meta[property="${prop}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el) }
-      el.content = content
-    })
-    Object.entries(twitterTags).forEach(([name, content]) => {
-      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement
-      if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el) }
-      el.content = content
-    })
-
-    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
-    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical) }
-    canonical.href = url
-
-    const hreflangTags = [
-      { hreflang: lang, href: url },
-      { hreflang: altLang, href: altUrl },
-      { hreflang: 'x-default', href: 'https://santifer.io/agente-ia-jacobo' },
-    ]
-    const createdLinks: HTMLLinkElement[] = []
-    hreflangTags.forEach(({ hreflang, href }) => {
-      const link = document.createElement('link')
-      link.rel = 'alternate'
-      link.hreflang = hreflang
-      link.href = href
-      document.head.appendChild(link)
-      createdLinks.push(link)
-    })
-
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.textContent = JSON.stringify(buildJsonLd(lang))
-    document.head.appendChild(script)
-
-    return () => {
-      script.remove()
-      createdLinks.forEach(link => link.remove())
-    }
-  }, [lang, t])
+  useArticleSeo({
+    lang,
+    slug: t.slug,
+    altSlug: t.altSlug,
+    title: t.seo.title,
+    description: t.seo.description,
+    image: 'https://santifer.io/jacobo/og-jacobo-agent.png',
+    publishedTime: '2026-02-25',
+    modifiedTime: '2026-03-02',
+    articleTags: 'AI agent,multi-agent,n8n,ElevenLabs,HITL,tool calling,WhatsApp,voice AI',
+    jsonLd: buildJsonLd(lang),
+    xDefaultSlug: 'agente-ia-jacobo',
+  })
 
   // ---- Render ----
   return (
@@ -422,11 +357,18 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <H4 id="missed-call-recovery" icon={<PhoneMissed className="w-5 h-5 text-primary" />}>{t.sections.channels.missedCallRecovery.heading}</H4>
         <Prose editorId="missed-call-body">{t.sections.channels.missedCallRecovery.body}</Prose>
 
+        <Photo1 editorId="aircall-dashboard" src="/jacobo/aircall-dashboard.webp" alt={lang === 'es' ? 'Dashboard de Aircall — árbol de distribución de llamadas con Jacobo como nodo de la centralita' : 'Aircall dashboard — call distribution tree with Jacobo as a PBX node'} caption={lang === 'es' ? 'Árbol de distribución real en Aircall — Jacobo integrado como un nodo más de la centralita' : 'Actual call distribution tree in Aircall — Jacobo plugged in as another PBX node'} className="mb-4" />
+
         <ScreenshotGrid editorId="missed-call-flow" lang={lang} items={[
           { src: 'missed-call-template.webp', altEs: 'Template de WhatsApp tras llamada perdida: botones Pedir presupuesto, Tomar cita', altEn: 'WhatsApp template after missed call: buttons Get a quote, Book appointment' },
           { src: 'missed-call-hitl.webp', altEs: 'Cliente elige "Que me llamen" → Jacobo escala a HITL y confirma notificación', altEn: 'Customer picks "Call me back" → Jacobo escalates to HITL and confirms notification' },
         ]} />
         <ScreenshotCaption editorId="missed-call-flow-caption" lang={lang} es="Aircall → Make.com → template WhatsApp con botones → Jacobo retoma la conversación con contexto completo" en="Aircall → Make.com → WhatsApp template with buttons → Jacobo picks up the conversation with full context" />
+
+        {/* Unified Voice UX */}
+        <H4 id="unified-voice-ux">{t.sections.channels.unifiedVoiceUx.heading}</H4>
+        <Prose editorId="unified-voice-ux-body">{t.sections.channels.unifiedVoiceUx.body}</Prose>
+        <Photo1 editorId="aircall-dashboard-detail" src="/jacobo/aircall-dashboard-detail.webp" alt={lang === 'es' ? 'Detalle de Aircall: audios de bienvenida e IVR generados con ElevenLabs con la voz de Jacobo' : 'Aircall detail: welcome and IVR audio generated with ElevenLabs using Jacobo\'s voice'} caption={lang === 'es' ? 'Los nodos "ElevenLabs" son audios pregrabados con la misma voz de Jacobo — bienvenida, IVR y buzón. Cuando salta el agente real, la voz es idéntica' : 'The "ElevenLabs" nodes are pre-recorded audio using Jacobo\'s same voice — welcome, IVR and voicemail. When the live agent picks up, the voice is identical'} className="mb-4" />
 
         {/* Event routing / Pre-filtering */}
         <H4 id="pre-filtering">{t.sections.channels.eventRouting.heading}</H4>
