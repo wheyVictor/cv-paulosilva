@@ -267,7 +267,7 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
           heading={t.sections.dayInLife.jacoboCta.heading}
           body={t.sections.dayInLife.jacoboCta.body}
           ctaLabel={t.sections.dayInLife.jacoboCta.label}
-          ctaHref={lang === 'es' ? 'mailto:hola@santifer.io?subject=Jacobo AI Agent' : 'mailto:hi@santifer.io?subject=Jacobo AI Agent'}
+          ctaHref={lang === 'es' ? '/agente-ia-jacobo' : '/ai-agent-jacobo'}
         />
 
         {/* Why Not Off-the-Shelf */}

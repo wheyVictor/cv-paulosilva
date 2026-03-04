@@ -1326,7 +1326,10 @@ function App() {
                     )
                   })}
                 </ul>
-                <a href={lang === 'es' ? 'mailto:hola@santifer.io?subject=Jacobo AI Agent' : 'mailto:hi@santifer.io?subject=Jacobo AI Agent'} className="text-xs font-medium text-primary italic mt-auto pt-4 hover:underline">{t.experience.santifer.jacobo.soldWith}</a>
+                <Link to={t.experience.santifer.jacobo.caseStudyUrl} className="inline-flex items-center gap-2 mt-auto pt-4 text-sm font-medium text-primary hover:text-primary/80 transition-colors duration-200 group/cta">
+                  <span className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 group-hover/cta:bg-primary/20 group-hover/cta:border-primary/50 transition-all duration-200">{t.experience.santifer.jacobo.soldWith}</span>
+                  <ChevronRight className="w-4 h-4 group-hover/cta:translate-x-0.5 transition-transform duration-200" />
+                </Link>
               </div>
             </AnimatedSection>
 
