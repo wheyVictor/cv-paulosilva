@@ -441,6 +441,76 @@ export function Photo3({ items, className }: Photo3Props) {
 }
 
 // ---------------------------------------------------------------------------
+// 11b. ToolList — code name + description pairs
+// ---------------------------------------------------------------------------
+
+interface ToolListItem {
+  name: string
+  desc: ReactNode
+}
+
+interface ToolListProps {
+  items: readonly ToolListItem[]
+  className?: string
+}
+
+export function ToolList({ items, className }: ToolListProps) {
+  return (
+    <EditorLabel name="ToolList">
+      <div className={`space-y-2 mb-6 ${className ?? ''}`}>
+        {items.map(tool => (
+          <div key={tool.name} className="flex items-start gap-3 bg-card border border-border rounded-lg p-4">
+            <code className="text-xs text-primary font-mono shrink-0 mt-0.5">{tool.name}</code>
+            <p className="text-xs text-muted-foreground">{tool.desc}</p>
+          </div>
+        ))}
+      </div>
+    </EditorLabel>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// 11c. ConditionList — condition → action pairs
+// ---------------------------------------------------------------------------
+
+interface ConditionItem {
+  condition: ReactNode
+  action: ReactNode
+}
+
+interface ConditionListProps {
+  items: readonly ConditionItem[]
+  className?: string
+}
+
+export function ConditionList({ items, className }: ConditionListProps) {
+  return (
+    <EditorLabel name="ConditionList">
+      <div className={`space-y-2 mb-6 ${className ?? ''}`}>
+        {items.map((f, i) => (
+          <div key={i} className="flex items-start gap-2 text-xs">
+            <span className="font-medium text-foreground shrink-0">{f.condition}</span>
+            <span className="text-muted-foreground">{f.action}</span>
+          </div>
+        ))}
+      </div>
+    </EditorLabel>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// 11d. NodeLabel — monospace workflow node count
+// ---------------------------------------------------------------------------
+
+export function NodeLabel({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <EditorLabel name="NodeLabel">
+      <p className={`text-xs text-muted-foreground font-mono mb-3 ${className ?? ''}`}>{children}</p>
+    </EditorLabel>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // 12. CodeBlock (simple code or code + annotations)
 // ---------------------------------------------------------------------------
 

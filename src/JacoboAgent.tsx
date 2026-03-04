@@ -19,7 +19,6 @@ import {
   H3,
   H4,
   Prose,
-  LabeledText,
   Callout,
   InfoCard,
   CardStack,
@@ -27,6 +26,9 @@ import {
   StepList,
   CardGrid,
   StackGrid,
+  ToolList,
+  ConditionList,
+  NodeLabel,
   Photo1,
   Photo2,
   CodeBlock,
@@ -79,14 +81,15 @@ const TOC_SECTIONS: Record<Lang, TocItem[]> = {
     { id: 'the-problem', label: 'El Problema' },
     { id: 'architecture', label: 'Arquitectura', children: [
       { id: 'stack', label: 'Stack' },
-      { id: 'channels', label: 'Los Dos Canales' },
-      { id: 'missed-call-recovery', label: 'Llamadas Perdidas' },
       { id: 'why-sub-agents', label: 'Por qué sub-agentes' },
       { id: 'the-seven-agents', label: 'Los 7 Agentes' },
       { id: 'memory', label: 'Memoria' },
     ]},
-    { id: 'main-router', label: 'Router Principal (n8n)', children: [
+    { id: 'channels', label: 'Los Dos Canales', children: [
+      { id: 'missed-call-recovery', label: 'Llamadas Perdidas' },
       { id: 'pre-filtering', label: 'Pre-filtrado' },
+    ]},
+    { id: 'main-router', label: 'Router Principal (n8n)', children: [
       { id: 'tool-calling', label: 'Tool Calling' },
       { id: 'prompt-engineering', label: 'Prompt Engineering' },
       { id: 'business-hours', label: 'Horario comercial' },
@@ -124,14 +127,15 @@ const TOC_SECTIONS: Record<Lang, TocItem[]> = {
     { id: 'the-problem', label: 'The Problem' },
     { id: 'architecture', label: 'Architecture', children: [
       { id: 'stack', label: 'Stack' },
-      { id: 'channels', label: 'The Two Channels' },
-      { id: 'missed-call-recovery', label: 'Missed Calls' },
       { id: 'why-sub-agents', label: 'Why Sub-agents' },
       { id: 'the-seven-agents', label: 'The 7 Agents' },
       { id: 'memory', label: 'Memory' },
     ]},
-    { id: 'main-router', label: 'Main Router (n8n)', children: [
+    { id: 'channels', label: 'The Two Channels', children: [
+      { id: 'missed-call-recovery', label: 'Missed Calls' },
       { id: 'pre-filtering', label: 'Pre-filtering' },
+    ]},
+    { id: 'main-router', label: 'Main Router (n8n)', children: [
       { id: 'tool-calling', label: 'Tool Calling' },
       { id: 'prompt-engineering', label: 'Prompt Engineering' },
       { id: 'business-hours', label: 'Business Hours' },
@@ -473,6 +477,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
           { src: '/jacobo/santiago-headphones-thinking.webp', alt: 'Santiago Fernández de Valderrama' },
           { src: '/jacobo/shop-microsoldering-station.webp', alt: lang === 'es' ? 'Estación de microsoldadura en Santifer iRepair' : 'Microsoldering station at Santifer iRepair' },
         ]} />
+        <ScreenshotCaption lang={lang} es="Cada llamada interrumpe una reparación en curso: el técnico deja la microsoldadura para atender al teléfono" en="Every call interrupts a repair in progress: the technician leaves the microsoldering station to answer the phone" />
 
         {/* Alternatives */}
         <Prose>{t.sections.theProblem.alternatives.body}</Prose>
@@ -514,8 +519,12 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Prose className="mb-6">{t.sections.architecture.agentsBody}</Prose>
 
         {/* Agents grid */}
-        <div className="grid sm:grid-cols-2 gap-4 mb-4">
-          {t.sections.architecture.agents.filter(a => a.kind === 'agent').map(agent => {
+        <CardGrid
+          items={t.sections.architecture.agents.filter(a => a.kind === 'agent')}
+          columns={2}
+          gap="gap-4"
+          className="mb-4"
+          renderItem={(agent) => {
             const Icon = AGENT_ICONS[agent.icon] ?? Compass
             return (
               <div key={agent.name} className="bg-card border border-border rounded-lg p-5">
@@ -524,22 +533,19 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
                   <h4 className="font-display font-semibold text-foreground text-sm">{agent.name}</h4>
                 </div>
                 <p className="text-xs text-muted-foreground mb-3">{agent.desc}</p>
-                <ul className="space-y-1.5">
-                  {agent.details.map((d, i) => (
-                    <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                      <span className="text-primary/60 mt-0.5">&#8226;</span>{d}
-                    </li>
-                  ))}
-                </ul>
+                <BulletList items={agent.details} variant="in-card" />
               </div>
             )
-          })}
-        </div>
+          }}
+        />
 
         {/* Tools grid */}
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">{t.sections.architecture.toolsLabel}</p>
-        <div className="grid sm:grid-cols-3 gap-3 mb-8">
-          {t.sections.architecture.agents.filter(a => a.kind === 'tool').map(tool => {
+        <NodeLabel className="uppercase tracking-wider font-medium">{t.sections.architecture.toolsLabel}</NodeLabel>
+        <CardGrid
+          items={t.sections.architecture.agents.filter(a => a.kind === 'tool')}
+          columns={3}
+          className="mb-8"
+          renderItem={(tool) => {
             const Icon = AGENT_ICONS[tool.icon] ?? Package
             return (
               <div key={tool.name} className="bg-card border border-border rounded-lg p-4">
@@ -548,17 +554,11 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
                   <h4 className="font-display font-semibold text-foreground text-xs">{tool.name}</h4>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">{tool.desc}</p>
-                <ul className="space-y-1">
-                  {tool.details.map((d, i) => (
-                    <li key={i} className="text-xs text-muted-foreground flex items-start gap-1">
-                      <span className="text-primary/60 mt-0.5">&#8226;</span>{d}
-                    </li>
-                  ))}
-                </ul>
+                <BulletList items={tool.details} variant="in-card" />
               </div>
             )
-          })}
-        </div>
+          }}
+        />
 
         {/* Memory */}
         <H3 id="memory">{t.sections.architecture.memory.heading}</H3>
@@ -588,10 +588,12 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <ScreenshotCaption lang={lang} es="Borrar memoria reseteaba el buffer; HISTORIAL volcaba el JSON crudo — la filtración que enseñó a blindar respuestas" en="Borrar memoria reset the buffer; HISTORIAL dumped raw JSON — the leak that taught us to sanitize responses" />
 
         {/* Production debug tools */}
-        <LabeledText label={t.sections.architecture.debugTools.heading}>{t.sections.architecture.debugTools.body}</LabeledText>
+        <H4>{t.sections.architecture.debugTools.heading}</H4>
+        <Prose>{t.sections.architecture.debugTools.body}</Prose>
 
         {/* Pseudo-streaming */}
-        <LabeledText label={t.sections.architecture.pseudoStreaming.heading}>{t.sections.architecture.pseudoStreaming.body}</LabeledText>
+        <H4>{t.sections.architecture.pseudoStreaming.heading}</H4>
+        <Prose>{t.sections.architecture.pseudoStreaming.body}</Prose>
 
         {/* ================================================================ */}
         {/*  CHANNELS                                                        */}
@@ -669,31 +671,20 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         {/* Tool Calling */}
         <H3 id="tool-calling">{t.sections.toolCalling.heading}</H3>
         <Prose>{t.sections.toolCalling.body}</Prose>
-        <div className="space-y-2 mb-6">
-          {t.sections.toolCalling.tools.map(tool => (
-            <div key={tool.name} className="flex items-start gap-3 bg-card border border-border rounded-lg p-4">
-              <code className="text-xs text-primary font-mono shrink-0 mt-0.5">{tool.name}</code>
-              <p className="text-xs text-muted-foreground">{tool.desc}</p>
-            </div>
-          ))}
-        </div>
+        <ToolList items={t.sections.toolCalling.tools} />
 
         {/* Wait message */}
-        <LabeledText label={t.sections.toolCalling.waitMessage.heading}>{t.sections.toolCalling.waitMessage.body}</LabeledText>
+        <H4>{t.sections.toolCalling.waitMessage.heading}</H4>
+        <Prose>{t.sections.toolCalling.waitMessage.body}</Prose>
 
         {/* Think tool */}
-        <LabeledText label={t.sections.toolCalling.thinkTool.heading}>{t.sections.toolCalling.thinkTool.body}</LabeledText>
+        <H4>{t.sections.toolCalling.thinkTool.heading}</H4>
+        <Prose>{t.sections.toolCalling.thinkTool.body}</Prose>
 
         {/* Stock-aware routing */}
-        <LabeledText label={t.sections.toolCalling.stockAware.heading}>{t.sections.toolCalling.stockAware.body}</LabeledText>
-        <div className="space-y-2 mb-6">
-          {t.sections.toolCalling.stockAware.flows.map(f => (
-            <div key={f.condition} className="flex items-start gap-2 text-xs">
-              <span className="font-medium text-foreground shrink-0">{f.condition}</span>
-              <span className="text-muted-foreground">{f.action}</span>
-            </div>
-          ))}
-        </div>
+        <H4>{t.sections.toolCalling.stockAware.heading}</H4>
+        <Prose>{t.sections.toolCalling.stockAware.body}</Prose>
+        <ConditionList items={t.sections.toolCalling.stockAware.flows} />
 
         {/* Detail photos */}
         <Photo2 items={[
@@ -759,7 +750,8 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Prose>{t.sections.deepDiveBooking.body}</Prose>
 
         {/* Challenge */}
-        <LabeledText label={t.sections.deepDiveBooking.challenge.heading} className="mb-6">{t.sections.deepDiveBooking.challenge.body}</LabeledText>
+        <H4>{t.sections.deepDiveBooking.challenge.heading}</H4>
+        <Prose className="mb-6">{t.sections.deepDiveBooking.challenge.body}</Prose>
 
         {/* Workflow screenshot */}
         <Photo1 src="/jacobo/n8n-subagente-citas.webp" alt={lang === 'es' ? 'Workflow del sub-agente de citas en n8n: 18 nodos' : 'Appointments sub-agent workflow in n8n: 18 nodes'} className="mb-4" />
@@ -781,7 +773,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         ]} />
 
         {/* Appointments prompt */}
-        <H4 id="appointments-prompt">{t.sections.promptEngineering.citasPrompt.heading}</H4>
+        <H3 id="appointments-prompt">{t.sections.promptEngineering.citasPrompt.heading}</H3>
         <Prose>{t.sections.promptEngineering.citasPrompt.body}</Prose>
 
         <Photo1 src="/jacobo/n8n-prompt-citas.webp" alt={lang === 'es' ? 'System prompt del sub-agente de citas' : 'Appointments sub-agent system prompt'} className="mb-4" />
@@ -789,7 +781,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <CodeBlock segments={t.sections.promptEngineering.citasPrompt.segments} />
 
         {/* Repair appointment E2E flow */}
-        <H4 id="repair-appointment">{t.sections.e2eFlows.items[0].name}</H4>
+        <H3 id="repair-appointment">{t.sections.e2eFlows.items[0].name}</H3>
         <StepList items={t.sections.e2eFlows.items[0].details} className="mb-8" />
 
         {/* ================================================================ */}
@@ -799,7 +791,8 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Prose>{t.sections.deepDiveQuotes.body}</Prose>
 
         {/* Challenge */}
-        <LabeledText label={t.sections.deepDiveQuotes.challenge.heading} className="mb-6">{t.sections.deepDiveQuotes.challenge.body}</LabeledText>
+        <H4>{t.sections.deepDiveQuotes.challenge.heading}</H4>
+        <Prose className="mb-6">{t.sections.deepDiveQuotes.challenge.body}</Prose>
 
         {/* Workflow screenshot */}
         <Photo1 src="/jacobo/n8n-subagente-presupuestos.webp" alt={lang === 'es' ? 'Workflow del sub-agente de presupuestos en n8n: 11 nodos' : 'Quotes sub-agent workflow in n8n: 11 nodes'} className="mb-4" />
@@ -811,7 +804,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Callout>{t.sections.deepDiveQuotes.punchline}</Callout>
 
         {/* Quotes prompt */}
-        <H4 id="quotes-prompt">{t.sections.deepDiveQuotes.presupuestoPrompt.heading}</H4>
+        <H3 id="quotes-prompt">{t.sections.deepDiveQuotes.presupuestoPrompt.heading}</H3>
         <Prose>{t.sections.deepDiveQuotes.presupuestoPrompt.body}</Prose>
 
         <Photo1 src="/jacobo/n8n-prompt-presupuestos.webp" alt={lang === 'es' ? 'System prompt del sub-agente de presupuestos' : 'Quotes sub-agent system prompt'} className="mb-4" />
@@ -825,7 +818,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         ]} />
 
         {/* Price inquiry E2E flow */}
-        <H4 id="price-inquiry">{t.sections.e2eFlows.items[1].name}</H4>
+        <H3 id="price-inquiry">{t.sections.e2eFlows.items[1].name}</H3>
         <StepList items={t.sections.e2eFlows.items[1].details} className="mb-8" />
 
         {/* ================================================================ */}
@@ -835,18 +828,18 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Prose>{t.sections.deepDiveOthers.body}</Prose>
 
         {/* Orders */}
-        <H4 id="orders-agent">{t.sections.deepDiveOthers.orders.heading}</H4>
+        <H3 id="orders-agent">{t.sections.deepDiveOthers.orders.heading}</H3>
         <Prose className="mb-2">{t.sections.deepDiveOthers.orders.body}</Prose>
-        <p className="text-xs text-muted-foreground font-mono mb-3">{t.sections.deepDiveOthers.orders.nodes}</p>
+        <NodeLabel>{t.sections.deepDiveOthers.orders.nodes}</NodeLabel>
         <Photo1 src="/jacobo/n8n-hacer-pedido.webp" alt={lang === 'es' ? 'Workflow de Pedidos en n8n' : 'Orders workflow in n8n'} className="mb-4" />
         <InlineWorkflowDownload href={wfById['hacer-pedido'].href} label={t.downloads.inlineLabel} fileSize={wfById['hacer-pedido'].fileSize} />
         <div className="mb-6" />
         <BulletList items={t.sections.deepDiveOthers.orders.details} className="mb-8" />
 
         {/* Calculator */}
-        <H4 id="calculator-agent">{t.sections.deepDiveOthers.calculator.heading}</H4>
+        <H3 id="calculator-agent">{t.sections.deepDiveOthers.calculator.heading}</H3>
         <Prose className="mb-2">{t.sections.deepDiveOthers.calculator.body}</Prose>
-        <p className="text-xs text-muted-foreground font-mono mb-3">{t.sections.deepDiveOthers.calculator.nodes}</p>
+        <NodeLabel>{t.sections.deepDiveOthers.calculator.nodes}</NodeLabel>
         <Photo1 src="/jacobo/n8n-calculadora.webp" alt={lang === 'es' ? 'Workflow de la Calculadora de Descuentos en n8n: Webhook → Code (lógica de descuentos) → Response' : 'Discount Calculator workflow in n8n: Webhook → Code (discount logic) → Response'} className="mb-4" />
         <InlineWorkflowDownload href={wfById['calculadora-santifer'].href} label={t.downloads.inlineLabel} fileSize={wfById['calculadora-santifer'].fileSize} />
         <div className="mb-6" />
@@ -854,9 +847,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <CodeBlock segments={t.sections.deepDiveOthers.calculator.segments} />
 
         {/* HITL */}
-        <H4 id="hitl-agent">{t.sections.deepDiveOthers.hitl.heading}</H4>
+        <H3 id="hitl-agent">{t.sections.deepDiveOthers.hitl.heading}</H3>
         <Prose className="mb-2">{t.sections.deepDiveOthers.hitl.body}</Prose>
-        <p className="text-xs text-muted-foreground font-mono mb-3">{t.sections.deepDiveOthers.hitl.nodes}</p>
+        <NodeLabel>{t.sections.deepDiveOthers.hitl.nodes}</NodeLabel>
         <Photo1 src="/jacobo/n8n-hitl-slack.webp" alt={lang === 'es' ? 'Workflow de HITL Handoff en n8n' : 'HITL Handoff workflow in n8n'} className="mb-4" />
         <InlineWorkflowDownload href={wfById['contactar-agente-humano'].href} label={t.downloads.inlineLabel} fileSize={wfById['contactar-agente-humano'].fileSize} />
         <div className="mb-6" />
@@ -873,9 +866,9 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         ]} />
 
         {/* WhatsApp cross-channel */}
-        <H4 id="whatsapp-agent">{t.sections.deepDiveOthers.whatsapp.heading}</H4>
+        <H3 id="whatsapp-agent">{t.sections.deepDiveOthers.whatsapp.heading}</H3>
         <Prose className="mb-2">{t.sections.deepDiveOthers.whatsapp.body}</Prose>
-        <p className="text-xs text-muted-foreground font-mono mb-3">{t.sections.deepDiveOthers.whatsapp.nodes}</p>
+        <NodeLabel>{t.sections.deepDiveOthers.whatsapp.nodes}</NodeLabel>
         <Photo1 src="/jacobo/n8n-enviar-whatsapp.webp" alt={lang === 'es' ? 'Workflow de EnviarMensajeWati en n8n' : 'EnviarMensajeWati workflow in n8n'} className="mb-4" />
         <InlineWorkflowDownload href={wfById['enviar-mensaje-wati'].href} label={t.downloads.inlineLabel} fileSize={wfById['enviar-mensaje-wati'].fileSize} />
         <div className="mb-6" />
@@ -982,7 +975,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         />
 
         {/* Industry applicability */}
-        <H4 id="applicability">{t.sections.enterprisePatterns.applicability.heading}</H4>
+        <H3 id="applicability">{t.sections.enterprisePatterns.applicability.heading}</H3>
         <CardGrid
           items={t.sections.enterprisePatterns.applicability.examples as readonly { domain: string; detail: string }[]}
           columns={2}
@@ -1032,7 +1025,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         </div>
 
         {/* Import instructions */}
-        <H4>{t.downloads.section.importHeading}</H4>
+        <H3>{t.downloads.section.importHeading}</H3>
         <StepList items={t.downloads.section.importSteps} className="mb-8" />
 
         {/* ================================================================ */}
