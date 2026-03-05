@@ -24,7 +24,7 @@ function buildJsonLd(lang: N8nLang) {
     alternativeHeadline: t.seo.title,
     description: t.seo.description,
     datePublished: '2026-02-24',
-    dateModified: '2026-03-04',
+    dateModified: '2026-03-05',
     keywords: ['n8n', 'product manager', 'automation', 'AI', 'workflow', 'sprint report', 'feedback classification', 'no-code', 'n8n tutorial', 'AI workflow automation'],
     images: [
       'https://santifer.io/workflows/n8n-sprint-report-automation-workflow.webp',
@@ -64,7 +64,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
     description: t.seo.description,
     image: 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp',
     publishedTime: '2026-02-24',
-    modifiedTime: '2026-03-04',
+    modifiedTime: '2026-03-05',
     articleTags: 'n8n,product manager,automation,AI,workflow,no-code',
     jsonLd: buildJsonLd(lang),
     xDefaultSlug: 'n8n-para-pms',
