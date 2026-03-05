@@ -44,6 +44,9 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/jacobo", "destination": "/agente-ia-jacobo", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/en", "destination": "/en/index.html" },
     { "source": "/n8n-para-pms", "destination": "/n8n-para-pms/index.html" },
