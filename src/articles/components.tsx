@@ -248,7 +248,7 @@ export function ResourcesList({ heading, items }: { heading: string; items: read
         {items.map((item) => (
           <li key={item.url} className="flex items-center gap-2">
             <ExternalLink className="w-3.5 h-3.5 text-primary shrink-0" />
-            <a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">{item.label}</a>
+            <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="hover:text-primary transition-colors">{item.label}</a>
           </li>
         ))}
       </ul>

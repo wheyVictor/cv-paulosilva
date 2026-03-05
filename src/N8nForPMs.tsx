@@ -312,7 +312,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
                 <span>
                   {step.text.includes('<a>') ? (
                     <>
-                      <a href="https://n8n.io" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                      <a href="https://n8n.io" target="_blank" rel="noopener noreferrer nofollow" className="text-primary hover:underline font-medium">
                         {step.text.match(/<a>(.*?)<\/a>/)?.[1]}
                       </a>
                       {step.text.replace(/<a>.*?<\/a>/, '')}

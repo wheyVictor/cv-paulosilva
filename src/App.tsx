@@ -1185,7 +1185,7 @@ function App() {
                   </div>
                   <h3 className="font-display text-2xl font-bold">{t.experience.santifer.company}</h3>
                 </div>
-                <a href="https://santiferirepair.es" target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline flex items-center gap-1">
+                <a href="https://santiferirepair.es" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-primary hover:underline flex items-center gap-1">
                   santiferirepair.es <ExternalLink className="w-3 h-3" aria-hidden="true" />
                 </a>
                 <span className="text-sm text-muted-foreground">{t.experience.santifer.location}</span>
@@ -1437,7 +1437,7 @@ function App() {
                   </div>
                   <h3 className="font-display text-2xl font-bold">{t.experience.lico.company}</h3>
                 </div>
-                <a href="https://licocosmetics.es" target="_blank" rel="noopener noreferrer" className="text-sm text-accent hover:underline flex items-center gap-1">
+                <a href="https://licocosmetics.es" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-accent hover:underline flex items-center gap-1">
                   licocosmetics.es <ExternalLink className="w-3 h-3" aria-hidden="true" />
                 </a>
                 <span className="text-sm text-muted-foreground">{t.experience.lico.location}</span>
@@ -1944,7 +1944,7 @@ function App() {
                           key={i}
                           href={cert.url}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="noopener noreferrer nofollow"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-xs text-muted-foreground hover:text-accent hover:bg-accent/20 transition-colors"
                         >
                           <BadgeCheck className="w-3.5 h-3.5" />
@@ -2093,7 +2093,7 @@ function App() {
                           key={i}
                           href={cert.url}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="noopener noreferrer nofollow"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-xs text-muted-foreground hover:text-accent hover:bg-accent/20 transition-colors"
                         >
                           <BadgeCheck className="w-3.5 h-3.5" />
@@ -2200,7 +2200,7 @@ function App() {
                     <a
                       href={cert.url}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className={`flex items-center gap-4 p-4 hover:border-accent/30 transition-colors duration-200 group cursor-pointer ${isAlt ? 'bg-muted/40' : 'bg-card'}`}
                     >
                       <span className="text-sm font-mono text-accent font-medium">{cert.year}</span>
