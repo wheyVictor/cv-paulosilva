@@ -555,10 +555,10 @@ export function CodeBlock({ children, segments, className, editorId }: CodeBlock
   if (segments) {
     return (
       <EditorLabel name="CodeBlock" id={editorId}>
-        <div className={`bg-[#0F172A] border border-white/10 rounded-lg overflow-hidden mb-6 ${className ?? ''}`}>
+        <div className={`bg-[#0F172A] dark:bg-[#0F172A] bg-[#F1F5F9] border border-border rounded-lg overflow-hidden mb-6 ${className ?? ''}`}>
           {segments.map((seg, i) => (
             <div key={i}>
-              <pre className="p-5 text-sm leading-[1.7] whitespace-pre-wrap font-mono text-foreground overflow-x-auto">
+              <pre className="p-5 text-sm leading-[1.7] whitespace-pre-wrap font-mono text-[#1E293B] dark:text-white/90 overflow-x-auto">
                 {seg.code}
               </pre>
               {seg.annotations?.map((ann, j) => (
@@ -575,7 +575,7 @@ export function CodeBlock({ children, segments, className, editorId }: CodeBlock
   }
   return (
     <EditorLabel name="CodeBlock" id={editorId}>
-      <pre className={`bg-[#0F172A] border border-white/10 rounded-lg p-5 text-sm leading-[1.7] overflow-x-auto whitespace-pre-wrap font-mono text-foreground mb-6 ${className ?? ''}`}>
+      <pre className={`bg-[#F1F5F9] dark:bg-[#0F172A] border border-border rounded-lg p-5 text-sm leading-[1.7] overflow-x-auto whitespace-pre-wrap font-mono text-[#1E293B] dark:text-white/90 mb-6 ${className ?? ''}`}>
         {children}
       </pre>
     </EditorLabel>
@@ -830,22 +830,25 @@ export function StoryBridge({ lines, className, editorId }: StoryBridgeProps) {
 // 17. ScreenshotGrid + ScreenshotCaption (moved from JacoboAgent)
 // ---------------------------------------------------------------------------
 
-function ScreenshotFigure({ src, alt, summaryEn, className }: { src: string; alt: string; summaryEn: string; className?: string }) {
+function ScreenshotFigure({ src, alt, summaryEn, lang, className }: { src: string; alt: string; summaryEn: string; lang: 'es' | 'en'; className?: string }) {
+  const showOverlay = lang === 'en'
   const [hovered, setHovered] = useState(false)
   return (
     <figure
-      className={`bg-card border border-border rounded-lg overflow-hidden relative cursor-pointer ${className ?? ''}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => setHovered(h => !h)}
+      className={`bg-card border border-border rounded-lg overflow-hidden relative ${showOverlay ? 'cursor-pointer' : ''} ${className ?? ''}`}
+      onMouseEnter={showOverlay ? () => setHovered(true) : undefined}
+      onMouseLeave={showOverlay ? () => setHovered(false) : undefined}
+      onClick={showOverlay ? () => setHovered(h => !h) : undefined}
     >
-      <img src={src} alt={alt} className="w-full h-auto min-h-[120px] object-contain bg-card brightness-[0.85]" loading="lazy" />
-      <div
-        className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200"
-        style={{ backgroundColor: 'hsl(var(--background) / 0.92)', opacity: hovered ? 1 : 0, pointerEvents: hovered ? 'auto' : 'none' }}
-      >
-        <p className="text-xs text-foreground leading-relaxed text-center">{summaryEn}</p>
-      </div>
+      <img src={src} alt={alt} className="w-full h-auto min-h-[120px] object-contain bg-card dark:brightness-[0.85]" loading="lazy" />
+      {showOverlay && (
+        <div
+          className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200"
+          style={{ backgroundColor: 'hsl(var(--background) / 0.92)', opacity: hovered ? 1 : 0, pointerEvents: hovered ? 'auto' : 'none' }}
+        >
+          <p className="text-xs text-foreground leading-relaxed text-center">{summaryEn}</p>
+        </div>
+      )}
     </figure>
   )
 }
@@ -873,6 +876,7 @@ export function ScreenshotGrid({ items, lang, editorId }: ScreenshotGridProps) {
               src={`/jacobo/screenshots/${n.src}`}
               alt={lang === 'es' ? n.altEs : n.altEn}
               summaryEn={n.altEn}
+              lang={lang}
               className="w-1/2 sm:w-1/3"
             />
           ))}
@@ -889,6 +893,7 @@ export function ScreenshotGrid({ items, lang, editorId }: ScreenshotGridProps) {
             src={`/jacobo/screenshots/${n.src}`}
             alt={lang === 'es' ? n.altEs : n.altEn}
             summaryEn={n.altEn}
+            lang={lang}
           />
         ))}
       </div>
