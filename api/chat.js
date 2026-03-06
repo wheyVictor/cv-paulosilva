@@ -129,6 +129,8 @@ export const config = {
 }
 
 export default async function handler(req) {
+  const t0 = Date.now()
+
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })
   }
@@ -271,6 +273,7 @@ export default async function handler(req) {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
+        'X-Response-Time': `${Date.now() - t0}ms`,
       },
     })
   } catch (error) {

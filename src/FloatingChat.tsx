@@ -188,6 +188,10 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
     setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
     try {
+      if (!navigator.onLine) {
+        throw new Error('offline');
+      }
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -249,16 +253,18 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
           }
         }
       }
-    } catch {
+    } catch (err) {
+      const isOffline = !navigator.onLine || (err instanceof Error && err.message === 'offline');
+      const errorMsg = isOffline ? t.offline : t.error;
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === 'assistant' && last.content === '') {
           return [
             ...prev.slice(0, -1),
-            { role: 'assistant', content: t.error },
+            { role: 'assistant', content: errorMsg },
           ];
         }
-        return [...prev, { role: 'assistant', content: t.error }];
+        return [...prev, { role: 'assistant', content: errorMsg }];
       });
     } finally {
       setIsLoading(false);

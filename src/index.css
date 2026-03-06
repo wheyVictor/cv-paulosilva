@@ -104,6 +104,14 @@ button, a, [role="button"], summary { cursor: pointer; }
     --success: 142 72% 29%;
     --tool: 187 72% 30%;
     --linkedin: 210 91% 40%;       /* #0A66C2 */
+    --codeblock: 210 17% 95%;      /* #F1F5F9 - slate-100 */
+    --codeblock-text: 215 25% 17%; /* #1E293B - slate-800 */
+    --code-keyword: 210 60% 40%;   /* blue */
+    --code-string: 25 70% 45%;     /* orange */
+    --code-comment: 210 10% 55%;   /* gray */
+    --code-number: 30 70% 45%;     /* amber */
+    --code-heading: 190 60% 35%;   /* teal */
+    --code-var: 270 50% 45%;       /* purple */
   }
 
   /* Dark mode via system preference — CSS-first, no JS needed = 0ms flash */
@@ -126,6 +134,14 @@ button, a, [role="button"], summary { cursor: pointer; }
       --success: 142 71% 45%;
       --tool: 187 92% 50%;
       --linkedin: 210 88% 71%;
+      --codeblock: 215 19% 5%;       /* #0D1117 - GitHub Dark */
+      --codeblock-text: 213 14% 90%; /* #E6EDF3 */
+      --code-keyword: 210 100% 75%;  /* #79C0FF */
+      --code-string: 24 80% 65%;     /* #FFA657 */
+      --code-comment: 213 10% 55%;   /* #8B949E */
+      --code-number: 30 85% 65%;     /* #E3B341 */
+      --code-heading: 210 100% 75%;  /* #79C0FF */
+      --code-var: 270 70% 75%;       /* #D2A8FF */
     }
   }
 
@@ -149,6 +165,14 @@ button, a, [role="button"], summary { cursor: pointer; }
     --success: 142 71% 45%;
     --tool: 187 92% 50%;
     --linkedin: 210 88% 71%;       /* #70B5F9 - lighter for dark bg */
+    --codeblock: 215 19% 5%;       /* #0D1117 - GitHub Dark */
+    --codeblock-text: 213 14% 90%; /* #E6EDF3 */
+    --code-keyword: 210 100% 75%;  /* #79C0FF */
+    --code-string: 24 80% 65%;     /* #FFA657 */
+    --code-comment: 213 10% 55%;   /* #8B949E */
+    --code-number: 30 85% 65%;     /* #E3B341 */
+    --code-heading: 210 100% 75%;  /* #79C0FF */
+    --code-var: 270 70% 75%;       /* #D2A8FF */
   }
 
   /* Manual light override (user toggled when system is dark) */

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, Fragment, type ReactNode } from 'react'
 import { motion } from 'motion/react'
-import { ChevronRight, List } from 'lucide-react'
+import { ChevronRight, List, Copy, Check } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
 // Editor Mode
@@ -551,15 +551,99 @@ interface CodeBlockProps {
   editorId?: string
 }
 
+// Token color classes via CSS variables (respect dark/light theme)
+const CK = 'text-[hsl(var(--code-keyword))]'   // keywords: const, return, if
+const CS = 'text-[hsl(var(--code-string))]'     // strings, "toolNames"
+const CC = 'text-[hsl(var(--code-comment))]'    // comments, bullets, list numbers
+const CN = 'text-[hsl(var(--code-number))]'     // numbers, booleans
+const CH = 'text-[hsl(var(--code-heading))] font-semibold' // ## headers
+const CV = 'text-[hsl(var(--code-var))]'        // {{vars}}, $('refs')
+
+/** Tokenize a line into colored spans */
+function highlightLine(text: string): ReactNode[] {
+  const parts: ReactNode[] = []
+  // Order matters: longer patterns first
+  const regex = /(\/\/.*$|##\s.*$|\b(?:const|let|var|return|if|else|function|new|true|false|null|undefined)\b|'[^']*'|"[^"]*"|`[^`]*`|\{\{[^}]+\}\}|\$\('[^']+'\)[.\w]*|\b\d+\b)/gm
+  let last = 0
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index))
+    const val = match[0]
+    let cls: string
+
+    if (val.startsWith('//')) {
+      cls = CC // comment
+    } else if (val.startsWith('##')) {
+      cls = CH // heading
+    } else if (/^(const|let|var|return|if|else|function|new)$/.test(val)) {
+      cls = CK // keyword
+    } else if (/^(true|false|null|undefined)$/.test(val)) {
+      cls = CN // boolean/null
+    } else if (val.startsWith("'") || val.startsWith('"') || val.startsWith('`')) {
+      cls = CS // string
+    } else if (val.startsWith('{{') || val.startsWith('$')) {
+      cls = CV // template var
+    } else if (/^\d+$/.test(val)) {
+      cls = CN // number
+    } else {
+      parts.push(val)
+      last = match.index + val.length
+      continue
+    }
+
+    parts.push(<span key={match.index} className={cls}>{val}</span>)
+    last = match.index + val.length
+  }
+  if (last < text.length) parts.push(text.slice(last))
+  return parts
+}
+
+/** Highlight code: handles both prompt syntax and JS */
+function highlightCode(text: string): ReactNode[] {
+  const lines = text.split('\n')
+  return lines.map((line, i) => {
+    let node: ReactNode
+
+    if (/^-\s/.test(line)) {
+      // Bullet: dash in muted, rest highlighted
+      node = <span><span className={CC}>- </span>{highlightLine(line.slice(2))}</span>
+    } else if (/^\s*\d+[\.\)]\s/.test(line)) {
+      // Numbered list: number in muted, rest highlighted
+      const m = line.match(/^(\s*\d+[\.\)]\s)(.*)/)!
+      node = <span><span className={CC}>{m[1]}</span>{highlightLine(m[2])}</span>
+    } else {
+      node = <span>{highlightLine(line)}</span>
+    }
+
+    return <Fragment key={i}>{node}{i < lines.length - 1 ? '\n' : ''}</Fragment>
+  })
+}
+
+function CodeCopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000) }}
+      className="absolute top-3 right-3 p-1.5 rounded-md bg-[hsl(var(--codeblock-text)/0.1)] hover:bg-[hsl(var(--codeblock-text)/0.2)] text-[hsl(var(--codeblock-text)/0.5)] hover:text-[hsl(var(--codeblock-text)/0.8)] transition-colors"
+      title="Copy code"
+    >
+      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+    </button>
+  )
+}
+
 export function CodeBlock({ children, segments, className, editorId }: CodeBlockProps) {
   if (segments) {
+    const fullCode = segments.map(s => s.code).join('\n\n')
     return (
       <EditorLabel name="CodeBlock" id={editorId}>
-        <div className={`bg-[#0F172A] dark:bg-[#0F172A] bg-[#F1F5F9] border border-border rounded-lg overflow-hidden mb-6 ${className ?? ''}`}>
+        <div className={`relative bg-[hsl(var(--codeblock))] border border-border rounded-lg overflow-hidden mb-6 ${className ?? ''}`}>
+          <CodeCopyButton text={fullCode} />
           {segments.map((seg, i) => (
             <div key={i}>
-              <pre className="p-5 text-sm leading-[1.7] whitespace-pre-wrap font-mono text-[#1E293B] dark:text-white/90 overflow-x-auto">
-                {seg.code}
+              <pre className="p-5 text-sm leading-[1.7] whitespace-pre-wrap font-mono text-[hsl(var(--codeblock-text))] overflow-x-auto">
+                {highlightCode(seg.code)}
               </pre>
               {seg.annotations?.map((ann, j) => (
                 <div key={j} className="mx-3 mb-3 bg-primary/5 border-l-2 border-primary/40 rounded-r-md px-3 py-2">
@@ -573,11 +657,15 @@ export function CodeBlock({ children, segments, className, editorId }: CodeBlock
       </EditorLabel>
     )
   }
+  const text = typeof children === 'string' ? children : ''
   return (
     <EditorLabel name="CodeBlock" id={editorId}>
-      <pre className={`bg-[#F1F5F9] dark:bg-[#0F172A] border border-border rounded-lg p-5 text-sm leading-[1.7] overflow-x-auto whitespace-pre-wrap font-mono text-[#1E293B] dark:text-white/90 mb-6 ${className ?? ''}`}>
-        {children}
-      </pre>
+      <div className="relative">
+        {text && <CodeCopyButton text={text} />}
+        <pre className={`bg-[hsl(var(--codeblock))] border border-border rounded-lg p-5 text-sm leading-[1.7] overflow-x-auto whitespace-pre-wrap font-mono text-[hsl(var(--codeblock-text))] mb-6 ${className ?? ''}`}>
+          {text ? highlightCode(text) : children}
+        </pre>
+      </div>
     </EditorLabel>
   )
 }

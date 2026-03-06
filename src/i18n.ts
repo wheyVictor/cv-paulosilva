@@ -702,6 +702,7 @@ export const translations = {
       greeting:
         '¡Hola! Soy **santifer**, el avatar de Santiago. Pregúntame lo que quieras — experiencia, proyectos, lo que me mueve.',
       error: 'Error al enviar. Inténtalo de nuevo.',
+      offline: 'Parece que no hay conexión a internet. Comprueba tu red e inténtalo de nuevo.',
       prompts: [
         {
           icon: 'briefcase',
@@ -1411,6 +1412,7 @@ export const translations = {
       greeting:
         "Hi! I'm **santifer**, Santiago's avatar. Ask me anything — experience, projects, what makes him tick.",
       error: 'Error sending. Please try again.',
+      offline: 'Looks like you\'re offline. Check your connection and try again.',
       prompts: [
         {
           icon: 'briefcase',

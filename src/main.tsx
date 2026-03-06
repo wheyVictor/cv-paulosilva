@@ -75,6 +75,21 @@ console.log('%cThe %cbest %cwork %cis %cinvisible.', 'color: #94a3b8; font-size:
 console.log('%cYou just found some of it.', 'color: #94a3b8; font-size: 13px;')
 console.log('%c I build the details. Let\'s solve something hard → hi@santifer.io ', 'background: #f97316; color: #1a1a1a; font-size: 13px; font-weight: bold; padding: 4px 8px; border-radius: 3px;')
 
+// Debug API for technical recruiters — type window.__santifer in console
+Object.defineProperty(window, '__santifer', {
+  value: Object.freeze({
+    stack: 'React 19 + TypeScript + Vite + Tailwind v4 + Motion',
+    llm: 'claude-sonnet-4-5 (streaming SSE)',
+    security: '4-layer prompt injection defense + canary tokens + CSP',
+    evals: '39 automated (factual, persona, safety, multilingual)',
+    observability: 'Langfuse (traces, LLM-as-Judge, intent tags)',
+    render: 'Pre-rendered HTML + critical CSS inlined + client hydration',
+    perf: () => { const n = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming; console.table({ TTFB: `${Math.round(n.responseStart - n.requestStart)}ms`, DOMContentLoaded: `${Math.round(n.domContentLoadedEventEnd - n.startTime)}ms`, Load: `${Math.round(n.loadEventEnd - n.startTime)}ms` }); },
+    hire_me: 'hola@santifer.io',
+  }),
+  configurable: false,
+})
+
 function NotFound() {
   const { pathname } = useLocation()
   const isEn = pathname.startsWith('/en') || /^\/[a-z]+-[a-z]+-[a-z]+/.test(pathname)
