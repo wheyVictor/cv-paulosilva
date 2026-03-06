@@ -280,10 +280,10 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                 />
               )}
               {idx === 2 && (
-                <Photo1 editorId="content-before-after" src="/business-os/web-before-after.png" alt={lang === 'es' ? 'Before/after de reparaciones reales' : 'Real repair before/after'} caption={lang === 'es' ? 'Before/after reales + reseñas — fotos del ERP, specs de gsmarena-api' : 'Real before/after + reviews — photos from ERP, specs from gsmarena-api'} />
+                <Photo1 editorId="content-before-after" src="/business-os/web-before-after.webp" alt={lang === 'es' ? 'Before/after de reparaciones reales' : 'Real repair before/after'} caption={lang === 'es' ? 'Before/after reales + reseñas — fotos del ERP, specs de gsmarena-api' : 'Real before/after + reviews — photos from ERP, specs from gsmarena-api'} />
               )}
               {idx === 3 && (
-                <Photo1 editorId="lifecycle-automations" src="/business-os/automatizaciones-mensajes.png" alt={lang === 'es' ? 'Automatizaciones de mensajes en Airtable' : 'Airtable messaging automations'} caption={lang === 'es' ? 'Automatizaciones de comunicación: reseñas por tier, notificaciones, campañas y WhatsApp' : 'Communication automations: tier-based reviews, notifications, campaigns and WhatsApp'} />
+                <Photo1 editorId="lifecycle-automations" src="/business-os/automatizaciones-mensajes.webp" alt={lang === 'es' ? 'Automatizaciones de mensajes en Airtable' : 'Airtable messaging automations'} caption={lang === 'es' ? 'Automatizaciones de comunicación: reseñas por tier, notificaciones, campañas y WhatsApp' : 'Communication automations: tier-based reviews, notifications, campaigns and WhatsApp'} />
               )}
 
               {/* Trigger line */}
@@ -306,7 +306,7 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                   <>
                     <Photo1
                       editorId="repair-automation"
-                      src="/business-os/automatizacion.png"
+                      src="/business-os/automatizacion.webp"
                       alt={lang === 'es' ? 'Automatización Airtable — webhook unificado que decide el flujo según stock' : 'Airtable automation — unified webhook that routes the flow based on stock'}
                       caption={lang === 'es' ? 'Webhook unificado — si hay stock crea la OT, si no cancela cita y genera pedido' : 'Unified webhook — creates work order if in stock, cancels appointment and auto-orders if not'}
                     />
@@ -326,7 +326,7 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                     />
                     <Photo1
                       editorId="repair-warranties"
-                      src="/business-os/airtable-warranties.png"
+                      src="/business-os/airtable-warranties.webp"
                       alt={lang === 'es' ? 'Interfaz Airtable de garantías' : 'Airtable warranties interface'}
                       caption={lang === 'es' ? 'Gestión de garantías: pieza → proveedor → pedido original → estado de reclamación' : 'Warranty management: part → supplier → original order → claim status'}
                     />
@@ -336,18 +336,18 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                 {/* HP1: Procurement */}
                 {idx === 1 && (
                   <>
-                    <Photo1 editorId="proc-inventory" className="mt-4" src="/business-os/airtable-inventory.png" alt={lang === 'es' ? 'Interfaz Airtable de inventario — pieza con foto real, stock, ubicación física' : 'Airtable inventory interface — part with real photo, stock, physical location'} caption={lang === 'es' ? 'Ficha de pieza: stock, proveedor, foto real y ubicación física (armario, cajón)' : 'Part record: stock, supplier, real photo and physical location (cabinet, drawer)'} />
-                    <Photo1 editorId="proc-inventory-2" src="/business-os/airtable-inventory-2.png" alt={lang === 'es' ? 'Segunda vista de inventario — foto de ubicación real' : 'Second inventory view — real shelf location photo'} caption={lang === 'es' ? 'Foto de ubicación real: el empleado ve la estantería exacta' : 'Real location photo: the employee sees the exact shelf'} />
-                    <Photo1 editorId="proc-orders" src="/business-os/airtable-purchase-orders.png" alt={lang === 'es' ? 'Interfaz Airtable de pedidos' : 'Airtable purchase orders interface'} caption={lang === 'es' ? 'Stock bajo → pedido automático → recepción → inventario actualizado' : 'Low stock → auto order → reception → inventory updated'} />
+                    <Photo1 editorId="proc-inventory" className="mt-4" src="/business-os/airtable-inventory.webp" alt={lang === 'es' ? 'Interfaz Airtable de inventario — pieza con foto real, stock, ubicación física' : 'Airtable inventory interface — part with real photo, stock, physical location'} caption={lang === 'es' ? 'Ficha de pieza: stock, proveedor, foto real y ubicación física (armario, cajón)' : 'Part record: stock, supplier, real photo and physical location (cabinet, drawer)'} />
+                    <Photo1 editorId="proc-inventory-2" src="/business-os/airtable-inventory-2.webp" alt={lang === 'es' ? 'Segunda vista de inventario — foto de ubicación real' : 'Second inventory view — real shelf location photo'} caption={lang === 'es' ? 'Foto de ubicación real: el empleado ve la estantería exacta' : 'Real location photo: the employee sees the exact shelf'} />
+                    <Photo1 editorId="proc-orders" src="/business-os/airtable-purchase-orders.webp" alt={lang === 'es' ? 'Interfaz Airtable de pedidos' : 'Airtable purchase orders interface'} caption={lang === 'es' ? 'Stock bajo → pedido automático → recepción → inventario actualizado' : 'Low stock → auto order → reception → inventory updated'} />
                   </>
                 )}
 
                 {/* HP2: Content Pipeline */}
                 {idx === 2 && (
                   <>
-                    <Photo1 editorId="content-catalog" className="mt-4" src="/business-os/airtable-models-catalog.png" alt={lang === 'es' ? 'Catálogo de modelos en Airtable' : 'Airtable models catalog'} caption={lang === 'es' ? 'Catálogo de modelos: de aquí salen landings, precios y fotos' : 'Models catalog: this feeds landings, prices and photos'} />
-                    <Photo1 editorId="content-landing" src="/business-os/web-landing-hero.png" alt={lang === 'es' ? 'Landing de reparación generada desde Airtable' : 'Repair landing generated from Airtable'} caption={lang === 'es' ? 'Landing 100% generada: precio, reseñas, specs (gsmarena-api) y SEO dinámico' : 'Landing 100% generated: price, reviews, specs (gsmarena-api) and dynamic SEO'} />
-                    <Photo1 editorId="content-repairs" src="/business-os/web-repairs-catalog.png" alt={lang === 'es' ? 'Catálogo de reparaciones iPhone 11' : 'iPhone 11 repair catalog'} caption={lang === 'es' ? 'Catálogo de averías por modelo — generado desde el ERP' : 'Repair catalog by model — generated from the ERP'} />
+                    <Photo1 editorId="content-catalog" className="mt-4" src="/business-os/airtable-models-catalog.webp" alt={lang === 'es' ? 'Catálogo de modelos en Airtable' : 'Airtable models catalog'} caption={lang === 'es' ? 'Catálogo de modelos: de aquí salen landings, precios y fotos' : 'Models catalog: this feeds landings, prices and photos'} />
+                    <Photo1 editorId="content-landing" src="/business-os/web-landing-hero.webp" alt={lang === 'es' ? 'Landing de reparación generada desde Airtable' : 'Repair landing generated from Airtable'} caption={lang === 'es' ? 'Landing 100% generada: precio, reseñas, specs (gsmarena-api) y SEO dinámico' : 'Landing 100% generated: price, reviews, specs (gsmarena-api) and dynamic SEO'} />
+                    <Photo1 editorId="content-repairs" src="/business-os/web-repairs-catalog.webp" alt={lang === 'es' ? 'Catálogo de reparaciones iPhone 11' : 'iPhone 11 repair catalog'} caption={lang === 'es' ? 'Catálogo de averías por modelo — generado desde el ERP' : 'Repair catalog by model — generated from the ERP'} />
                   </>
                 )}
 

@@ -412,7 +412,7 @@ export function Photo1({ src, alt, caption, loading = 'lazy', className, editorI
   return (
     <EditorLabel name="Photo1" id={editorId}>
       <figure className={`rounded-lg overflow-hidden border border-border shadow-lg mb-6 ${className ?? ''}`}>
-        <img src={src} alt={alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} />
+        <img src={src} alt={alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} decoding="async" />
         {caption && <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">{caption}</figcaption>}
       </figure>
     </EditorLabel>
@@ -433,7 +433,7 @@ export function Photo2({ items, caption, className, editorId }: Photo2Props) {
         <div className="grid grid-cols-2 gap-0">
           {items.map(item => (
             <div key={item.src} className="overflow-hidden">
-              <img src={item.src} alt={item.alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={item.loading ?? 'lazy'} />
+              <img src={item.src} alt={item.alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={item.loading ?? 'lazy'} decoding="async" />
             </div>
           ))}
         </div>
@@ -455,7 +455,7 @@ export function Photo3({ items, className, editorId }: Photo3Props) {
       <div className={`grid grid-cols-3 gap-3 mb-6 ${className ?? ''}`}>
         {items.map(item => (
           <figure key={item.src} className="rounded-lg overflow-hidden border border-border shadow-md">
-            <img src={item.src} alt={item.alt} className="w-full h-auto" loading={item.loading ?? 'lazy'} />
+            <img src={item.src} alt={item.alt} className="w-full h-auto" loading={item.loading ?? 'lazy'} decoding="async" />
           </figure>
         ))}
       </div>
@@ -840,7 +840,7 @@ function ScreenshotFigure({ src, alt, summaryEn, lang, className }: { src: strin
       onMouseLeave={showOverlay ? () => setHovered(false) : undefined}
       onClick={showOverlay ? () => setHovered(h => !h) : undefined}
     >
-      <img src={src} alt={alt} className="w-full h-auto min-h-[120px] object-contain bg-card dark:brightness-[0.85]" loading="lazy" />
+      <img src={src} alt={alt} className="w-full h-auto min-h-[120px] object-contain bg-card dark:brightness-[0.85]" loading="lazy" decoding="async" />
       {showOverlay && (
         <div
           className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200"

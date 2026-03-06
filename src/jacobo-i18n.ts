@@ -675,7 +675,7 @@ export const jacoboContent = {
               detail: 'Jacobo lleva activo 24/7 desde su lanzamiento. Formó parte de la venta del negocio como activo operativo: el comprador lo adquirió funcionando. Cinco años de arquitectura limpia lo hicieron inevitable.',
             },
           ],
-          coda: 'Jacobo no fue un experimento. Fue la pieza que cerró un ciclo de 16 años: construir un negocio, sistematizarlo hasta que funcionara solo, y venderlo como empresa en marcha. Los sistemas que construí, incluido Jacobo, siguen operando hoy bajo nuevo dueño.',
+          bridge: ['Jacobo no fue un experimento.', '16 años construyendo un negocio con mis manos.', 'Sistematizarlo hasta que funcionara {sin mí}.', 'Jacobo fue la pieza que {cerró el ciclo}.', 'Vendí el negocio como empresa en marcha.', 'Los sistemas siguen operando hoy — bajo {nuevo dueño}.'],
           crossLink: {
             text: 'Jacobo se construyó sobre el Business OS que diseñé durante 5 años. Lee el case study completo →',
             href: '/business-os-para-airtable',
@@ -2205,7 +2205,7 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
               detail: 'Jacobo has been running 24/7 since launch. It was part of the business sale as an operational asset: the buyer acquired it operating. Five years of clean architecture made this exit possible.',
             },
           ],
-          coda: 'Jacobo wasn\'t an experiment. It closed the loop on 16 years: build a business, systematize it until it runs itself, sell it as a going concern. The systems I built — Jacobo included — are still running today under new ownership.',
+          bridge: ['Jacobo wasn\'t an experiment.', '16 years building a business with my own hands.', 'Systematize it until it runs {without me}.', 'Jacobo was the piece that {closed the loop}.', 'I sold the business as a going concern.', 'The systems I built still run today — under {new ownership}.'],
           crossLink: {
             text: 'Jacobo was built on top of the Business OS I designed over 5 years — read the full case study →',
             href: '/business-os-for-airtable',

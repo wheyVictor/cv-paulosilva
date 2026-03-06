@@ -36,6 +36,7 @@ import {
   Accordion,
   DataTable,
   Timeline,
+  StoryBridge,
   ScreenshotGrid,
   ScreenshotCaption,
   DetailCard,
@@ -724,7 +725,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         {/* Timeline */}
         <Timeline editorId="evolution-timeline" items={t.sections.platformEvolution.steps} />
 
-        <Prose editorId="evolution-coda">{t.sections.platformEvolution.coda}</Prose>
+        <StoryBridge editorId="evolution-bridge" lines={t.sections.platformEvolution.bridge as readonly string[]} />
 
         {/* Cross-link to Business OS */}
         <CaseStudyCta
