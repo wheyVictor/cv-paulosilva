@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import React, { type ComponentType } from 'react';
+import React, { Suspense, type ComponentType } from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter, Routes, Route } from 'react-router-dom';
 import Critters from 'critters';
@@ -27,30 +27,43 @@ import { seo } from '../src/i18n.ts';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
+/** Strip React 19 SSR-injected <link> tags from inside #root to prevent hydration mismatch */
+function stripReactSSRTags(html: string): string {
+  return html.replace(/<link[^>]*>/g, '');
+}
+
 // ---------------------------------------------------------------------------
 // SSR render per language (home page)
 // ---------------------------------------------------------------------------
 function renderApp(lang: 'es' | 'en'): string {
   const path = lang === 'en' ? '/en' : '/';
-  return renderToString(
+  return stripReactSSRTags(renderToString(
     <StaticRouter location={path}>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/en" element={<App />} />
-      </Routes>
+      <div>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/en" element={<App />} />
+          </Routes>
+        </Suspense>
+      </div>
     </StaticRouter>
-  );
+  ));
 }
 
 function renderArticlePage(slug: string, ArticleComponent: ComponentType<{ lang: 'es' | 'en' }>, lang: 'es' | 'en'): string {
-  return renderToString(
+  return stripReactSSRTags(renderToString(
     <StaticRouter location={`/${slug}`}>
       <GlobalNav />
-      <Routes>
-        <Route path={`/${slug}`} element={<ArticleComponent lang={lang} />} />
-      </Routes>
+      <div>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path={`/${slug}`} element={<ArticleComponent lang={lang} />} />
+          </Routes>
+        </Suspense>
+      </div>
     </StaticRouter>
-  );
+  ));
 }
 
 function esc(s: string): string {
@@ -259,4 +272,35 @@ if (!notFoundHtml.includes('name="robots"')) {
 }
 console.log('[prerender] 404: dist/404.html created');
 
+// ---------------------------------------------------------------------------
+// Hydration structure validation
+// ---------------------------------------------------------------------------
+function validateHydrationStructure(html: string, label: string) {
+  const rootMatch = html.match(/<div id="root">([\s\S]*?)<\/div>\s*<script/);
+  if (!rootMatch || !rootMatch[1].trim()) return; // empty root = OK (fallback)
+  const content = rootMatch[1];
+
+  // Must NOT contain <link> tags (React 19 SSR artifacts)
+  if (/<link\s/.test(content)) {
+    console.error(`[hydration-check] FAIL ${label}: <link> tags found inside #root — will cause hydration mismatch`);
+    process.exit(1);
+  }
+
+  // Must have <div> wrapper (PageTransition)
+  if (!content.includes('<div')) {
+    console.error(`[hydration-check] FAIL ${label}: missing <div> wrapper (PageTransition) inside #root`);
+    process.exit(1);
+  }
+}
+
+// Validate home pages
+validateHydrationStructure(injectedEs, 'home-es');
+validateHydrationStructure(enPage, 'home-en');
+
+// Validate article pages
+for (const { slug, html } of articlePages) {
+  validateHydrationStructure(html, slug);
+}
+
+console.log('[hydration-check] All pages pass structural validation');
 console.log('[prerender] Done.');

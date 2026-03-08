@@ -1,4 +1,4 @@
-import { StrictMode, lazy, Suspense, useState, useEffect, Component, type ReactNode, type ComponentType } from 'react'
+import { StrictMode, lazy, Suspense, useState, useEffect, useRef, Component, type ReactNode, type ComponentType } from 'react'
 import { hydrateRoot, createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation, Link } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
@@ -22,16 +22,21 @@ class ChatErrorBoundary extends Component<{ children: ReactNode }, { hasError: b
   render() { return this.state.hasError ? null : this.props.children }
 }
 
-/** Reset scroll + fade-in on route change */
+/** Reset scroll + fade-in on route change (no animation on initial load to match prerender) */
 function PageTransition({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
+  const initialPathname = useRef(pathname)
+  const [hasNavigated, setHasNavigated] = useState(false)
 
   useEffect(() => {
+    if (pathname !== initialPathname.current) {
+      setHasNavigated(true)
+    }
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [pathname])
 
   return (
-    <div key={pathname} style={{ animation: 'page-fade-in 0.25s ease-out' }}>
+    <div key={pathname} style={hasNavigated ? { animation: 'page-fade-in 0.25s ease-out' } : undefined}>
       {children}
     </div>
   )
