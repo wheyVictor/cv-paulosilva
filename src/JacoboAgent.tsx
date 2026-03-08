@@ -107,7 +107,7 @@ function buildJsonLd(lang: Lang) {
     alternativeHeadline: t.seo.title,
     description: t.seo.description,
     datePublished: '2026-02-25',
-    dateModified: '2026-03-05',
+    dateModified: '2026-03-07',
     keywords: [
       'multi-agent AI', 'multi agent orchestration', 'AI agent', 'sub-agent architecture', 'tool calling production',
       'n8n workflows', 'n8n ai agent', 'ai agent case study', 'customer service AI',
@@ -146,7 +146,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
     description: t.seo.description,
     image: 'https://santifer.io/jacobo/og-jacobo-agent.png',
     publishedTime: '2026-02-25',
-    modifiedTime: '2026-03-05',
+    modifiedTime: '2026-03-07',
     articleTags: 'AI agent,multi-agent,n8n,ElevenLabs,HITL,tool calling,WhatsApp,voice AI',
     jsonLd: buildJsonLd(lang),
     xDefaultSlug: 'agente-ia-jacobo',

@@ -11,7 +11,7 @@ export interface ArticleConfig {
   titles: { es: string; en: string }
   seo: { es: ArticleSeo; en: ArticleSeo }
   sectionLabels: { es: Record<string, string>; en: Record<string, string> }
-  type: 'collab' | 'case-study'
+  type: 'collab' | 'case-study' | 'bridge'
   /** Absolute OG image URL for prerender (social cards) */
   ogImage?: string
   component: () => Promise<{ default: ComponentType<{ lang: 'es' | 'en' }> }>
@@ -207,6 +207,26 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
     component: () => import('../ProgrammaticSeo.tsx'),
+  },
+  {
+    id: 'santifer-irepair',
+    slugs: { es: 'santifer-irepair', en: 'santifer-irepair-founder' },
+    titles: { es: 'Santifer iRepair', en: 'Santifer iRepair' },
+    seo: {
+      es: {
+        title: 'Santifer iRepair Sevilla | Reparación de Móviles desde 2009',
+        description: 'La tienda de reparación de móviles fundada por Santiago en 2009 sigue abierta en Sevilla. 30.000+ reparaciones. Encuentra la tienda o conoce al fundador.',
+      },
+      en: {
+        title: 'Santifer iRepair Seville | Phone Repair since 2009',
+        description: 'The phone repair shop founded by Santiago in 2009 is still open in Seville, Spain. 30,000+ repairs. Find the shop or meet the founder.',
+      },
+    },
+    sectionLabels: { es: {}, en: {} },
+    type: 'bridge',
+    ogImage: 'https://santifer.io/business-os/og-business-os.png',
+    component: () => import('../SantiferIRepair.tsx'),
+    xDefaultSlug: 'santifer-irepair',
   },
 ]
 

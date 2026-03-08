@@ -56,7 +56,9 @@
     { "source": "/business-os-para-airtable", "destination": "/business-os-para-airtable/index.html" },
     { "source": "/business-os-for-airtable", "destination": "/business-os-for-airtable/index.html" },
     { "source": "/seo-programatico", "destination": "/seo-programatico/index.html" },
-    { "source": "/programmatic-seo", "destination": "/programmatic-seo/index.html" }
+    { "source": "/programmatic-seo", "destination": "/programmatic-seo/index.html" },
+    { "source": "/santifer-irepair", "destination": "/santifer-irepair/index.html" },
+    { "source": "/santifer-irepair-founder", "destination": "/santifer-irepair-founder/index.html" }
   ],
   "crons": [
     {

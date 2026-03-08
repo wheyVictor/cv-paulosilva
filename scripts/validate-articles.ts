@@ -30,6 +30,7 @@ const SOURCE_MAP: Record<string, string> = {
   'jacobo': 'src/JacoboAgent.tsx',
   'business-os': 'src/BusinessOS.tsx',
   'programmatic-seo': 'src/ProgrammaticSeo.tsx',
+  'santifer-irepair': 'src/SantiferIRepair.tsx',
 }
 
 // ---------------------------------------------------------------------------
@@ -134,6 +135,14 @@ function validateArticle(config: typeof articleRegistry[0]): { issues: Issue[]; 
 
   const seoBlock = extractSeoBlock(source)
   const jsonLdBlock = extractJsonLdBlock(source)
+
+  // Bridge pages don't use buildArticleJsonLd — skip article-specific checks
+  if (config.type === 'bridge') {
+    if (!seoBlock) {
+      issues.push({ severity: 'error', msg: `useArticleSeo call not found in ${sourceRel}` })
+    }
+    return { issues, fixes }
+  }
 
   if (!seoBlock) {
     issues.push({ severity: 'error', msg: `useArticleSeo call not found in ${sourceRel}` })

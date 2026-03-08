@@ -1341,9 +1341,9 @@ function App() {
                   </div>
                   <h3 className="font-display text-2xl font-bold">{t.experience.santifer.company}</h3>
                 </div>
-                <a href="https://santiferirepair.es" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-primary hover:underline flex items-center gap-1">
-                  santiferirepair.es <ExternalLink className="w-3 h-3" aria-hidden="true" />
-                </a>
+                <Link to={lang === 'en' ? '/santifer-irepair-founder' : '/santifer-irepair'} className="text-sm text-primary hover:underline flex items-center gap-1">
+                  santifer irepair
+                </Link>
                 <span className="text-sm text-muted-foreground">{t.experience.santifer.location}</span>
               </div>
               <p className="text-primary font-medium mb-1">{t.experience.santifer.role}</p>
