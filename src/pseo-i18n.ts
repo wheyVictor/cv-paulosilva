@@ -801,8 +801,8 @@ return records.map(r => ({
         heading: 'Lecciones Aprendidas',
         items: [
           {
-            title: 'Google decide la geografía, no tú.',
-            detail: 'Empecé queriendo posicionar en toda España. Google tenía otros planes. Las búsquedas de reparación tienen intención local fortísima. Las páginas sin ciudad competían peor que las locales de Sevilla. La lección: construye la infraestructura completa, pero deja que los datos de GSC te digan dónde poner el foco.',
+            title: 'Google decide la intención del usuario, no tú.',
+            detail: 'Empecé queriendo posicionar en toda España. Google tenía otros planes: interpretó que las búsquedas de reparación tienen intención local fortísima. Las páginas sin ciudad competían peor que las locales de Sevilla. La lección: construye la infraestructura completa, pero deja que los datos de GSC te digan dónde poner el foco.',
           },
           {
             title: 'El motor de decisiones es más importante que el generador.',
@@ -1681,8 +1681,8 @@ return records.map(r => ({
         heading: 'Lessons Learned',
         items: [
           {
-            title: 'Google decides the geography, not you.',
-            detail: 'I started out wanting to rank nationwide. Google had other plans. Repair searches carry extremely strong local intent — pages without a city got crushed by Seville-specific ones. The lesson: build the full infrastructure, but let GSC data tell you where to double down.',
+            title: 'Google decides user intent, not you.',
+            detail: 'I started out wanting to rank nationwide. Google had other plans — it read repair searches as strongly local intent. Pages without a city got crushed by Seville-specific ones. The lesson: build the full infrastructure, but let GSC data tell you where to double down.',
           },
           {
             title: 'The decision engine matters more than the generator.',
