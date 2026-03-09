@@ -536,8 +536,8 @@ await base('Reseñas sincronizar Astro')
           ],
         },
         profileDemo: {
-          heading: '607 Perfiles Procesados',
-          body: 'Estos son perfiles reales de clientes procesados por el pipeline. Cada foto fue descargada, convertida a WebP y vinculada de vuelta a Airtable.',
+          heading: 'Cientos de Perfiles Procesados',
+          body: 'Perfiles reales de clientes procesados por el pipeline. Cada foto fue descargada, convertida a WebP y vinculada de vuelta a Airtable.',
           items: [
             { src: 'cliente.webp', altEs: 'Perfil de cliente procesado', altEn: 'Processed customer profile' },
             { src: 'sarah.webp', altEs: 'Sarah — reparación de auricular iPhone 11', altEn: 'Sarah — iPhone 11 earpiece repair' },
@@ -547,8 +547,8 @@ await base('Reseñas sincronizar Astro')
             { src: 'ivan.webp', altEs: 'Iván — reparación de tapa trasera iPhone 12', altEn: 'Ivan — iPhone 12 back cover repair' },
           ],
           caption: {
-            es: '6 de los 607 perfiles de clientes procesados automáticamente. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
-            en: '6 of 607 customer profiles processed automatically. Each photo is downloaded, converted to WebP, and linked back to Airtable.',
+            es: 'Perfiles reales de clientes. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
+            en: 'Real customer profiles. Each photo is downloaded, converted to WebP, and linked back to Airtable.',
           },
         },
         carouselCro: {
@@ -1416,8 +1416,8 @@ await base('Reseñas sincronizar Astro')
           ],
         },
         profileDemo: {
-          heading: '607 Profiles Processed',
-          body: 'These are real customer profiles processed by the pipeline. Each photo was downloaded, converted to WebP, and linked back to Airtable.',
+          heading: 'Hundreds of Profiles Processed',
+          body: 'Real customer profiles processed by the pipeline. Each photo was downloaded, converted to WebP, and linked back to Airtable.',
           items: [
             { src: 'cliente.webp', altEs: 'Perfil de cliente procesado', altEn: 'Processed customer profile' },
             { src: 'sarah.webp', altEs: 'Sarah — reparación de auricular iPhone 11', altEn: 'Sarah — iPhone 11 earpiece repair' },
@@ -1427,8 +1427,8 @@ await base('Reseñas sincronizar Astro')
             { src: 'ivan.webp', altEs: 'Iván — reparación de tapa trasera iPhone 12', altEn: 'Ivan — iPhone 12 back cover repair' },
           ],
           caption: {
-            es: '6 de los 607 perfiles de clientes procesados automáticamente. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
-            en: '6 of 607 customer profiles processed automatically. Each photo is downloaded, converted to WebP, and linked back to Airtable.',
+            es: 'Perfiles reales de clientes. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
+            en: 'Real customer profiles. Each photo is downloaded, converted to WebP, and linked back to Airtable.',
           },
         },
         carouselCro: {

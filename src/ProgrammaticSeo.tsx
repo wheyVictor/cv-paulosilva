@@ -628,11 +628,19 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         <H3 id="review-profiles">{t.sections.reviewsPipeline.profileDemo.heading}</H3>
         <Prose>{t.sections.reviewsPipeline.profileDemo.body}</Prose>
-        <ScreenshotGrid
-          items={t.sections.reviewsPipeline.profileDemo.items}
-          lang={lang}
-          basePath="/pseo/reviews"
-        />
+        <div className="flex justify-center gap-3 mb-2">
+          {t.sections.reviewsPipeline.profileDemo.items.map(item => (
+            <figure key={item.src} className="flex flex-col items-center gap-1.5">
+              <img
+                src={`/pseo/reviews/${item.src}`}
+                alt={lang === 'es' ? item.altEs : item.altEn}
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-border"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          ))}
+        </div>
         <ScreenshotCaption
           es={t.sections.reviewsPipeline.profileDemo.caption.es}
           en={t.sections.reviewsPipeline.profileDemo.caption.en}
