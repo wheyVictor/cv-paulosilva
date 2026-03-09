@@ -824,8 +824,8 @@ return records.map(r => ({
       },
     },
     cta: {
-      heading: '¿Quieres replicar esta estrategia?',
-      body: 'Puedo compartir el playbook completo de SEO programático: arquitectura del CMS, pipeline de build, motor de decisiones con DataForSEO, y las métricas reales de GSC que usé para iterar.',
+      heading: '¿Necesitas un sistema que genere páginas desde tus datos?',
+      body: 'Diseñé y construí este sistema completo en solitario: CMS relacional, pipeline de build, motor de decisiones con DataForSEO, y 26.000+ imágenes generadas automáticamente. Si tu empresa necesita a alguien que construya desde los datos hasta el deploy — hablemos.',
       label: 'Hablemos',
     },
     faq: {
@@ -1704,8 +1704,8 @@ return records.map(r => ({
       },
     },
     cta: {
-      heading: 'Want to run this playbook?',
-      body: 'I can walk you through the full programmatic SEO stack: CMS architecture, build pipeline, DataForSEO decision engine, and the real GSC metrics I used to iterate.',
+      heading: 'Need a system that generates pages from your data?',
+      body: 'I designed and built this entire system solo: relational CMS, build pipeline, DataForSEO decision engine, and 26,000+ auto-generated images. If your company needs someone who builds from data to deploy — let\'s talk.',
       label: 'Get in touch',
     },
     faq: {

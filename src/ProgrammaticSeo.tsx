@@ -732,7 +732,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           heading={t.cta.heading}
           body={t.cta.body}
           ctaLabel={t.cta.label}
-          ctaHref="mailto:hola@santifer.io?subject=Programmatic SEO Playbook"
+          ctaHref="mailto:hola@santifer.io?subject=Programmatic SEO"
         />
 
         {/* FAQ */}
