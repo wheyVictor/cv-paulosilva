@@ -371,7 +371,7 @@ export const translations = {
         webSeo: {
           title: 'Web Programática + SEO Automatizado',
           badge: 'Única en el sector en España',
-          desc: '100% custom-made (2023). Headless CMS en Airtable como fuente de verdad, integrado con ERP, generando web en Astro con SEO programático.',
+          desc: '100% custom-made (2024). Headless CMS en Airtable como fuente de verdad, integrado con ERP, generando web en Astro con SEO programático.',
           items: [
             {
               icon: 'fileText',
@@ -1081,7 +1081,7 @@ export const translations = {
         webSeo: {
           title: 'Programmatic Web + Automated SEO',
           badge: 'Only one in sector in Spain',
-          desc: '100% custom-made (2023). Headless CMS in Airtable as source of truth, integrated with ERP, generating Astro website with programmatic SEO.',
+          desc: '100% custom-made (2024). Headless CMS in Airtable as source of truth, integrated with ERP, generating Astro website with programmatic SEO.',
           items: [
             {
               icon: 'fileText',

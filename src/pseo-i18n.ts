@@ -21,7 +21,7 @@ export const pseoContent = {
     intro: {
       hook: 'En el sector de reparación de dispositivos en España, nadie estaba haciendo SEO programático. Cada combinación de dispositivo, marca, modelo, tipo de reparación y ciudad era una oportunidad long-tail sin explotar.',
       body: 'La idea era simple: si alguien busca "reparar iPhone batería Sevilla", debería existir una página específica para esa búsqueda, con el precio real, el tiempo estimado y fotos de reparaciones reales. Pero crear esas páginas a mano para miles de combinaciones no era viable. Necesitaba un sistema que generase las páginas automáticamente desde el ERP, y que fuera lo suficientemente inteligente para decidir cuáles indexar y cuáles no.',
-      context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2023 decidí que la web del negocio necesitaba dejar de ser un folleto y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
+      context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2024 decidí que la web del negocio necesitaba dejar de ser un folleto y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
     },
     sections: {
       theNumbers: {
@@ -41,7 +41,7 @@ export const pseoContent = {
         points: [
           'Miles de combinaciones long-tail sin competencia real en SERPs',
           'Intención de búsqueda transaccional clara: el usuario quiere reparar, no informarse',
-          'Ningún competidor en el sector estaba usando SEO programático en España (2023)',
+          'Ningún competidor en el sector estaba usando SEO programático en España (2024)',
           'El ERP ya tenía todos los datos necesarios: 867 modelos, precios, tiempos, fotos reales',
           'La taxonomía natural del negocio (dispositivo, marca, modelo, reparación, ciudad) se mapea directamente a URLs',
         ],
@@ -901,7 +901,7 @@ return records.map(r => ({
     intro: {
       hook: 'In Spain\'s device repair market, I couldn\'t find anyone doing programmatic SEO. Every combination of device, brand, model, repair type, and city was an untapped long-tail opportunity.',
       body: 'The idea was simple: if someone searches "iPhone battery repair Seville", a dedicated page should exist — with the real price, estimated turnaround, and photos from actual repairs. But hand-building those pages for thousands of combinations wouldn\'t scale. I needed a system that auto-generated pages from the ERP, smart enough to decide which ones to index and which to skip.',
-      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2023 I decided the business website needed to stop being a brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
+      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2024 I decided the business website needed to stop being a brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
     },
     sections: {
       theNumbers: {
@@ -921,7 +921,7 @@ return records.map(r => ({
         points: [
           'Thousands of long-tail combos with virtually zero SERP competition',
           'Clear transactional intent: the user wants a repair, not information',
-          'No competitor in the sector was doing programmatic SEO in Spain (2023)',
+          'No competitor in the sector was doing programmatic SEO in Spain (2024)',
           'The ERP already had everything: 867 models, prices, turnaround times, real photos',
           'The natural business taxonomy (device, brand, model, repair, city) maps directly to URLs',
         ],

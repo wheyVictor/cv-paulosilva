@@ -90,7 +90,7 @@ AI-augmented SDLC: design with clear constraints and threat modeling, implement 
 - Created custom GPTs for stock/pricing queries via voice/natural language
 - Philosophy: automate everything possible to maximize value delivered
 
-### Programmatic Web + Automated SEO (2023)
+### Programmatic Web + Automated SEO (2024)
 Only one in the mobile repair sector in Spain:
 - Headless CMS in Airtable as source of truth
 - Integrated with ERP, generating Astro website
