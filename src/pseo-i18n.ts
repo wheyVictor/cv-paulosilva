@@ -2,7 +2,7 @@ export const pseoContent = {
   es: {
     slug: 'seo-programatico',
     altSlug: 'programmatic-seo',
-    readingTime: '28 min de lectura',
+    readingTime: '35 min de lectura',
     seo: {
       title: 'SEO Programático: 4.000+ Páginas desde un ERP | santifer.io',
       description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks, cero IA.',
@@ -157,6 +157,33 @@ export const pseoContent = {
           heading: 'Buscador Contextual',
           body: 'El buscador no es un simple filtro de texto. Es un componente con un algoritmo de scoring propio — sin librerías externas como Fuse.js. El usuario escribe "iphone 12 pro" y el sistema puntúa los 867 modelos: +20 si contiene todas las palabras, +30 si es coincidencia exacta, +10 si el nombre empieza por la búsqueda, y penaliza palabras extra en el nombre del modelo. El resultado: los 6 modelos más relevantes, ordenados por puntuación.',
           detail: 'Lo interesante es que el buscador es sensible al contexto. En la homepage busca en los 867 modelos de todas las marcas y tipos de dispositivo. Pero en la página de una marca específica (ej: Samsung), solo busca entre modelos de esa marca. Y en la página de un tipo de dispositivo (ej: tablets), solo tablets. El mismo componente, con props de filtro (`filtroTipo`, `filtroMarca`), se comporta de forma diferente según dónde se embeba. Los modelos se cargan bajo demanda en el primer foco del input y se cachean en localStorage para que las búsquedas siguientes sean instantáneas.',
+          codeProse: 'El artículo describe el algoritmo. Este es el código real — 30 líneas sin dependencias externas:',
+          codeSegments: [
+            {
+              code: `function calcularPuntuacion(modelo, terminosBusqueda) {
+  let puntuacion = 0;
+  const nombreModelo = modelo.n.toLowerCase();
+
+  const todasPresentes = terminosBusqueda.every(t => nombreModelo.includes(t));
+
+  if (todasPresentes) {
+    puntuacion += 20;
+    const palabrasModelo = nombreModelo.split(/\\s+/);
+    const extras = palabrasModelo.filter(p => !terminosBusqueda.includes(p)).length;
+    puntuacion -= extras * 2;
+
+    if (nombreModelo === terminosBusqueda.join(' ')) puntuacion += 30;
+    if (nombreModelo.startsWith(terminosBusqueda.join(' '))) puntuacion += 10;
+  }
+  return puntuacion;
+}`,
+              annotations: [
+                { label: '+20 base', detail: 'Todos los términos deben estar presentes. "iphone 12 pro" coincide con "Apple iPhone 12 Pro" pero no con "Apple iPhone 12".' },
+                { label: '-2 por palabra extra', detail: 'Penaliza nombres largos. "Apple iPhone 12 Pro Max" puntúa menos que "Apple iPhone 12 Pro" para la query "iphone 12 pro".' },
+                { label: '+30 exacto, +10 starts-with', detail: 'Coincidencias exactas dominan. 30 líneas, cero dependencias, superando a Fuse.js para este dominio concreto.' },
+              ],
+            },
+          ],
         },
       },
       decisionEngine: {
@@ -199,6 +226,81 @@ export const pseoContent = {
           { label: 'Optimización', desc: 'Imágenes comprimidas, EXIF inyectado, sitemap filtrado, internal linking' },
           { label: 'Cloudflare CDN', desc: 'Deploy con invalidación de caché e edge caching global' },
         ],
+        dataPipeline: {
+          heading: 'Retry con Backoff Exponencial',
+          prose: 'El pipeline comienza con la extracción de datos de Airtable. Con 14 tablas y miles de registros, las llamadas a la API necesitan ser resilientes. Esta función genérica de retry sostiene todo el build:',
+          segments: [
+            {
+              code: `function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function retryWithBackoff<T>(
+  operation: () => Promise<T>,
+  retries: number = 5,
+  delayTime: number = 500
+): Promise<T> {
+  try {
+    return await operation();
+  } catch (error: any) {
+    if (retries > 0 && (error.statusCode === 502 || error.statusCode === 503)) {
+      await delay(delayTime);
+      return retryWithBackoff(operation, retries - 1, delayTime * 2);
+    }
+    throw error;
+  }
+}`,
+              annotations: [
+                { label: 'Generic <T>', detail: 'Una sola función para todos los tipos de registro (ITipos, IMarcas, IModelos, IReparaciones...).' },
+                { label: 'Solo 502/503', detail: 'Solo reintenta errores de servidor (Bad Gateway, Service Unavailable). Errores de cliente (400, 401) fallan inmediatamente.' },
+                { label: 'delayTime * 2', detail: 'Backoff exponencial: 500ms → 1s → 2s → 4s → 8s. 5 reintentos = 15,5s máximo antes de fallar.' },
+              ],
+            },
+          ],
+        },
+        reviewCache: {
+          heading: 'Sistema de Cache de Reseñas',
+          prose: 'Las reseñas son las llamadas más caras del build: 4.700+ páginas podrían necesitarlas, pero solo hay 607 en total. La solución: cargar todas una vez al inicio del build y que cada página consulte desde memoria.',
+          segments: [
+            {
+              code: `let caches: { [key: string]: Reseña[] | undefined } = {};
+
+async function loadReseñas(baseName: string, cacheKey: string): Promise<void> {
+  if (caches[cacheKey]) return;
+
+  const fetchOperation = () => new Promise<Reseña[]>((resolve, reject) => {
+    const allRecords: Reseña[] = [];
+    base(baseName)
+      .select({ view: 'CMSAstro', fields: ReseñaFields })
+      .eachPage(
+        (records, fetchNextPage) => {
+          records.forEach(record => allRecords.push(mapReseñaFields(record.fields)));
+          fetchNextPage();
+        },
+        (err) => err ? reject(err) : resolve(allRecords)
+      );
+  });
+
+  caches[cacheKey] = await retryWithBackoff(fetchOperation);
+}
+
+export async function ensureCachesLoaded(): Promise<void> {
+  await Promise.all([
+    loadReseñas('Reseñas sincronizar Astro', 'cachedReseñas'),
+    loadReseñas('Reseñas Internas', 'cachedReseñasInternas')
+  ]);
+}
+
+// Se ejecuta al importar el módulo
+ensureCachesLoaded().catch(console.error);`,
+              annotations: [
+                { label: 'Module-level call', detail: 'ensureCachesLoaded() se ejecuta cuando se importa el módulo. En Astro SSG, todas las reseñas se cargan en memoria antes de que comience la generación de páginas.' },
+                { label: 'Promise.all', detail: 'Ambas fuentes (Google My Business + encuestas internas) se cargan en paralelo.' },
+                { label: 'Trade-off: O(n) find', detail: 'Las páginas buscan por ID con .find(). Escaneo lineal, pero con 607 reseñas elimina cientos de llamadas API. El trade-off correcto para un build pipeline.' },
+              ],
+            },
+          ],
+        },
       },
       contentAutomation: {
         heading: 'Pipeline de Contenido Automatizado',
@@ -225,6 +327,33 @@ export const pseoContent = {
             desc: 'Cada modelo tiene un campo con sus specs de hardware (cámara, batería, procesador). Un prompt convierte esas specs en microcopy único para cada página. No es IA generando contenido: es IA describiendo datos reales de hardware. Cada página es diferente porque cada dispositivo es diferente.',
           },
         ],
+        exifCode: {
+          prose: 'Cada imagen recibe las coordenadas GPS de la tienda inyectadas en los metadatos EXIF. Google Images usa estos datos para posicionar imágenes en búsquedas locales:',
+          segments: [
+            {
+              code: `// Coordenadas de la tienda en Sevilla
+gps[piexif.GPSIFD.GPSLatitude] = convertToDMS(37.38606);
+gps[piexif.GPSIFD.GPSLatitudeRef] = 'N';
+gps[piexif.GPSIFD.GPSLongitude] = convertToDMS(-5.98585);
+gps[piexif.GPSIFD.GPSLongitudeRef] = 'W';
+
+// Descripción SEO en ambos campos EXIF
+exifObj['0th'][piexif.ImageIFD.ImageDescription] = description;
+
+// UCS-2 para soporte Unicode (tildes, ñ)
+const userComment = Buffer.concat([
+  Buffer.from('UNICODE\\0\\0\\0', 'ascii'),
+  encodeUCS2(description),
+]);
+exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
+              annotations: [
+                { label: 'GPS fijas', detail: 'Cada imagen de reparación recibe las coordenadas exactas de la tienda en Sevilla. Google Images usa EXIF GPS para resultados locales.' },
+                { label: 'Descripción dual', detail: 'El texto SEO va en ImageDescription (EXIF estándar) y UserComment (EXIF extendido). Diferentes parsers leen diferentes campos.' },
+                { label: 'UCS-2 encoding', detail: 'Los caracteres españoles (tildes, ñ) requieren codificación Unicode. El spec EXIF exige UCS-2 con prefijo UNICODE\\0\\0\\0.' },
+              ],
+            },
+          ],
+        },
         cascade: {
           heading: 'Cascada de Contenido: Una Reseña, Seis Páginas',
           body: 'El sistema hereda contenido automáticamente a través de la taxonomía. Una reseña de "reparación de pantalla de iPhone 12" no solo aparece en esa página — aparece en todas las páginas donde es relevante:',
@@ -602,6 +731,23 @@ await pipeline
             detail: 'En lugar de devolver 404 cuando una reparación se descataloga, se redirige 301 a la alternativa más cercana. Cero pérdida de autoridad, cero enlaces rotos.',
           },
         ],
+        safeNoindex: {
+          heading: 'Patrón "Noindex Seguro"',
+          prose: 'El noindex accidental es uno de los errores más caros en SEO: una sola línea puede desindexar miles de páginas. Este es el patrón de seguridad que lo previene:',
+          segments: [
+            {
+              code: `{NOINDEXCUIDADO &&
+  NOINDEXCUIDADO === 'Estoy absolutamente seguro que no quiero hacer no index por eso pongo esta cadena' && (
+    <meta name="robots" content="noindex" />
+  )}`,
+              annotations: [
+                { label: 'String, no boolean', detail: 'Un booleano puede ser true por accidente (campo incorrecto, valor por defecto, error de migración). Un string de 80 caracteres en español requiere intención deliberada.' },
+                { label: 'Doble guarda', detail: 'El prop debe ser truthy Y coincidir con el string exacto. Incluso si se establece a "true" o 1, el tag noindex no se renderiza.' },
+              ],
+            },
+          ],
+          callout: 'Un booleano puede ser truthy por accidente. Un string de 80 caracteres en español requiere intención deliberada. En 2 años de producción, cero noindex accidentales.',
+        },
       },
       urlTaxonomy: {
         heading: 'Taxonomía de URLs',
@@ -614,6 +760,29 @@ await pipeline
           { pattern: '/reparar-{dispositivo}/{modelo}/{reparación}', example: '/reparar-apple-watch/se/bateria', description: 'Modelo específico + reparación, sin ciudad. Para búsquedas nacionales de nicho.' },
           { pattern: '/cambiar-{reparación}-{marca}-{modelo}', example: '/cambiar-bateria-google-pixel-6a', description: 'Formato directo nacional. Captura búsquedas como "cambiar batería pixel 6a" con CTR alto (5%).' },
         ],
+        appleRoutes: {
+          heading: 'Rutas Premium para Apple',
+          prose: 'El negocio empezó en 2009 reparando exclusivamente dispositivos Apple — la gente nos conocía por ello. Apple tiene el mayor volumen de búsqueda y las rutas más cortas reflejan esa prioridad: /iphone/14-pro en vez de /reparar-movil/apple/iphone-14-pro. Más corto, más limpio, mejor CTR. Un solo booleano cambia todo:',
+          segments: [
+            {
+              code: `// Apple: /iphone/14-pro (corto, limpio, mejor CTR)
+const records = await getRecordsModelos(true);  // modoApple = true → vista CMSAstro(Apple)
+return records.map(r => ({
+  params: { paramMarcaApple: r.paramMarca, paramModeloApple: r.paramModelo },
+}));
+
+// Genérico: /reparar-movil/samsung/galaxy-s21
+const records = await getRecordsModelos();  // modoApple = false → vista CMSAstro
+return records.map(r => ({
+  params: { paramTipo: r.paramTipo, paramMarca: r.paramMarca, paramModelo: r.paramModelo },
+}));`,
+              annotations: [
+                { label: 'modoApple = true', detail: 'Un solo booleano cambia la vista de Airtable (CMSAstro vs CMSAstro(Apple)) y la estructura de URLs. Misma página, mismo layout, dos sistemas de routing.' },
+                { label: 'Rutas más cortas', detail: '/iphone/14-pro vs /reparar-movil/apple/iphone-14-pro. Apple es la marca dominante en reparaciones; sus rutas merecen URLs premium.' },
+              ],
+            },
+          ],
+        },
       },
       stack: {
         heading: 'Stack y Herramientas',
@@ -713,7 +882,7 @@ await pipeline
   en: {
     slug: 'programmatic-seo',
     altSlug: 'seo-programatico',
-    readingTime: '28 min read',
+    readingTime: '35 min read',
     seo: {
       title: 'Programmatic SEO: 4,000+ Pages from an ERP | santifer.io',
       description: 'Case study: how I built 4,730 static landing pages with Airtable as headless CMS, DataForSEO for crawl budget optimization, and Astro SSG. 2M+ impressions, 19K+ clicks.',
@@ -868,6 +1037,33 @@ await pipeline
           heading: 'Context-Aware Search',
           body: 'The search bar isn\'t a simple text filter. It runs a custom scoring algorithm — no external libraries like Fuse.js. The user types "iphone 12 pro" and the system scores all 867 models: +20 if all words match, +30 for exact match, +10 if the model name starts with the query, and penalizes extra words in the model name. Result: the 6 most relevant models, ranked by score.',
           detail: 'The interesting part is that the search is context-aware. On the homepage it searches across all 867 models from every brand and device type. But on a brand page (e.g., Samsung), it only searches Samsung models. On a device type page (e.g., tablets), only tablets. The same component, with filter props (`filtroTipo`, `filtroMarca`), behaves differently depending on where it\'s embedded. Models lazy-load on first input focus and cache in localStorage so subsequent searches are instant.',
+          codeProse: 'Here\'s the actual scoring function — 30 lines, zero dependencies:',
+          codeSegments: [
+            {
+              code: `function calcularPuntuacion(modelo, terminosBusqueda) {
+  let puntuacion = 0;
+  const nombreModelo = modelo.n.toLowerCase();
+
+  const todasPresentes = terminosBusqueda.every(t => nombreModelo.includes(t));
+
+  if (todasPresentes) {
+    puntuacion += 20;
+    const palabrasModelo = nombreModelo.split(/\\s+/);
+    const extras = palabrasModelo.filter(p => !terminosBusqueda.includes(p)).length;
+    puntuacion -= extras * 2;
+
+    if (nombreModelo === terminosBusqueda.join(' ')) puntuacion += 30;
+    if (nombreModelo.startsWith(terminosBusqueda.join(' '))) puntuacion += 10;
+  }
+  return puntuacion;
+}`,
+              annotations: [
+                { label: '+20 base', detail: 'All terms must be present. "iphone 12 pro" matches "Apple iPhone 12 Pro" but not "Apple iPhone 12".' },
+                { label: '-2 per extra word', detail: 'Penalizes long names. "Apple iPhone 12 Pro Max" scores lower than "Apple iPhone 12 Pro" for the query "iphone 12 pro".' },
+                { label: '+30 exact, +10 starts-with', detail: 'Exact matches dominate. 30 lines, zero dependencies, outperforming Fuse.js for this specific domain.' },
+              ],
+            },
+          ],
         },
       },
       decisionEngine: {
@@ -910,6 +1106,81 @@ await pipeline
           { label: 'Optimization', desc: 'Compressed images, EXIF injection, filtered sitemap, internal linking' },
           { label: 'Cloudflare CDN', desc: 'Deployment with cache invalidation and global edge caching' },
         ],
+        dataPipeline: {
+          heading: 'Retry with Exponential Backoff',
+          prose: 'The pipeline starts by pulling data from Airtable. Fourteen tables, thousands of records — API calls need to be resilient. One generic function handles all of it:',
+          segments: [
+            {
+              code: `function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function retryWithBackoff<T>(
+  operation: () => Promise<T>,
+  retries: number = 5,
+  delayTime: number = 500
+): Promise<T> {
+  try {
+    return await operation();
+  } catch (error: any) {
+    if (retries > 0 && (error.statusCode === 502 || error.statusCode === 503)) {
+      await delay(delayTime);
+      return retryWithBackoff(operation, retries - 1, delayTime * 2);
+    }
+    throw error;
+  }
+}`,
+              annotations: [
+                { label: 'Generic <T>', detail: 'A single function for every record type (ITipos, IMarcas, IModelos, IReparaciones...).' },
+                { label: '502/503 only', detail: 'Only retries server errors (Bad Gateway, Service Unavailable). Client errors (400, 401) fail immediately.' },
+                { label: 'delayTime * 2', detail: 'Exponential backoff: 500ms → 1s → 2s → 4s → 8s. 5 retries = 15.5s max before giving up.' },
+              ],
+            },
+          ],
+        },
+        reviewCache: {
+          heading: 'Review Cache System',
+          prose: 'Reviews are the costliest calls in the build: 4,700+ pages might need them, but only 607 exist. Load them all once at build start, let every page query from memory:',
+          segments: [
+            {
+              code: `let caches: { [key: string]: Reseña[] | undefined } = {};
+
+async function loadReseñas(baseName: string, cacheKey: string): Promise<void> {
+  if (caches[cacheKey]) return;
+
+  const fetchOperation = () => new Promise<Reseña[]>((resolve, reject) => {
+    const allRecords: Reseña[] = [];
+    base(baseName)
+      .select({ view: 'CMSAstro', fields: ReseñaFields })
+      .eachPage(
+        (records, fetchNextPage) => {
+          records.forEach(record => allRecords.push(mapReseñaFields(record.fields)));
+          fetchNextPage();
+        },
+        (err) => err ? reject(err) : resolve(allRecords)
+      );
+  });
+
+  caches[cacheKey] = await retryWithBackoff(fetchOperation);
+}
+
+export async function ensureCachesLoaded(): Promise<void> {
+  await Promise.all([
+    loadReseñas('Reseñas sincronizar Astro', 'cachedReseñas'),
+    loadReseñas('Reseñas Internas', 'cachedReseñasInternas')
+  ]);
+}
+
+// Runs on module import
+ensureCachesLoaded().catch(console.error);`,
+              annotations: [
+                { label: 'Module-level call', detail: 'ensureCachesLoaded() runs when the module is imported. In Astro SSG, all reviews load into memory before page generation begins.' },
+                { label: 'Promise.all', detail: 'Both sources (Google My Business + internal surveys) load in parallel.' },
+                { label: 'Trade-off: O(n) find', detail: 'Pages look up by ID with .find(). Linear scan, but with 607 reviews it eliminates hundreds of API calls. The right trade-off for a build pipeline.' },
+              ],
+            },
+          ],
+        },
       },
       contentAutomation: {
         heading: 'Automated Content Pipeline',
@@ -936,6 +1207,33 @@ await pipeline
             desc: 'Each device model has a field with its real hardware specs (camera, battery, processor). A prompt turns those specs into unique microcopy for each page. This isn\'t AI generating content — it\'s AI describing real hardware data. Every page reads differently because every device IS different.',
           },
         ],
+        exifCode: {
+          prose: 'Every repair image gets the shop\'s GPS coordinates injected into EXIF metadata. Google Images uses this data to surface images in local search results:',
+          segments: [
+            {
+              code: `// Shop coordinates in Seville
+gps[piexif.GPSIFD.GPSLatitude] = convertToDMS(37.38606);
+gps[piexif.GPSIFD.GPSLatitudeRef] = 'N';
+gps[piexif.GPSIFD.GPSLongitude] = convertToDMS(-5.98585);
+gps[piexif.GPSIFD.GPSLongitudeRef] = 'W';
+
+// SEO description in both EXIF fields
+exifObj['0th'][piexif.ImageIFD.ImageDescription] = description;
+
+// UCS-2 for Unicode support (Spanish accents, ñ)
+const userComment = Buffer.concat([
+  Buffer.from('UNICODE\\0\\0\\0', 'ascii'),
+  encodeUCS2(description),
+]);
+exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
+              annotations: [
+                { label: 'Fixed GPS', detail: 'Every repair image receives the exact shop coordinates in Seville. Google Images uses EXIF GPS for local results.' },
+                { label: 'Dual description', detail: 'SEO text goes in ImageDescription (standard EXIF) and UserComment (extended EXIF). Different parsers read different fields.' },
+                { label: 'UCS-2 encoding', detail: 'Spanish characters (accents, ñ) require Unicode encoding. The EXIF spec mandates UCS-2 with a UNICODE\\0\\0\\0 prefix.' },
+              ],
+            },
+          ],
+        },
         cascade: {
           heading: 'Content Cascade: One Review, Six Pages',
           body: 'The system automatically inherits content through the taxonomy. A review for "iPhone 12 screen repair" doesn\'t just appear on that page — it shows up everywhere it\'s relevant:',
@@ -1313,6 +1611,23 @@ await pipeline
             detail: 'Instead of returning a 404 when a repair is discontinued, it 301-redirects to the closest alternative. Zero authority loss, zero broken links.',
           },
         ],
+        safeNoindex: {
+          heading: '"Safe Noindex" Pattern',
+          prose: 'Accidental noindex is one of SEO\'s costliest mistakes — one line can deindex thousands of pages. Here\'s how we prevented it:',
+          segments: [
+            {
+              code: `{NOINDEXCUIDADO &&
+  NOINDEXCUIDADO === 'Estoy absolutamente seguro que no quiero hacer no index por eso pongo esta cadena' && (
+    <meta name="robots" content="noindex" />
+  )}`,
+              annotations: [
+                { label: 'String, not boolean', detail: 'A boolean can be true by accident (wrong field, default value, migration error). An 80-character Spanish string requires deliberate intent.' },
+                { label: 'Double guard', detail: 'The prop must be truthy AND match the exact string. Even if set to "true" or 1, the noindex tag won\'t render.' },
+              ],
+            },
+          ],
+          callout: 'Two years in production. Zero accidental deindexing events. The 80-character Spanish string did its job.',
+        },
       },
       urlTaxonomy: {
         heading: 'URL Taxonomy',
@@ -1325,6 +1640,29 @@ await pipeline
           { pattern: '/reparar-{device}/{model}/{repair-type}', example: '/reparar-apple-watch/se/bateria', description: 'Specific model + repair, no city. For national niche searches.' },
           { pattern: '/cambiar-{repair}-{brand}-{model}', example: '/cambiar-bateria-google-pixel-6a', description: 'Direct national format. Captures queries like "change pixel 6a battery" with high CTR (5%).' },
         ],
+        appleRoutes: {
+          heading: 'Premium Apple Routes',
+          prose: 'We started in 2009 repairing exclusively Apple devices — people knew us for it. Apple has the highest search volume, and shorter routes reflect that priority: /iphone/14-pro instead of /reparar-movil/apple/iphone-14-pro. Shorter, cleaner, better CTR. A single boolean changes everything:',
+          segments: [
+            {
+              code: `// Apple: /iphone/14-pro (short, clean, better CTR)
+const records = await getRecordsModelos(true);  // modoApple = true → CMSAstro(Apple) view
+return records.map(r => ({
+  params: { paramMarcaApple: r.paramMarca, paramModeloApple: r.paramModelo },
+}));
+
+// Generic: /reparar-movil/samsung/galaxy-s21
+const records = await getRecordsModelos();  // modoApple = false → CMSAstro view
+return records.map(r => ({
+  params: { paramTipo: r.paramTipo, paramMarca: r.paramMarca, paramModelo: r.paramModelo },
+}));`,
+              annotations: [
+                { label: 'modoApple = true', detail: 'A single boolean switches the Airtable view (CMSAstro vs CMSAstro(Apple)) and the URL structure. Same page, same layout, two routing systems.' },
+                { label: 'Shorter routes', detail: '/iphone/14-pro vs /reparar-movil/apple/iphone-14-pro. Apple is the dominant brand in repairs; its routes deserve premium URLs.' },
+              ],
+            },
+          ],
+        },
       },
       stack: {
         heading: 'Stack & Tools',

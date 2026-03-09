@@ -1499,7 +1499,10 @@ function App() {
                     )
                   })}
                 </ul>
-                <a href={lang === 'es' ? 'mailto:hola@santifer.io?subject=SEO Programático' : 'mailto:hi@santifer.io?subject=Programmatic SEO'} className="text-xs font-medium text-accent italic mt-auto pt-4 hover:underline">{t.experience.santifer.webSeo.codeAvailable}</a>
+                <Link to={t.experience.santifer.webSeo.caseStudyUrl} className="inline-flex items-center gap-2 mt-auto pt-4 text-sm font-medium text-accent hover:text-accent/80 transition-colors duration-200 group/cta">
+                  <span className="px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 group-hover/cta:bg-accent/20 group-hover/cta:border-accent/50 transition-all duration-200">{t.experience.santifer.webSeo.codeAvailable}</span>
+                  <ChevronRight className="w-4 h-4 group-hover/cta:translate-x-0.5 transition-transform duration-200" />
+                </Link>
               </div>
             </AnimatedSection>
 
