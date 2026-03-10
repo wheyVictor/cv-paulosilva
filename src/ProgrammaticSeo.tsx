@@ -307,60 +307,6 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           </ul>
         </Callout>
 
-        {/* The Starting Point — Migration from Squarespace */}
-        <AnchorHeading id="starting-point">{(t.sections as any).migration.heading}</AnchorHeading>
-        <Prose>{(t.sections as any).migration.intro}</Prose>
-
-        <Photo2
-          items={[
-            { src: '/pseo/ss-squarespace-mobile.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: homepage móvil' : 'santifer.me on Squarespace: mobile homepage' },
-            { src: '/pseo/ss-squarespace-pricing.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: página de precios con iconos genéricos' : 'santifer.me on Squarespace: pricing page with generic icons' },
-          ]}
-          caption={lang === 'es' ? 'santifer.me en Squarespace. Homepage y página de precios: iconos genéricos, sin fotos reales, sin datos del ERP.' : 'santifer.me on Squarespace. Homepage and pricing page: generic icons, no real photos, no ERP data.'}
-        />
-
-        <Callout>{(t.sections as any).migration.duplicateCallout}</Callout>
-
-        <H3 id="technical-debt">{(t.sections as any).migration.technicalDebt.heading}</H3>
-        <CardStack
-          items={(t.sections as any).migration.technicalDebt.items.map((item: any) => ({
-            title: item.title,
-            detail: item.detail,
-          }))}
-        />
-
-        <Photo1
-          src="/pseo/ss-squarespace-repair.webp"
-          alt={lang === 'es' ? 'Página de reparación en Squarespace: iconos genéricos y precios sin estructura' : 'Repair page on Squarespace: generic icons and unstructured pricing'}
-          caption={lang === 'es' ? 'Página de reparación típica en Squarespace. Iconos genéricos, sin fotos reales, sin JSON-LD, sin datos del ERP.' : 'Typical repair page on Squarespace. Generic icons, no real photos, no JSON-LD, no ERP data.'}
-        />
-
-        <H3 id="migration">{(t.sections as any).migration.migrationSteps.heading}</H3>
-        <StepList
-          items={(t.sections as any).migration.migrationSteps.steps.map((step: any) => ({
-            label: step.label,
-            detail: step.detail,
-          }))}
-        />
-        <Callout>{(t.sections as any).migration.orderCallout}</Callout>
-
-        <H3 id="migration-cost">{(t.sections as any).migration.migrationCost.heading}</H3>
-        <Prose>{(t.sections as any).migration.migrationCost.body}</Prose>
-        <MetricsGrid items={(t.sections as any).migration.migrationCost.lighthouse} columns={4} compact />
-        <Prose>{(t.sections as any).migration.migrationCost.closing}</Prose>
-
-        {/* The Numbers */}
-        <AnchorHeading id="the-numbers">{t.sections.theNumbers.heading}</AnchorHeading>
-        <MetricsGrid items={t.sections.theNumbers.metrics} columns={3} compact />
-        <Callout>{(t.sections.theNumbers as any).timeline}</Callout>
-
-        {/* Homepage screenshot */}
-        <Photo1
-          src="/pseo/ss-homepage.webp"
-          alt={lang === 'es' ? 'Homepage de santiferirepair.es' : 'santiferirepair.es homepage'}
-          caption={lang === 'es' ? 'santiferirepair.es: homepage generada con Astro SSG. Buscador de dispositivos, categorías y marcas.' : 'santiferirepair.es: homepage generated with Astro SSG. Device search, categories and brands.'}
-        />
-
         {/* The Opportunity */}
         <AnchorHeading id="opportunity">{t.sections.opportunity.heading}</AnchorHeading>
         <Prose>{t.sections.opportunity.body}</Prose>
@@ -378,6 +324,18 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
             q.position,
           ])}
           highlightColumn={3}
+        />
+
+        {/* The Numbers */}
+        <AnchorHeading id="the-numbers">{t.sections.theNumbers.heading}</AnchorHeading>
+        <MetricsGrid items={t.sections.theNumbers.metrics} columns={3} compact />
+        <Callout>{(t.sections.theNumbers as any).timeline}</Callout>
+
+        {/* Homepage screenshot */}
+        <Photo1
+          src="/pseo/ss-homepage.webp"
+          alt={lang === 'es' ? 'Homepage de santiferirepair.es' : 'santiferirepair.es homepage'}
+          caption={lang === 'es' ? 'santiferirepair.es: homepage generada con Astro SSG. Buscador de dispositivos, categorías y marcas.' : 'santiferirepair.es: homepage generated with Astro SSG. Device search, categories and brands.'}
         />
 
         {/* Two Strategies */}
@@ -407,6 +365,20 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           )}
         />
 
+        {/* Architecture */}
+        <AnchorHeading id="architecture">{t.sections.architecture.heading}</AnchorHeading>
+        <Prose>{t.sections.architecture.body}</Prose>
+
+        <StackGrid
+          items={t.sections.architecture.layers.map(layer => ({
+            icon: resolveIcon(layer.icon),
+            name: layer.name,
+            desc: layer.desc,
+          }))}
+          columns={2}
+          align="left"
+        />
+
         {/* URL Taxonomy */}
         <AnchorHeading id="url-taxonomy">{t.sections.urlTaxonomy.heading}</AnchorHeading>
         <Prose>{t.sections.urlTaxonomy.body}</Prose>
@@ -422,20 +394,6 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <H3 id="apple-premium-routes">{(t.sections.urlTaxonomy as any).appleRoutes.heading}</H3>
         <Prose>{(t.sections.urlTaxonomy as any).appleRoutes.prose}</Prose>
         <CodeBlock segments={(t.sections.urlTaxonomy as any).appleRoutes.segments} highlight="code" />
-
-        {/* Architecture */}
-        <AnchorHeading id="architecture">{t.sections.architecture.heading}</AnchorHeading>
-        <Prose>{t.sections.architecture.body}</Prose>
-
-        <StackGrid
-          items={t.sections.architecture.layers.map(layer => ({
-            icon: resolveIcon(layer.icon),
-            name: layer.name,
-            desc: layer.desc,
-          }))}
-          columns={2}
-          align="left"
-        />
 
         {/* CMS Deep Dive */}
         <AnchorHeading id="cms-deep-dive">{t.sections.cmsDeepDive.heading}</AnchorHeading>
@@ -668,59 +626,6 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Callout>{t.sections.contentAutomation.stats}</Callout>
         <p className="text-sm mt-2" dangerouslySetInnerHTML={{ __html: (t.sections.contentAutomation as any).repoLink }} />
 
-        {/* Growth Curve */}
-        <AnchorHeading id="growth">{t.sections.growth.heading}</AnchorHeading>
-        <Prose>{t.sections.growth.body}</Prose>
-
-        <Photo1
-          src="/pseo/ss-gsc-growth.webp"
-          alt={lang === 'es' ? 'Curva de crecimiento en Google Search Console — clicks e impresiones' : 'Growth curve in Google Search Console — clicks and impressions'}
-          caption={lang === 'es' ? 'Google Search Console: clicks (azul) e impresiones (violeta) desde noviembre 2024 hasta septiembre 2025.' : 'Google Search Console: clicks (blue) and impressions (purple) from November 2024 through September 2025.'}
-        />
-
-        <DataTable
-          headers={[
-            lang === 'es' ? 'Mes' : 'Month',
-            'Clicks',
-            lang === 'es' ? 'Impresiones' : 'Impressions',
-            '',
-          ]}
-          rows={t.sections.growth.monthly.map(m => [
-            m.month,
-            m.clicks.toLocaleString(),
-            m.impressions.toLocaleString(),
-            (m as any).note || '',
-          ])}
-          highlightColumn={1}
-        />
-        <Callout>{t.sections.growth.insight}</Callout>
-
-        {/* GSC Milestones */}
-        <H3 id="gsc-milestones">{(t.sections.growth as any).milestones.heading}</H3>
-        <Prose>{(t.sections.growth as any).milestones.body}</Prose>
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          {(t.sections.growth as any).milestones.items.map((item: any) => (
-            <figure key={item.src} className="flex flex-col items-center gap-2">
-              <img
-                src={item.src}
-                alt={item.label}
-                className="w-full rounded-xl border border-border shadow-sm"
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption className="text-center">
-                <span className="block text-sm font-semibold text-primary">{item.label}</span>
-                <span className="block text-xs text-muted-foreground">{item.date}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        {/* Results */}
-        <AnchorHeading id="results">{t.sections.results.heading}</AnchorHeading>
-        <Prose>{t.sections.results.body}</Prose>
-        <MetricsGrid items={t.sections.results.metrics} columns={3} />
-
         {/* Image Pipeline Deep Dive */}
         <AnchorHeading id="image-pipeline">{t.sections.imagePipeline.heading}</AnchorHeading>
         <Prose>{t.sections.imagePipeline.intro}</Prose>
@@ -906,6 +811,182 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         <H3 id="ba-scale">{t.sections.repairedDevicesPipeline.scale.heading}</H3>
         <MetricsGrid items={t.sections.repairedDevicesPipeline.scale.metrics} columns={4} compact />
+
+        {/* Growth Curve */}
+        <AnchorHeading id="growth">{t.sections.growth.heading}</AnchorHeading>
+        <Prose>{t.sections.growth.body}</Prose>
+
+        <Photo1
+          src="/pseo/ss-gsc-growth.webp"
+          alt={lang === 'es' ? 'Curva de crecimiento en Google Search Console — clicks e impresiones' : 'Growth curve in Google Search Console — clicks and impressions'}
+          caption={lang === 'es' ? 'Google Search Console: clicks (azul) e impresiones (violeta) desde noviembre 2024 hasta septiembre 2025.' : 'Google Search Console: clicks (blue) and impressions (purple) from November 2024 through September 2025.'}
+        />
+
+        <DataTable
+          headers={[
+            lang === 'es' ? 'Mes' : 'Month',
+            'Clicks',
+            lang === 'es' ? 'Impresiones' : 'Impressions',
+            '',
+          ]}
+          rows={t.sections.growth.monthly.map(m => [
+            m.month,
+            m.clicks.toLocaleString(),
+            m.impressions.toLocaleString(),
+            (m as any).note || '',
+          ])}
+          highlightColumn={1}
+        />
+        <Callout>{t.sections.growth.insight}</Callout>
+
+        {/* GSC Milestones */}
+        <H3 id="gsc-milestones">{(t.sections.growth as any).milestones.heading}</H3>
+        <Prose>{(t.sections.growth as any).milestones.body}</Prose>
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          {(t.sections.growth as any).milestones.items.map((item: any) => (
+            <figure key={item.src} className="flex flex-col items-center gap-2">
+              <img
+                src={item.src}
+                alt={item.label}
+                className="w-full rounded-xl border border-border shadow-sm"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption className="text-center">
+                <span className="block text-sm font-semibold text-primary">{item.label}</span>
+                <span className="block text-xs text-muted-foreground">{item.date}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        {/* Results */}
+        <AnchorHeading id="results">{t.sections.results.heading}</AnchorHeading>
+        <Prose>{t.sections.results.body}</Prose>
+        <MetricsGrid items={t.sections.results.metrics} columns={4} compact />
+
+        {/* Transition: Results → Starting Point */}
+        <Prose>{(t.sections.results as any).transition}</Prose>
+
+        {/* The Starting Point — Migration from Squarespace */}
+        <AnchorHeading id="starting-point">{(t.sections as any).migration.heading}</AnchorHeading>
+        <Prose>{(t.sections as any).migration.intro}</Prose>
+
+        <Photo2
+          items={[
+            { src: '/pseo/ss-squarespace-mobile.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: homepage móvil' : 'santifer.me on Squarespace: mobile homepage' },
+            { src: '/pseo/ss-squarespace-pricing.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: página de precios con iconos genéricos' : 'santifer.me on Squarespace: pricing page with generic icons' },
+          ]}
+          caption={lang === 'es' ? 'santifer.me en Squarespace. Homepage y página de precios: iconos genéricos, sin fotos reales, sin datos del ERP.' : 'santifer.me on Squarespace. Homepage and pricing page: generic icons, no real photos, no ERP data.'}
+        />
+
+        <Callout>{(t.sections as any).migration.duplicateCallout}</Callout>
+
+        {/* Technical Audit */}
+        <H3 id="technical-audit">{(t.sections as any).migration.audit.heading}</H3>
+        <Prose>{(t.sections as any).migration.audit.prose}</Prose>
+        <MetricsGrid items={(t.sections as any).migration.audit.baseline} columns={4} compact />
+
+        <Photo1
+          src="/pseo/ss-audit-sistrix.webp"
+          alt={lang === 'es' ? 'SISTRIX: visibilidad orgánica de santifer.me en declive constante desde 2019 hasta 2024' : 'SISTRIX: organic visibility of santifer.me in constant decline from 2019 to 2024'}
+          caption={lang === 'es' ? 'Índice de visibilidad SISTRIX (2019-2024). Tendencia decreciente durante 5 años, de 0.036 a 0.003.' : 'SISTRIX visibility index (2019-2024). 5-year declining trend, from 0.036 to 0.003.'}
+        />
+
+        <Photo2
+          items={[
+            { src: '/pseo/ss-audit-gsc-clicks.webp', alt: lang === 'es' ? 'Google Search Console: clics orgánicos reduciéndose a la mitad en 12 meses' : 'Google Search Console: organic clicks halving over 12 months' },
+            { src: '/pseo/ss-audit-sector.webp', alt: lang === 'es' ? 'SISTRIX: comparativa de visibilidad del sector en España — santifer.me invisible frente a competidores' : 'SISTRIX: sector visibility comparison in Spain — santifer.me invisible vs competitors' },
+          ]}
+          caption={lang === 'es' ? 'Izquierda: GSC muestra los clics reduciéndose a la mitad (17,3K clics, posición media 23,1). Derecha: comparativa del sector — santifer.me es la línea roja pegada al eje X.' : 'Left: GSC shows clicks halving (17.3K clicks, avg position 23.1). Right: sector comparison — santifer.me is the red line stuck to the X axis.'}
+        />
+
+        <CardStack
+          items={(t.sections as any).migration.audit.findings.map((item: any) => ({
+            title: item.title,
+            detail: item.detail,
+          }))}
+        />
+        <Callout>{(t.sections as any).migration.audit.callout}</Callout>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <DiagramZoom
+            src="/pseo/ss-audit-h1s.webp"
+            hdSrc="/pseo/ss-audit-h1s-hd.webp"
+            alt={lang === 'es' ? 'Screaming Frog: 838 páginas con H1s múltiples, 118 duplicados, 255 sin H2' : 'Screaming Frog: 838 pages with multiple H1s, 118 duplicates, 255 without H2'}
+            caption={lang === 'es' ? 'Screaming Frog: 838 páginas con H1s múltiples' : 'Screaming Frog: 838 pages with multiple H1s'}
+          />
+          <DiagramZoom
+            src="/pseo/ss-audit-images.webp"
+            hdSrc="/pseo/ss-audit-images-hd.webp"
+            alt={lang === 'es' ? 'Screaming Frog: 8.000+ imágenes sin atributos de tamaño, 497 demasiado pesadas, 164 sin alt text' : 'Screaming Frog: 8,000+ images without size attributes, 497 too heavy, 164 without alt text'}
+            caption={lang === 'es' ? 'Screaming Frog: 8.000+ imágenes sin dimensiones' : 'Screaming Frog: 8,000+ images without dimensions'}
+          />
+        </div>
+
+        <H3 id="technical-debt">{(t.sections as any).migration.technicalDebt.heading}</H3>
+        <CardStack
+          items={(t.sections as any).migration.technicalDebt.items.map((item: any) => ({
+            title: item.title,
+            detail: item.detail,
+          }))}
+        />
+
+        <Photo1
+          src="/pseo/ss-squarespace-repair.webp"
+          alt={lang === 'es' ? 'Página de reparación en Squarespace: iconos genéricos y precios sin estructura' : 'Repair page on Squarespace: generic icons and unstructured pricing'}
+          caption={lang === 'es' ? 'Página de reparación típica en Squarespace. Iconos genéricos, sin fotos reales, sin JSON-LD, sin datos del ERP.' : 'Typical repair page on Squarespace. Generic icons, no real photos, no JSON-LD, no ERP data.'}
+        />
+
+        <DiagramZoom
+          src="/pseo/ss-audit-lighthouse.webp"
+          hdSrc="/pseo/ss-audit-lighthouse-hd.webp"
+          alt={lang === 'es' ? 'PageSpeed Insights: Lighthouse 21 en móvil, 51 en escritorio. Core Web Vitals: No superada en todas las tipologías' : 'PageSpeed Insights: Lighthouse 21 on mobile, 51 on desktop. Core Web Vitals: Not passed across all page types'}
+          caption={lang === 'es' ? 'Antes: Squarespace. Lighthouse 21/100 móvil. CWV no superada.' : 'Before: Squarespace. Lighthouse 21/100 mobile. CWV not passed.'}
+        />
+        <DiagramZoom
+          src="/pseo/ss-audit-lighthouse-after.webp"
+          hdSrc="/pseo/ss-audit-lighthouse-after-hd.webp"
+          alt={lang === 'es' ? 'PageSpeed Insights: Lighthouse 97 en móvil, Accesibilidad 100, SEO 100. Core Web Vitals: Superada' : 'PageSpeed Insights: Lighthouse 97 on mobile, Accessibility 100, SEO 100. Core Web Vitals: Passed'}
+          caption={lang === 'es'
+            ? <>Después: Astro + Cloudflare. Lighthouse 97/100 móvil. CWV superada. <a href="https://pagespeed.web.dev/analysis/https-santiferirepair-es/rynn9cjrrs?form_factor=mobile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Compruébalo tú mismo →</a></>
+            : <>After: Astro + Cloudflare. Lighthouse 97/100 mobile. CWV passed. <a href="https://pagespeed.web.dev/analysis/https-santiferirepair-es/rynn9cjrrs?form_factor=mobile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Check it yourself →</a></>}
+        />
+
+        <H3 id="migration">{(t.sections as any).migration.migrationSteps.heading}</H3>
+        <StepList
+          items={(t.sections as any).migration.migrationSteps.steps.map((step: any) => ({
+            label: step.label,
+            detail: step.detail,
+          }))}
+        />
+
+        {/* Redirect Server */}
+        <H3 id="redirect-server">{(t.sections as any).migration.redirectServer.heading}</H3>
+        <Prose>{(t.sections as any).migration.redirectServer.prose}</Prose>
+        <MetricsGrid items={(t.sections as any).migration.redirectServer.metrics} columns={4} compact />
+        <CardStack
+          items={(t.sections as any).migration.redirectServer.tiers.map((item: any) => ({
+            title: item.title,
+            detail: item.detail,
+          }))}
+        />
+        <Callout>{(t.sections as any).migration.redirectServer.callout}</Callout>
+
+        <Callout>{(t.sections as any).migration.orderCallout}</Callout>
+
+        <H3 id="migration-cost">{(t.sections as any).migration.migrationCost.heading}</H3>
+        <Prose>{(t.sections as any).migration.migrationCost.body}</Prose>
+        <MetricsGrid items={(t.sections as any).migration.migrationCost.lighthouse} columns={4} compact />
+
+        <DiagramZoom
+          src="/pseo/ss-audit-competitors.webp"
+          hdSrc="/pseo/ss-audit-competitors-hd.webp"
+          alt={lang === 'es' ? 'Comparativa AHREFs del sector: santifer.me con DR 0.1 y 23 backlinks vs competidores con miles' : 'AHREFs sector comparison: santifer.me with DR 0.1 and 23 backlinks vs competitors with thousands'}
+          caption={lang === 'es' ? 'Comparativa de fuerza de dominio (AHREFs). santifer.me: DR 0.1, 23 backlinks. El líder (iriparo.com): DR 44, 21.430 backlinks.' : 'Domain strength comparison (AHREFs). santifer.me: DR 0.1, 23 backlinks. Sector leader (iriparo.com): DR 44, 21,430 backlinks.'}
+        />
+
+        <Prose>{(t.sections as any).migration.migrationCost.closing}</Prose>
 
         {/* Stack */}
         <AnchorHeading id="stack">{t.sections.stack.heading}</AnchorHeading>

@@ -427,7 +427,7 @@ interface DiagramZoomProps {
   src: string
   hdSrc: string
   alt: string
-  caption?: string
+  caption?: ReactNode
   loading?: 'lazy' | 'eager'
   className?: string
   editorId?: string

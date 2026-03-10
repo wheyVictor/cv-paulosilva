@@ -35,37 +35,70 @@ export const pseoContent = {
     sections: {
       migration: {
         heading: 'El Punto de Partida',
-        intro: 'La web del negocio llevaba años en Squarespace. Sin control de URLs, sin canonical tags, sin redirects custom. Para construir el sistema programático, primero había que migrar todo a una plataforma donde cada detalle técnico estuviera bajo control.',
+        intro: 'La web del negocio llevaba años en Squarespace. Sin control de URLs, sin canonical tags, sin redirects custom. Lo que venía no era solo un cambio de plataforma — era una triple migración: plataforma (Squarespace → Astro), dominio (santifer.me → santiferirepair.es) y hosting (Squarespace → Vercel/Cloudflare). El primer paso fue documentar exactamente qué había que arreglar: una auditoría técnica completa de 144 páginas, realizada como Trabajo Fin de Máster del programa Big SEO.',
         duplicateCallout: 'Squarespace servía la misma página en 4 URLs diferentes (www, non-www, trailing slash, .html). Google veía 4 copias de cada página.',
+        audit: {
+          heading: 'La Auditoría Técnica',
+          prose: 'El primer paso fue una auditoría técnica completa, realizada como Trabajo Fin de Máster del programa Big SEO. 144 páginas documentando cada aspecto técnico de la web: desde la situación del tráfico hasta la última meta description.',
+          baseline: [
+            { value: '23,1', label: 'Posición media' },
+            { value: '↓ Declive', label: 'Visibilidad SISTRIX' },
+            { value: '21/100', label: 'Lighthouse (móvil)' },
+            { value: '33/40', label: 'Items con errores' },
+          ],
+          findings: [
+            { title: '838 H1s duplicados', detail: 'El template de Squarespace inyectaba un H1 oculto en cada página, duplicando el encabezado principal. Google veía dos títulos compitiendo por relevancia.' },
+            { title: '1.015 canibalizaciones', detail: 'Páginas compitiendo entre sí por las mismas keywords. Home, categorías y modelos se pisaban mutuamente en los resultados de búsqueda.' },
+            { title: '869 errores en datos estructurados', detail: 'El LocalBusiness schema no seguía las recomendaciones de schema.org. Google no podía interpretar correctamente la información del negocio.' },
+            { title: '831 páginas no canónicas', detail: 'Squarespace servía 4 URLs por página sin redirigir a la canónica. GSC las reportaba como duplicadas sin canonical.' },
+          ],
+          callout: '33 de 40 aspectos técnicos auditados tenían errores. Solo 7 pasaban. La auditoría no solo diagnosticó los problemas — se convirtió en el roadmap de todo el proyecto.',
+        },
         technicalDebt: {
           heading: 'Los Problemas Técnicos',
           items: [
-            { title: 'Sin canonical tags', detail: 'www vs non-www, con/sin trailing slash, con/sin .html. Misma página, 4 URLs. Google decidía cuál indexar.' },
-            { title: 'Sin redirects custom', detail: 'Squarespace no permite crear redirecciones 301 personalizadas. Imposible mapear URLs antiguas a la nueva estructura.' },
-            { title: 'Sin control de slugs de URL', detail: 'La taxonomía del negocio ya existía, pero Squarespace generaba URLs redundantes como /reparar-iphone/reparar-iphone-x. Imposible mapear la jerarquía a URLs limpias y optimizadas para SEO.' },
-            { title: 'Riesgo de contenido duplicado', detail: 'Las variantes de URL sin canonical generaban señales confusas para Google, diluyendo la autoridad del dominio.' },
+            { title: 'Sin canonical tags', detail: 'www vs non-www, con/sin trailing slash, con/sin .html. Misma página, 4 URLs. 831 páginas no canónicas en GSC. Squarespace indicaba canonical pero no redirigía.' },
+            { title: 'Sin redirects custom', detail: 'Squarespace no permite crear redirecciones 301 personalizadas. 266 URLs históricas dando 404 en GSC. Imposible mapear URLs antiguas a la nueva estructura.' },
+            { title: 'Sin control de slugs de URL', detail: 'La taxonomía del negocio ya existía, pero Squarespace generaba URLs redundantes como /reparar-iphone/reparar-iphone-x. 15 URLs de más de 115 caracteres, 10 con mayúsculas, keyword repetida 3 veces.' },
+            { title: 'Riesgo de contenido duplicado', detail: '1.015 canibalizaciones detectadas. 79 páginas con thin content. Las variantes de URL sin canonical generaban señales confusas para Google, diluyendo la autoridad del dominio.' },
           ],
         },
         migrationSteps: {
           heading: 'La Migración',
           steps: [
-            { label: 'Crawl completo con Screaming Frog', detail: 'Extraer todas las URLs activas de santifer.me y crear el documento de mapeo URL antigua → URL nueva.' },
-            { label: 'Nueva estructura de URLs en Astro', detail: 'Mapear la taxonomía que ya existía en el negocio a URLs limpias: /reparar-{dispositivo}/, /reparar-{marca}/{modelo}/, /cambiar-{pieza}-{marca}-{modelo}.' },
-            { label: '301 redirects en vercel.json', detail: 'Implementar todas las redirecciones ANTES de solicitar el cambio de dirección en GSC. El orden importa.' },
-            { label: 'Redirects inteligentes por intención', detail: 'Redirigir páginas nacionales a versiones locales (Sevilla) basándose en datos reales de intención de búsqueda de Google Search Console.' },
+            { label: 'Crawl completo con Screaming Frog', detail: 'El crawl identificó 838 páginas con H1s múltiples, 266 URLs 404, y 1.015 canibalizaciones. El mapeo resultó en 1.009 reglas de redirección.' },
+            { label: 'Nueva estructura de URLs en Astro', detail: 'De ~80 páginas a una arquitectura de 480+ páginas optimizadas para 156.000 búsquedas mensuales transaccionales. URLs limpias: /reparar-{dispositivo}/, /reparar-{marca}/{modelo}/.' },
+            { label: '301 redirects en vercel.json', detail: 'Proyecto dedicado (servidor-redirecciones) desplegado en Vercel solo para servir 301s. 190KB de configuración en un solo archivo.' },
+            { label: 'Redirects inteligentes por intención', detail: 'Redirigir páginas nacionales a versiones locales. Ejemplo: /reparar-movil/reparar-samsung → /reparar-movil/samsung/sevilla.' },
           ],
+        },
+        redirectServer: {
+          heading: 'El Servidor de Redirecciones',
+          prose: 'La triple migración (plataforma, dominio, hosting) requería un plan para no perder la autoridad acumulada en el dominio antiguo. La solución fue un proyecto dedicado en Vercel cuya única función era servir redirecciones 301. Un gotcha del cambio de dominio: Squarespace no permitía redirigir la homepage, lo que bloqueaba el GSC change of address. El doble salto HTTP→308→301 impedía la validación. Se resolvió en una tarde con Vercel Redirect Domain + Cloudflare Redirect Rules para un único 301 directo.',
+          metrics: [
+            { value: '1.009', label: 'Reglas de redirección' },
+            { value: '190 KB', label: 'vercel.json' },
+            { value: '4', label: 'Niveles de redirect' },
+            { value: '46', label: 'Commits en 7 meses' },
+          ],
+          tiers: [
+            { title: 'Modelo → modelo', detail: '/reparar-movil/reparar-samsung/reparar-samsung-galaxy-a12 → /reparar-movil/samsung/galaxy-a12. URL limpia, misma intención.' },
+            { title: 'Marca → marca + ciudad', detail: '/reparar-movil/reparar-realme → /reparar-movil/realme/sevilla. La nueva estructura añadía la ciudad como señal local.' },
+            { title: 'Wildcard + catch-all', detail: 'Cualquier URL no mapeada en los tiers anteriores redirige a la homepage. Zero 404s para el usuario y para Google.' },
+          ],
+          callout: 'Un proyecto entero de Vercel cuya única función era redirigir. 1.009 reglas mapeadas a mano porque la estructura de URLs de Squarespace no seguía un patrón uniforme.',
         },
         orderCallout: 'Implementa las redirecciones antes de solicitar el cambio en Google Search Console. No después. El orden importa.',
         migrationCost: {
           heading: 'El Coste de Migrar',
-          body: 'Tras la migración, 800+ páginas se quedaron atascadas sin indexar. Keywords clave cayeron de posición. "reparar iphone sevilla" pasó del top 2 al puesto 6. La recuperación llevó meses.',
+          body: 'Toda migración tiene un coste de transición. 800+ páginas tardaron en reindexarse y keywords clave cayeron temporalmente — "reparar iphone sevilla" pasó del top 2 al puesto 6. Era esperable: Google necesita tiempo para reevaluar un dominio tras un cambio de dirección. La recuperación llegó.',
           lighthouse: [
             { value: '100', label: 'Performance' },
             { value: '92', label: 'Accessibility' },
             { value: '96', label: 'Best Practices' },
             { value: '100', label: 'SEO' },
           ],
-          closing: 'A pesar de puntuaciones técnicas perfectas en Lighthouse, Google necesita tiempo para reevaluar un dominio tras una migración. El sistema programático se construyó durante esa fase de recuperación, diseñado desde cero sobre la nueva plataforma.',
+          closing: 'De un Lighthouse de 21 en Squarespace a 100 en Astro. De DA 8 a competir en un mercado donde los líderes tienen 100x más tráfico. La auditoría técnica documentó 33 problemas; la migración los resolvió todos de una vez.',
         },
       },
       theNumbers: {
@@ -790,17 +823,16 @@ await pipeline
         heading: 'Resultados',
         body: 'Métricas acumuladas desde el lanzamiento (octubre 2024 a febrero 2026), directamente de Google Search Console:',
         metrics: [
-          { value: '2,26M', label: 'Impresiones totales', detail: 'Acumulado en 17 meses de operación' },
-          { value: '19.388', label: 'Clicks orgánicos', detail: 'CTR medio del 1,17% sobre 2,26M de impresiones' },
-          { value: '4.730', label: 'URLs con impresiones', detail: '99,3% son páginas programáticas' },
+          { value: '19.388', label: 'Clicks orgánicos', detail: '17 meses de operación, oct 2024 → feb 2026' },
+          { value: '1,17%', label: 'CTR medio', detail: 'Sobre 2,26M de impresiones totales' },
           { value: '4.084', label: 'URLs en sitemap', detail: 'Solo las que pasan el motor de decisiones de DataForSEO' },
-          { value: '80%', label: 'Clicks desde pSEO', detail: 'El tráfico orgánico del sitio viene de páginas programáticas' },
           { value: '<1s', label: 'Tiempo de carga', detail: 'Astro SSG con JS mínimo lazy + Cloudflare CDN' },
         ],
+        transition: 'Pero estos resultados no surgieron de la nada. El punto de partida fue una web en Squarespace con problemas técnicos que había que resolver antes de construir el sistema programático.',
       },
       crawlBudget: {
         heading: 'Optimización del Crawl Budget',
-        body: 'Con 4.700+ páginas, gestionar el crawl budget es crítico. Google no debería perder tiempo rastreando páginas que no van a posicionar.',
+        body: 'Con 4.700+ páginas, gestionar el crawl budget es crítico. Google no debería perder tiempo rastreando páginas que no van a posicionar. Las 700+ reglas de robots.txt se suman a las 1.009 redirecciones heredadas de la migración.',
         strategies: [
           {
             title: 'Noindex selectivo con DataForSEO',
@@ -1025,37 +1057,70 @@ return records.map(r => ({
     sections: {
       migration: {
         heading: 'The Starting Point',
-        intro: 'The business website had been running on Squarespace for years. No URL control, no canonical tags, no custom redirects. Before building the programmatic system, everything had to be migrated to a platform where every technical detail was under control.',
+        intro: 'The business website had been running on Squarespace for years. No URL control, no canonical tags, no custom redirects. What was coming wasn\'t just a platform change — it was a triple migration: platform (Squarespace → Astro), domain (santifer.me → santiferirepair.es), and hosting (Squarespace → Vercel/Cloudflare). The first step was documenting exactly what needed fixing: a 144-page technical audit, completed as the Final Master\'s Project for the Big SEO program.',
         duplicateCallout: 'Squarespace served the same page at 4 different URLs (www, non-www, trailing slash, .html). Google saw 4 copies of every page.',
+        audit: {
+          heading: 'The Technical Audit',
+          prose: 'The first step was a full technical audit, completed as the Final Master\'s Project for the Big SEO program. 144 pages documenting every technical aspect of the website: from traffic baseline to the last meta description.',
+          baseline: [
+            { value: '23.1', label: 'Avg. position' },
+            { value: '↓ Declining', label: 'SISTRIX visibility' },
+            { value: '21/100', label: 'Lighthouse (mobile)' },
+            { value: '33/40', label: 'Items with errors' },
+          ],
+          findings: [
+            { title: '838 duplicate H1s', detail: 'The Squarespace template injected a hidden H1 on every page, duplicating the main heading. Google saw two titles competing for relevance.' },
+            { title: '1,015 cannibalizations', detail: 'Pages competing against each other for the same keywords. Home, categories, and models were stepping on each other in search results.' },
+            { title: '869 structured data errors', detail: 'The LocalBusiness schema didn\'t follow schema.org recommendations. Google couldn\'t correctly interpret the business information.' },
+            { title: '831 non-canonical pages', detail: 'Squarespace served 4 URLs per page without redirecting to the canonical. GSC reported them as duplicates without canonical.' },
+          ],
+          callout: '33 out of 40 audited technical aspects had errors. Only 7 passed. The audit didn\'t just diagnose the problems — it became the roadmap for the entire project.',
+        },
         technicalDebt: {
           heading: 'The Technical Debt',
           items: [
-            { title: 'No canonical tags', detail: 'www vs non-www, with/without trailing slash, with/without .html. Same page, 4 URLs. Google decided which one to index.' },
-            { title: 'No custom redirects', detail: 'Squarespace doesn\'t allow custom 301 redirects. Impossible to map old URLs to the new structure.' },
-            { title: 'No URL slug control', detail: 'The business taxonomy already existed, but Squarespace generated redundant URLs like /reparar-iphone/reparar-iphone-x. Impossible to map the hierarchy to clean, SEO-optimized URLs.' },
-            { title: 'Duplicate content risk', detail: 'URL variants without canonicals sent confusing signals to Google, diluting the domain\'s authority.' },
+            { title: 'No canonical tags', detail: 'www vs non-www, with/without trailing slash, with/without .html. Same page, 4 URLs. 831 non-canonical pages in GSC. Squarespace set canonical but didn\'t redirect.' },
+            { title: 'No custom redirects', detail: 'Squarespace doesn\'t allow custom 301 redirects. 266 historical URLs returning 404 in GSC. Impossible to map old URLs to the new structure.' },
+            { title: 'No URL slug control', detail: 'The business taxonomy already existed, but Squarespace generated redundant URLs like /reparar-iphone/reparar-iphone-x. 15 URLs over 115 characters, 10 with uppercase, keyword repeated 3 times.' },
+            { title: 'Duplicate content risk', detail: '1,015 cannibalizations detected. 79 pages with thin content. URL variants without canonicals sent confusing signals to Google, diluting the domain\'s authority.' },
           ],
         },
         migrationSteps: {
           heading: 'The Migration',
           steps: [
-            { label: 'Full crawl with Screaming Frog', detail: 'Extract every active URL from santifer.me and build the mapping document: old URL → new URL.' },
-            { label: 'New URL structure in Astro', detail: 'Map the existing business taxonomy to clean URLs: /reparar-{device}/, /reparar-{brand}/{model}/, /cambiar-{part}-{brand}-{model}.' },
-            { label: '301 redirects in vercel.json', detail: 'Implement all redirects BEFORE requesting the address change in GSC. The order matters.' },
-            { label: 'Intent-based redirects', detail: 'Redirect national pages to local versions (Seville) based on real search intent data from Google Search Console.' },
+            { label: 'Full crawl with Screaming Frog', detail: 'The crawl identified 838 pages with multiple H1s, 266 URLs returning 404, and 1,015 cannibalizations. The mapping resulted in 1,009 redirect rules.' },
+            { label: 'New URL structure in Astro', detail: 'From ~80 pages to an architecture of 480+ pages optimized for 156,000 monthly transactional searches. Clean URLs: /reparar-{device}/, /reparar-{brand}/{model}/.' },
+            { label: '301 redirects in vercel.json', detail: 'Dedicated project (servidor-redirecciones) deployed on Vercel solely to serve 301s. 190KB of configuration in a single file.' },
+            { label: 'Intent-based redirects', detail: 'Redirect national pages to local versions. Example: /reparar-movil/reparar-samsung → /reparar-movil/samsung/sevilla.' },
           ],
+        },
+        redirectServer: {
+          heading: 'The Redirect Server',
+          prose: 'The triple migration (platform, domain, hosting) required a plan to preserve the authority accumulated on the old domain. The solution was a dedicated Vercel project whose sole purpose was serving 301 redirects. One gotcha from the domain change: Squarespace wouldn\'t allow redirecting the homepage, which blocked GSC\'s change of address. The double hop HTTP→308→301 prevented validation. Fixed in an afternoon with Vercel Redirect Domain + Cloudflare Redirect Rules for a single direct 301.',
+          metrics: [
+            { value: '1,009', label: 'Redirect rules' },
+            { value: '190 KB', label: 'vercel.json' },
+            { value: '4', label: 'Redirect tiers' },
+            { value: '46', label: 'Commits in 7 months' },
+          ],
+          tiers: [
+            { title: 'Model → model', detail: '/reparar-movil/reparar-samsung/reparar-samsung-galaxy-a12 → /reparar-movil/samsung/galaxy-a12. Clean URL, same intent.' },
+            { title: 'Brand → brand + city', detail: '/reparar-movil/reparar-realme → /reparar-movil/realme/sevilla. The new structure added the city as a local signal.' },
+            { title: 'Wildcard + catch-all', detail: 'Any URL not mapped in the previous tiers redirects to the homepage. Zero 404s for users and for Google.' },
+          ],
+          callout: 'An entire Vercel project whose sole purpose was redirecting. 1,009 rules mapped by hand because Squarespace\'s URL structure didn\'t follow a uniform pattern.',
         },
         orderCallout: 'Implement the redirects before requesting the address change in Google Search Console. Not after. The order matters.',
         migrationCost: {
           heading: 'The Cost of Migration',
-          body: 'After migration, 800+ pages got stuck unindexed. Key keywords dropped in rankings. "reparar iphone sevilla" went from top 2 to position 6. Recovery took months.',
+          body: 'Every migration has a transition cost. 800+ pages took time to get re-indexed and key keywords dropped temporarily — "reparar iphone sevilla" went from top 2 to position 6. This was expected: Google needs time to re-evaluate a domain after an address change. Recovery came.',
           lighthouse: [
             { value: '100', label: 'Performance' },
             { value: '92', label: 'Accessibility' },
             { value: '96', label: 'Best Practices' },
             { value: '100', label: 'SEO' },
           ],
-          closing: 'Despite perfect Lighthouse scores, Google needs time to re-evaluate a domain after a migration. The programmatic system was built during that recovery phase, designed from scratch on the new platform.',
+          closing: 'From a Lighthouse score of 21 on Squarespace to 100 on Astro. From DA 8 to competing in a market where leaders have 100x more traffic. The technical audit documented 33 problems; the migration solved them all at once.',
         },
       },
       theNumbers: {
@@ -1780,17 +1845,16 @@ await pipeline
         heading: 'Results',
         body: 'Cumulative metrics since launch (October 2024 through February 2026), directly from Google Search Console:',
         metrics: [
-          { value: '2.26M', label: 'Total impressions', detail: 'Accumulated over 17 months of operation' },
-          { value: '19,388', label: 'Organic clicks', detail: 'Average CTR of 1.17% across 2.26M impressions' },
-          { value: '4,730', label: 'URLs with impressions', detail: '99.3% are programmatic pages' },
+          { value: '19,388', label: 'Organic clicks', detail: '17 months of operation, Oct 2024 → Feb 2026' },
+          { value: '1.17%', label: 'Average CTR', detail: 'Across 2.26M total impressions' },
           { value: '4,084', label: 'URLs in sitemap', detail: 'Only those that pass the DataForSEO decision engine' },
-          { value: '80%', label: 'Clicks from pSEO', detail: 'Organic traffic comes from programmatic pages' },
           { value: '<1s', label: 'Page load time', detail: 'Astro SSG with minimal lazy JS + Cloudflare CDN' },
         ],
+        transition: 'But these results didn\'t come from nowhere. The starting point was a Squarespace website with technical problems that needed solving before the programmatic system could be built.',
       },
       crawlBudget: {
         heading: 'Crawl Budget Optimization',
-        body: 'With 4,700+ pages, managing crawl budget is critical. Google shouldn\'t waste time crawling pages that won\'t rank.',
+        body: 'With 4,700+ pages, managing crawl budget is critical. Google shouldn\'t waste time crawling pages that won\'t rank. The 700+ robots.txt rules add to the 1,009 redirects inherited from the migration.',
         strategies: [
           {
             title: 'Selective noindex with DataForSEO',
