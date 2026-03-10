@@ -1,4 +1,5 @@
-import { type ReactNode, useState } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { type N8nLang as Lang } from './n8n-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
 import { useArticleSeo } from './articles/use-article-seo'
@@ -6,6 +7,7 @@ import {
   Database, Wrench, BarChart3, Zap,
   List, DollarSign, Clock, Camera, Star, Code,
   MapPin, Globe, Layers, Image,
+  ChevronLeft, ChevronRight,
 } from 'lucide-react'
 import {
   AnchorHeading,
@@ -137,6 +139,97 @@ function OverlayCard({ overlay, hover, model, alt }: { overlay: string; hover: s
         </span>
       </figcaption>
     </figure>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* ReviewCarousel — screenshot carousel of the real CRO reviews        */
+/* ------------------------------------------------------------------ */
+
+const CAROUSEL_SLIDES = [
+  '/pseo/carousel-review-1.webp',
+  '/pseo/carousel-review-2.webp',
+  '/pseo/carousel-review-3.webp',
+  '/pseo/carousel-review-4.webp',
+  '/pseo/carousel-review-5.webp',
+]
+
+function ReviewCarousel({ alt }: { alt: string }) {
+  const [idx, setIdx] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const total = CAROUSEL_SLIDES.length
+
+  const go = useCallback((dir: 1 | -1) => {
+    setIdx(prev => (prev + dir + total) % total)
+  }, [total])
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => go(1), 9000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [go])
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => go(1), 9000)
+  }, [go])
+
+  const prev = () => { go(-1); resetTimer() }
+  const next = () => { go(1); resetTimer() }
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') { prev(); e.preventDefault() }
+      if (e.key === 'ArrowRight') { next(); e.preventDefault() }
+    }
+    el.addEventListener('keydown', handler)
+    return () => el.removeEventListener('keydown', handler)
+  })
+
+  const touchStartX = useRef(0)
+
+  return (
+    <div
+      ref={containerRef}
+      tabIndex={0}
+      className="relative my-6 outline-none group"
+      onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+      onTouchEnd={e => {
+        const dx = e.changedTouches[0].clientX - touchStartX.current
+        if (Math.abs(dx) > 50) { dx > 0 ? prev() : next() }
+      }}
+    >
+      {/* Screenshot */}
+      <div className="rounded-xl overflow-hidden border border-border bg-card">
+        <img
+          src={CAROUSEL_SLIDES[idx]}
+          alt={`${alt} ${idx + 1}/${total}`}
+          className="w-full h-auto"
+          decoding="async"
+        />
+      </div>
+
+      {/* Arrows */}
+      <button
+        onClick={prev}
+        aria-label="Previous"
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 sm:-translate-x-5 p-1.5 rounded-full bg-card/80 border border-border text-primary/60 hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={next}
+        aria-label="Next"
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 sm:translate-x-5 p-1.5 rounded-full bg-card/80 border border-border text-primary/60 hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Counter */}
+      <p className="text-center text-xs text-muted-foreground mt-2">{idx + 1} / {total}</p>
+    </div>
   )
 }
 
@@ -709,6 +802,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         <H3 id="review-carousel">{t.sections.reviewsPipeline.carouselCro.heading}</H3>
         <Prose>{t.sections.reviewsPipeline.carouselCro.body}</Prose>
+        <ReviewCarousel alt={lang === 'es' ? 'Carrusel CRO de reseñas reales' : 'CRO carousel with real reviews'} />
         <Callout>{t.sections.reviewsPipeline.carouselCro.callout}</Callout>
 
         <H3 id="review-scale">{t.sections.reviewsPipeline.scale.heading}</H3>
@@ -811,15 +905,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <ResourcesList heading={t.resources.heading} items={t.resources.items} />
       </article>
 
-      <ArticleFooter
-        editorId="article-footer"
-        role={t.footer.role}
-        bio={(t.footer as any).bio}
-        fellowAt={(t.footer as any).fellowAt}
-        fellowLink={(t.footer as any).fellowLink}
-        fellowUrl="https://maven.com/marily-nika/ai-pm-bootcamp?utm_source=santifer&utm_medium=casestudy&utm_campaign=pseo"
-        copyright={t.footer.copyright}
-      />
+      <ArticleFooter lang={lang} utmCampaign="pseo" />
     </ArticleLayout>
   )
 }

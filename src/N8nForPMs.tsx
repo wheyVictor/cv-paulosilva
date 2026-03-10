@@ -339,14 +339,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
           <ResourcesList heading={t.resources.heading} items={t.resources.items} />
         </article>
 
-        <ArticleFooter
-          editorId="article-footer"
-          role={t.footer.role}
-          fellowAt={t.footer.fellowAt}
-          fellowLink={t.footer.fellowLink}
-          fellowUrl={BOOTCAMP_URL}
-          copyright={t.footer.copyright}
-        />
+        <ArticleFooter lang={lang} utmCampaign="n8n-for-pms" />
     </ArticleLayout>
   )
 }

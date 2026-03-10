@@ -143,16 +143,29 @@ export function ArticleHeader({
 // ---------------------------------------------------------------------------
 
 interface ArticleFooterProps {
-  role: string
-  bio?: string
-  fellowAt?: string
-  fellowLink?: string
-  fellowUrl?: string
-  copyright: string
+  lang: 'es' | 'en'
+  utmCampaign: string
   editorId?: string
 }
 
-export function ArticleFooter({ role, bio, fellowAt, fellowLink, fellowUrl, copyright }: ArticleFooterProps) {
+const FOOTER_I18N = {
+  es: {
+    role: 'AI Product Manager · Solutions Architect · AI FDE',
+    bio: 'Construyó y vendió un negocio de 16 años en 2025. Ahora aplica el mismo pensamiento de sistemas a AI enterprise.',
+    fellowAt: 'Teaching Fellow en',
+    copyright: 'Todos los derechos reservados.',
+  },
+  en: {
+    role: 'AI Product Manager · Solutions Architect · AI FDE',
+    bio: 'Built and sold a 16-year business in 2025. Now bringing that same systems thinking to enterprise AI.',
+    fellowAt: 'Teaching Fellow at',
+    copyright: 'All rights reserved.',
+  },
+} as const
+
+export function ArticleFooter({ lang, utmCampaign }: ArticleFooterProps) {
+  const f = FOOTER_I18N[lang]
+  const fellowUrl = `https://maven.com/marily-nika/ai-pm-bootcamp?utm_source=santifer&utm_medium=casestudy&utm_campaign=${utmCampaign}`
   return (
     <footer className="mt-16 pt-8 border-t border-border">
       <div className="flex items-start gap-3 mb-6">
@@ -166,28 +179,20 @@ export function ArticleFooter({ role, bio, fellowAt, fellowLink, fellowUrl, copy
         <div>
           <p className="font-medium text-foreground">Santiago Fernández de Valderrama</p>
           <p className="text-sm text-muted-foreground">
-            {role}
-            {fellowAt && (
-              <>
-                {' · '}{fellowAt}{' '}
-                {fellowUrl ? (
-                  <a
-                    href={fellowUrl}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="text-primary hover:underline"
-                  >
-                    {fellowLink}
-                  </a>
-                ) : fellowLink}
-              </>
-            )}
+            {f.role}
+            {' · '}{f.fellowAt}{' '}
+            <a
+              href={fellowUrl}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="text-primary hover:underline"
+            >
+              AI Product Academy
+            </a>
           </p>
         </div>
       </div>
-      {bio && (
-        <p className="text-sm text-muted-foreground leading-relaxed mb-6">{bio}</p>
-      )}
+      <p className="text-sm text-muted-foreground leading-relaxed mb-6">{f.bio}</p>
       <div className="flex gap-3 mb-8">
         <a href="https://linkedin.com/in/santifer" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0A66C2]/10 border border-[#0A66C2]/20 text-sm font-medium text-[#0A66C2] hover:bg-[#0A66C2]/20 transition-colors">
           <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -198,7 +203,7 @@ export function ArticleFooter({ role, bio, fellowAt, fellowLink, fellowUrl, copy
           GitHub
         </a>
       </div>
-      <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} Santiago Fernández de Valderrama. {copyright}</p>
+      <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} Santiago Fernández de Valderrama. {f.copyright}</p>
     </footer>
   )
 }
