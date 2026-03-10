@@ -201,9 +201,22 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Prose>{t.intro.body}</Prose>
         <Prose>{(t.intro as any).context}</Prose>
 
+        {/* TL;DR ejecutivo */}
+        <Callout>
+          <span className="block font-semibold text-primary mb-2">{(t.intro as any).tldr.heading}</span>
+          <ul className="space-y-1.5 list-none pl-0 m-0">
+            {(t.intro as any).tldr.items.map((item: string, i: number) => (
+              <li key={i} className="flex gap-2 text-sm leading-relaxed">
+                <span className="text-primary shrink-0 mt-0.5">●</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Callout>
+
         {/* The Numbers */}
         <AnchorHeading id="the-numbers">{t.sections.theNumbers.heading}</AnchorHeading>
-        <MetricsGrid items={t.sections.theNumbers.metrics} columns={5} compact />
+        <MetricsGrid items={t.sections.theNumbers.metrics} columns={3} compact />
         <Callout>{(t.sections.theNumbers as any).timeline}</Callout>
 
         {/* Homepage screenshot */}
@@ -314,6 +327,11 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           caption={lang === 'es' ? 'Las 14 tablas del CMS conectadas al Business OS de 12 bases. Jerarquía de 6 niveles desde tipo de dispositivo hasta variante local.' : 'The 14 CMS tables connected to the 12-base Business OS. 6-level hierarchy from device type to local variant.'}
         />
 
+        {/* Business OS interlink */}
+        <Callout>
+          <span dangerouslySetInnerHTML={{ __html: (t.sections.cmsDeepDive as any).businessOsCallout }} />
+        </Callout>
+
         <H3 id="cms-highlights">{lang === 'es' ? 'Patrones clave del CMS' : 'Key CMS patterns'}</H3>
         <CardStack
           items={t.sections.cmsDeepDive.highlights.map(h => ({
@@ -375,6 +393,26 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <H3 id="dynamic-copy">{t.sections.pageAnatomy.dynamicCopy.heading}</H3>
         <Prose>{t.sections.pageAnatomy.dynamicCopy.body}</Prose>
 
+        <DiagramZoom
+          src={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.src}
+          hdSrc={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.src.replace('.webp', '-hd.webp')}
+          alt={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.alt}
+          caption={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.caption}
+        />
+
+        {/* Live pricing from ERP */}
+        <H3 id="erp-pricing">{(t.sections.pageAnatomy.dynamicCopy as any).pricingHeading}</H3>
+        <Prose>{(t.sections.pageAnatomy.dynamicCopy as any).pricingProse}</Prose>
+
+        <DiagramZoom
+          src={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.src}
+          hdSrc={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.src.replace('.webp', '-hd.webp')}
+          alt={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.alt}
+          caption={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.caption}
+        />
+
+        <CodeBlock segments={(t.sections.pageAnatomy.dynamicCopy as any).pricingSegments} highlight="code" />
+
         {/* Context-aware search */}
         <H3 id="context-search">{(t.sections.pageAnatomy as any).contextSearch.heading}</H3>
         <Prose>{(t.sections.pageAnatomy as any).contextSearch.body}</Prose>
@@ -398,7 +436,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         {/* Decision Engine */}
         <AnchorHeading id="decision-engine">{t.sections.decisionEngine.heading}</AnchorHeading>
-        <Prose>{t.sections.decisionEngine.body}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: t.sections.decisionEngine.body }} /></Prose>
 
         <StepList
           items={t.sections.decisionEngine.rules.map(rule => ({
@@ -493,6 +531,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Prose>{(t.sections.contentAutomation as any).cascade.detail}</Prose>
 
         <Callout>{t.sections.contentAutomation.stats}</Callout>
+        <p className="text-sm mt-2" dangerouslySetInnerHTML={{ __html: (t.sections.contentAutomation as any).repoLink }} />
 
         {/* Growth Curve */}
         <AnchorHeading id="growth">{t.sections.growth.heading}</AnchorHeading>
@@ -520,6 +559,27 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           highlightColumn={1}
         />
         <Callout>{t.sections.growth.insight}</Callout>
+
+        {/* GSC Milestones */}
+        <H3 id="gsc-milestones">{(t.sections.growth as any).milestones.heading}</H3>
+        <Prose>{(t.sections.growth as any).milestones.body}</Prose>
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          {(t.sections.growth as any).milestones.items.map((item: any) => (
+            <figure key={item.src} className="flex flex-col items-center gap-2">
+              <img
+                src={item.src}
+                alt={item.label}
+                className="w-full rounded-xl border border-border shadow-sm"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption className="text-center">
+                <span className="block text-sm font-semibold text-primary">{item.label}</span>
+                <span className="block text-xs text-muted-foreground">{item.date}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
 
         {/* Results */}
         <AnchorHeading id="results">{t.sections.results.heading}</AnchorHeading>
@@ -559,7 +619,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         {/* Code snippet */}
         <H3 id="sharp-code">{t.sections.imagePipeline.codeSnippet.heading}</H3>
-        <Prose>{t.sections.imagePipeline.codeSnippet.body}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: t.sections.imagePipeline.codeSnippet.body }} /></Prose>
         <CodeBlock segments={t.sections.imagePipeline.codeSnippet.segments} highlight="code" />
 
         {/* 1 photo → 18 variants demo */}
@@ -628,7 +688,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         <H3 id="review-profiles">{t.sections.reviewsPipeline.profileDemo.heading}</H3>
         <Prose>{t.sections.reviewsPipeline.profileDemo.body}</Prose>
-        <div className="flex justify-center gap-3 mb-2">
+        <div className="flex justify-center flex-wrap gap-4 mb-8">
           {t.sections.reviewsPipeline.profileDemo.items.map(item => (
             <figure key={item.src} className="flex flex-col items-center gap-1.5">
               <img
@@ -678,7 +738,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         />
 
         <H3 id="ba-code">{t.sections.repairedDevicesPipeline.codeSnippet.heading}</H3>
-        <Prose>{t.sections.repairedDevicesPipeline.codeSnippet.body}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: t.sections.repairedDevicesPipeline.codeSnippet.body }} /></Prose>
         <CodeBlock segments={t.sections.repairedDevicesPipeline.codeSnippet.segments} highlight="code" />
 
         <H3 id="ba-demo">{t.sections.repairedDevicesPipeline.demo.heading}</H3>
@@ -726,6 +786,15 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         {/* Lessons */}
         <LessonsSection heading={t.sections.lessons.heading} items={t.sections.lessons.items} />
+
+        {/* What This Demonstrates */}
+        <H3 id="what-this-demonstrates">{(t.sections as any).whatThisDemonstrates.heading}</H3>
+        <CardStack
+          items={(t.sections as any).whatThisDemonstrates.items.map((item: any) => ({
+            title: item.title,
+            detail: item.detail,
+          }))}
+        />
 
         {/* CTA */}
         <CaseStudyCta

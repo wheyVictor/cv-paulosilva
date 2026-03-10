@@ -173,7 +173,7 @@ export const articleRegistry: ArticleConfig[] = [
     seo: {
       es: {
         title: 'SEO Programático: 4.000+ Páginas desde un ERP | santifer.io',
-        description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks, cero IA.',
+        description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks.',
       },
       en: {
         title: 'Programmatic SEO: 4,000+ Pages from an ERP | santifer.io',

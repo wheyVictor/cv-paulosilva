@@ -5,7 +5,7 @@ export const pseoContent = {
     readingTime: '35 min de lectura',
     seo: {
       title: 'SEO Programático: 4.000+ Páginas desde un ERP | santifer.io',
-      description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks, cero IA.',
+      description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks.',
     },
     nav: {
       breadcrumbHome: 'Inicio',
@@ -15,13 +15,22 @@ export const pseoContent = {
       kicker: 'Case Study — <a>Santifer iRepair</a>',
       kickerLink: 'https://santiferirepair.es',
       h1: 'SEO Programático: 4.700+ Páginas desde un ERP',
-      subtitle: 'Cómo generé 4.730 landing pages únicas con datos reales de producción, un CMS de 14 tablas en Airtable, y DataForSEO como motor de decisiones. 2,26M impresiones, 19K+ clicks, cero contenido generado por IA.',
+      subtitle: 'Cómo generé 4.730 landing pages únicas con datos reales de producción, un CMS de 14 tablas en Airtable, y DataForSEO como motor de decisiones. 2,26M impresiones, 19K+ clicks.',
       date: '25 feb 2026',
     },
     intro: {
       hook: 'En el sector de reparación de dispositivos en España, nadie estaba haciendo SEO programático. Cada combinación de dispositivo, marca, modelo, tipo de reparación y ciudad era una oportunidad long-tail sin explotar.',
       body: 'La idea era simple: si alguien busca "reparar iPhone batería Sevilla", debería existir una página específica para esa búsqueda, con el precio real, el tiempo estimado y fotos de reparaciones reales. Pero crear esas páginas a mano para miles de combinaciones no era viable. Necesitaba un sistema que generase las páginas automáticamente desde el ERP, y que fuera lo suficientemente inteligente para decidir cuáles indexar y cuáles no.',
       context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2024 decidí que la web del negocio necesitaba dejar de ser un folleto y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
+      tldr: {
+        heading: 'En 10 segundos',
+        items: [
+          'Construí 4.730 landing pages estáticas desde un ERP de producción (precios, fotos, reseñas reales)',
+          'Motor de decisiones con DataForSEO: solo se indexan las páginas con volumen de búsqueda real',
+          'Resultado: 2,26M impresiones, 19K+ clicks orgánicos, 80% del tráfico del sitio',
+          '7 meses de desarrollo, una persona, vendido en su punto más alto',
+        ],
+      },
     },
     sections: {
       theNumbers: {
@@ -32,8 +41,9 @@ export const pseoContent = {
           { value: '4.730', label: 'Páginas con tráfico', detail: 'De miles generadas, 4.084 indexables en sitemap, 4.730 recibieron impresiones' },
           { value: '10,8x', label: 'Crecimiento', detail: 'De 202 a 2.193 clicks/mes en 11 meses' },
           { value: '80%', label: 'Clicks desde pSEO', detail: 'El tráfico orgánico del sitio viene de páginas programáticas' },
+          { value: '7', label: 'Meses', detail: '1 persona. CMS, pipelines, DataForSEO, 26K imágenes y deploy' },
         ],
-        timeline: 'Desarrollo: marzo → octubre 2024 (7 meses). Una persona. CMS, scripts de generación, pipeline de imágenes, integración con DataForSEO y deploy — todo en paralelo. Lanzamiento en producción en octubre 2024.',
+        timeline: 'Desarrollo: marzo → octubre 2024 (7 meses). Una persona. CMS, scripts de generación, pipeline de imágenes, integración con DataForSEO y deploy — todo en paralelo. Lanzamiento en producción en octubre 2024. Si lo construyera hoy con Claude Code, tardaría una semana.',
       },
       opportunity: {
         heading: 'La Oportunidad',
@@ -78,7 +88,7 @@ export const pseoContent = {
       },
       architecture: {
         heading: 'La Arquitectura',
-        body: 'El sistema tiene cuatro capas. Airtable funciona como CMS headless con 14 tablas y ~60 campos por tabla. El ERP alimenta los datos reales de producción. DataForSEO decide qué se indexa. Astro genera HTML estático con cero JavaScript en el cliente.',
+        body: 'El sistema tiene cuatro capas. Airtable funciona como CMS headless con 14 tablas y ~60 campos por tabla. El ERP alimenta los datos reales de producción. DataForSEO decide qué se indexa. Astro genera HTML estático con mínimo JavaScript en el cliente — solo lo imprescindible para UX (buscador, carrusel), cargado de forma lazy.',
         layers: [
           {
             icon: 'database',
@@ -98,7 +108,7 @@ export const pseoContent = {
           {
             icon: 'zap',
             name: 'Astro (Generación Estática)',
-            desc: '21 templates de página. Genera HTML estático con 0 JS en el cliente. 6 tipos de JSON-LD por página. SEO de imágenes con inyección EXIF. Deploy en Cloudflare CDN.',
+            desc: '21 templates de página. Genera HTML estático con JS mínimo lazy-loaded. 6 tipos de JSON-LD por página. SEO de imágenes con inyección EXIF. Deploy en Cloudflare CDN.',
           },
         ],
       },
@@ -119,6 +129,7 @@ export const pseoContent = {
           { title: 'Social proof en cascada', detail: 'Las reseñas se vinculan a nivel de modelo, familia o marca. Una reseña de "iPhone 14 Pro" aparece en todas las reparaciones de ese modelo.' },
           { title: 'Bridge mode', detail: 'Reparaciones descatalogadas no se eliminan: se marcan como "bridge" y redirigen a la alternativa más cercana. Cero 404s, cero pérdida de autoridad.' },
         ],
+        businessOsCallout: 'Este CMS de 14 tablas es parte de un Business OS más amplio de 12 bases de Airtable que gestionaba todo el negocio: inventario, CRM, contabilidad, RRHH y más. <a href="/business-os-para-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">Lee el case study completo del Business OS →</a>',
       },
       pageAnatomy: {
         heading: 'Anatomía de una Página',
@@ -152,6 +163,38 @@ export const pseoContent = {
         dynamicCopy: {
           heading: 'Copy Dinámico por Modelo',
           body: 'Cada modelo de dispositivo tiene un microcopy único generado a partir de sus specs de hardware reales. Un campo en Airtable almacena las características técnicas (cámara, batería, procesador, resistencia al agua) y un prompt genera una descripción que varía según el modelo. Un iPhone 14 Pro habla de su cámara de 48MP y su pantalla ProMotion. Un Pixel 7a destaca su chip Tensor y fotografía computacional. No es contenido genérico: es contenido que solo aplica a ESE modelo, basado en datos reales de hardware. Misma plantilla, contenido único en cada página.',
+          screenshotCopy: {
+            src: '/pseo/ss-dynamic-copy-iphone12.webp',
+            alt: 'Copy dinámico del iPhone 12: specs reales de hardware generan texto único por modelo',
+            caption: 'Página del iPhone 12: almacenamiento, RAM, pantalla Super Retina XDR OLED, batería Li-Ion 2815mAh. Todo extraído de las specs reales del modelo en Airtable.',
+          },
+          pricingHeading: 'Precios Sincronizados desde el ERP',
+          pricingProse: 'El mismo CMS que genera el copy también sincroniza los precios de cada reparación en tiempo real. Airtable funciona como puente entre el ERP (donde se actualizan los costes de piezas y márgenes) y la web. Cada modelo muestra un rango de precios calculado desde el mínimo y máximo de sus reparaciones disponibles. Cuando un precio cambia en el ERP, la web se regenera con el precio actualizado — sin intervención manual.',
+          screenshotPricing: {
+            src: '/pseo/ss-category-pricing.webp',
+            alt: 'Página de categoría iPhone con rangos de precios sincronizados desde el ERP',
+            caption: 'Página de categoría: cada tarjeta muestra "Desde X € hasta Y €", calculado automáticamente desde los precios de reparación del ERP.',
+          },
+          pricingSegments: [
+            {
+              code: `let cadenaPrecio = '';
+if (mostrarPrecio.startsWith('desde') && detail.precioMinCard) {
+  cadenaPrecio = \`Desde \${detail.precioMinCard}\`;
+}
+if (mostrarPrecio === 'desdeHasta' && detail.precioMaxCard) {
+  cadenaPrecio = \`\${cadenaPrecio} hasta \${detail.precioMaxCard}\`;
+}
+if (mostrarPrecio === 'exacto' && detail.precioMinCard) {
+  cadenaPrecio = detail.precioMaxCard
+    ? \`Desde \${detail.precioMinCard} hasta \${detail.precioMaxCard}\`
+    : \`\${detail.precioMinCard}\`;
+}`,
+              annotations: [
+                { label: 'Tres modos de precio', detail: '"desde" (solo mínimo), "desdeHasta" (rango completo), "exacto" (precio fijo o rango con CTA). El modo se configura por tipo de página.' },
+                { label: 'precioMinCard / precioMaxCard', detail: 'Campos calculados en Airtable: agregan min y max de todas las reparaciones disponibles para ese modelo. Si el coste de una pieza cambia en el ERP, estos campos se recalculan automáticamente.' },
+              ],
+            },
+          ],
         },
         contextSearch: {
           heading: 'Buscador Contextual',
@@ -188,7 +231,7 @@ export const pseoContent = {
       },
       decisionEngine: {
         heading: 'El Motor de Decisiones',
-        body: 'El sistema genera miles de páginas (muchas más de las 4.730 que recibieron tráfico), pero no todas merecen ser indexadas. Si nadie busca "reparar cámara delantera iPhone 11", esa página no debería competir en Google — pero sí debe existir para el usuario que navega desde la página del iPhone 11 y necesita esa reparación concreta. La clave es separar SEO de UX. El motor de decisiones consulta DataForSEO para obtener volumen de búsqueda real de cada combinación, y el resultado se almacena en el campo "indexable" de Airtable.',
+        body: 'El sistema genera miles de páginas (muchas más de las 4.730 que recibieron tráfico), pero no todas merecen ser indexadas. Si nadie busca "reparar cámara delantera iPhone 11", esa página no debería competir en Google — pero sí debe existir para el usuario que navega desde la página del iPhone 11 y necesita esa reparación concreta. La clave es separar SEO de UX. El motor de decisiones consulta DataForSEO para obtener volumen de búsqueda real de cada combinación, y el resultado se almacena en el campo "indexable" de <a href="https://github.com/santifer/santifer-irepair/blob/main/src/lib/airtable.ts" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">airtable.ts</a>.',
         rules: [
           {
             condition: 'Volumen de búsqueda alto (DataForSEO)',
@@ -222,7 +265,7 @@ export const pseoContent = {
           { label: 'Cache de Reviews', desc: 'Las reseñas se cachean para no hacer llamadas redundantes a la API' },
           { label: 'getStaticPaths', desc: 'Genera las rutas estáticas desde la taxonomía completa' },
           { label: 'ReparacionLayout', desc: '21 templates de página que renderizan según el nivel de la taxonomía' },
-          { label: 'Astro SSG', desc: 'Build estático con 0 JavaScript en el cliente' },
+          { label: 'Astro SSG', desc: 'Build estático con mínimo JavaScript lazy-loaded' },
           { label: 'Optimización', desc: 'Imágenes comprimidas, EXIF inyectado, sitemap filtrado, internal linking' },
           { label: 'Cloudflare CDN', desc: 'Deploy con invalidación de caché e edge caching global' },
         ],
@@ -305,6 +348,7 @@ ensureCachesLoaded().catch(console.error);`,
       contentAutomation: {
         heading: 'Pipeline de Contenido Automatizado',
         body: 'Generar miles de páginas es solo la mitad. Cada página necesita imágenes, metadata y copy únicos. Un conjunto de 8 scripts Node.js (1.411 líneas) automatiza toda la producción de contenido visual y textual sin intervención manual. Todo conectado a las 12 bases del Business OS en Airtable. Resultado: más de 26.000 imágenes generadas automáticamente.',
+        repoLink: '<a href="https://github.com/santifer/santifer-irepair/tree/main/scripts" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">Explora los scripts del pipeline en GitHub →</a>',
         pipelines: [
           {
             icon: 'camera',
@@ -398,7 +442,7 @@ exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
         },
         codeSnippet: {
           heading: 'El Código Real',
-          body: 'Este es el fragmento real del script `generarImagenesReparacionesModelos.mjs` que genera cada imagen de reparación:',
+          body: 'Este es el fragmento real del script <a href="https://github.com/santifer/santifer-irepair/blob/main/scripts/generarImagenesReparacionesModelos.mjs" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">generarImagenesReparacionesModelos.mjs</a> que genera cada imagen de reparación:',
           segments: [
             {
               code: `await sharp({
@@ -478,7 +522,7 @@ exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
       },
       reviewsPipeline: {
         heading: 'Pipeline de Reseñas',
-        intro: 'Las reseñas son el social proof más potente de cada página. Pero gestionar 607 perfiles de clientes, sincronizar dos fuentes y cascadear la prueba social por toda la taxonomía requiere su propio pipeline.',
+        intro: 'Las reseñas son el social proof más potente de cada página. Pero gestionar cientos de perfiles de clientes, sincronizar dos fuentes y cascadear la prueba social por toda la taxonomía requiere su propio pipeline.',
         sourceSync: {
           heading: 'Fuente y Sincronización',
           body: 'Las reseñas llegan de dos fuentes: Google My Business (verificadas públicamente) y encuestas internas post-reparación. Ambas se sincronizan a Airtable y se normalizan en un formato único.',
@@ -539,12 +583,15 @@ await base('Reseñas sincronizar Astro')
           heading: 'Cientos de Perfiles Procesados',
           body: 'Perfiles reales de clientes procesados por el pipeline. Cada foto fue descargada, convertida a WebP y vinculada de vuelta a Airtable.',
           items: [
-            { src: 'cliente.webp', altEs: 'Perfil de cliente procesado', altEn: 'Processed customer profile' },
+            { src: 'victor.webp', altEs: 'Víctor — reparación de pantalla Samsung Galaxy A70', altEn: 'Victor — Samsung Galaxy A70 screen repair' },
             { src: 'sarah.webp', altEs: 'Sarah — reparación de auricular iPhone 11', altEn: 'Sarah — iPhone 11 earpiece repair' },
             { src: 'cristina.webp', altEs: 'Cristina — reparación de auricular iPhone 12', altEn: 'Cristina — iPhone 12 earpiece repair' },
             { src: 'ricardo.webp', altEs: 'Ricardo — cambio de batería Google Pixel 4', altEn: 'Ricardo — Google Pixel 4 battery replacement' },
-            { src: 'jacinto.webp', altEs: 'Jacinto — reparación de pantalla iPhone 11', altEn: 'Jacinto — iPhone 11 screen repair' },
-            { src: 'ivan.webp', altEs: 'Iván — reparación de tapa trasera iPhone 12', altEn: 'Ivan — iPhone 12 back cover repair' },
+            { src: 'manolo.webp', altEs: 'Manolo — reparación de batería iPhone 11 Pro Max', altEn: 'Manolo — iPhone 11 Pro Max battery repair' },
+            { src: 'fernando.webp', altEs: 'Fernando — reparación de táctil iPad 5', altEn: 'Fernando — iPad 5 touch repair' },
+            { src: 'susana.webp', altEs: 'Susana — reparación de pantalla iPhone XS', altEn: 'Susana — iPhone XS screen repair' },
+            { src: 'teresa.webp', altEs: 'Teresa — reparación de pantalla iPhone 8 Plus', altEn: 'Teresa — iPhone 8 Plus screen repair' },
+            { src: 'luisa.webp', altEs: 'Luisa — reparación de batería iPhone 6 Plus', altEn: 'Luisa — iPhone 6 Plus battery repair' },
           ],
           caption: {
             es: 'Perfiles reales de clientes. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
@@ -559,7 +606,7 @@ await base('Reseñas sincronizar Astro')
         scale: {
           heading: 'La Escala',
           metrics: [
-            { value: '607', label: 'Perfiles procesados', detail: 'Fotos de perfil convertidas a WebP' },
+            { value: '600+', label: 'Perfiles procesados', detail: 'Fotos de perfil convertidas a WebP' },
             { value: '2', label: 'Fuentes', detail: 'Google My Business + encuestas internas' },
             { value: '9s', label: 'Rotación', detail: 'Auto-rotación del carrusel CRO' },
             { value: '≥5★', label: 'Prioridad', detail: 'Reseñas con 5 estrellas y comentario van primero' },
@@ -594,7 +641,7 @@ await base('Reseñas sincronizar Astro')
         },
         codeSnippet: {
           heading: 'El Código Real',
-          body: 'Este es el fragmento real de `CasosExito.mjs` que procesa cada foto de reparación:',
+          body: 'Este es el fragmento real de <a href="https://github.com/santifer/santifer-irepair/blob/main/scripts/CasosExito.mjs" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">CasosExito.mjs</a> que procesa cada foto de reparación:',
           segments: [
             {
               code: `let pipeline = sharp(inputBuffer)
@@ -677,22 +724,32 @@ await pipeline
       },
       growth: {
         heading: 'Curva de Crecimiento',
-        body: 'El proyecto se lanzó en octubre 2024. Los primeros meses fueron de indexación progresiva. El pico llegó en septiembre 2025 con 2.193 clicks, un crecimiento de 10,8x desde el primer mes. Vendí el negocio en su punto más alto.',
+        body: 'El proyecto se lanzó en octubre 2024. Los primeros meses fueron de indexación progresiva. Tras un pico inicial en enero, el tráfico se estancó entre febrero y junio — y no fue estacionalidad. Fue una reestructuración: la versión inicial generaba páginas nacionales y locales para cada combinación, pero eran demasiadas y Google priorizaba claramente la intención local. Redirigí las páginas nacionales a sus equivalentes locales con /sevilla, manteniendo solo las reparaciones de nicho en formato nacional (como /cambiar-bateria-iphone-11) donde la especificidad compensa la falta de localización. Mientras Google reindexaba la nueva estructura, el tráfico se mantuvo plano. Una vez consolidado, el crecimiento se disparó hasta el pico de septiembre 2025.',
         monthly: [
           { month: 'Oct 2024', clicks: 202, impressions: 16420, note: 'Lanzamiento' },
           { month: 'Nov 2024', clicks: 748, impressions: 69054 },
           { month: 'Dic 2024', clicks: 949, impressions: 77387 },
           { month: 'Ene 2025', clicks: 1277, impressions: 110836 },
-          { month: 'Feb 2025', clicks: 935, impressions: 100558 },
+          { month: 'Feb 2025', clicks: 935, impressions: 100558, note: 'Reestructuración nacional → local' },
           { month: 'Mar 2025', clicks: 1191, impressions: 118826 },
           { month: 'Abr 2025', clicks: 1027, impressions: 106744 },
           { month: 'May 2025', clicks: 936, impressions: 97137 },
           { month: 'Jun 2025', clicks: 996, impressions: 121088 },
-          { month: 'Jul 2025', clicks: 1611, impressions: 150927 },
+          { month: 'Jul 2025', clicks: 1611, impressions: 150927, note: 'Post-reestructuración' },
           { month: 'Ago 2025', clicks: 1789, impressions: 164791 },
           { month: 'Sep 2025', clicks: 2193, impressions: 164440, note: 'Pico · Venta del negocio' },
         ],
-        insight: 'De 202 a 2.193 clicks/mes en 11 meses. La estacionalidad del sector es visible: verano y vuelta al cole disparan las búsquedas de reparación. El sistema sigue en producción bajo el nuevo propietario.',
+        insight: 'De 202 a 2.193 clicks/mes en 11 meses. La meseta de febrero a junio coincide con la reestructuración de URLs nacionales a locales — Google necesitó tiempo para reindexar la nueva arquitectura. Una vez consolidada, el tráfico creció un 62% en un solo mes (jun → jul). El sistema sigue en producción bajo el nuevo propietario.',
+        milestones: {
+          heading: 'Hitos de Google Search Console',
+          body: 'Google celebra los hitos de tráfico con badges. En 3 meses pasamos de 1.2K a 2K clicks mensuales — el último badge llegó junto a la venta del negocio.',
+          items: [
+            { src: '/pseo/gsc-1.2k.webp', label: '1.2K clicks', date: '18 jul 2025' },
+            { src: '/pseo/gsc-1.5k.webp', label: '1.5K clicks', date: '3 ago 2025' },
+            { src: '/pseo/gsc-1.8k.webp', label: '1.8K clicks', date: '11 sep 2025' },
+            { src: '/pseo/gsc-2k.webp', label: '2K clicks', date: '22 sep 2025' },
+          ],
+        },
       },
       results: {
         heading: 'Resultados',
@@ -703,7 +760,7 @@ await pipeline
           { value: '4.730', label: 'URLs con impresiones', detail: '99,3% son páginas programáticas' },
           { value: '4.084', label: 'URLs en sitemap', detail: 'Solo las que pasan el motor de decisiones de DataForSEO' },
           { value: '80%', label: 'Clicks desde pSEO', detail: 'El tráfico orgánico del sitio viene de páginas programáticas' },
-          { value: '<1s', label: 'Tiempo de carga', detail: 'Astro SSG con 0 JS en cliente + Cloudflare CDN' },
+          { value: '<1s', label: 'Tiempo de carga', detail: 'Astro SSG con JS mínimo lazy + Cloudflare CDN' },
         ],
       },
       crawlBudget: {
@@ -728,7 +785,7 @@ await pipeline
           },
           {
             title: 'Bridge redirects para descatalogados',
-            detail: 'En lugar de devolver 404 cuando una reparación se descataloga, se redirige 301 a la alternativa más cercana. Cero pérdida de autoridad, cero enlaces rotos.',
+            detail: 'En lugar de devolver 404 cuando una reparación se descataloga, se redirige 301 a la alternativa más cercana. 700+ reglas de redirección en <a href="https://github.com/santifer/santifer-irepair/blob/main/vercel.json#L27" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">vercel.json</a>. Cero pérdida de autoridad, cero enlaces rotos.',
           },
         ],
         safeNoindex: {
@@ -786,9 +843,9 @@ return records.map(r => ({
       },
       stack: {
         heading: 'Stack y Herramientas',
-        body: 'El stack se eligió para una necesidad concreta: generar miles de páginas estáticas con datos de un CMS relacional, sin JavaScript en el cliente. Astro era la opción obvia para SSG puro. Airtable funcionaba como CMS porque ya era el Business OS del negocio — no tenía sentido migrar a Supabase para una web estática. DataForSEO se eligió por precio y cobertura de keywords en español.',
+        body: 'El stack se eligió para una necesidad concreta: generar miles de páginas estáticas con datos de un CMS relacional, con el mínimo JavaScript posible en el cliente. Astro era la opción obvia para SSG puro. Airtable funcionaba como CMS porque ya era el Business OS del negocio — no tenía sentido migrar a Supabase para una web estática. DataForSEO se eligió por precio y cobertura de keywords en español.',
         items: [
-          { name: 'Astro', role: 'SSG, 21 templates, 0 JS en cliente' },
+          { name: 'Astro', role: 'SSG, 21 templates, JS mínimo lazy' },
           { name: 'Airtable', role: 'CMS headless, 14 tablas, ~60 campos/tabla' },
           { name: 'DataForSEO', role: 'Volúmenes de búsqueda, campo "indexable"' },
           { name: 'ERP propio', role: '867 modelos, precios, stock, fotos, reseñas' },
@@ -820,12 +877,29 @@ return records.map(r => ({
             title: 'Las URLs de nicho nacional dan el mejor CTR.',
             detail: 'El formato /cambiar-bateria-google-pixel-6a tiene un CTR del 5,0% con posición media 7,8. Estas búsquedas son tan específicas que casi no tienen competencia. El volumen individual es bajo, pero multiplicado por cientos de modelos, suma.',
           },
+          {
+            title: 'El contenido generado sin datos de producción es thin content con mejor redacción.',
+            detail: 'La diferencia entre SEO programático que funciona y una granja de contenido no es el template ni la IA — es que los datos sean reales. Precios del ERP, fotos de reparaciones reales, reseñas verificadas. Este patrón aplica a cualquier empresa con datos operacionales: e-commerce, marketplaces, SaaS con catálogo.',
+          },
+          {
+            title: 'La taxonomía del negocio ES la arquitectura de información — no la inventes, mapéala.',
+            detail: 'No diseñé la estructura de URLs desde cero. Mapée la jerarquía que ya existía en el negocio: tipo → marca → modelo → reparación → ciudad. El Business OS ya tenía esa taxonomía en Airtable. La web programática simplemente la expuso al mundo. Si tu empresa ya tiene una ontología interna, úsala.',
+          },
+        ],
+      },
+      whatThisDemonstrates: {
+        heading: 'Lo Que Esto Demuestra',
+        items: [
+          { title: 'Diseño de sistemas end-to-end', detail: 'Desde datos del ERP hasta páginas en producción — CMS relacional, pipeline de build, motor de decisiones, optimización de crawl budget.' },
+          { title: 'Automatización que escala sin intervención', detail: 'Una persona, 4.730 páginas, 26.000+ imágenes. El sistema sigue funcionando tras la venta del negocio.' },
+          { title: 'Decisiones basadas en datos, no en intuición', detail: 'DataForSEO como motor de indexación. Google Search Console como feedback loop. Cada decisión respaldada por métricas reales.' },
+          { title: 'Ejecución completa en contexto real', detail: 'No es un proyecto de portfolio ni un tutorial. Es un sistema de producción que generó tráfico real para un negocio real — y contribuyó a su venta.' },
         ],
       },
     },
     cta: {
-      heading: '¿Necesitas un sistema que genere páginas desde tus datos?',
-      body: 'Diseñé y construí este sistema completo en solitario: CMS relacional, pipeline de build, motor de decisiones con DataForSEO, y 26.000+ imágenes generadas automáticamente. Si tu empresa necesita a alguien que construya desde los datos hasta el deploy — hablemos.',
+      heading: 'Diseño sistemas que convierten datos operacionales en ventajas competitivas.',
+      body: 'Este case study demuestra un patrón que he aplicado repetidamente: mapear la ontología del negocio, construir un pipeline data-to-deploy, y medir todo con métricas reales. Actualmente exploro roles de AI Product Manager y Solutions Architect — si tu equipo necesita a alguien que piense en sistemas y ejecute hasta producción, hablemos.',
       label: 'Hablemos',
     },
     faq: {
@@ -853,7 +927,7 @@ return records.map(r => ({
         },
         {
           q: '¿Por qué Astro y no Next.js?',
-          a: 'Para un sitio 100% estático donde el contenido cambia con baja frecuencia, Astro genera HTML puro con cero JavaScript en el cliente. Las páginas cargan en menos de 1 segundo, los Core Web Vitals son excelentes de forma nativa, y el deploy en Cloudflare CDN es trivial.',
+          a: 'Para un sitio 100% estático donde el contenido cambia con baja frecuencia, Astro genera HTML puro con mínimo JavaScript — solo componentes interactivos como el buscador y el carrusel, cargados de forma lazy. Las páginas cargan en menos de 1 segundo, los Core Web Vitals son excelentes de forma nativa, y el deploy en Cloudflare CDN es trivial.',
         },
         {
           q: '¿Qué hace DataForSEO exactamente?',
@@ -864,6 +938,7 @@ return records.map(r => ({
     resources: {
       heading: 'Recursos',
       items: [
+        { label: 'Código fuente en GitHub (scripts, layouts, rutas)', url: 'https://github.com/santifer/santifer-irepair' },
         { label: 'Santifer iRepair (la web programática)', url: 'https://santiferirepair.es' },
         { label: 'Case Study: Business OS / ERP que alimenta estas páginas', url: '/business-os-para-airtable' },
         { label: 'Astro, el framework de sitio estático', url: 'https://astro.build' },
@@ -895,13 +970,22 @@ return records.map(r => ({
       kicker: 'Case Study — <a>Santifer iRepair</a>',
       kickerLink: 'https://santiferirepair.es',
       h1: 'Programmatic SEO: 4,700+ Pages from an ERP',
-      subtitle: 'How I generated 4,730 unique landing pages with real production data, a 14-table Airtable CMS, and DataForSEO as the decision engine. 2.26M impressions, 19K+ clicks, zero AI-generated content.',
+      subtitle: 'How I generated 4,730 unique landing pages with real production data, a 14-table Airtable CMS, and DataForSEO as the decision engine. 2.26M impressions, 19K+ clicks.',
       date: 'Feb 25, 2026',
     },
     intro: {
-      hook: 'In Spain\'s device repair market, I couldn\'t find anyone doing programmatic SEO. Every combination of device, brand, model, repair type, and city was an untapped long-tail opportunity.',
-      body: 'The idea was simple: if someone searches "iPhone battery repair Seville", a dedicated page should exist — with the real price, estimated turnaround, and photos from actual repairs. But hand-building those pages for thousands of combinations wouldn\'t scale. I needed a system that auto-generated pages from the ERP, smart enough to decide which ones to index and which to skip.',
-      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2024 I decided the business website needed to stop being a brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
+      hook: 'In Spain\'s device repair market, nobody was doing programmatic SEO. Every combination of device, brand, model, repair type, and city was an untapped long-tail opportunity.',
+      body: 'The thesis: if someone searches "iPhone battery repair Seville", a dedicated page should exist — with the real price, estimated turnaround, and photos from actual repairs. But hand-building thousands of pages wouldn\'t scale. I needed a system that auto-generated them from the ERP, smart enough to decide which ones to index and which to skip.',
+      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2024 I decided the website needed to stop being a brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
+      tldr: {
+        heading: 'In 10 seconds',
+        items: [
+          'Built 4,730 static landing pages from a production ERP (real pricing, photos, verified reviews)',
+          'DataForSEO-powered decision engine: only pages with real search volume get indexed',
+          'Result: 2.26M impressions, 19K+ organic clicks, 80% of total site traffic',
+          '7 months to build, one person, sold at peak performance',
+        ],
+      },
     },
     sections: {
       theNumbers: {
@@ -912,8 +996,9 @@ return records.map(r => ({
           { value: '4,730', label: 'Pages with traffic', detail: 'Out of thousands generated, 4,084 indexable in sitemap, 4,730 picked up impressions' },
           { value: '10.8x', label: 'Monthly growth', detail: 'From 202 to 2,193 clicks/month in 11 months' },
           { value: '80%', label: 'Clicks from pSEO', detail: 'Organic traffic comes from programmatic pages' },
+          { value: '7', label: 'Months', detail: '1 person. CMS, pipelines, DataForSEO, 26K images, and deploy' },
         ],
-        timeline: 'Built March → October 2024 (7 months). One person. CMS, generation scripts, image pipeline, DataForSEO integration, and deployment — all in parallel. Production launch in October 2024.',
+        timeline: 'Built March → October 2024 (7 months). One person. CMS, generation scripts, image pipeline, DataForSEO integration, and deployment — all in parallel. Production launch October 2024. If I built it today with Claude Code, it\'d take a week.',
       },
       opportunity: {
         heading: 'The Opportunity',
@@ -958,7 +1043,7 @@ return records.map(r => ({
       },
       architecture: {
         heading: 'The Architecture',
-        body: 'The system has four layers. Airtable works as a headless CMS with 14 tables and ~60 fields per table. The ERP feeds real production data. DataForSEO decides what gets indexed. Astro generates static HTML with zero client-side JavaScript.',
+        body: 'The system has four layers. Airtable works as a headless CMS with 14 tables and ~60 fields per table. The ERP feeds real production data. DataForSEO decides what gets indexed. Astro generates static HTML with minimal client-side JavaScript — only what\'s needed for UX (search, carousel), lazy-loaded.',
         layers: [
           {
             icon: 'database',
@@ -978,7 +1063,7 @@ return records.map(r => ({
           {
             icon: 'zap',
             name: 'Astro (Static Generation)',
-            desc: '21 page templates. Generates static HTML with 0 client JS. 6 JSON-LD types per page. Image SEO with EXIF injection. Deployed on Cloudflare CDN.',
+            desc: '21 page templates. Generates static HTML with minimal lazy-loaded JS. 6 JSON-LD types per page. Image SEO with EXIF injection. Deployed on Cloudflare CDN.',
           },
         ],
       },
@@ -999,6 +1084,7 @@ return records.map(r => ({
           { title: 'Cascading social proof', detail: 'Reviews link at the model, family, or brand level. A review for "iPhone 14 Pro" shows up on every repair page for that model.' },
           { title: 'Bridge mode', detail: 'Discontinued repairs don\'t get deleted — they\'re flagged as "bridge" and redirect to the closest alternative. Zero 404s, zero authority loss.' },
         ],
+        businessOsCallout: 'This 14-table CMS is part of a larger 12-base Airtable Business OS that ran the entire business: inventory, CRM, accounting, HR, and more. <a href="/business-os-for-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">Read the full Business OS case study →</a>',
       },
       pageAnatomy: {
         heading: 'Anatomy of a Page',
@@ -1032,6 +1118,38 @@ return records.map(r => ({
         dynamicCopy: {
           heading: 'Dynamic Per-Model Copy',
           body: 'Every device model gets unique microcopy generated from its real hardware specs. An Airtable field stores the technical specs (camera, battery, processor, water resistance) and a prompt generates a description that varies by model. An iPhone 14 Pro talks about its 48MP camera and ProMotion display. A Pixel 7a highlights its Tensor chip and computational photography. This isn\'t generic filler — it\'s copy that only applies to THAT model, based on real hardware data. Same template, unique content on every page.',
+          screenshotCopy: {
+            src: '/pseo/ss-dynamic-copy-iphone12.webp',
+            alt: 'iPhone 12 dynamic copy: real hardware specs generate unique text per model',
+            caption: 'iPhone 12 page: storage options, RAM, Super Retina XDR OLED display, Li-Ion 2815mAh battery. All pulled from the model\'s real specs in Airtable.',
+          },
+          pricingHeading: 'Live Pricing from the ERP',
+          pricingProse: 'The same CMS that generates the copy also syncs repair prices in real time. Airtable bridges the ERP (where parts costs and margins get updated) and the website. Each model card shows a price range calculated from the min and max of its available repairs. When a price changes in the ERP, the site rebuilds with the updated price — zero manual intervention.',
+          screenshotPricing: {
+            src: '/pseo/ss-category-pricing.webp',
+            alt: 'iPhone category page with price ranges synced from the ERP',
+            caption: 'Category page: each card shows "Desde X € hasta Y €", auto-calculated from the ERP\'s repair prices.',
+          },
+          pricingSegments: [
+            {
+              code: `let cadenaPrecio = '';
+if (mostrarPrecio.startsWith('desde') && detail.precioMinCard) {
+  cadenaPrecio = \`Desde \${detail.precioMinCard}\`;
+}
+if (mostrarPrecio === 'desdeHasta' && detail.precioMaxCard) {
+  cadenaPrecio = \`\${cadenaPrecio} hasta \${detail.precioMaxCard}\`;
+}
+if (mostrarPrecio === 'exacto' && detail.precioMinCard) {
+  cadenaPrecio = detail.precioMaxCard
+    ? \`Desde \${detail.precioMinCard} hasta \${detail.precioMaxCard}\`
+    : \`\${detail.precioMinCard}\`;
+}`,
+              annotations: [
+                { label: 'Three pricing modes', detail: '"desde" (minimum only), "desdeHasta" (full range), "exacto" (fixed price or range with CTA). The mode is configured per page type.' },
+                { label: 'precioMinCard / precioMaxCard', detail: 'Calculated fields in Airtable: aggregate min and max across all available repairs for that model. When a parts cost changes in the ERP, these fields recalculate automatically.' },
+              ],
+            },
+          ],
         },
         contextSearch: {
           heading: 'Context-Aware Search',
@@ -1068,7 +1186,7 @@ return records.map(r => ({
       },
       decisionEngine: {
         heading: 'The Decision Engine',
-        body: 'The system generates thousands of pages (well beyond the 4,730 that received traffic), but not all deserve to be indexed. If nobody searches "repair front camera iPhone 11", that page shouldn\'t compete on Google — but it needs to exist for the user browsing from the iPhone 11 page who needs exactly that repair. The key is separating SEO from UX. The decision engine queries DataForSEO for real search volume on each combination, and stores the result in Airtable\'s "indexable" field.',
+        body: 'The system generates thousands of pages (well beyond the 4,730 that received traffic), but not all deserve to be indexed. If nobody searches "repair front camera iPhone 11", that page shouldn\'t compete on Google — but it needs to exist for the user browsing from the iPhone 11 page who needs exactly that repair. The key is separating SEO from UX. The decision engine queries DataForSEO for real search volume on each combination, and stores the result in the "indexable" field in <a href="https://github.com/santifer/santifer-irepair/blob/main/src/lib/airtable.ts" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">airtable.ts</a>.',
         rules: [
           {
             condition: 'High search volume (DataForSEO)',
@@ -1102,7 +1220,7 @@ return records.map(r => ({
           { label: 'Review Cache', desc: 'Reviews are cached to avoid redundant API calls' },
           { label: 'getStaticPaths', desc: 'Generates static routes from the full taxonomy' },
           { label: 'ReparacionLayout', desc: '21 page templates rendering based on taxonomy level' },
-          { label: 'Astro SSG', desc: 'Static build with 0 client-side JavaScript' },
+          { label: 'Astro SSG', desc: 'Static build with minimal lazy-loaded JavaScript' },
           { label: 'Optimization', desc: 'Compressed images, EXIF injection, filtered sitemap, internal linking' },
           { label: 'Cloudflare CDN', desc: 'Deployment with cache invalidation and global edge caching' },
         ],
@@ -1185,6 +1303,7 @@ ensureCachesLoaded().catch(console.error);`,
       contentAutomation: {
         heading: 'Automated Content Pipeline',
         body: 'Generating thousands of pages is half the job. Each one needs unique images, metadata, and copy. Eight Node.js scripts (1,411 lines total) automate all visual and textual content production — zero manual work. Everything connects back to the 12 Airtable bases in the Business OS. Result: over 26,000 auto-generated images.',
+        repoLink: '<a href="https://github.com/santifer/santifer-irepair/tree/main/scripts" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">Explore the pipeline scripts on GitHub →</a>',
         pipelines: [
           {
             icon: 'camera',
@@ -1278,7 +1397,7 @@ exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
         },
         codeSnippet: {
           heading: 'The Actual Code',
-          body: 'This is the real snippet from `generarImagenesReparacionesModelos.mjs` that generates each repair image:',
+          body: 'This is the real snippet from <a href="https://github.com/santifer/santifer-irepair/blob/main/scripts/generarImagenesReparacionesModelos.mjs" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">generarImagenesReparacionesModelos.mjs</a> that generates each repair image:',
           segments: [
             {
               code: `await sharp({
@@ -1358,7 +1477,7 @@ exifObj['Exif'][piexif.ExifIFD.UserComment] = userComment.toString('binary');`,
       },
       reviewsPipeline: {
         heading: 'Reviews Pipeline',
-        intro: 'Reviews are the most powerful social proof on every page. But managing 607 customer profiles, syncing two sources, and cascading trust signals across the entire taxonomy requires its own pipeline.',
+        intro: 'Reviews are the most powerful social proof on every page. But managing hundreds of customer profiles, syncing two sources, and cascading trust signals across the entire taxonomy requires its own pipeline.',
         sourceSync: {
           heading: 'Source & Sync',
           body: 'Reviews come from two sources: Google My Business (publicly verified) and internal post-repair surveys. Both sync to Airtable and normalize into a single format.',
@@ -1419,12 +1538,15 @@ await base('Reseñas sincronizar Astro')
           heading: 'Hundreds of Profiles Processed',
           body: 'Real customer profiles processed by the pipeline. Each photo was downloaded, converted to WebP, and linked back to Airtable.',
           items: [
-            { src: 'cliente.webp', altEs: 'Perfil de cliente procesado', altEn: 'Processed customer profile' },
+            { src: 'victor.webp', altEs: 'Víctor — reparación de pantalla Samsung Galaxy A70', altEn: 'Victor — Samsung Galaxy A70 screen repair' },
             { src: 'sarah.webp', altEs: 'Sarah — reparación de auricular iPhone 11', altEn: 'Sarah — iPhone 11 earpiece repair' },
             { src: 'cristina.webp', altEs: 'Cristina — reparación de auricular iPhone 12', altEn: 'Cristina — iPhone 12 earpiece repair' },
             { src: 'ricardo.webp', altEs: 'Ricardo — cambio de batería Google Pixel 4', altEn: 'Ricardo — Google Pixel 4 battery replacement' },
-            { src: 'jacinto.webp', altEs: 'Jacinto — reparación de pantalla iPhone 11', altEn: 'Jacinto — iPhone 11 screen repair' },
-            { src: 'ivan.webp', altEs: 'Iván — reparación de tapa trasera iPhone 12', altEn: 'Ivan — iPhone 12 back cover repair' },
+            { src: 'manolo.webp', altEs: 'Manolo — reparación de batería iPhone 11 Pro Max', altEn: 'Manolo — iPhone 11 Pro Max battery repair' },
+            { src: 'fernando.webp', altEs: 'Fernando — reparación de táctil iPad 5', altEn: 'Fernando — iPad 5 touch repair' },
+            { src: 'susana.webp', altEs: 'Susana — reparación de pantalla iPhone XS', altEn: 'Susana — iPhone XS screen repair' },
+            { src: 'teresa.webp', altEs: 'Teresa — reparación de pantalla iPhone 8 Plus', altEn: 'Teresa — iPhone 8 Plus screen repair' },
+            { src: 'luisa.webp', altEs: 'Luisa — reparación de batería iPhone 6 Plus', altEn: 'Luisa — iPhone 6 Plus battery repair' },
           ],
           caption: {
             es: 'Perfiles reales de clientes. Cada foto se descarga, convierte a WebP y vincula de vuelta a Airtable.',
@@ -1439,7 +1561,7 @@ await base('Reseñas sincronizar Astro')
         scale: {
           heading: 'The Scale',
           metrics: [
-            { value: '607', label: 'Profiles processed', detail: 'Profile photos converted to WebP' },
+            { value: '600+', label: 'Profiles processed', detail: 'Profile photos converted to WebP' },
             { value: '2', label: 'Sources', detail: 'Google My Business + internal surveys' },
             { value: '9s', label: 'Rotation', detail: 'CRO carousel auto-rotation interval' },
             { value: '≥5★', label: 'Priority', detail: '5-star reviews with comments shown first' },
@@ -1474,7 +1596,7 @@ await base('Reseñas sincronizar Astro')
         },
         codeSnippet: {
           heading: 'The Actual Code',
-          body: 'This is the real snippet from `CasosExito.mjs` that processes each repair photo:',
+          body: 'This is the real snippet from <a href="https://github.com/santifer/santifer-irepair/blob/main/scripts/CasosExito.mjs" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">CasosExito.mjs</a> that processes each repair photo:',
           segments: [
             {
               code: `let pipeline = sharp(inputBuffer)
@@ -1557,22 +1679,32 @@ await pipeline
       },
       growth: {
         heading: 'Growth Curve',
-        body: 'Launched in October 2024. The first months were all about indexation. The peak hit in September 2025 with 2,193 clicks — 10.8x from month one. I sold the business at its highest point.',
+        body: 'Launched in October 2024. The first months were pure indexation momentum. After an initial peak in January, traffic flatlined from February through June — and it wasn\'t seasonality. It was a restructuring: the original version generated both national and local pages for every combination, but there were too many and Google clearly favored local intent. I redirected national pages to their local /sevilla equivalents, keeping only niche repairs in national format (like /cambiar-bateria-iphone-11) where specificity outweighs the lack of localization. While Google re-indexed the new structure, traffic stayed flat. Once consolidated, growth took off again — peaking in September 2025 at 2,193 clicks.',
         monthly: [
           { month: 'Oct 2024', clicks: 202, impressions: 16420, note: 'Launch' },
           { month: 'Nov 2024', clicks: 748, impressions: 69054 },
           { month: 'Dec 2024', clicks: 949, impressions: 77387 },
           { month: 'Jan 2025', clicks: 1277, impressions: 110836 },
-          { month: 'Feb 2025', clicks: 935, impressions: 100558 },
+          { month: 'Feb 2025', clicks: 935, impressions: 100558, note: 'National → local restructure' },
           { month: 'Mar 2025', clicks: 1191, impressions: 118826 },
           { month: 'Apr 2025', clicks: 1027, impressions: 106744 },
           { month: 'May 2025', clicks: 936, impressions: 97137 },
           { month: 'Jun 2025', clicks: 996, impressions: 121088 },
-          { month: 'Jul 2025', clicks: 1611, impressions: 150927 },
+          { month: 'Jul 2025', clicks: 1611, impressions: 150927, note: 'Post-restructure' },
           { month: 'Aug 2025', clicks: 1789, impressions: 164791 },
           { month: 'Sep 2025', clicks: 2193, impressions: 164440, note: 'Peak · Business sold' },
         ],
-        insight: 'From 202 to 2,193 clicks/month in 11 months. Seasonality tracks clearly: summer and back-to-school spike repair searches. The system keeps running under the new owner.',
+        insight: 'From 202 to 2,193 clicks/month in 11 months. The Feb–Jun plateau coincides with the national-to-local URL restructuring — Google needed time to re-index the new architecture. Once consolidated, traffic jumped 62% in a single month (Jun → Jul). The system keeps running under the new owner.',
+        milestones: {
+          heading: 'Google Search Console Milestones',
+          body: 'Google celebrates traffic milestones with badges. In 3 months we went from 1.2K to 2K monthly clicks — the last badge arrived right as we closed the business sale.',
+          items: [
+            { src: '/pseo/gsc-1.2k.webp', label: '1.2K clicks', date: 'Jul 18, 2025' },
+            { src: '/pseo/gsc-1.5k.webp', label: '1.5K clicks', date: 'Aug 3, 2025' },
+            { src: '/pseo/gsc-1.8k.webp', label: '1.8K clicks', date: 'Sep 11, 2025' },
+            { src: '/pseo/gsc-2k.webp', label: '2K clicks', date: 'Sep 22, 2025' },
+          ],
+        },
       },
       results: {
         heading: 'Results',
@@ -1583,7 +1715,7 @@ await pipeline
           { value: '4,730', label: 'URLs with impressions', detail: '99.3% are programmatic pages' },
           { value: '4,084', label: 'URLs in sitemap', detail: 'Only those that pass the DataForSEO decision engine' },
           { value: '80%', label: 'Clicks from pSEO', detail: 'Organic traffic comes from programmatic pages' },
-          { value: '<1s', label: 'Page load time', detail: 'Astro SSG with 0 client JS + Cloudflare CDN' },
+          { value: '<1s', label: 'Page load time', detail: 'Astro SSG with minimal lazy JS + Cloudflare CDN' },
         ],
       },
       crawlBudget: {
@@ -1608,7 +1740,7 @@ await pipeline
           },
           {
             title: 'Bridge redirects for discontinued items',
-            detail: 'Instead of returning a 404 when a repair is discontinued, it 301-redirects to the closest alternative. Zero authority loss, zero broken links.',
+            detail: 'Instead of returning a 404 when a repair is discontinued, it 301-redirects to the closest alternative. 700+ redirect rules in <a href="https://github.com/santifer/santifer-irepair/blob/main/vercel.json#L27" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2 hover:text-primary/80">vercel.json</a>. Zero authority loss, zero broken links.',
           },
         ],
         safeNoindex: {
@@ -1666,9 +1798,9 @@ return records.map(r => ({
       },
       stack: {
         heading: 'Stack & Tools',
-        body: 'The stack was chosen for a specific need: generating thousands of static pages from a relational CMS, with zero client-side JavaScript. Astro was the obvious pick for pure SSG. Airtable worked as CMS because it was already the business\'s Business OS — migrating to Supabase for a static site made no sense. DataForSEO was chosen for price and Spanish keyword coverage.',
+        body: 'The stack was chosen for a specific need: generating thousands of static pages from a relational CMS, with minimal client-side JavaScript. Astro was the obvious pick for pure SSG. Airtable worked as CMS because it was already the business\'s Business OS — migrating to Supabase for a static site made no sense. DataForSEO was chosen for price and Spanish keyword coverage.',
         items: [
-          { name: 'Astro', role: 'SSG, 21 templates, 0 client JS' },
+          { name: 'Astro', role: 'SSG, 21 templates, minimal lazy JS' },
           { name: 'Airtable', role: 'Headless CMS, 14 tables, ~60 fields/table' },
           { name: 'DataForSEO', role: 'Search volumes, "indexable" field' },
           { name: 'Custom ERP', role: '867 models, prices, stock, photos, reviews' },
@@ -1700,12 +1832,29 @@ return records.map(r => ({
             title: 'National niche URLs deliver the best CTR.',
             detail: 'The /cambiar-bateria-google-pixel-6a format pulls a 5.0% CTR at an average position of 7.8. These queries are so specific they\'ve got almost zero competition. Individual volume is low, but multiplied across hundreds of models, it adds up fast.',
           },
+          {
+            title: 'Generated content without production data is thin content with better grammar.',
+            detail: 'The difference between pSEO that works and a content farm isn\'t the template or the AI — it\'s whether the data is real. ERP pricing, actual repair photos, verified reviews. This pattern applies to any business with operational data: e-commerce, marketplaces, catalog-driven SaaS.',
+          },
+          {
+            title: 'Your business taxonomy IS your information architecture — don\'t invent it, map it.',
+            detail: 'I didn\'t design the URL structure from scratch. I mapped the hierarchy that already existed in the business: type → brand → model → repair → city. The Business OS already had that taxonomy in Airtable. The programmatic site simply exposed it to the world. If your company already has an internal ontology, use it.',
+          },
+        ],
+      },
+      whatThisDemonstrates: {
+        heading: 'What This Demonstrates',
+        items: [
+          { title: 'End-to-end system design', detail: 'From ERP data to production pages — relational CMS, build pipeline, decision engine, crawl budget optimization.' },
+          { title: 'Automation that scales without intervention', detail: 'One person, 4,730 pages, 26,000+ images. The system kept running after the business was sold.' },
+          { title: 'Data-driven decisions, not gut feelings', detail: 'DataForSEO as the indexing engine. Google Search Console as the feedback loop. Every decision backed by real metrics.' },
+          { title: 'Full execution in a real business context', detail: 'This isn\'t a portfolio project or a tutorial. It\'s a production system that drove real traffic for a real business — and contributed to its sale.' },
         ],
       },
     },
     cta: {
-      heading: 'Need a system that generates pages from your data?',
-      body: 'I designed and built this entire system solo: relational CMS, build pipeline, DataForSEO decision engine, and 26,000+ auto-generated images. If your company needs someone who builds from data to deploy — let\'s talk.',
+      heading: 'I design systems that turn operational data into competitive advantages.',
+      body: 'This case study demonstrates a pattern I\'ve applied repeatedly: map the business ontology, build a data-to-deploy pipeline, and measure everything with real metrics. Currently exploring AI Product Manager and Solutions Architect roles — if your team needs someone who thinks in systems and ships to production, let\'s talk.',
       label: 'Get in touch',
     },
     faq: {
@@ -1733,7 +1882,7 @@ return records.map(r => ({
         },
         {
           q: 'Why Astro instead of Next.js?',
-          a: 'For a fully static site where content changes infrequently, Astro ships pure HTML with zero client-side JavaScript. Pages load under a second, Core Web Vitals are great out of the box, and Cloudflare CDN deployment is dead simple.',
+          a: 'For a fully static site where content changes infrequently, Astro ships pure HTML with minimal JavaScript — only interactive components like the search bar and carousel, lazy-loaded. Pages load under a second, Core Web Vitals are great out of the box, and Cloudflare CDN deployment is dead simple.',
         },
         {
           q: 'What does DataForSEO do exactly?',
@@ -1744,6 +1893,7 @@ return records.map(r => ({
     resources: {
       heading: 'Resources',
       items: [
+        { label: 'Source code on GitHub (scripts, layouts, routes)', url: 'https://github.com/santifer/santifer-irepair' },
         { label: 'Santifer iRepair (the programmatic site)', url: 'https://santiferirepair.es' },
         { label: 'Case Study: The Business OS / ERP behind these pages', url: '/business-os-for-airtable' },
         { label: 'Astro, the static site framework', url: 'https://astro.build' },
