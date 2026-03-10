@@ -269,7 +269,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
     description: t.seo.description,
     image: 'https://santifer.io/pseo/og-programmatic-seo.png',
     publishedTime: '2026-02-25',
-    modifiedTime: '2026-03-09',
+    modifiedTime: '2026-03-10',
     articleTags: 'programmatic SEO,Airtable,Astro,DataForSEO,crawl budget,phone repair,ERP,local SEO',
     jsonLd: buildJsonLd(lang),
     xDefaultSlug: 'seo-programatico',
@@ -306,6 +306,48 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
             ))}
           </ul>
         </Callout>
+
+        {/* The Starting Point — Migration from Squarespace */}
+        <AnchorHeading id="starting-point">{(t.sections as any).migration.heading}</AnchorHeading>
+        <Prose>{(t.sections as any).migration.intro}</Prose>
+
+        <Photo2
+          items={[
+            { src: '/pseo/ss-squarespace-mobile.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: homepage móvil' : 'santifer.me on Squarespace: mobile homepage' },
+            { src: '/pseo/ss-squarespace-pricing.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: página de precios con iconos genéricos' : 'santifer.me on Squarespace: pricing page with generic icons' },
+          ]}
+          caption={lang === 'es' ? 'santifer.me en Squarespace. Homepage y página de precios: iconos genéricos, sin fotos reales, sin datos del ERP.' : 'santifer.me on Squarespace. Homepage and pricing page: generic icons, no real photos, no ERP data.'}
+        />
+
+        <Callout>{(t.sections as any).migration.duplicateCallout}</Callout>
+
+        <H3 id="technical-debt">{(t.sections as any).migration.technicalDebt.heading}</H3>
+        <CardStack
+          items={(t.sections as any).migration.technicalDebt.items.map((item: any) => ({
+            title: item.title,
+            detail: item.detail,
+          }))}
+        />
+
+        <Photo1
+          src="/pseo/ss-squarespace-repair.webp"
+          alt={lang === 'es' ? 'Página de reparación en Squarespace: iconos genéricos y precios sin estructura' : 'Repair page on Squarespace: generic icons and unstructured pricing'}
+          caption={lang === 'es' ? 'Página de reparación típica en Squarespace. Iconos genéricos, sin fotos reales, sin JSON-LD, sin datos del ERP.' : 'Typical repair page on Squarespace. Generic icons, no real photos, no JSON-LD, no ERP data.'}
+        />
+
+        <H3 id="migration">{(t.sections as any).migration.migrationSteps.heading}</H3>
+        <StepList
+          items={(t.sections as any).migration.migrationSteps.steps.map((step: any) => ({
+            label: step.label,
+            detail: step.detail,
+          }))}
+        />
+        <Callout>{(t.sections as any).migration.orderCallout}</Callout>
+
+        <H3 id="migration-cost">{(t.sections as any).migration.migrationCost.heading}</H3>
+        <Prose>{(t.sections as any).migration.migrationCost.body}</Prose>
+        <MetricsGrid items={(t.sections as any).migration.migrationCost.lighthouse} columns={4} compact />
+        <Prose>{(t.sections as any).migration.migrationCost.closing}</Prose>
 
         {/* The Numbers */}
         <AnchorHeading id="the-numbers">{t.sections.theNumbers.heading}</AnchorHeading>

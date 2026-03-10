@@ -2,7 +2,7 @@ export const pseoContent = {
   es: {
     slug: 'seo-programatico',
     altSlug: 'programmatic-seo',
-    readingTime: '35 min de lectura',
+    readingTime: '37 min de lectura',
     seo: {
       title: 'SEO Programático: 4.000+ Páginas desde un ERP | santifer.io',
       description: 'Case study: cómo generé 4.730 landing pages estáticas con Airtable, DataForSEO y crawl budget optimization. 2M+ impresiones, 19K+ clicks.',
@@ -21,7 +21,7 @@ export const pseoContent = {
     intro: {
       hook: 'En el sector de reparación de dispositivos en España, nadie estaba haciendo SEO programático. Cada combinación de dispositivo, marca, modelo, tipo de reparación y ciudad era una oportunidad long-tail sin explotar.',
       body: 'La idea era simple: si alguien busca "reparar iPhone batería Sevilla", debería existir una página específica para esa búsqueda, con el precio real, el tiempo estimado y fotos de reparaciones reales. Pero crear esas páginas a mano para miles de combinaciones no era viable. Necesitaba un sistema que generase las páginas automáticamente desde el ERP, y que fuera lo suficientemente inteligente para decidir cuáles indexar y cuáles no.',
-      context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2024 decidí que la web del negocio necesitaba dejar de ser un folleto y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
+      context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2024 decidí que la web del negocio necesitaba dejar de ser un folleto en Squarespace y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
       tldr: {
         heading: 'En 10 segundos',
         items: [
@@ -33,6 +33,41 @@ export const pseoContent = {
       },
     },
     sections: {
+      migration: {
+        heading: 'El Punto de Partida',
+        intro: 'La web del negocio llevaba años en Squarespace. Sin control de URLs, sin canonical tags, sin redirects custom. Para construir el sistema programático, primero había que migrar todo a una plataforma donde cada detalle técnico estuviera bajo control.',
+        duplicateCallout: 'Squarespace servía la misma página en 4 URLs diferentes (www, non-www, trailing slash, .html). Google veía 4 copias de cada página.',
+        technicalDebt: {
+          heading: 'Los Problemas Técnicos',
+          items: [
+            { title: 'Sin canonical tags', detail: 'www vs non-www, con/sin trailing slash, con/sin .html. Misma página, 4 URLs. Google decidía cuál indexar.' },
+            { title: 'Sin redirects custom', detail: 'Squarespace no permite crear redirecciones 301 personalizadas. Imposible mapear URLs antiguas a la nueva estructura.' },
+            { title: 'Sin control de slugs de URL', detail: 'La taxonomía del negocio ya existía, pero Squarespace generaba URLs redundantes como /reparar-iphone/reparar-iphone-x. Imposible mapear la jerarquía a URLs limpias y optimizadas para SEO.' },
+            { title: 'Riesgo de contenido duplicado', detail: 'Las variantes de URL sin canonical generaban señales confusas para Google, diluyendo la autoridad del dominio.' },
+          ],
+        },
+        migrationSteps: {
+          heading: 'La Migración',
+          steps: [
+            { label: 'Crawl completo con Screaming Frog', detail: 'Extraer todas las URLs activas de santifer.me y crear el documento de mapeo URL antigua → URL nueva.' },
+            { label: 'Nueva estructura de URLs en Astro', detail: 'Mapear la taxonomía que ya existía en el negocio a URLs limpias: /reparar-{dispositivo}/, /reparar-{marca}/{modelo}/, /cambiar-{pieza}-{marca}-{modelo}.' },
+            { label: '301 redirects en vercel.json', detail: 'Implementar todas las redirecciones ANTES de solicitar el cambio de dirección en GSC. El orden importa.' },
+            { label: 'Redirects inteligentes por intención', detail: 'Redirigir páginas nacionales a versiones locales (Sevilla) basándose en datos reales de intención de búsqueda de Google Search Console.' },
+          ],
+        },
+        orderCallout: 'Implementa las redirecciones antes de solicitar el cambio en Google Search Console. No después. El orden importa.',
+        migrationCost: {
+          heading: 'El Coste de Migrar',
+          body: 'Tras la migración, 800+ páginas se quedaron atascadas sin indexar. Keywords clave cayeron de posición. "reparar iphone sevilla" pasó del top 2 al puesto 6. La recuperación llevó meses.',
+          lighthouse: [
+            { value: '100', label: 'Performance' },
+            { value: '92', label: 'Accessibility' },
+            { value: '96', label: 'Best Practices' },
+            { value: '100', label: 'SEO' },
+          ],
+          closing: 'A pesar de puntuaciones técnicas perfectas en Lighthouse, Google necesita tiempo para reevaluar un dominio tras una migración. El sistema programático se construyó durante esa fase de recuperación, diseñado desde cero sobre la nueva plataforma.',
+        },
+      },
       theNumbers: {
         heading: 'Los Números',
         metrics: [
@@ -957,7 +992,7 @@ return records.map(r => ({
   en: {
     slug: 'programmatic-seo',
     altSlug: 'seo-programatico',
-    readingTime: '35 min read',
+    readingTime: '37 min read',
     seo: {
       title: 'Programmatic SEO: 4,000+ Pages from an ERP | santifer.io',
       description: 'Case study: how I built 4,730 static landing pages with Airtable as headless CMS, DataForSEO for crawl budget optimization, and Astro SSG. 2M+ impressions, 19K+ clicks.',
@@ -976,7 +1011,7 @@ return records.map(r => ({
     intro: {
       hook: 'In Spain\'s device repair market, nobody was doing programmatic SEO. Every combination of device, brand, model, repair type, and city was an untapped long-tail opportunity.',
       body: 'The thesis: if someone searches "iPhone battery repair Seville", a dedicated page should exist — with the real price, estimated turnaround, and photos from actual repairs. But hand-building thousands of pages wouldn\'t scale. I needed a system that auto-generated them from the ERP, smart enough to decide which ones to index and which to skip.',
-      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2024 I decided the website needed to stop being a brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
+      context: 'Santifer iRepair was my device repair business in Seville since 2009. Sixteen years, over 30,000 repairs. In 2024 I decided the website needed to move beyond a Squarespace brochure and start capturing the demand already sitting in Google. I built this programmatic SEO system as a competitive moat and sold the business in September 2025, at its peak.',
       tldr: {
         heading: 'In 10 seconds',
         items: [
@@ -988,6 +1023,41 @@ return records.map(r => ({
       },
     },
     sections: {
+      migration: {
+        heading: 'The Starting Point',
+        intro: 'The business website had been running on Squarespace for years. No URL control, no canonical tags, no custom redirects. Before building the programmatic system, everything had to be migrated to a platform where every technical detail was under control.',
+        duplicateCallout: 'Squarespace served the same page at 4 different URLs (www, non-www, trailing slash, .html). Google saw 4 copies of every page.',
+        technicalDebt: {
+          heading: 'The Technical Debt',
+          items: [
+            { title: 'No canonical tags', detail: 'www vs non-www, with/without trailing slash, with/without .html. Same page, 4 URLs. Google decided which one to index.' },
+            { title: 'No custom redirects', detail: 'Squarespace doesn\'t allow custom 301 redirects. Impossible to map old URLs to the new structure.' },
+            { title: 'No URL slug control', detail: 'The business taxonomy already existed, but Squarespace generated redundant URLs like /reparar-iphone/reparar-iphone-x. Impossible to map the hierarchy to clean, SEO-optimized URLs.' },
+            { title: 'Duplicate content risk', detail: 'URL variants without canonicals sent confusing signals to Google, diluting the domain\'s authority.' },
+          ],
+        },
+        migrationSteps: {
+          heading: 'The Migration',
+          steps: [
+            { label: 'Full crawl with Screaming Frog', detail: 'Extract every active URL from santifer.me and build the mapping document: old URL → new URL.' },
+            { label: 'New URL structure in Astro', detail: 'Map the existing business taxonomy to clean URLs: /reparar-{device}/, /reparar-{brand}/{model}/, /cambiar-{part}-{brand}-{model}.' },
+            { label: '301 redirects in vercel.json', detail: 'Implement all redirects BEFORE requesting the address change in GSC. The order matters.' },
+            { label: 'Intent-based redirects', detail: 'Redirect national pages to local versions (Seville) based on real search intent data from Google Search Console.' },
+          ],
+        },
+        orderCallout: 'Implement the redirects before requesting the address change in Google Search Console. Not after. The order matters.',
+        migrationCost: {
+          heading: 'The Cost of Migration',
+          body: 'After migration, 800+ pages got stuck unindexed. Key keywords dropped in rankings. "reparar iphone sevilla" went from top 2 to position 6. Recovery took months.',
+          lighthouse: [
+            { value: '100', label: 'Performance' },
+            { value: '92', label: 'Accessibility' },
+            { value: '96', label: 'Best Practices' },
+            { value: '100', label: 'SEO' },
+          ],
+          closing: 'Despite perfect Lighthouse scores, Google needs time to re-evaluate a domain after a migration. The programmatic system was built during that recovery phase, designed from scratch on the new platform.',
+        },
+      },
       theNumbers: {
         heading: 'The Numbers',
         metrics: [
