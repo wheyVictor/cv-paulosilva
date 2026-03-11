@@ -521,7 +521,7 @@ export default async function handler(req) {
           },
         ]
 
-        // Stream the final response
+        // Stream the final response (with fallback if streaming fails)
         return streamResponse({
           systemBlocks,
           messages: messagesWithTool,
@@ -539,6 +539,7 @@ export default async function handler(req) {
           ragMetrics,
           toolDecisionMs,
           lang,
+          fallbackMessages: cleanMessages,
         })
       }
 
@@ -602,6 +603,7 @@ function streamResponse({
   systemBlocks, messages, tools, ragSources, ragDegraded, ragDegradedReason,
   canary, intentTags, trace, langfuse, lastUserMessage, t0,
   ragUsed, ragMetrics, toolDecisionMs, precomputedResponse, lang,
+  fallbackMessages,
 }) {
   const encoder = new TextEncoder()
   let fullOutput = ''
@@ -735,7 +737,37 @@ function streamResponse({
           controller.close()
         }
       } catch (error) {
-        // Send error message through SSE so frontend shows it instead of blank
+        generationSpan?.end({ metadata: { error: error.message } })
+        trace?.update({ tags: [...intentTags, 'rag:fallback'], metadata: { streamingError: error.message } })
+
+        // Graceful degradation: retry without RAG context (just system prompt)
+        if (fallbackMessages && !fullOutput) {
+          try {
+            const fallbackStream = client.messages.stream({
+              model: 'claude-sonnet-4-6',
+              max_tokens: 800,
+              system: systemBlocks,
+              messages: fallbackMessages,
+            })
+
+            // Send degraded status so frontend knows RAG failed
+            controller.enqueue(encoder.encode(`event: rag-status\ndata: ${JSON.stringify({ status: 'degraded', reason: 'streaming_fallback' })}\n\n`))
+
+            for await (const event of fallbackStream) {
+              if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+                const chunk = event.delta.text
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
+              }
+            }
+
+            controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+            controller.close()
+            if (langfuse) waitUntil(langfuse.flushAsync())
+            return
+          } catch { /* fallback also failed, fall through to error message */ }
+        }
+
+        // Last resort: send error message through SSE
         try {
           const errorText = lang === 'en'
             ? 'Sorry, something went wrong. Try again or reach out at hi@santifer.io.'
@@ -746,8 +778,6 @@ function streamResponse({
         } catch {
           controller.error(error)
         }
-        generationSpan?.end({ metadata: { error: error.message } })
-        trace?.update({ metadata: { streamingError: error.message } })
         if (langfuse) waitUntil(langfuse.flushAsync())
       }
     },
