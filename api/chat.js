@@ -512,9 +512,11 @@ export default async function handler(req) {
         })
       }
 
-      // Claude didn't use tool — send the response we already have
-      return sendNonStreamedResponse({
-        response: firstResponse,
+      // Claude didn't use tool — stream the response we already have
+      return streamResponse({
+        systemBlocks,
+        messages: cleanMessages,
+        tools: null,
         ragSources: [],
         ragDegraded: false,
         ragDegradedReason: null,
@@ -527,6 +529,7 @@ export default async function handler(req) {
         ragUsed: false,
         ragMetrics: {},
         toolDecisionMs,
+        precomputedResponse: firstResponse,
       })
     }
 
@@ -566,7 +569,7 @@ export default async function handler(req) {
 function streamResponse({
   systemBlocks, messages, tools, ragSources, ragDegraded, ragDegradedReason,
   canary, intentTags, trace, langfuse, lastUserMessage, t0,
-  ragUsed, ragMetrics, toolDecisionMs,
+  ragUsed, ragMetrics, toolDecisionMs, precomputedResponse,
 }) {
   const encoder = new TextEncoder()
   let fullOutput = ''
@@ -574,18 +577,21 @@ function streamResponse({
 
   const generationSpan = trace?.span({
     name: 'generation',
-    metadata: { ragUsed, streaming: true },
+    metadata: { ragUsed, streaming: !precomputedResponse },
   })
 
-  const streamParams = {
-    model: 'claude-sonnet-4-6',
-    max_tokens: 800,
-    system: systemBlocks,
-    messages,
+  // Only create API stream when there's no precomputed response
+  let stream = null
+  if (!precomputedResponse) {
+    const streamParams = {
+      model: 'claude-sonnet-4-6',
+      max_tokens: 800,
+      system: systemBlocks,
+      messages,
+    }
+    if (tools) streamParams.tools = tools
+    stream = client.messages.stream(streamParams)
   }
-  if (tools) streamParams.tools = tools
-
-  const stream = client.messages.stream(streamParams)
 
   const readableStream = new ReadableStream({
     async start(controller) {
@@ -600,45 +606,83 @@ function streamResponse({
           controller.enqueue(encoder.encode(`event: rag-status\ndata: ${JSON.stringify({ status: 'degraded', reason: ragDegradedReason })}\n\n`))
         }
 
-        for await (const event of stream) {
-          if (leakDetected) break
+        if (precomputedResponse) {
+          // Drip precomputed text through the stream
+          const textBlocks = precomputedResponse.content.filter(b => b.type === 'text')
+          const precomputedText = textBlocks.map(b => b.text).join('')
 
-          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-            const chunk = event.delta.text
-            fullOutput += chunk
+          // Check for leaks
+          if (containsFingerprint(precomputedText) || precomputedText.includes(canary)) {
+            trace?.update({
+              tags: [...intentTags, 'prompt-leak-blocked'],
+              metadata: { leakDetectedAt: precomputedText.length },
+            })
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
+            controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+            controller.close()
+            waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
+            generationSpan?.end({ metadata: { blocked: true } })
+            if (langfuse) waitUntil(langfuse.flushAsync())
+            return
+          }
 
-            if (fullOutput.length % 200 < chunk.length || fullOutput.length < 200) {
-              if (containsFingerprint(fullOutput) || fullOutput.includes(canary)) {
-                leakDetected = true
-                trace?.update({
-                  tags: [...intentTags, 'prompt-leak-blocked'],
-                  metadata: { leakDetectedAt: fullOutput.length },
-                })
-                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
-                controller.enqueue(encoder.encode('data: [DONE]\n\n'))
-                controller.close()
-                waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
-                generationSpan?.end({ metadata: { blocked: true } })
-                if (langfuse) waitUntil(langfuse.flushAsync())
-                return
+          const CHUNK_SIZE = 30
+          for (let i = 0; i < precomputedText.length; i += CHUNK_SIZE) {
+            const piece = precomputedText.slice(i, i + CHUNK_SIZE)
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: piece })}\n\n`))
+            await new Promise(r => setTimeout(r, 20))
+          }
+
+          generationSpan?.end({
+            metadata: {
+              outputTokens: precomputedResponse.usage?.output_tokens,
+              inputTokens: precomputedResponse.usage?.input_tokens,
+              latencyMs: Date.now() - t0,
+            },
+          })
+        } else {
+          // Real-time streaming from Claude API
+          for await (const event of stream) {
+            if (leakDetected) break
+
+            if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+              const chunk = event.delta.text
+              fullOutput += chunk
+
+              if (fullOutput.length % 200 < chunk.length || fullOutput.length < 200) {
+                if (containsFingerprint(fullOutput) || fullOutput.includes(canary)) {
+                  leakDetected = true
+                  trace?.update({
+                    tags: [...intentTags, 'prompt-leak-blocked'],
+                    metadata: { leakDetectedAt: fullOutput.length },
+                  })
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
+                  controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+                  controller.close()
+                  waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
+                  generationSpan?.end({ metadata: { blocked: true } })
+                  if (langfuse) waitUntil(langfuse.flushAsync())
+                  return
+                }
               }
-            }
 
-            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
+            }
+          }
+
+          if (!leakDetected) {
+            const finalMessage = await stream.finalMessage()
+            generationSpan?.end({
+              metadata: {
+                outputTokens: finalMessage.usage?.output_tokens,
+                inputTokens: finalMessage.usage?.input_tokens,
+                latencyMs: Date.now() - t0,
+              },
+            })
           }
         }
 
         if (!leakDetected) {
-          const finalMessage = await stream.finalMessage()
-
-          generationSpan?.end({
-            metadata: {
-              outputTokens: finalMessage.usage?.output_tokens,
-              inputTokens: finalMessage.usage?.input_tokens,
-              latencyMs: Date.now() - t0,
-            },
-          })
-
           // Update trace with RAG metadata
           trace?.update({
             tags: [...intentTags, ragUsed ? 'rag:yes' : 'rag:no'],
@@ -674,79 +718,3 @@ function streamResponse({
   })
 }
 
-// ---------------------------------------------------------------------------
-// Send a non-streamed response as SSE (when Claude didn't use tool)
-// ---------------------------------------------------------------------------
-
-function sendNonStreamedResponse({
-  response, ragSources, ragDegraded, ragDegradedReason,
-  canary, intentTags, trace, langfuse, lastUserMessage, t0,
-  ragUsed, ragMetrics, toolDecisionMs,
-}) {
-  const encoder = new TextEncoder()
-  const textBlocks = response.content.filter(b => b.type === 'text')
-  const fullText = textBlocks.map(b => b.text).join('')
-
-  // Check for leaks
-  if (containsFingerprint(fullText) || fullText.includes(canary)) {
-    trace?.update({
-      tags: [...intentTags, 'prompt-leak-blocked'],
-      metadata: { leakDetectedAt: fullText.length },
-    })
-    waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
-    if (langfuse) waitUntil(langfuse.flushAsync())
-
-    const body = `data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\ndata: [DONE]\n\n`
-    return new Response(body, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'X-Response-Time': `${Date.now() - t0}ms`,
-      },
-    })
-  }
-
-  // Build SSE body: send text in small chunks to simulate streaming
-  const chunks = []
-
-  if (ragSources.length > 0) {
-    chunks.push(`event: rag-sources\ndata: ${JSON.stringify(ragSources)}\n\n`)
-  }
-  if (ragDegraded) {
-    chunks.push(`event: rag-status\ndata: ${JSON.stringify({ status: 'degraded', reason: ragDegradedReason })}\n\n`)
-  }
-
-  // Break text into ~30-char chunks for smooth appearance
-  const CHUNK_SIZE = 30
-  for (let i = 0; i < fullText.length; i += CHUNK_SIZE) {
-    const piece = fullText.slice(i, i + CHUNK_SIZE)
-    chunks.push(`data: ${JSON.stringify({ text: piece })}\n\n`)
-  }
-  chunks.push('data: [DONE]\n\n')
-
-  // Update trace
-  trace?.update({
-    tags: [...intentTags, ragUsed ? 'rag:yes' : 'rag:no'],
-    metadata: {
-      ragUsed,
-      chunksRetrieved: ragSources.length,
-      sources: ragSources.map(s => s.article_id),
-      latencyBreakdown: {
-        toolDecisionMs,
-        ...ragMetrics,
-        totalMs: Date.now() - t0,
-      },
-    },
-  })
-  if (langfuse) waitUntil(langfuse.flushAsync())
-
-  return new Response(chunks.join(''), {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-      'X-Response-Time': `${Date.now() - t0}ms`,
-    },
-  })
-}

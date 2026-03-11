@@ -137,11 +137,12 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
   // Scroll automático: instantáneo durante streaming, suave después
   useEffect(() => {
+    if (!isOpen) return;
     messagesEndRef.current?.scrollIntoView({
       behavior: isLoading ? 'instant' : 'smooth',
       block: 'end'
     });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, isOpen]);
 
   // Focus en input al abrir
   useEffect(() => {
@@ -557,7 +558,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                                     const el = document.querySelector(source.section_anchor);
                                     el?.scrollIntoView({ behavior: 'instant' });
                                   } else if (targetPath) {
-                                    setIsOpen(false);
+                                    if (isMobile) setIsOpen(false);
                                     navigate(targetPath + (source.section_anchor || ''));
                                   }
                                 }}
