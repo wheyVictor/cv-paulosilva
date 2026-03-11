@@ -556,7 +556,13 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                                 onClick={() => {
                                   if (isCurrentPage && source.section_anchor) {
                                     const el = document.querySelector(source.section_anchor);
-                                    el?.scrollIntoView({ behavior: 'instant' });
+                                    if (el instanceof HTMLElement) {
+                                      el.scrollIntoView({ behavior: 'instant' });
+                                      el.classList.remove('hash-highlight');
+                                      void el.offsetWidth;
+                                      el.classList.add('hash-highlight');
+                                      el.addEventListener('animationend', () => el.classList.remove('hash-highlight'), { once: true });
+                                    }
                                   } else if (targetPath) {
                                     if (isMobile) setIsOpen(false);
                                     navigate(targetPath + (source.section_anchor || ''));
