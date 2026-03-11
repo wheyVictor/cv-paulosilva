@@ -154,7 +154,8 @@ export function assertLanguage(response: string, expected: 'es' | 'en'): boolean
  */
 export function runAssertion(
   response: string,
-  assertion: Assertion
+  assertion: Assertion,
+  ragSources?: Array<{ article_id: string; section_id: string }>
 ): AssertionResult {
   let passed = false
   let reason = ''
@@ -213,6 +214,27 @@ export function runAssertion(
       reason = passed
         ? `Language detected as ${assertion.expected}`
         : `Language is not ${assertion.expected}`
+      break
+
+    case 'rag_used':
+      passed = (ragSources?.length ?? 0) > 0
+      reason = passed
+        ? `RAG was used (${ragSources!.length} sources)`
+        : 'RAG was NOT used (no sources returned)'
+      break
+
+    case 'rag_not_used':
+      passed = (ragSources?.length ?? 0) === 0
+      reason = passed
+        ? 'RAG was not used (as expected)'
+        : `RAG was unexpectedly used (sources: ${ragSources?.map(s => s.article_id).join(', ')})`
+      break
+
+    case 'source_includes':
+      passed = ragSources?.some(s => s.article_id === assertion.value) ?? false
+      reason = passed
+        ? `Sources include "${assertion.value}"`
+        : `Sources do not include "${assertion.value}" (got: ${ragSources?.map(s => s.article_id).join(', ') || 'none'})`
       break
 
     case 'llm_judge':

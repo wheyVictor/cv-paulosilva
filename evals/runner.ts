@@ -48,11 +48,22 @@ interface Dataset {
   tests: Test[]
 }
 
+interface RagSource {
+  article_id: string
+  section_id: string
+}
+
+interface ChatResult {
+  text: string
+  ragSources: RagSource[]
+}
+
 interface TestResult {
   testId: string
   description: string
   input: string
   response: string
+  ragSources?: RagSource[]
   assertionResults: AssertionResult[]
   passed: boolean
 }
@@ -86,7 +97,7 @@ const colors = {
 /**
  * Llama al API del chat y obtiene la respuesta completa (sin streaming)
  */
-async function callChat(input: string, lang: 'es' | 'en', conversation?: ConversationMessage[]): Promise<string> {
+async function callChat(input: string, lang: 'es' | 'en', conversation?: ConversationMessage[]): Promise<ChatResult> {
   const messages = conversation || [{ role: 'user', content: input }]
   const response = await fetch(CHAT_API_URL, {
     method: 'POST',
@@ -108,6 +119,8 @@ async function callChat(input: string, lang: 'es' | 'en', conversation?: Convers
   const decoder = new TextDecoder()
   let buffer = ''
   let fullText = ''
+  let ragSources: RagSource[] = []
+  let currentEvent = ''
 
   while (true) {
     const { done, value } = await reader.read()
@@ -120,20 +133,25 @@ async function callChat(input: string, lang: 'es' | 'en', conversation?: Convers
       const line = buffer.slice(0, newlineIndex).trim()
       buffer = buffer.slice(newlineIndex + 1)
 
-      if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+      if (line.startsWith('event: ')) {
+        currentEvent = line.slice(7)
+      } else if (line.startsWith('data: ') && line !== 'data: [DONE]') {
         try {
           const data = JSON.parse(line.slice(6))
-          if (data.text) {
+          if (currentEvent === 'rag-sources' && Array.isArray(data)) {
+            ragSources = data
+          } else if (data.text) {
             fullText += data.text
           }
         } catch {
           // Skip malformed JSON
         }
+        currentEvent = ''
       }
     }
   }
 
-  return fullText
+  return { text: fullText, ragSources }
 }
 
 /**
@@ -152,7 +170,8 @@ function loadDatasets(): Dataset[] {
  */
 async function runAssertions(
   response: string,
-  assertions: Assertion[]
+  assertions: Assertion[],
+  ragSources?: RagSource[]
 ): Promise<AssertionResult[]> {
   const results: AssertionResult[] = []
 
@@ -167,7 +186,7 @@ async function runAssertions(
       })
     } else {
       // Assertions deterministas
-      results.push(runAssertion(response, assertion))
+      results.push(runAssertion(response, assertion, ragSources))
     }
   }
 
@@ -190,10 +209,10 @@ async function runDataset(dataset: Dataset): Promise<DatasetResult> {
 
     try {
       // Llamar al chat
-      const response = await callChat(test.input, test.lang, test.conversation)
+      const { text: response, ragSources } = await callChat(test.input, test.lang, test.conversation)
 
       // Ejecutar assertions
-      const assertionResults = await runAssertions(response, test.assertions)
+      const assertionResults = await runAssertions(response, test.assertions, ragSources)
       const passed = assertionResults.every((r) => r.passed)
 
       results.push({
@@ -201,6 +220,7 @@ async function runDataset(dataset: Dataset): Promise<DatasetResult> {
         description: test.description,
         input: test.input,
         response,
+        ragSources,
         assertionResults,
         passed,
       })
