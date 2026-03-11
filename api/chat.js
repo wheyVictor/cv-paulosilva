@@ -675,45 +675,81 @@ function streamResponse({
             },
           })
         } else {
-          // Real-time streaming from Claude API
-          for await (const event of stream) {
-            if (leakDetected) break
+          // Real-time streaming from Claude API (with retry)
+          const MAX_RETRIES = 1
+          let lastStreamError = null
 
-            if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-              const chunk = event.delta.text
-              fullOutput += chunk
+          for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+            try {
+              // Create fresh stream for each attempt
+              const activeStream = attempt === 0 ? stream : client.messages.stream({
+                model: 'claude-sonnet-4-6',
+                max_tokens: 800,
+                system: systemBlocks,
+                messages,
+              })
 
-              if (fullOutput.length % 200 < chunk.length || fullOutput.length < 200) {
-                if (containsFingerprint(fullOutput) || fullOutput.includes(canary)) {
-                  leakDetected = true
-                  trace?.update({
-                    tags: [...intentTags, 'prompt-leak-blocked'],
-                    metadata: { leakDetectedAt: fullOutput.length },
-                  })
-                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
-                  controller.enqueue(encoder.encode('data: [DONE]\n\n'))
-                  controller.close()
-                  waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
-                  generationSpan?.end({ metadata: { blocked: true } })
-                  if (langfuse) waitUntil(langfuse.flushAsync())
-                  return
+              for await (const event of activeStream) {
+                if (leakDetected) break
+
+                if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+                  const chunk = event.delta.text
+                  fullOutput += chunk
+
+                  if (fullOutput.length % 200 < chunk.length || fullOutput.length < 200) {
+                    if (containsFingerprint(fullOutput) || fullOutput.includes(canary)) {
+                      leakDetected = true
+                      trace?.update({
+                        tags: [...intentTags, 'prompt-leak-blocked'],
+                        metadata: { leakDetectedAt: fullOutput.length },
+                      })
+                      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
+                      controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+                      controller.close()
+                      waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED] User: ${lastUserMessage}`))
+                      generationSpan?.end({ metadata: { blocked: true } })
+                      if (langfuse) waitUntil(langfuse.flushAsync())
+                      return
+                    }
+                  }
+
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
                 }
               }
 
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
+              if (!leakDetected) {
+                const finalMessage = await activeStream.finalMessage()
+                generationSpan?.end({
+                  metadata: {
+                    outputTokens: finalMessage.usage?.output_tokens,
+                    inputTokens: finalMessage.usage?.input_tokens,
+                    latencyMs: Date.now() - t0,
+                    attempt,
+                  },
+                })
+              }
+
+              lastStreamError = null
+              break // Success — exit retry loop
+            } catch (streamErr) {
+              lastStreamError = streamErr
+              const retryTag = attempt < MAX_RETRIES ? 'retrying' : 'exhausted'
+              trace?.update({
+                tags: [...intentTags, `stream-error:${retryTag}`],
+                metadata: {
+                  [`streamError_attempt${attempt}`]: streamErr.message,
+                  [`streamErrorType_attempt${attempt}`]: streamErr.constructor?.name,
+                  elapsedMs: Date.now() - t0,
+                },
+              })
+
+              if (attempt < MAX_RETRIES) {
+                await new Promise(r => setTimeout(r, 500)) // brief pause before retry
+              }
             }
           }
 
-          if (!leakDetected) {
-            const finalMessage = await stream.finalMessage()
-            generationSpan?.end({
-              metadata: {
-                outputTokens: finalMessage.usage?.output_tokens,
-                inputTokens: finalMessage.usage?.input_tokens,
-                latencyMs: Date.now() - t0,
-              },
-            })
-          }
+          if (lastStreamError) throw lastStreamError // propagate to outer catch for fallback
         }
 
         if (!leakDetected) {
