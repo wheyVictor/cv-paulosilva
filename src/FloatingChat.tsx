@@ -312,6 +312,20 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
           }
         }
       }
+      // Fallback: if stream ended but no text was received, show error
+      if (!fullText) {
+        const errorMsg = t.error;
+        setMessages((prev) => {
+          const last = prev[prev.length - 1];
+          if (last?.role === 'assistant' && last.content === '') {
+            return [
+              ...prev.slice(0, -1),
+              { role: 'assistant', content: errorMsg },
+            ];
+          }
+          return prev;
+        });
+      }
     } catch (err) {
       const isOffline = !navigator.onLine || (err instanceof Error && err.message === 'offline');
       const errorMsg = isOffline ? t.offline : t.error;

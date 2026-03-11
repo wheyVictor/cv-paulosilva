@@ -538,6 +538,7 @@ export default async function handler(req) {
           ragUsed,
           ragMetrics,
           toolDecisionMs,
+          lang,
         })
       }
 
@@ -559,6 +560,7 @@ export default async function handler(req) {
         ragMetrics: {},
         toolDecisionMs,
         precomputedResponse: firstResponse,
+        lang,
       })
     }
 
@@ -579,6 +581,7 @@ export default async function handler(req) {
       ragUsed: false,
       ragMetrics: {},
       toolDecisionMs: 0,
+      lang,
     })
   } catch (error) {
     console.error('Chat API error:', error)
@@ -598,7 +601,7 @@ export default async function handler(req) {
 function streamResponse({
   systemBlocks, messages, tools, ragSources, ragDegraded, ragDegradedReason,
   canary, intentTags, trace, langfuse, lastUserMessage, t0,
-  ragUsed, ragMetrics, toolDecisionMs, precomputedResponse,
+  ragUsed, ragMetrics, toolDecisionMs, precomputedResponse, lang,
 }) {
   const encoder = new TextEncoder()
   let fullOutput = ''
@@ -732,7 +735,20 @@ function streamResponse({
           controller.close()
         }
       } catch (error) {
-        controller.error(error)
+        // Send error message through SSE so frontend shows it instead of blank
+        try {
+          const errorText = lang === 'en'
+            ? 'Sorry, something went wrong. Try again or reach out at hi@santifer.io.'
+            : 'Lo siento, algo ha fallado. Inténtalo de nuevo o escríbeme a hola@santifer.io.'
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: errorText, replace: true })}\n\n`))
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          controller.close()
+        } catch {
+          controller.error(error)
+        }
+        generationSpan?.end({ metadata: { error: error.message } })
+        trace?.update({ metadata: { streamingError: error.message } })
+        if (langfuse) waitUntil(langfuse.flushAsync())
       }
     },
   })
