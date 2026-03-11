@@ -115,7 +115,7 @@ async function searchDocuments(queryText, queryEmbedding) {
 // ---------------------------------------------------------------------------
 
 async function rerankChunks(query, chunks) {
-  if (chunks.length <= 3) return chunks
+  if (chunks.length <= 3) return { chunks, latencyMs: 0, rerankedOrder: null }
 
   const t0 = Date.now()
   try {
@@ -128,26 +128,55 @@ async function rerankChunks(query, chunks) {
       max_tokens: 50,
       messages: [{
         role: 'user',
-        content: `Query: "${query}"\nRank these chunks by relevance. Return ONLY the top 3 IDs as comma-separated numbers (most relevant first):\n${numbered}`,
+        content: `Query: "${query}"\nRank these chunks by relevance. Return ONLY the top 5 IDs as comma-separated numbers (most relevant first):\n${numbered}`,
       }],
     })
 
     const text = response.content[0]?.type === 'text' ? response.content[0].text : ''
     const ids = text.match(/\d+/g)?.map(Number).filter(n => n < chunks.length) || []
 
-    const reranked = ids.slice(0, 3).map(i => chunks[i])
-    // Fill up to 3 if Haiku returned fewer
-    while (reranked.length < 3 && reranked.length < chunks.length) {
-      const next = chunks.find(c => !reranked.includes(c))
-      if (next) reranked.push(next)
+    const ranked = ids.slice(0, 5).map(i => chunks[i])
+    // Fill up to 5 if Haiku returned fewer
+    while (ranked.length < 5 && ranked.length < chunks.length) {
+      const next = chunks.find(c => !ranked.includes(c))
+      if (next) ranked.push(next)
       else break
     }
 
-    return { chunks: reranked, latencyMs: Date.now() - t0, rerankedOrder: ids.slice(0, 3) }
+    // Diversify: ensure each distinct article has at least one representative
+    const diversified = diversifyByArticle(ranked)
+
+    return { chunks: diversified, latencyMs: Date.now() - t0, rerankedOrder: ids.slice(0, 5) }
   } catch {
-    // Fallback: use original order
-    return { chunks: chunks.slice(0, 3), latencyMs: Date.now() - t0, rerankedOrder: null }
+    // Fallback: use original order with diversity
+    const diversified = diversifyByArticle(chunks.slice(0, 5))
+    return { chunks: diversified, latencyMs: Date.now() - t0, rerankedOrder: null }
   }
+}
+
+/** Pick up to 5 chunks ensuring every distinct article gets at least 1 slot */
+function diversifyByArticle(ranked) {
+  const result = []
+  const seenArticles = new Set()
+
+  // Pass 1: first chunk from each distinct article (preserving rank order)
+  for (const chunk of ranked) {
+    const articleId = chunk.metadata?.article_id
+    if (!seenArticles.has(articleId)) {
+      seenArticles.add(articleId)
+      result.push(chunk)
+    }
+  }
+
+  // Pass 2: fill remaining slots with best remaining chunks (rank order)
+  for (const chunk of ranked) {
+    if (result.length >= 5) break
+    if (!result.includes(chunk)) {
+      result.push(chunk)
+    }
+  }
+
+  return result
 }
 
 // ---------------------------------------------------------------------------
