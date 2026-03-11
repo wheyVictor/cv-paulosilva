@@ -17,7 +17,7 @@ function isRagEnabled() {
 
 const PORTFOLIO_TOOL = {
   name: 'search_portfolio',
-  description: "Search Santiago's full published articles for detailed information NOT in your system prompt. The articles contain complete architectures, specific n8n node counts, LLM model names, Airtable base structures, ADRs, production prompts, pipeline details, and granular metrics. ALWAYS use this for questions about: sub-agents, workflows, Airtable bases, technical decisions, specific numbers, implementation details, or lessons learned from any project.",
+  description: "Search Santiago's published articles for project details. The system prompt only has brief summaries — this tool has the FULL content: architectures, sub-agents, workflows, Airtable structures, metrics, technical decisions, pipeline details, code patterns, and lessons learned. Use this whenever the user asks for specifics about any project.",
   input_schema: {
     type: 'object',
     properties: {
