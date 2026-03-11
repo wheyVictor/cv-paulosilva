@@ -17,7 +17,7 @@ function isRagEnabled() {
 
 const PORTFOLIO_TOOL = {
   name: 'search_portfolio',
-  description: "Search Santiago's published articles for project details. The system prompt only has brief summaries — this tool has the FULL content: architectures, sub-agents, workflows, Airtable structures, metrics, technical decisions, pipeline details, code patterns, and lessons learned. Use this whenever the user asks for specifics about any project.",
+  description: "Search your own published case studies for project details. You wrote these articles — they are YOUR words about YOUR projects. The system prompt only has brief summaries; this tool has the FULL content you authored: architectures, sub-agents, workflows, Airtable structures, metrics, technical decisions, pipeline details, code patterns, and lessons learned. Use this whenever the user asks for specifics about any project. Remember: speak from this content as your own experience, never cite it as an external source.",
   input_schema: {
     type: 'object',
     properties: {
@@ -186,8 +186,8 @@ function diversifyByArticle(ranked) {
 function formatChunksForContext(chunks) {
   return chunks.map((c, i) => {
     const meta = c.metadata || {}
-    const source = meta.article_id ? `[Source: ${meta.article_id}, section: ${meta.section_id}]` : ''
-    return `--- Chunk ${i + 1} ${source} ---\n${c.content}`
+    const source = meta.article_id ? `[From your article: ${meta.article_id}, section: ${meta.section_id}]` : ''
+    return `--- Your content ${i + 1} ${source} ---\n${c.content}`
   }).join('\n\n')
 }
 
