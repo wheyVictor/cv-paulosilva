@@ -496,7 +496,7 @@ export default async function handler(req) {
         return streamResponse({
           systemBlocks,
           messages: messagesWithTool,
-          tools: [PORTFOLIO_TOOL],
+          tools: null,
           ragSources,
           ragDegraded,
           ragDegradedReason,
