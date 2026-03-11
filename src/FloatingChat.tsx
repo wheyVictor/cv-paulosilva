@@ -65,8 +65,7 @@ function linkifyUrls(text: string): string {
   // First: fix malformed markdown links — [text](url without closing )
   let fixed = text.replace(
     /\[([^\]]+)\]\((https?:\/\/[^\s)]+)(?:\)\s*)?/g,
-    (match, label, url) => {
-      // Ensure closing paren exists; strip trailing punctuation from URL
+    (_match, label, url) => {
       const cleanUrl = url.replace(/[.,;:!?]+$/, '');
       return `[${label}](${cleanUrl})`;
     },
