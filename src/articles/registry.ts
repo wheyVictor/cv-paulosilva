@@ -17,6 +17,8 @@ export interface ArticleConfig {
   component: () => Promise<{ default: ComponentType<{ lang: 'es' | 'en' }> }>
   /** x-default hreflang slug (defaults to ES slug) */
   xDefaultSlug?: string
+  /** Whether this article is ready for RAG indexing (default: false) */
+  ragReady?: boolean
 }
 
 export const articleRegistry: ArticleConfig[] = [
@@ -59,6 +61,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
     },
     type: 'collab',
+    ragReady: true,
     ogImage: 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp',
     component: () => import('../N8nForPMs.tsx'),
   },
@@ -113,6 +116,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
     },
     type: 'case-study',
+    ragReady: true,
     ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.png',
     component: () => import('../JacoboAgent.tsx'),
   },
@@ -163,6 +167,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
     },
     type: 'case-study',
+    ragReady: true,
     ogImage: 'https://santifer.io/business-os/og-business-os.png',
     component: () => import('../BusinessOS.tsx'),
   },
@@ -229,6 +234,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
     },
     type: 'case-study',
+    ragReady: true,
     ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
     component: () => import('../ProgrammaticSeo.tsx'),
   },

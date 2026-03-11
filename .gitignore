@@ -31,3 +31,7 @@ CLAUDE.md
 backup/
 linkedin-post.md
 .env*.local
+
+# RAG
+.rag-hashes.json
+scripts/chunks/

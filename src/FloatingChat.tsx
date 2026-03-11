@@ -11,11 +11,24 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { translations } from './i18n';
+
+interface RagSource {
+  article_id: string;
+  section_id: string;
+  section_anchor: string;
+  page_path_en: string;
+  page_path_es: string;
+  article_slug_en: string;
+  article_slug_es: string;
+}
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  ragSources?: RagSource[];
+  ragDegraded?: boolean;
 }
 
 interface FloatingChatProps {
@@ -175,6 +188,9 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
     }
   }, [lang]);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const sendMessage = async (messageText?: string) => {
     const text = messageText || input.trim();
     if (!text || isLoading) return;
@@ -201,6 +217,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
           ),
           lang,
           sessionId,
+          currentPage: location.pathname,
         }),
       });
 
@@ -213,6 +230,9 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
       let buffer = '';
       let fullText = '';
+      let pendingRagSources: RagSource[] = [];
+      let pendingRagDegraded = false;
+      let currentEventType = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -226,29 +246,53 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
           const line = buffer.slice(0, newlineIndex).trim();
           buffer = buffer.slice(newlineIndex + 1);
 
+          // Parse SSE event type
+          if (line.startsWith('event: ')) {
+            currentEventType = line.slice(7);
+            continue;
+          }
+
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
               const data = JSON.parse(line.slice(6));
+
+              if (currentEventType === 'rag-sources') {
+                pendingRagSources = data as RagSource[];
+                currentEventType = '';
+                continue;
+              }
+
+              if (currentEventType === 'rag-status') {
+                pendingRagDegraded = data.status === 'degraded';
+                currentEventType = '';
+                continue;
+              }
+
+              currentEventType = '';
+
               if (data.text) {
-                // If replace flag is set (e.g. prompt leak blocked), replace all accumulated text
                 if (data.replace) {
                   fullText = data.text;
                 } else {
                   fullText += data.text;
                 }
-                // Update with accumulated text to avoid race conditions
                 const currentText = fullText;
+                const sources = pendingRagSources;
+                const degraded = pendingRagDegraded;
                 setMessages((prev) => {
                   const newMessages = [...prev];
                   newMessages[newMessages.length - 1] = {
                     role: 'assistant',
                     content: currentText,
+                    ragSources: sources.length > 0 ? sources : undefined,
+                    ragDegraded: degraded || undefined,
                   };
                   return newMessages;
                 });
               }
             } catch {
               // Skip malformed JSON
+              currentEventType = '';
             }
           }
         }
@@ -427,51 +471,94 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                     transition={{ delay: i * 0.05 }}
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div
-                      className={`max-w-[85%] px-4 py-2.5 rounded-2xl leading-relaxed ${
-                        message.role === 'user'
-                          ? 'bg-gradient-theme text-white rounded-br-md'
-                          : 'bg-muted text-foreground rounded-bl-md'
-                      } ${isMobile ? 'text-base' : 'text-sm'}`}
-                    >
-                      {message.role === 'assistant' ? (
-                        <ReactMarkdown
-                          components={{
-                            strong: ({ children }) => (
-                              <strong className="font-semibold text-primary">
-                                {children}
-                              </strong>
-                            ),
-                            p: ({ children }) => (
-                              <p className="mb-3 last:mb-0">{children}</p>
-                            ),
-                            a: ({ href, children }) => (
-                              <a
-                                href={href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary underline hover:text-primary/80 transition-colors"
+                    <div className="max-w-[85%]">
+                      {/* Degradation banner */}
+                      {message.role === 'assistant' && message.ragDegraded && (
+                        <div className={`mb-1 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 ${isMobile ? 'text-xs' : 'text-[11px]'}`}>
+                          {lang === 'en'
+                            ? 'Answering without full access to my articles.'
+                            : 'Respondiendo sin acceso completo a mis artículos.'}
+                        </div>
+                      )}
+                      <div
+                        className={`px-4 py-2.5 rounded-2xl leading-relaxed ${
+                          message.role === 'user'
+                            ? 'bg-gradient-theme text-white rounded-br-md'
+                            : 'bg-muted text-foreground rounded-bl-md'
+                        } ${isMobile ? 'text-base' : 'text-sm'}`}
+                      >
+                        {message.role === 'assistant' ? (
+                          <ReactMarkdown
+                            components={{
+                              strong: ({ children }) => (
+                                <strong className="font-semibold text-primary">
+                                  {children}
+                                </strong>
+                              ),
+                              p: ({ children }) => (
+                                <p className="mb-3 last:mb-0">{children}</p>
+                              ),
+                              a: ({ href, children }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary underline hover:text-primary/80 transition-colors"
+                                >
+                                  {children}
+                                </a>
+                              ),
+                            }}
+                            urlTransform={(url) => {
+                              // Auto-linkify emails
+                              if (url.includes('@') && !url.startsWith('mailto:')) {
+                                return `mailto:${url}`;
+                              }
+                              // Add https:// if missing
+                              if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+                                return `https://${url}`;
+                              }
+                              return url;
+                            }}
+                          >
+                            {linkifyUrls(message.content)}
+                          </ReactMarkdown>
+                        ) : (
+                          message.content
+                        )}
+                      </div>
+                      {/* RAG source badges */}
+                      {message.role === 'assistant' && message.ragSources && message.ragSources.length > 0 && !isLoading && (
+                        <div className="flex flex-wrap gap-1 mt-1.5 px-1">
+                          {message.ragSources.map((source, si) => {
+                            const articleName = source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                            const sectionName = source.section_id.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase()).trim();
+                            const isCurrentPage = location.pathname === (lang === 'es' ? source.page_path_es : source.page_path_en);
+                            const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
+
+                            return (
+                              <button
+                                key={`${source.article_id}-${source.section_id}-${si}`}
+                                onClick={() => {
+                                  if (isCurrentPage && source.section_anchor) {
+                                    // Smooth scroll on current page
+                                    const el = document.querySelector(source.section_anchor);
+                                    el?.scrollIntoView({ behavior: 'smooth' });
+                                  } else if (targetPath) {
+                                    // Navigate to article
+                                    navigate(targetPath + (source.section_anchor || ''));
+                                    setIsOpen(false);
+                                  }
+                                }}
+                                className={`bg-primary/10 text-primary border border-primary/20 rounded-full px-2.5 py-0.5 cursor-pointer hover:bg-primary/20 hover:border-primary/40 transition-colors ${
+                                  isMobile ? 'text-xs' : 'text-[10px]'
+                                }`}
                               >
-                                {children}
-                              </a>
-                            ),
-                          }}
-                          urlTransform={(url) => {
-                            // Auto-linkify emails
-                            if (url.includes('@') && !url.startsWith('mailto:')) {
-                              return `mailto:${url}`;
-                            }
-                            // Add https:// if missing
-                            if (!url.startsWith('http') && !url.startsWith('mailto:')) {
-                              return `https://${url}`;
-                            }
-                            return url;
-                          }}
-                        >
-                          {linkifyUrls(message.content)}
-                        </ReactMarkdown>
-                      ) : (
-                        message.content
+                                {articleName}{sectionName ? ` · ${sectionName}` : ''}
+                              </button>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
                   </motion.div>
