@@ -14,6 +14,7 @@ import {
 import ReactMarkdown from 'react-markdown';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { translations } from './i18n';
+import { getSectionLabels, getPageTitles } from './articles/registry';
 
 interface RagSource {
   article_id: string;
@@ -544,11 +545,13 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                       {/* RAG source badges — same style as quick prompts */}
                       {message.role === 'assistant' && message.ragSources && message.ragSources.length > 0 && !isLoading && (
                         <div className="flex flex-wrap gap-1.5 mt-2 px-1">
-                          {message.ragSources.map((source, si) => {
-                            const articleName = source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                            const sectionName = source.section_id.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase()).trim();
-                            const isCurrentPage = location.pathname === (lang === 'es' ? source.page_path_es : source.page_path_en);
+                          {message.ragSources.filter(s => s.section_anchor).map((source, si) => {
                             const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
+                            const sectionLabels = getSectionLabels()[targetPath] || {};
+                            const anchorId = source.section_anchor.replace(/^#/, '');
+                            const sectionName = sectionLabels[anchorId] || '';
+                            const articleName = getPageTitles()[targetPath] || source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                            const isCurrentPage = location.pathname === targetPath;
 
                             return (
                               <button
