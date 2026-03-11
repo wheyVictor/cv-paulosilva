@@ -113,7 +113,8 @@ export default async function handler(req) {
         if (!assistantResponse) continue
 
         const scores = await langfuse.fetchScores({ traceId: trace.id })
-        if (scores.data.some(s => s.name === 'intent_category')) continue
+        // Skip traces already scored by batch OR online scoring
+        if (scores.data.some(s => s.name === 'intent_category' || s.name === 'quality')) continue
 
         const prompt = EVALUATOR_PROMPT
           .replace('{user_message}', userMessage)
@@ -170,11 +171,25 @@ export default async function handler(req) {
       await sendAlertEmail(resend, alerts)
     }
 
+    // Count low-quality traces (quality < 0.7) for monitoring
+    // Actual test generation happens locally: npm run evaluate-traces -- --auto-generate
+    let lowQualityCount = 0
+    for (const trace of recentTraces) {
+      try {
+        const traceScores = await langfuse.fetchScores({ traceId: trace.id })
+        const qualityScore = traceScores.data.find(s => s.name === 'quality' || s.name === 'response_quality')
+        if (qualityScore && typeof qualityScore.value === 'number' && qualityScore.value < 0.7) {
+          lowQualityCount++
+        }
+      } catch { /* skip */ }
+    }
+
     return Response.json({
       success: true,
       ...results,
       tracesChecked: recentTraces.length,
       alertsSent: alerts.length,
+      lowQualityTraces: lowQualityCount,
     })
   } catch (error) {
     return Response.json({ success: false, error: error.message }, { status: 500 })

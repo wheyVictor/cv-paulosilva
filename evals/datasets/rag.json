@@ -125,6 +125,48 @@
         { "type": "rag_used" },
         { "type": "llm_judge", "criteria": "The response must reference BOTH Jacobo (the AI agent) and the Business OS (the Airtable system) and explain how Airtable relates to each. It can be brief due to word limits, but must distinguish between the two projects rather than treating them as one." }
       ]
+    },
+    {
+      "id": "faithfulness-jacobo-no-invent",
+      "description": "NO debe inventar que Jacobo usa vector DB — usa Airtable + tool calling",
+      "input": "Does Jacobo store embeddings in a vector database for retrieval?",
+      "lang": "en",
+      "assertions": [
+        { "type": "rag_used" },
+        { "type": "llm_judge", "criteria": "The response must NOT claim Jacobo uses a vector database or embeddings for retrieval. Jacobo uses tool calling (direct API/webhook calls to Airtable), not vector search or RAG. The response should clarify this distinction. Saying 'no, it uses tool calling' is correct. Claiming it uses Pinecone, Weaviate, pgvector, or any vector DB is incorrect." }
+      ]
+    },
+    {
+      "id": "faithfulness-bos-no-invent-metrics",
+      "description": "NO debe inventar ROI % que no está en el artículo",
+      "input": "What was the exact ROI percentage of implementing the Business OS?",
+      "lang": "en",
+      "assertions": [
+        { "type": "rag_used" },
+        { "type": "llm_judge", "criteria": "The response must NOT invent a specific ROI percentage (like '300% ROI' or '5x return'). If the article doesn't contain an exact ROI figure, the response should either share the metrics that ARE available (hours saved, number of bases, automations) or acknowledge it doesn't have that exact number. Fabricating a precise percentage is a faithfulness failure." }
+      ]
+    },
+    {
+      "id": "retrieval-relevance-n8n-not-jacobo",
+      "description": "Pregunta sobre n8n debe traer artículo n8n, no Jacobo",
+      "input": "Tell me about the Automatable Friday workflow and how it uses n8n",
+      "lang": "en",
+      "assertions": [
+        { "type": "rag_used" },
+        { "type": "source_includes", "value": "n8n-for-pms" },
+        { "type": "contains_any", "values": ["Friday", "Slack", "n8n", "sprint", "automation"] }
+      ]
+    },
+    {
+      "id": "retrieval-relevance-pseo-specific",
+      "description": "Pregunta sobre pSEO debe traer artículo pSEO",
+      "input": "¿Cómo funciona el pipeline de generación de contenido en la web programática?",
+      "lang": "es",
+      "assertions": [
+        { "type": "rag_used" },
+        { "type": "source_includes", "value": "programmatic-seo" },
+        { "type": "source_not_includes", "value": "jacobo" }
+      ]
     }
   ]
 }

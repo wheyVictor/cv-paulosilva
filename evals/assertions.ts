@@ -237,6 +237,13 @@ export function runAssertion(
         : `Sources do not include "${assertion.value}" (got: ${ragSources?.map(s => s.article_id).join(', ') || 'none'})`
       break
 
+    case 'source_not_includes':
+      passed = !ragSources?.some(s => s.article_id === assertion.value) ?? true
+      reason = passed
+        ? `Sources do not include "${assertion.value}" (correct)`
+        : `Sources unexpectedly include "${assertion.value}"`
+      break
+
     case 'llm_judge':
       // LLM judge se maneja en llm-judge.ts
       passed = true // Placeholder, se sobrescribe

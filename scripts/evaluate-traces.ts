@@ -18,6 +18,8 @@ import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env.local' })
 import Anthropic from '@anthropic-ai/sdk'
 import { Langfuse } from 'langfuse'
+import * as fs from 'fs'
+import * as path from 'path'
 
 const langfuse = new Langfuse({
   publicKey: process.env.LANGFUSE_PUBLIC_KEY!,
@@ -121,9 +123,100 @@ async function evaluateTrace(userMessage: string, assistantResponse: string): Pr
   return JSON.parse(jsonMatch[0])
 }
 
+// ---------------------------------------------------------------------------
+// Trace-to-Eval: auto-generate test cases from low-quality traces (Block 7)
+// ---------------------------------------------------------------------------
+
+interface AutoTestCase {
+  id: string
+  description: string
+  input: string
+  lang: 'es' | 'en'
+  assertions: Array<{ type: string; criteria?: string; value?: string }>
+  generated_from_trace: string
+}
+
+async function generateTestCases(traces: Array<{ id: string; metadata: Record<string, unknown> }>) {
+  const autoGenPath = path.join(import.meta.dirname, '..', 'evals', 'datasets', 'auto-generated.json')
+
+  // Load existing auto-generated tests
+  let existing: { name: string; description: string; tests: AutoTestCase[] } = {
+    name: 'auto_generated',
+    description: 'Tests auto-generados desde traces con quality < 0.7 (revisar antes de promover)',
+    tests: [],
+  }
+  if (fs.existsSync(autoGenPath)) {
+    existing = JSON.parse(fs.readFileSync(autoGenPath, 'utf-8'))
+  }
+
+  // Filter already-generated trace IDs
+  const existingTraceIds = new Set(existing.tests.map(t => t.generated_from_trace))
+  const newTraces = traces.filter(t => !existingTraceIds.has(t.id))
+
+  if (newTraces.length === 0) {
+    console.log('\n🔄 Trace-to-Eval: No new low-quality traces to generate tests from\n')
+    return
+  }
+
+  console.log(`\n🔄 Trace-to-Eval: Generating tests from ${Math.min(newTraces.length, 5)} low-quality traces...\n`)
+
+  let generated = 0
+  for (const trace of newTraces.slice(0, 5)) {
+    try {
+      const userMessage = trace.metadata?.lastUserMessage as string
+      if (!userMessage) continue
+
+      const lang = (trace.metadata?.lang as string) === 'en' ? 'en' : 'es'
+
+      const response = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 400,
+        messages: [{
+          role: 'user',
+          content: `Generate a test case for a CV chatbot eval suite. The chatbot represents Santiago Fernández (AI Product Manager).
+
+This user message received a low quality score:
+"${userMessage.slice(0, 300)}"
+
+Language: ${lang}
+
+Create a test case that would catch this quality issue. Respond with JSON only:
+{
+  "id": "auto-descriptive-id",
+  "description": "What this test validates",
+  "input": "The user message to test (can be same or similar)",
+  "assertions": [
+    {"type": "llm_judge", "criteria": "What the response should do correctly"}
+  ]
+}`
+        }],
+      })
+
+      const text = response.content[0]?.type === 'text' ? response.content[0].text : ''
+      const jsonMatch = text.match(/\{[\s\S]*\}/)
+      if (!jsonMatch) continue
+
+      const testCase = JSON.parse(jsonMatch[0]) as AutoTestCase
+      testCase.lang = lang
+      testCase.generated_from_trace = trace.id
+
+      existing.tests.push(testCase)
+      generated++
+      console.log(`   ✅ Generated: ${testCase.id}`)
+    } catch (error) {
+      console.log(`   ❌ Error: ${error instanceof Error ? error.message : 'Unknown'}`)
+    }
+  }
+
+  fs.writeFileSync(autoGenPath, JSON.stringify(existing, null, 2) + '\n')
+  console.log(`\n   💾 Saved ${generated} new test(s) to evals/datasets/auto-generated.json`)
+  console.log(`   📝 Review and promote good tests to curated datasets\n`)
+}
+
 async function main() {
   const hoursArg = process.argv.find(arg => arg.startsWith('--hours='))
   const hours = hoursArg ? parseInt(hoursArg.split('=')[1]) : 24
+  const autoGenerate = process.argv.includes('--auto-generate')
 
   const since = new Date(Date.now() - hours * 60 * 60 * 1000)
 
@@ -208,6 +301,27 @@ async function main() {
   console.log(`   Jailbreaks: ${jailbreaks}`)
   console.log(`   Errors: ${errors}`)
   console.log(`\n💡 View results in Langfuse Dashboard → Traces → Filter by scores\n`)
+
+  // Trace-to-Eval: auto-generate test cases from low-quality traces (Block 7)
+  if (autoGenerate) {
+    // Find traces with online quality score < 0.7
+    const lowQualityTraces = []
+    for (const trace of recentTraces) {
+      try {
+        const scores = await langfuse.fetchScores({ traceId: trace.id })
+        const qualityScore = scores.data.find(s => s.name === 'quality')
+        if (qualityScore && typeof qualityScore.value === 'number' && qualityScore.value < 0.7) {
+          lowQualityTraces.push(trace)
+        }
+      } catch { /* skip */ }
+    }
+
+    if (lowQualityTraces.length > 0) {
+      await generateTestCases(lowQualityTraces)
+    } else {
+      console.log('\n🔄 Trace-to-Eval: No low-quality traces found (all quality >= 0.7)\n')
+    }
+  }
 }
 
 main().catch(console.error)
