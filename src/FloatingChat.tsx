@@ -62,6 +62,13 @@ function useIsMobile() {
   return isMobile;
 }
 
+/** Auto-close unclosed bold markers for progressive markdown rendering during streaming */
+function autoCloseMarkdown(text: string): string {
+  const boldCount = (text.match(/\*\*/g) || []).length;
+  if (boldCount % 2 === 1) text += '**';
+  return text;
+}
+
 /** Convert bare URLs in text to markdown links so ReactMarkdown renders them */
 function linkifyUrls(text: string): string {
   // First: fix malformed markdown links — [text](url without closing )
@@ -653,7 +660,11 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                               return url;
                             }}
                           >
-                            {linkifyUrls(message.content)}
+                            {linkifyUrls(
+                              isStreaming && i === messages.length - 1
+                                ? autoCloseMarkdown(message.content)
+                                : message.content
+                            )}
                           </ReactMarkdown>
                         ) : (
                           message.content
