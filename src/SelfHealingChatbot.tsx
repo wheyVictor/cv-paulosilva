@@ -129,6 +129,15 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         readingTime={t.readingTime}
       />
 
+      <img
+        src="/chatbot/hero-self-healing-chatbot.webp"
+        alt={t.header.h1}
+        className="w-full rounded-2xl mb-8"
+        width={1400}
+        height={782}
+        fetchPriority="high"
+      />
+
       <StatusBadge text={t.header.badge} />
       <MetricsGrid items={t.heroMetrics} columns={4} compact />
       <Callout className="bg-accent/10 border-accent/40">{t.tldr}</Callout>
