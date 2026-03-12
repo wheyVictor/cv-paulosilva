@@ -384,6 +384,19 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/* ================================================================ */}
         <FaqSection heading={t.faq.heading} items={t.faq.items} />
 
+        {/* Easter egg */}
+        <details className="mx-auto mt-12 max-w-xs cursor-pointer text-center text-sm text-muted-foreground">
+          <summary className="select-none hover:text-foreground transition-colors">
+            {lang === 'es' ? '¿Escuchaste eso?' : 'Did you hear that?'}
+          </summary>
+          <img
+            src="/chatbot/yo-dawg-rag.jpg"
+            alt="Yo Dawg, I heard you like RAG, so I put RAG in my chat so it can RAG while you RAG"
+            className="mt-4 rounded-lg"
+            loading="lazy"
+          />
+        </details>
+
         {/* ================================================================ */}
         {/*  CTA                                                             */}
         {/* ================================================================ */}
