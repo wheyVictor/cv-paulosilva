@@ -168,9 +168,13 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         <Callout>{s.evolution.callout}</Callout>
 
         <H3>{s.evolution.beforeAfter.heading}</H3>
-        <DataTable
-          headers={[...s.evolution.beforeAfter.headers]}
-          rows={s.evolution.beforeAfter.rows.map(r => [...r])}
+        <img
+          src="/chatbot/diagram-before-after.webp"
+          alt={lang === 'es' ? 'Día 1 vs Hoy: 80 líneas → sistema completo, 0 capas → 6, 0 tests → 56, sin observabilidad → Langfuse full stack' : 'Day 1 vs Today: 80 lines → full system, 0 layers → 6, 0 tests → 56, no observability → Langfuse full stack'}
+          className="w-full rounded-xl my-8"
+          width={1400}
+          height={782}
+          loading="lazy"
         />
 
         {/* ================================================================ */}
@@ -192,6 +196,14 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         }))} />
 
         <H3>{s.architecture.lifecycleHeading}</H3>
+        <img
+          src="/chatbot/diagram-request-lifecycle.webp"
+          alt={lang === 'es' ? 'Request lifecycle: Message → Decide (Sonnet) → Search (pgvector) → Rerank (Haiku) → Generate (Sonnet) → Score (Haiku, 0ms added)' : 'Request lifecycle: Message → Decide (Sonnet) → Search (pgvector) → Rerank (Haiku) → Generate (Sonnet) → Score (Haiku, 0ms added)'}
+          className="w-full rounded-xl my-8"
+          width={1400}
+          height={594}
+          loading="lazy"
+        />
         <DataTable
           headers={[...s.architecture.lifecycle.headers]}
           rows={s.architecture.lifecycle.rows.map(r => [...r])}
@@ -248,6 +260,14 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/*  DEFENSE                                                         */}
         {/* ================================================================ */}
         <H2 id="defense">{s.defense.heading}</H2>
+        <img
+          src="/chatbot/diagram-defense-layers.webp"
+          alt={lang === 'es' ? '6 capas de defensa: Keywords (40+ patrones) → Canary Tokens (UUID trap) → Fingerprinting (12 frases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (ataques evolutivos)' : '6 defense layers: Keywords (40+ patterns) → Canary Tokens (UUID trap) → Fingerprinting (12 phrases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (evolving attacks)'}
+          className="w-full max-w-sm mx-auto rounded-xl my-8"
+          width={1400}
+          height={1875}
+          loading="lazy"
+        />
         <CardStack items={s.defense.layers.map(l => ({
           title: l.title,
           detail: l.detail,
@@ -270,6 +290,15 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         <DataTable
           headers={[...s.evals.table.headers]}
           rows={s.evals.table.rows.map(r => [...r])}
+        />
+
+        <img
+          src="/chatbot/diagram-evals-donut.webp"
+          alt={lang === 'es' ? '56 tests: RAG 17 (30.35%), Factual 9 (16.07%), Boundaries 7, Quality 7, Safety 7 (12.5% cada), Language 5 (8.93%), Persona 4 (7.14%)' : '56 tests: RAG 17 (30.35%), Factual 9 (16.07%), Boundaries 7, Quality 7, Safety 7 (12.5% each), Language 5 (8.93%), Persona 4 (7.14%)'}
+          className="w-full max-w-md mx-auto rounded-xl my-8"
+          width={1400}
+          height={1400}
+          loading="lazy"
         />
 
         <H3>{s.evals.assertionTypes.heading}</H3>
