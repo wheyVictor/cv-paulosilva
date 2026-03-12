@@ -1964,13 +1964,23 @@ function App() {
                     {parseBold(project.desc)}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((tech) => (
-                      <span key={tech} className={`px-2 py-1 rounded-md text-xs ${
-                        isTool
-                          ? 'bg-tool/10 text-tool'
-                          : 'bg-muted text-muted-foreground'
-                      }`}>{tech}</span>
-                    ))}
+                    {project.tech.map((tech) => {
+                      const icon = getTechIcon(tech)
+                      return (
+                        <span key={tech} className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs ${
+                          isTool
+                            ? 'bg-tool/10 text-tool'
+                            : 'bg-muted text-muted-foreground'
+                        }`}>
+                          {icon && (
+                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill={icon.color} aria-hidden="true">
+                              <path d={icon.path} />
+                            </svg>
+                          )}
+                          {tech}
+                        </span>
+                      )
+                    })}
                   </div>
                   <div className="flex items-center gap-4 mt-auto">
                     {project.link && (
