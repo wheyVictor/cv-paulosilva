@@ -268,7 +268,17 @@ function filterSourcesByResponse(sources, responseText) {
   }).slice(0, 3)
 }
 
-// Fallback source when response comes from system prompt (CV), not RAG
+// Static article routes — used to generate badges from keywords regardless of RAG
+const ARTICLE_ROUTES = {
+  'n8n-for-pms':          { page_path_es: '/n8n-para-pms', page_path_en: '/n8n-for-pms' },
+  'jacobo':               { page_path_es: '/ai-agent-jacobo', page_path_en: '/ai-agent-jacobo' },
+  'business-os':          { page_path_es: '/business-os', page_path_en: '/business-os' },
+  'programmatic-seo':     { page_path_es: '/seo-programatico', page_path_en: '/programmatic-seo' },
+  'self-healing-chatbot': { page_path_es: '/self-healing-chatbot', page_path_en: '/self-healing-chatbot' },
+  'santifer-irepair':     { page_path_es: '/santifer-irepair', page_path_en: '/santifer-irepair-founder' },
+}
+
+// Home fallback
 const HOME_SOURCE = {
   article_id: 'home',
   section_id: 'portfolio',
@@ -277,6 +287,30 @@ const HOME_SOURCE = {
   page_path_es: '/',
   article_slug_en: 'en',
   article_slug_es: '',
+}
+
+/** Detect articles mentioned in response text and generate source badges */
+function detectMentionedArticles(responseText) {
+  if (!responseText) return []
+  const lower = responseText.toLowerCase()
+  const sources = []
+  for (const [articleId, keywords] of Object.entries(ARTICLE_KEYWORDS)) {
+    if (keywords.some(kw => lower.includes(kw))) {
+      const routes = ARTICLE_ROUTES[articleId]
+      if (routes) {
+        sources.push({
+          article_id: articleId,
+          section_id: 'main',
+          section_anchor: '',
+          page_path_es: routes.page_path_es,
+          page_path_en: routes.page_path_en,
+          article_slug_es: routes.page_path_es.slice(1),
+          article_slug_en: routes.page_path_en.slice(1),
+        })
+      }
+    }
+  }
+  return sources.slice(0, 3)
 }
 
 // ---------------------------------------------------------------------------
@@ -916,12 +950,22 @@ function streamResponse({
           }
 
           // Send source badges AFTER response
-          // RAG sources: filtered to only articles actually mentioned
-          // No RAG: fallback to home page badge (info came from system prompt / CV)
-          let finalSources = []
-          if (ragSources.length > 0) {
-            finalSources = filterSourcesByResponse(ragSources, fullOutput)
+          // 1. Start with RAG sources filtered to mentioned articles (deep-links to sections)
+          // 2. Add keyword-detected articles not already covered by RAG (links to article root)
+          // 3. Fallback to home page if nothing else matched
+          let finalSources = ragSources.length > 0
+            ? filterSourcesByResponse(ragSources, fullOutput)
+            : []
+
+          // Enrich with keyword-detected articles not already in RAG sources
+          const ragArticleIds = new Set(finalSources.map(s => s.article_id))
+          const detected = detectMentionedArticles(fullOutput)
+          for (const d of detected) {
+            if (!ragArticleIds.has(d.article_id) && finalSources.length < 3) {
+              finalSources.push(d)
+            }
           }
+
           if (finalSources.length === 0) {
             finalSources = [HOME_SOURCE]
           }
