@@ -273,7 +273,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
         setIsStreaming(false);
       }
       // pos === full.length but stream active — wait for more text
-    }, 40);
+    }, 180);
   };
 
   const sendMessage = async (messageText?: string) => {
