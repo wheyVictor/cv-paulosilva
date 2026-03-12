@@ -55,7 +55,7 @@ AI-augmented SDLC: design with clear constraints and threat modeling, implement 
 ## Tech Stack
 
 ### AI/LLM
-- Claude (Anthropic) - API integration, Claude Code power user
+- Claude (Anthropic) - API integration, Claude Code power user (multi-agent orchestration: 5+ agents in parallel via tmux, inter-agent IPC via JSON, pre-compact memory persistence with Haiku, custom reusable skills)
 - OpenAI - Custom GPTs, tool use via OpenAPI
 - ElevenLabs - Voice AI integration
 
@@ -151,8 +151,11 @@ Claude Code meta-project for professional web development. Custom skills, templa
 ### ProjectOS Predict (Maven Capstone)
 Risk prediction dashboard for project portfolios. ML model trained on synthetic data flags delays before they happen. Second capstone from Maven AI PM bootcamp (Marily Nika).
 
+### AI Solutions Playbook (Private · On Request)
+Productivity system for Solutions Architects working with multiple DTC clients. Context switching from 30min to 30sec, automatic guardrails for production operations, auto-generated SESSION_BRIEF on project open, ADRs and complete operation logging.
+
 ### santifer.io (This Portfolio)
-Interactive CV with integrated AI chat. The chatbot answers questions about experience and skills with real-time streaming.
+Interactive CV with self-healing AI chatbot. RAG pipeline (Supabase pgvector + OpenAI embeddings + Haiku reranking), 6-layer jailbreak defense (50+ keyword patterns, canary tokens, fingerprinting, anti-extract, real-time safety scoring, adversarial red team), 56 automated evals with CI gate, closed-loop improvement (trace-to-eval, adversarial testing, prompt versioning via Langfuse). Batch eval with Sonnet scores intent, quality, safety and jailbreak detection; alerts via Resend. <$0.005/conversation, $0 infrastructure.
 
 ## Lightning Session: n8n for Product Managers (Maven, Feb 2026)
 
@@ -171,6 +174,20 @@ Session taught at AI Product Academy (Maven, Marily Nika). Full material: https:
 **Key lessons:** Automate the boring task first. Your database already has 90% of the data. Automate the trigger, not just the task. Start with one workflow running reliably.
 
 Both workflows are downloadable as importable JSON from the cheat sheet.
+
+## Speaking & Teaching
+
+### AI Fluency Educator
+Certified by Anthropic to teach teams and organizations AI adoption. 4D Framework: Delegation (decide what to delegate), Description (communicate it well), Discernment (evaluate outputs), Diligence (collaborate responsibly). Applied as Teaching Fellow at Maven AI PM Bootcamp.
+
+### Teaching Fellow (2026) — Maven AI PM Bootcamp (Marily Nika)
+Teaching AI product managers to build and ship — not just define.
+
+### No-Code: The AI PM's Secret Weapon (2025) — Maven AI PM Bootcamp
+1h community session on no-code (Zapier, Make, n8n, Airtable) as the AI PM's superpower for faster validation and delivery.
+
+### Hiperautomatiza tu Pyme (2025) — Local Entrepreneurs, Seville
+Workshop on hyperautomation for SMEs: orchestration, RPA, AI and governance. Case study: Santifer iRepair.
 
 ## LinkedIn (Technical Content with Real Engagement)
 
