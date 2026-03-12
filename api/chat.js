@@ -227,13 +227,13 @@ function formatChunksForContext(chunks) {
 }
 
 function extractSources(chunks) {
-  const seen = new Set()
+  const seenArticles = new Set()
   const sources = []
   for (const c of chunks) {
     const meta = c.metadata || {}
-    const key = `${meta.article_id}:${meta.section_id}`
-    if (seen.has(key)) continue
-    seen.add(key)
+    // One badge per article — keep the highest-ranked section (first occurrence)
+    if (seenArticles.has(meta.article_id)) continue
+    seenArticles.add(meta.article_id)
     sources.push({
       article_id: meta.article_id,
       section_id: meta.section_id,
@@ -257,7 +257,7 @@ const ARTICLE_KEYWORDS = {
   'santifer-irepair':     ['santifer irepair', 'irepair', 'repair business', 'taller de reparación'],
 }
 
-/** Filter RAG sources to only those whose article is actually mentioned in the response */
+/** Filter RAG sources to only articles actually mentioned in the response, max 3 */
 function filterSourcesByResponse(sources, responseText) {
   if (!responseText || sources.length === 0) return sources
   const lower = responseText.toLowerCase()
@@ -265,7 +265,7 @@ function filterSourcesByResponse(sources, responseText) {
     const keywords = ARTICLE_KEYWORDS[s.article_id]
     if (!keywords) return true // unknown article — keep it
     return keywords.some(kw => lower.includes(kw))
-  })
+  }).slice(0, 3)
 }
 
 // ---------------------------------------------------------------------------
