@@ -273,7 +273,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
         setIsStreaming(false);
       }
       // pos === full.length but stream active — wait for more text
-    }, 20);
+    }, 40);
   };
 
   const sendMessage = async (messageText?: string) => {
@@ -624,45 +624,41 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                         aria-busy={isStreaming && i === messages.length - 1 && message.role === 'assistant' ? true : undefined}
                       >
                         {message.role === 'assistant' ? (
-                          isStreaming && i === messages.length - 1 ? (
-                            <span className="whitespace-pre-wrap">{message.content}</span>
-                          ) : (
-                            <ReactMarkdown
-                              components={{
-                                strong: ({ children }) => (
-                                  <strong className="font-semibold text-primary">
-                                    {children}
-                                  </strong>
-                                ),
-                                p: ({ children }) => (
-                                  <p className="mb-3 last:mb-0">{children}</p>
-                                ),
-                                a: ({ href, children }) => (
-                                  <a
-                                    href={href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary underline hover:text-primary/80 transition-colors"
-                                  >
-                                    {children}
-                                  </a>
-                                ),
-                              }}
-                              urlTransform={(url) => {
-                                // Auto-linkify emails
-                                if (url.includes('@') && !url.startsWith('mailto:')) {
-                                  return `mailto:${url}`;
-                                }
-                                // Add https:// if missing
-                                if (!url.startsWith('http') && !url.startsWith('mailto:')) {
-                                  return `https://${url}`;
-                                }
-                                return url;
-                              }}
-                            >
-                              {linkifyUrls(message.content)}
-                            </ReactMarkdown>
-                          )
+                          <ReactMarkdown
+                            components={{
+                              strong: ({ children }) => (
+                                <strong className="font-semibold text-primary">
+                                  {children}
+                                </strong>
+                              ),
+                              p: ({ children }) => (
+                                <p className="mb-3 last:mb-0">{children}</p>
+                              ),
+                              a: ({ href, children }) => (
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary underline hover:text-primary/80 transition-colors"
+                                >
+                                  {children}
+                                </a>
+                              ),
+                            }}
+                            urlTransform={(url) => {
+                              // Auto-linkify emails
+                              if (url.includes('@') && !url.startsWith('mailto:')) {
+                                return `mailto:${url}`;
+                              }
+                              // Add https:// if missing
+                              if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+                                return `https://${url}`;
+                              }
+                              return url;
+                            }}
+                          >
+                            {linkifyUrls(message.content)}
+                          </ReactMarkdown>
                         ) : (
                           message.content
                         )}
