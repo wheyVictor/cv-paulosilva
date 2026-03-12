@@ -749,11 +749,20 @@ function streamResponse({
 
           fullOutput = precomputedText
 
-          const CHUNK_SIZE = 30
-          for (let i = 0; i < precomputedText.length; i += CHUNK_SIZE) {
-            const piece = precomputedText.slice(i, i + CHUNK_SIZE)
+          // Word-aware drip: send 2-4 words at a time with natural timing
+          const words = precomputedText.match(/\S+\s*/g) || [precomputedText]
+          let wi = 0
+          while (wi < words.length) {
+            const groupSize = 2 + Math.floor(Math.random() * 3) // 2-4 words
+            const piece = words.slice(wi, wi + groupSize).join('')
+            wi += groupSize
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: piece })}\n\n`))
-            await new Promise(r => setTimeout(r, 20))
+            // Pause longer after sentence-ending punctuation
+            const endsWithPunct = /[.!?]\s*$/.test(piece)
+            const delay = endsWithPunct
+              ? 40 + Math.floor(Math.random() * 21)   // 40-60ms
+              : 15 + Math.floor(Math.random() * 21)   // 15-35ms
+            await new Promise(r => setTimeout(r, delay))
           }
 
           const pcIn = precomputedResponse.usage?.input_tokens || 0

@@ -121,11 +121,20 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const [messages, setMessages] = useState<Message[]>(session.messages);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [showPrompts, setShowPrompts] = useState(session.showPrompts);
   const [sessionId] = useState(session.sessionId);
     const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Word buffer refs for natural word-by-word streaming
+  const wordBufferRef = useRef<string[]>([]);
+  const renderedTextRef = useRef('');
+  const isStreamingRef = useRef(false);
+  const drainTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pendingRagSourcesRef = useRef<RagSource[]>([]);
+  const pendingRagDegradedRef = useRef(false);
 
   const isMobile = useIsMobile();
 
@@ -136,14 +145,21 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
   const userMessageCount = messages.filter((m) => m.role === 'user').length;
 
+  // Cleanup drain timer on unmount
+  useEffect(() => {
+    return () => {
+      if (drainTimerRef.current) clearInterval(drainTimerRef.current);
+    };
+  }, []);
+
   // Scroll automático: instantáneo durante streaming, suave después
   useEffect(() => {
     if (!isOpen) return;
     messagesEndRef.current?.scrollIntoView({
-      behavior: isLoading ? 'instant' : 'smooth',
+      behavior: isLoading || isStreaming ? 'instant' : 'smooth',
       block: 'end'
     });
-  }, [messages, isLoading, isOpen]);
+  }, [messages, isLoading, isStreaming, isOpen]);
 
   // Focus en input al abrir
   useEffect(() => {
@@ -206,6 +222,38 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  /** Drain word buffer one word at a time into rendered text */
+  const startDrain = () => {
+    if (drainTimerRef.current) return; // already draining
+    drainTimerRef.current = setInterval(() => {
+      if (wordBufferRef.current.length > 0) {
+        const word = wordBufferRef.current.shift()!;
+        renderedTextRef.current += word;
+        const currentText = renderedTextRef.current;
+        const sources = pendingRagSourcesRef.current;
+        const degraded = pendingRagDegradedRef.current;
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = {
+            role: 'assistant',
+            content: currentText,
+            ragSources: sources.length > 0 ? sources : undefined,
+            ragDegraded: degraded || undefined,
+          };
+          return newMessages;
+        });
+      } else if (!isStreamingRef.current) {
+        // Buffer empty and stream done — stop draining
+        if (drainTimerRef.current) {
+          clearInterval(drainTimerRef.current);
+          drainTimerRef.current = null;
+        }
+        setIsStreaming(false);
+      }
+      // Buffer empty but stream still active — no-op, wait for more words
+    }, 30);
+  };
+
   const sendMessage = async (messageText?: string) => {
     const text = messageText || input.trim();
     if (!text || isLoading) return;
@@ -214,6 +262,17 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
     setShowPrompts(false);
     setMessages((prev) => [...prev, { role: 'user', content: text }]);
     setIsLoading(true);
+
+    // Reset word buffer state
+    wordBufferRef.current = [];
+    renderedTextRef.current = '';
+    isStreamingRef.current = false;
+    pendingRagSourcesRef.current = [];
+    pendingRagDegradedRef.current = false;
+    if (drainTimerRef.current) {
+      clearInterval(drainTimerRef.current);
+      drainTimerRef.current = null;
+    }
 
     // Add empty assistant message BEFORE fetch so loading indicator shows
     setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
@@ -245,8 +304,6 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
       let buffer = '';
       let fullText = '';
-      let pendingRagSources: RagSource[] = [];
-      let pendingRagDegraded = false;
       let currentEventType = '';
 
       while (true) {
@@ -272,13 +329,13 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
               const data = JSON.parse(line.slice(6));
 
               if (currentEventType === 'rag-sources') {
-                pendingRagSources = data as RagSource[];
+                pendingRagSourcesRef.current = data as RagSource[];
                 currentEventType = '';
                 continue;
               }
 
               if (currentEventType === 'rag-status') {
-                pendingRagDegraded = data.status === 'degraded';
+                pendingRagDegradedRef.current = data.status === 'degraded';
                 currentEventType = '';
                 continue;
               }
@@ -287,23 +344,35 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
               if (data.text) {
                 if (data.replace) {
+                  // Leak blocked — bypass buffer, render immediately
                   fullText = data.text;
+                  wordBufferRef.current = [];
+                  renderedTextRef.current = data.text;
+                  const sources = pendingRagSourcesRef.current;
+                  const degraded = pendingRagDegradedRef.current;
+                  setMessages((prev) => {
+                    const newMessages = [...prev];
+                    newMessages[newMessages.length - 1] = {
+                      role: 'assistant',
+                      content: data.text,
+                      ragSources: sources.length > 0 ? sources : undefined,
+                      ragDegraded: degraded || undefined,
+                    };
+                    return newMessages;
+                  });
                 } else {
+                  // First chunk — activate streaming
+                  if (!isStreamingRef.current) {
+                    isStreamingRef.current = true;
+                    setIsStreaming(true);
+                  }
+
                   fullText += data.text;
+                  // Split into words preserving trailing whitespace
+                  const words = data.text.match(/\S+\s*/g) || [];
+                  wordBufferRef.current.push(...words);
+                  startDrain();
                 }
-                const currentText = fullText;
-                const sources = pendingRagSources;
-                const degraded = pendingRagDegraded;
-                setMessages((prev) => {
-                  const newMessages = [...prev];
-                  newMessages[newMessages.length - 1] = {
-                    role: 'assistant',
-                    content: currentText,
-                    ragSources: sources.length > 0 ? sources : undefined,
-                    ragDegraded: degraded || undefined,
-                  };
-                  return newMessages;
-                });
               }
             } catch {
               // Skip malformed JSON
@@ -312,6 +381,10 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
           }
         }
       }
+
+      // Stream ended — signal drain to flush remaining words
+      isStreamingRef.current = false;
+
       // Fallback: if stream ended but no text was received, show error
       if (!fullText) {
         const errorMsg = t.error;
@@ -329,6 +402,14 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
     } catch (err) {
       const isOffline = !navigator.onLine || (err instanceof Error && err.message === 'offline');
       const errorMsg = isOffline ? t.offline : t.error;
+      // Clear buffer on error
+      wordBufferRef.current = [];
+      if (drainTimerRef.current) {
+        clearInterval(drainTimerRef.current);
+        drainTimerRef.current = null;
+      }
+      setIsStreaming(false);
+      isStreamingRef.current = false;
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === 'assistant' && last.content === '') {
@@ -514,44 +595,52 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                           message.role === 'user'
                             ? 'bg-gradient-theme text-white rounded-br-md'
                             : 'bg-muted text-foreground rounded-bl-md'
-                        } ${isMobile ? 'text-base' : 'text-sm'}`}
+                        } ${isMobile ? 'text-base' : 'text-sm'} ${
+                          isStreaming && i === messages.length - 1 && message.role === 'assistant'
+                            ? 'streaming-cursor'
+                            : ''
+                        }`}
                       >
                         {message.role === 'assistant' ? (
-                          <ReactMarkdown
-                            components={{
-                              strong: ({ children }) => (
-                                <strong className="font-semibold text-primary">
-                                  {children}
-                                </strong>
-                              ),
-                              p: ({ children }) => (
-                                <p className="mb-3 last:mb-0">{children}</p>
-                              ),
-                              a: ({ href, children }) => (
-                                <a
-                                  href={href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary underline hover:text-primary/80 transition-colors"
-                                >
-                                  {children}
-                                </a>
-                              ),
-                            }}
-                            urlTransform={(url) => {
-                              // Auto-linkify emails
-                              if (url.includes('@') && !url.startsWith('mailto:')) {
-                                return `mailto:${url}`;
-                              }
-                              // Add https:// if missing
-                              if (!url.startsWith('http') && !url.startsWith('mailto:')) {
-                                return `https://${url}`;
-                              }
-                              return url;
-                            }}
-                          >
-                            {linkifyUrls(message.content)}
-                          </ReactMarkdown>
+                          isStreaming && i === messages.length - 1 ? (
+                            <span className="whitespace-pre-wrap">{message.content}</span>
+                          ) : (
+                            <ReactMarkdown
+                              components={{
+                                strong: ({ children }) => (
+                                  <strong className="font-semibold text-primary">
+                                    {children}
+                                  </strong>
+                                ),
+                                p: ({ children }) => (
+                                  <p className="mb-3 last:mb-0">{children}</p>
+                                ),
+                                a: ({ href, children }) => (
+                                  <a
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary underline hover:text-primary/80 transition-colors"
+                                  >
+                                    {children}
+                                  </a>
+                                ),
+                              }}
+                              urlTransform={(url) => {
+                                // Auto-linkify emails
+                                if (url.includes('@') && !url.startsWith('mailto:')) {
+                                  return `mailto:${url}`;
+                                }
+                                // Add https:// if missing
+                                if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+                                  return `https://${url}`;
+                                }
+                                return url;
+                              }}
+                            >
+                              {linkifyUrls(message.content)}
+                            </ReactMarkdown>
+                          )
                         ) : (
                           message.content
                         )}

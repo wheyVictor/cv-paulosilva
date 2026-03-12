@@ -455,6 +455,15 @@ button, a, [role="button"], summary { cursor: pointer; }
   50% { opacity: 0; }
 }
 
+/* Streaming cursor — blinking block at end of last text element */
+.streaming-cursor > :last-child::after {
+  content: '▊';
+  display: inline;
+  color: hsl(var(--primary) / 0.7);
+  animation: blink 0.7s step-end infinite;
+  margin-left: 1px;
+}
+
 /* Scroll offset for hash anchors */
 section[id], footer[id] {
   scroll-margin-top: 2rem;
