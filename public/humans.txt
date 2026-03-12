@@ -13,7 +13,7 @@ AI Pair: Claude Code (Anthropic)
 /* SITE */
 Stack: React 19, TypeScript, Vite, Tailwind CSS, Motion
 AI: Claude API (claude-sonnet-4-6), streaming via Vercel Edge
-Quality: 39 evals, 4-layer security, Langfuse observability
+Quality: 55+ evals, 6-layer security, Langfuse observability, closed-loop quality
 Hosting: Vercel
 Standards: llms.txt, security.txt, JSON-LD, Open Graph
 

@@ -9,7 +9,8 @@ Expires: 2027-02-19T00:00:00.000Z
 # Security measures implemented:
 # - Content Security Policy (CSP) headers
 # - Input sanitization on chat API
-# - Prompt injection defense (4-layer: input filtering, system prompt guardrails, output validation, Langfuse monitoring)
+# - Prompt injection defense (6-layer: keyword detection, canary tokens, fingerprinting, anti-extraction, online safety scoring, adversarial red team)
 # - Rate limiting on API endpoints
 # - No user data stored — stateless chat sessions
-# - 39 automated evals including 5 security/jailbreak tests
+# - 55+ automated evals including 7 security/jailbreak tests
+# - Weekly adversarial testing with auto-generated attack vectors

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Users, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Download, Github, Package, MessageSquare, Receipt, CalendarCheck, Shield, FileText, GitBranch, Terminal, Lock, Network, Calendar, Percent, UserCheck, Image, TrendingUp, Timer, SkipForward, ThumbsUp, MessageCircle, Share2, ChevronRight, List } from 'lucide-react'
 import { translations, seo, type Lang } from './i18n'
 import { useHomeSeo } from './articles/use-article-seo'
+import { getTechIcon } from './tech-icons'
 
 
 function LinkedInLogo({ className = "w-4 h-4" }: { className?: string }) {
@@ -2415,11 +2416,19 @@ function App() {
                   <div key={cat.name} className="p-4 rounded-xl bg-card border border-border">
                     <span className="text-xs font-medium text-primary uppercase tracking-wide">{cat.name}</span>
                     <div className="flex flex-wrap gap-2 mt-3">
-                      {cat.items.map((item) => (
-                        <span key={item} className="px-2 py-1 rounded-md text-xs bg-muted text-foreground">
-                          {item}
-                        </span>
-                      ))}
+                      {cat.items.map((item) => {
+                        const icon = getTechIcon(item)
+                        return (
+                          <span key={item} className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs bg-muted text-foreground">
+                            {icon && (
+                              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill={icon.color} aria-hidden="true">
+                                <path d={icon.path} />
+                              </svg>
+                            )}
+                            {item}
+                          </span>
+                        )
+                      })}
                     </div>
                   </div>
                 ))}

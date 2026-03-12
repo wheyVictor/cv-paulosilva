@@ -179,7 +179,7 @@ export const translations = {
           title: 'santifer.io',
           badge: 'Este Portfolio',
           badgeBuilding: '',
-          desc: 'CV interactivo con chat IA siguiendo un SDLC aumentado con IA. Construido con **Claudeable**, monitorizado con **Claude Pulse**, animaciones debuggeadas con **Claude Eye**. LLMOps de producción: Langfuse, 39 evals, prompt caching, defensa anti-inyección en 4 capas (output filtering, canary tokens, fingerprint detection).',
+          desc: 'CV interactivo con chat IA siguiendo un SDLC aumentado con IA. Construido con **Claudeable**, monitorizado con **Claude Pulse**, animaciones debuggeadas con **Claude Eye**. LLMOps de producción: Langfuse, 55+ evals, prompt versioning, defensa anti-inyección en 6 capas, RAG agéntico y closed-loop automático.',
           tech: [
             'React 19',
             'TypeScript',
@@ -893,7 +893,7 @@ export const translations = {
           title: 'santifer.io',
           badge: 'This Portfolio',
           badgeBuilding: '',
-          desc: 'Interactive CV with AI chat, shipped following an AI-augmented SDLC. Built with **Claudeable**, monitored with **Claude Pulse**, animations debugged with **Claude Eye**. Production LLMOps: Langfuse, 39 evals, prompt caching, 4-layer prompt injection defense (output filtering, canary tokens, fingerprint detection).',
+          desc: 'Interactive CV with AI chat, shipped following an AI-augmented SDLC. Built with **Claudeable**, monitored with **Claude Pulse**, animations debugged with **Claude Eye**. Production LLMOps: Langfuse, 55+ evals, prompt versioning, 6-layer jailbreak defense, agentic RAG, and automatic closed-loop.',
           tech: [
             'React 19',
             'TypeScript',
