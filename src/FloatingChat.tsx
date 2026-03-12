@@ -673,7 +673,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                       {/* RAG source badges — shown after streaming completes */}
                       {message.role === 'assistant' && message.ragSources && message.ragSources.length > 0 && !isLoading && !isStreaming && (
                         <div className="flex flex-wrap gap-1.5 mt-2 px-1">
-                          {message.ragSources.filter(s => s.section_anchor).map((source, si) => {
+                          {message.ragSources.map((source, si) => {
                             const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
                             const sectionLabels = getSectionLabels()[targetPath] || {};
                             const anchorId = source.section_anchor.replace(/^#/, '');

@@ -268,6 +268,17 @@ function filterSourcesByResponse(sources, responseText) {
   }).slice(0, 3)
 }
 
+// Fallback source when response comes from system prompt (CV), not RAG
+const HOME_SOURCE = {
+  article_id: 'home',
+  section_id: 'portfolio',
+  section_anchor: '',
+  page_path_en: '/en',
+  page_path_es: '/',
+  article_slug_en: 'en',
+  article_slug_es: '',
+}
+
 // ---------------------------------------------------------------------------
 // RAG: full agentic search pipeline
 // ---------------------------------------------------------------------------
@@ -904,13 +915,17 @@ function streamResponse({
             waitUntil(scoreTrace(trace.id, lastUserMessage, fullOutput, ragUsed, langfuse))
           }
 
-          // Send RAG sources AFTER response — filtered to only articles actually mentioned
+          // Send source badges AFTER response
+          // RAG sources: filtered to only articles actually mentioned
+          // No RAG: fallback to home page badge (info came from system prompt / CV)
+          let finalSources = []
           if (ragSources.length > 0) {
-            const filtered = filterSourcesByResponse(ragSources, fullOutput)
-            if (filtered.length > 0) {
-              controller.enqueue(encoder.encode(`event: rag-sources\ndata: ${JSON.stringify(filtered)}\n\n`))
-            }
+            finalSources = filterSourcesByResponse(ragSources, fullOutput)
           }
+          if (finalSources.length === 0) {
+            finalSources = [HOME_SOURCE]
+          }
+          controller.enqueue(encoder.encode(`event: rag-sources\ndata: ${JSON.stringify(finalSources)}\n\n`))
 
           if (langfuse) waitUntil(langfuse.flushAsync())
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))

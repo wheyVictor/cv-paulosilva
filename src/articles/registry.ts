@@ -323,7 +323,10 @@ export function getAltPaths(): Record<string, string> {
 }
 
 export function getPageTitles(): Record<string, string> {
-  const map: Record<string, string> = {}
+  const map: Record<string, string> = {
+    '/': 'Portfolio de Santiago',
+    '/en': "Santiago's Portfolio",
+  }
   for (const article of articleRegistry) {
     map[`/${article.slugs.es}`] = article.titles.es
     map[`/${article.slugs.en}`] = article.titles.en
