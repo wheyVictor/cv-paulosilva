@@ -585,7 +585,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                                     navigate(targetPath + (source.section_anchor || ''));
                                   }
                                 }}
-                                className={`flex items-center gap-1.5 rounded-full font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
+                                className={`flex items-start gap-1.5 rounded-full font-medium text-left bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
                                   isMobile
                                     ? 'px-3 py-1.5 text-xs'
                                     : 'px-2.5 py-1 text-[10px]'
