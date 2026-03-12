@@ -23,6 +23,7 @@ import { jacoboContent } from '../src/jacobo-i18n.ts'
 import { businessOsContent } from '../src/business-os-i18n.ts'
 import { n8nContent } from '../src/n8n-i18n.ts'
 import { pseoContent } from '../src/pseo-i18n.ts'
+import { chatbotContent } from '../src/chatbot-i18n.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = resolve(__dirname, '..')
@@ -113,6 +114,7 @@ const I18N_SOURCES: I18nSource[] = [
   { articleId: 'business-os', content: businessOsContent as Record<string, unknown>, sourceFile: 'src/business-os-i18n.ts' },
   { articleId: 'n8n-for-pms', content: n8nContent as Record<string, unknown>, sourceFile: 'src/n8n-i18n.ts' },
   { articleId: 'programmatic-seo', content: pseoContent as Record<string, unknown>, sourceFile: 'src/pseo-i18n.ts' },
+  { articleId: 'self-healing-chatbot', content: chatbotContent as Record<string, unknown>, sourceFile: 'src/chatbot-i18n.ts' },
 ]
 
 function parseI18n(source: I18nSource): Chunk[] {

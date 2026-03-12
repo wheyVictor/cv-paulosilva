@@ -142,7 +142,7 @@ export default async function handler(req, res) {
           },
           reranking: {
             heading: 'Re-ranking + Diversificación',
-            body: 'Haiku puntúa los top-10 chunks por relevancia (0-10). Luego diversifyByArticle asegura que los top-5 finales vengan de al menos 3 artículos distintos, evitando que un solo artículo domine el contexto.',
+            body: 'Haiku selecciona los top-5 chunks más relevantes del top-10 por ranking. Luego diversifyByArticle asegura que cada artículo distinto tenga al menos un representante en el contexto final, evitando que un solo artículo domine.',
           },
           gracefulDegradation: {
             heading: 'Degradación Graceful',
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
         defense: {
           heading: 'Defensa en 6 Capas',
           layers: [
-            { title: 'Keyword Detection', detail: '40+ patrones ES/EN detectan intentos de prompt injection, role play y system prompt extraction. Alerta por email vía Resend cuando se activa.' },
+            { title: 'Keyword Detection', detail: '50+ patrones ES/EN detectan intentos de prompt injection, role play y system prompt extraction. Alerta por email vía Resend cuando se activa.' },
             { title: 'Canary Tokens', detail: 'UUID secreto inyectado en el system prompt. Si aparece en el output, es evidencia de system prompt leak → bloqueo inmediato.' },
             { title: 'Fingerprinting', detail: '12 frases únicas del system prompt monitorizadas en cada respuesta. Si el chatbot las repite verbatim, se detecta la extracción.' },
             { title: 'Anti-Extraction', detail: 'En vez de rechazar ("no puedo mostrarte mi prompt"), redirige: "el código es público en GitHub, revísalo ahí". Reducción de confrontación → menos intentos repetidos.' },
@@ -239,7 +239,7 @@ Producción
             { value: '<$0.005', label: 'Por conversación' },
             { value: '$0', label: 'Infraestructura', detail: 'free tiers' },
             { value: '~$30/mes', label: 'A 200 conv/día', detail: 'estimado' },
-            { value: '5', label: 'Modelos', detail: 'en el pipeline' },
+            { value: '4', label: 'Modelos', detail: 'en el pipeline' },
           ],
           tableHeading: 'Desglose por span',
           table: {
@@ -249,7 +249,7 @@ Producción
               ['RAG reranking', 'Claude Haiku', '~500 in / ~50 out', '~$0.0003'],
               ['Online scoring', 'Claude Haiku', '~600 in / ~100 out', '~$0.0004'],
               ['Embeddings', 'OpenAI text-embedding-3-small', '~200 tokens', '~$0.00002'],
-              ['Eval batch', 'Claude Haiku', '~400 in / ~80 out', '~$0.0003'],
+              ['Eval batch', 'Claude Sonnet', '~400 in / ~80 out', '~$0.002'],
               ['CI gate (56 tests)', 'Haiku + API', '56 × ~500 tokens', '~$0.02/push'],
             ],
           },
@@ -462,7 +462,7 @@ export default async function handler(req, res) {
           },
           reranking: {
             heading: 'Re-ranking + Diversification',
-            body: 'Haiku scores the top-10 chunks by relevance (0-10). Then diversifyByArticle ensures the final top-5 come from at least 3 distinct articles, preventing any single article from dominating the context.',
+            body: 'Haiku selects the top-5 most relevant chunks from the top-10 by ranking. Then diversifyByArticle ensures each distinct article has at least one representative in the final context, preventing any single article from dominating.',
           },
           gracefulDegradation: {
             heading: 'Graceful Degradation',
@@ -479,7 +479,7 @@ export default async function handler(req, res) {
         defense: {
           heading: '6-Layer Defense',
           layers: [
-            { title: 'Keyword Detection', detail: '40+ ES/EN patterns detect prompt injection, role play, and system prompt extraction attempts. Email alert via Resend when triggered.' },
+            { title: 'Keyword Detection', detail: '50+ ES/EN patterns detect prompt injection, role play, and system prompt extraction attempts. Email alert via Resend when triggered.' },
             { title: 'Canary Tokens', detail: 'Secret UUID injected into the system prompt. If it appears in output, it\'s evidence of system prompt leak → immediate block.' },
             { title: 'Fingerprinting', detail: '12 unique system prompt phrases monitored in every response. If the chatbot repeats them verbatim, extraction is detected.' },
             { title: 'Anti-Extraction', detail: 'Instead of rejecting ("I can\'t show you my prompt"), redirects: "the code is public on GitHub, check it there". Less confrontation → fewer repeated attempts.' },
@@ -559,7 +559,7 @@ Production
             { value: '<$0.005', label: 'Per conversation' },
             { value: '$0', label: 'Infrastructure', detail: 'free tiers' },
             { value: '~$30/mo', label: 'At 200 conv/day', detail: 'estimated' },
-            { value: '5', label: 'Models', detail: 'in the pipeline' },
+            { value: '4', label: 'Models', detail: 'in the pipeline' },
           ],
           tableHeading: 'Breakdown by span',
           table: {
@@ -569,7 +569,7 @@ Production
               ['RAG reranking', 'Claude Haiku', '~500 in / ~50 out', '~$0.0003'],
               ['Online scoring', 'Claude Haiku', '~600 in / ~100 out', '~$0.0004'],
               ['Embeddings', 'OpenAI text-embedding-3-small', '~200 tokens', '~$0.00002'],
-              ['Eval batch', 'Claude Haiku', '~400 in / ~80 out', '~$0.0003'],
+              ['Eval batch', 'Claude Sonnet', '~400 in / ~80 out', '~$0.002'],
               ['CI gate (56 tests)', 'Haiku + API', '56 × ~500 tokens', '~$0.02/push'],
             ],
           },

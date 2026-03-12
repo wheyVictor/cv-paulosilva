@@ -262,10 +262,10 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         <H2 id="defense">{s.defense.heading}</H2>
         <img
           src="/chatbot/diagram-defense-layers.webp"
-          alt={lang === 'es' ? '6 capas de defensa: Keywords (40+ patrones) → Canary Tokens (UUID trap) → Fingerprinting (12 frases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (ataques evolutivos)' : '6 defense layers: Keywords (40+ patterns) → Canary Tokens (UUID trap) → Fingerprinting (12 phrases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (evolving attacks)'}
-          className="w-full max-w-sm mx-auto rounded-xl my-8"
-          width={1400}
-          height={1875}
+          alt={lang === 'es' ? '6 capas de defensa: Keywords (50+ patrones) → Canary Tokens (UUID trap) → Fingerprinting (12 frases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (ataques evolutivos)' : '6 defense layers: Keywords (50+ patterns) → Canary Tokens (UUID trap) → Fingerprinting (12 phrases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (evolving attacks)'}
+          className="w-full max-w-2xl mx-auto rounded-xl my-8"
+          width={5504}
+          height={3072}
           loading="lazy"
         />
         <CardStack items={s.defense.layers.map(l => ({
@@ -295,7 +295,7 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         <img
           src="/chatbot/diagram-evals-donut.webp"
           alt={lang === 'es' ? '56 tests: RAG 17 (30.35%), Factual 9 (16.07%), Boundaries 7, Quality 7, Safety 7 (12.5% cada), Language 5 (8.93%), Persona 4 (7.14%)' : '56 tests: RAG 17 (30.35%), Factual 9 (16.07%), Boundaries 7, Quality 7, Safety 7 (12.5% each), Language 5 (8.93%), Persona 4 (7.14%)'}
-          className="w-full max-w-md mx-auto rounded-xl my-8"
+          className="w-full max-w-lg mx-auto rounded-xl my-8"
           width={1400}
           height={1400}
           loading="lazy"

@@ -1770,6 +1770,8 @@ function App() {
               link: string
               isDependency?: boolean
               dependencyRole?: string
+              caseStudyUrl?: string
+              caseStudyLabel?: string
             }
 
             // Separar proyectos
@@ -1778,6 +1780,7 @@ function App() {
             const lifeOS = allProjects.find(p => p.title === 'Life OS')!
             const careerOps = allProjects.find(p => p.title === 'Career Ops')!
             const santiferIo = allProjects.find(p => p.title === 'santifer.io')!
+            const selfHealingChatbot = allProjects.find(p => p.title === 'Self-Healing Chatbot')!
             // Tools que dependen de santifer.io
             const claudeEye = allProjects.find(p => p.title === 'Claude Eye')!
             const claudeable = allProjects.find(p => p.title === 'Claudeable')!
@@ -1799,6 +1802,7 @@ function App() {
               lifeOS: useRef<HTMLDivElement>(null),
               careerOps: useRef<HTMLDivElement>(null),
               santiferIo: useRef<HTMLDivElement>(null),
+              selfHealingChatbot: useRef<HTMLDivElement>(null),
               claudeEye: useRef<HTMLDivElement>(null),
               claudeable: useRef<HTMLDivElement>(null),
               claudePulse: useRef<HTMLDivElement>(null),
@@ -1846,7 +1850,8 @@ function App() {
                   // Móvil: flujo vertical simple
                   { from: cardRefs.lifeOS, fromEdge: 'bottom', to: cardRefs.careerOps, toEdge: 'top' },
                   { from: cardRefs.careerOps, fromEdge: 'bottom', to: cardRefs.santiferIo, toEdge: 'top' },
-                  { from: cardRefs.santiferIo, fromEdge: 'bottom', to: cardRefs.claudeEye, toEdge: 'top' },
+                  { from: cardRefs.santiferIo, fromEdge: 'bottom', to: cardRefs.selfHealingChatbot, toEdge: 'top' },
+                  { from: cardRefs.selfHealingChatbot, fromEdge: 'bottom', to: cardRefs.claudeEye, toEdge: 'top' },
                   { from: cardRefs.claudeEye, fromEdge: 'bottom', to: cardRefs.claudeable, toEdge: 'top' },
                   { from: cardRefs.claudeable, fromEdge: 'bottom', to: cardRefs.claudePulse, toEdge: 'top' },
                   { from: cardRefs.claudePulse, fromEdge: 'bottom', to: cardRefs.contentDigest, toEdge: 'top' },
@@ -1855,12 +1860,14 @@ function App() {
                   // Desktop: grafo complejo
                   // Fila 1: Life OS ↔ Career Ops (horizontal)
                   { from: cardRefs.lifeOS, fromEdge: 'right', to: cardRefs.careerOps, toEdge: 'left' },
-                  // Fila 1 → Fila 2: diagonales hacia santifer.io
-                  { from: cardRefs.lifeOS, fromEdge: 'bottom', to: cardRefs.santiferIo, toEdge: 'top', toRatio: 0.25 },
-                  { from: cardRefs.careerOps, fromEdge: 'bottom', to: cardRefs.santiferIo, toEdge: 'top', toRatio: 0.75 },
-                  // Fila 2 → Fila 3: santifer.io hacia tools
-                  { from: cardRefs.santiferIo, fromEdge: 'bottom', fromRatio: 0.25, to: cardRefs.claudeEye, toEdge: 'top' },
-                  { from: cardRefs.santiferIo, fromEdge: 'bottom', fromRatio: 0.75, to: cardRefs.claudeable, toEdge: 'top' },
+                  // Fila 1 → Fila 2: diagonales hacia santifer.io + chatbot
+                  { from: cardRefs.lifeOS, fromEdge: 'bottom', to: cardRefs.santiferIo, toEdge: 'top' },
+                  { from: cardRefs.careerOps, fromEdge: 'bottom', to: cardRefs.selfHealingChatbot, toEdge: 'top' },
+                  // Fila 2: santifer.io ↔ chatbot (horizontal)
+                  { from: cardRefs.santiferIo, fromEdge: 'right', to: cardRefs.selfHealingChatbot, toEdge: 'left' },
+                  // Fila 2 → Fila 3: hacia tools
+                  { from: cardRefs.santiferIo, fromEdge: 'bottom', to: cardRefs.claudeEye, toEdge: 'top' },
+                  { from: cardRefs.selfHealingChatbot, fromEdge: 'bottom', to: cardRefs.claudeable, toEdge: 'top' },
                   // Fila 3 → Fila 4
                   { from: cardRefs.claudeEye, fromEdge: 'bottom', to: cardRefs.claudePulse, toEdge: 'top' },
                   { from: cardRefs.claudeable, fromEdge: 'bottom', to: cardRefs.contentDigest, toEdge: 'top' },
@@ -1965,28 +1972,39 @@ function App() {
                       }`}>{tech}</span>
                     ))}
                   </div>
-                  {project.link && (
-                    <a
-                      href={`https://${project.link}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 text-xs mt-auto ${
-                        isTool ? 'text-tool hover:text-tool' : 'text-primary'
-                      } hover:underline`}
-                    >
-                      {project.link.includes('github.com') ? (
-                        <>
-                          <Github className="w-4 h-4" />
-                          {t.projects.viewCode}
-                        </>
-                      ) : (
-                        <>
-                          <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                          {t.projects.viewPrototype}
-                        </>
-                      )}
-                    </a>
-                  )}
+                  <div className="flex items-center gap-4 mt-auto">
+                    {project.link && (
+                      <a
+                        href={`https://${project.link}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-2 text-xs ${
+                          isTool ? 'text-tool hover:text-tool' : 'text-primary'
+                        } hover:underline`}
+                      >
+                        {project.link.includes('github.com') ? (
+                          <>
+                            <Github className="w-4 h-4" />
+                            {t.projects.viewCode}
+                          </>
+                        ) : (
+                          <>
+                            <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                            {t.projects.viewPrototype}
+                          </>
+                        )}
+                      </a>
+                    )}
+                    {project.caseStudyUrl && (
+                      <Link
+                        to={project.caseStudyUrl}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors duration-200 group/cta"
+                      >
+                        <span className="px-4 py-2 rounded-lg bg-accent/10 border border-accent/30 group-hover/cta:bg-accent/20 group-hover/cta:border-accent/50 transition-all duration-200">{project.caseStudyLabel}</span>
+                        <ChevronRight className="w-4 h-4 group-hover/cta:translate-x-0.5 transition-transform duration-200" />
+                      </Link>
+                    )}
+                  </div>
                 </div>
               )
             }
@@ -2026,10 +2044,13 @@ function App() {
                   </AnimatedSection>
                 </div>
 
-                {/* Fila 2: santifer.io (highlight) — nodo central */}
-                <div className="mb-6 relative z-10">
+                {/* Fila 2: santifer.io + Self-Healing Chatbot (highlight) */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6 relative z-10">
                   <AnimatedSection delay={0.2}>
                     <ProjectCard project={santiferIo} variant="highlight" cardRef={cardRefs.santiferIo} />
+                  </AnimatedSection>
+                  <AnimatedSection delay={0.25}>
+                    <ProjectCard project={selfHealingChatbot} variant="highlight" cardRef={cardRefs.selfHealingChatbot} />
                   </AnimatedSection>
                 </div>
 
