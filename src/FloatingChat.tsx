@@ -10,11 +10,16 @@ import {
   Mail,
   ChevronDown,
   FileText,
+  Mic,
+  MessageSquare,
+  PhoneOff,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { translations } from './i18n';
 import { getSectionLabels, getPageTitles } from './articles/registry';
+import { useVoiceMode } from './useVoiceMode';
+import VoiceOrb from './VoiceOrb';
 
 interface RagSource {
   article_id: string;
@@ -122,6 +127,7 @@ function saveSession(messages: Message[], sessionId: string) {
 
 export default function FloatingChat({ lang }: FloatingChatProps) {
   const t = translations[lang].chat;
+  const v = t.voice;
   const [isOpen, setIsOpen] = useState(false);
 
   const [session] = useState(() => loadSession(t.greeting));
@@ -131,9 +137,14 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [showPrompts, setShowPrompts] = useState(session.showPrompts);
   const [sessionId] = useState(session.sessionId);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [mode, setMode] = useState<'text' | 'voice'>('text');
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Voice mode
+  const voiceMode = useVoiceMode();
 
   // Word-by-word streaming refs
   const fullTextRef = useRef('');        // full accumulated text from SSE
@@ -185,10 +196,10 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
 
   // Focus en input al abrir
   useEffect(() => {
-    if (isOpen && !isMobile) {
+    if (isOpen && !isMobile && mode === 'text') {
       inputRef.current?.focus();
     }
-  }, [isOpen, isMobile]);
+  }, [isOpen, isMobile, mode]);
 
   // Escuchar evento global para abrir chat desde otros componentes
   useEffect(() => {
@@ -241,6 +252,16 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
     }
   }, [lang]);
 
+  // Escape key stops voice mode
+  useEffect(() => {
+    if (mode !== 'voice') return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleStopVoice();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [mode]);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -278,6 +299,47 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
       // pos === full.length but stream active — wait for more text
     }, 30);
   };
+
+  // Voice mode handlers
+  const handleStartVoice = () => {
+    setMode('voice');
+    voiceMode.start(messages, lang, sessionId, location.pathname);
+  };
+
+  const handleStopVoice = () => {
+    // Merge transcript into messages
+    const transcript = voiceMode.state.transcript;
+    if (transcript.length > 0) {
+      setMessages(prev => [
+        ...prev,
+        ...transcript.map(t => ({ role: t.role as 'user' | 'assistant', content: t.text })),
+      ]);
+      setShowPrompts(false);
+    }
+    voiceMode.stop();
+    setMode('text');
+  };
+
+  const handleSwitchToText = () => {
+    handleStopVoice();
+  };
+
+  // Get voice status text from i18n
+  const getVoiceStatusText = () => {
+    const statusMap: Record<string, string> = {
+      connecting: v.connecting,
+      listening: v.listening,
+      thinking: voiceMode.isSearching ? v.searching : v.thinking,
+      speaking: v.speaking,
+      error: voiceMode.state.error
+        ? v[voiceMode.state.error as keyof typeof v] || v.connection
+        : '',
+    };
+    return statusMap[voiceMode.state.status] || '';
+  };
+
+  // Can toggle to voice?
+  const canStartVoice = !isLoading && !isStreaming && voiceMode.isSupported;
 
   const sendMessage = async (messageText?: string) => {
     const text = messageText || input.trim();
@@ -573,225 +635,302 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                   <h3 className="font-display font-semibold text-foreground">
                     {t.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground">{t.subtitle}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {mode === 'voice' ? getVoiceStatusText() || t.subtitle : t.subtitle}
+                  </p>
                 </div>
               </div>
-              {isMobile && (
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                  aria-label="Close chat"
-                >
-                  <ChevronDown className="w-5 h-5" aria-hidden="true" />
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {/* Mode indicator (subtle icon) */}
+                {mode === 'voice' && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center"
+                  >
+                    <Mic className="w-3 h-3 text-red-400" aria-hidden="true" />
+                  </motion.div>
+                )}
+                {isMobile && (
+                  <button
+                    onClick={() => {
+                      if (mode === 'voice') handleStopVoice();
+                      setIsOpen(false);
+                    }}
+                    className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    aria-label="Close chat"
+                  >
+                    <ChevronDown className="w-5 h-5" aria-hidden="true" />
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Messages - scroll optimizado para móvil */}
-            <div
-              aria-live="polite"
-              className={`flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar overscroll-contain ${
-                isMobile ? 'pb-2' : ''
-              }`}
-            >
-              {messages.map((message, i) =>
-                // Skip empty assistant messages (they show the loading indicator instead)
-                message.role === 'assistant' &&
-                message.content === '' ? null : (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className="max-w-[85%]">
-                      {/* Degradation banner */}
-                      {message.role === 'assistant' && message.ragDegraded && (
-                        <div className={`mb-1 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 ${isMobile ? 'text-xs' : 'text-[11px]'}`}>
-                          {lang === 'en'
-                            ? 'Answering without full access to my articles.'
-                            : 'Respondiendo sin acceso completo a mis artículos.'}
-                        </div>
-                      )}
-                      <div
-                        className={`px-4 py-2.5 rounded-2xl leading-relaxed ${
-                          message.role === 'user'
-                            ? 'bg-gradient-theme text-white rounded-br-md'
-                            : 'bg-muted text-foreground rounded-bl-md'
-                        } ${isMobile ? 'text-base' : 'text-sm'} ${
-                          isStreaming && i === messages.length - 1 && message.role === 'assistant'
-                            ? 'streaming-cursor'
-                            : ''
-                        }`}
-                        aria-busy={isStreaming && i === messages.length - 1 && message.role === 'assistant' ? true : undefined}
-                      >
-                        {message.role === 'assistant' ? (
-                          <ReactMarkdown
-                            components={{
-                              strong: ({ children }) => (
-                                <strong className="font-semibold text-primary">
-                                  {children}
-                                </strong>
-                              ),
-                              p: ({ children }) => (
-                                <p className="mb-3 last:mb-0">{children}</p>
-                              ),
-                              a: ({ href, children }) => (
-                                <a
-                                  href={href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary underline hover:text-primary/80 transition-colors"
-                                >
-                                  {children}
-                                </a>
-                              ),
-                            }}
-                            urlTransform={(url) => {
-                              // Auto-linkify emails
-                              if (url.includes('@') && !url.startsWith('mailto:')) {
-                                return `mailto:${url}`;
-                              }
-                              // Add https:// if missing
-                              if (!url.startsWith('http') && !url.startsWith('mailto:')) {
-                                return `https://${url}`;
-                              }
-                              return url;
-                            }}
-                          >
-                            {linkifyUrls(
-                              isStreaming && i === messages.length - 1
-                                ? autoCloseMarkdown(message.content)
-                                : message.content
-                            )}
-                          </ReactMarkdown>
-                        ) : (
-                          message.content
-                        )}
-                      </div>
-                      {/* RAG source badges — shown after streaming completes */}
-                      {message.role === 'assistant' && message.ragSources && message.ragSources.length > 0 && !isLoading && !isStreaming && (
-                        <div className="flex flex-wrap gap-1.5 mt-2 px-1">
-                          {message.ragSources.map((source, si) => {
-                            const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
-                            const sectionLabels = getSectionLabels()[targetPath] || {};
-                            const anchorId = source.section_anchor.replace(/^#/, '');
-                            const sectionName = sectionLabels[anchorId] || '';
-                            const articleName = getPageTitles()[targetPath] || source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                            const isCurrentPage = location.pathname === targetPath;
-
-                            return (
-                              <button
-                                key={`${source.article_id}-${source.section_id}-${si}`}
-                                onClick={() => {
-                                  if (isCurrentPage && source.section_anchor) {
-                                    const el = document.querySelector(source.section_anchor);
-                                    if (el instanceof HTMLElement) {
-                                      el.scrollIntoView({ behavior: 'instant' });
-                                      el.classList.remove('hash-highlight');
-                                      void el.offsetWidth;
-                                      el.classList.add('hash-highlight');
-                                      el.addEventListener('animationend', () => el.classList.remove('hash-highlight'), { once: true });
-                                    }
-                                  } else if (targetPath) {
-                                    if (isMobile) setIsOpen(false);
-                                    navigate(targetPath + (source.section_anchor || ''));
-                                  }
-                                }}
-                                className={`flex items-start gap-1.5 rounded-full font-medium text-left bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
-                                  isMobile
-                                    ? 'px-3 py-1.5 text-xs'
-                                    : 'px-2.5 py-1 text-[10px]'
-                                }`}
-                              >
-                                <FileText className="w-3 h-3 shrink-0" />
-                                {articleName}{sectionName ? ` · ${sectionName}` : ''}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ),
-              )}
-
-              {/* Quick Prompts - animación estilo Story, colores originales */}
-              {showPrompts && !isLoading && (
+            {/* Content area — text messages or voice orb */}
+            <AnimatePresence mode="wait">
+              {mode === 'text' ? (
                 <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className={`flex flex-wrap gap-2 pt-2 ${isMobile ? 'gap-2.5' : ''}`}
+                  key="text-mode"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  aria-live="polite"
+                  className={`flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar overscroll-contain ${
+                    isMobile ? 'pb-2' : ''
+                  }`}
                 >
-                  {t.prompts.map((prompt, i) => (
+                  {messages.map((message, i) =>
+                    // Skip empty assistant messages (they show the loading indicator instead)
+                    message.role === 'assistant' &&
+                    message.content === '' ? null : (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className="max-w-[85%]">
+                          {/* Degradation banner */}
+                          {message.role === 'assistant' && message.ragDegraded && (
+                            <div className={`mb-1 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 ${isMobile ? 'text-xs' : 'text-[11px]'}`}>
+                              {lang === 'en'
+                                ? 'Answering without full access to my articles.'
+                                : 'Respondiendo sin acceso completo a mis artículos.'}
+                            </div>
+                          )}
+                          <div
+                            className={`px-4 py-2.5 rounded-2xl leading-relaxed ${
+                              message.role === 'user'
+                                ? 'bg-gradient-theme text-white rounded-br-md'
+                                : 'bg-muted text-foreground rounded-bl-md'
+                            } ${isMobile ? 'text-base' : 'text-sm'} ${
+                              isStreaming && i === messages.length - 1 && message.role === 'assistant'
+                                ? 'streaming-cursor'
+                                : ''
+                            }`}
+                            aria-busy={isStreaming && i === messages.length - 1 && message.role === 'assistant' ? true : undefined}
+                          >
+                            {message.role === 'assistant' ? (
+                              <ReactMarkdown
+                                components={{
+                                  strong: ({ children }) => (
+                                    <strong className="font-semibold text-primary">
+                                      {children}
+                                    </strong>
+                                  ),
+                                  p: ({ children }) => (
+                                    <p className="mb-3 last:mb-0">{children}</p>
+                                  ),
+                                  a: ({ href, children }) => (
+                                    <a
+                                      href={href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-primary underline hover:text-primary/80 transition-colors"
+                                    >
+                                      {children}
+                                    </a>
+                                  ),
+                                }}
+                                urlTransform={(url) => {
+                                  // Auto-linkify emails
+                                  if (url.includes('@') && !url.startsWith('mailto:')) {
+                                    return `mailto:${url}`;
+                                  }
+                                  // Add https:// if missing
+                                  if (!url.startsWith('http') && !url.startsWith('mailto:')) {
+                                    return `https://${url}`;
+                                  }
+                                  return url;
+                                }}
+                              >
+                                {linkifyUrls(
+                                  isStreaming && i === messages.length - 1
+                                    ? autoCloseMarkdown(message.content)
+                                    : message.content
+                                )}
+                              </ReactMarkdown>
+                            ) : (
+                              message.content
+                            )}
+                          </div>
+                          {/* RAG source badges — shown after streaming completes */}
+                          {message.role === 'assistant' && message.ragSources && message.ragSources.length > 0 && !isLoading && !isStreaming && (
+                            <div className="flex flex-wrap gap-1.5 mt-2 px-1">
+                              {message.ragSources.map((source, si) => {
+                                const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
+                                const sectionLabels = getSectionLabels()[targetPath] || {};
+                                const anchorId = source.section_anchor.replace(/^#/, '');
+                                const sectionName = sectionLabels[anchorId] || '';
+                                const articleName = getPageTitles()[targetPath] || source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                                const isCurrentPage = location.pathname === targetPath;
+
+                                return (
+                                  <button
+                                    key={`${source.article_id}-${source.section_id}-${si}`}
+                                    onClick={() => {
+                                      if (isCurrentPage && source.section_anchor) {
+                                        const el = document.querySelector(source.section_anchor);
+                                        if (el instanceof HTMLElement) {
+                                          el.scrollIntoView({ behavior: 'instant' });
+                                          el.classList.remove('hash-highlight');
+                                          void el.offsetWidth;
+                                          el.classList.add('hash-highlight');
+                                          el.addEventListener('animationend', () => el.classList.remove('hash-highlight'), { once: true });
+                                        }
+                                      } else if (targetPath) {
+                                        if (isMobile) setIsOpen(false);
+                                        navigate(targetPath + (source.section_anchor || ''));
+                                      }
+                                    }}
+                                    className={`flex items-start gap-1.5 rounded-full font-medium text-left bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
+                                      isMobile
+                                        ? 'px-3 py-1.5 text-xs'
+                                        : 'px-2.5 py-1 text-[10px]'
+                                    }`}
+                                  >
+                                    <FileText className="w-3 h-3 shrink-0" />
+                                    {articleName}{sectionName ? ` · ${sectionName}` : ''}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    ),
+                  )}
+
+                  {/* Quick Prompts - animación estilo Story, colores originales */}
+                  {showPrompts && !isLoading && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      className={`flex flex-wrap gap-2 pt-2 ${isMobile ? 'gap-2.5' : ''}`}
+                    >
+                      {t.prompts.map((prompt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handlePromptClick(prompt.query)}
+                          className={`flex items-center gap-1.5 rounded-full font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
+                            isMobile
+                              ? 'px-4 py-2.5 text-sm min-h-[44px]'
+                              : 'px-3 py-1.5 text-xs'
+                          }`}
+                        >
+                          <PromptIcon icon={prompt.icon} />
+                          {prompt.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {/* Contact CTA after 2+ exchanges */}
+                  {userMessageCount >= 2 && !isLoading && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 }}
+                      className="pt-3"
+                    >
+                      <div className="p-3 rounded-xl bg-gradient-theme-10 border border-primary/20 text-center">
+                        <p className="text-sm font-medium text-foreground mb-2">
+                          {t.contactCtaTitle}
+                        </p>
+                        <a
+                          href={`mailto:${translations[lang].email}`}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-theme-r text-white text-sm font-medium hover:brightness-110 hover:shadow-lg hover:shadow-primary/25 active:brightness-95 transition-all duration-200"
+                        >
+                          <Mail className="w-4 h-4" aria-hidden="true" />
+                          {translations[lang].email}
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {isLoading && messages[messages.length - 1]?.content === '' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex justify-start"
+                    >
+                      <div
+                        className={`bg-muted px-4 py-2.5 rounded-2xl rounded-bl-md flex items-center gap-2 ${
+                          isMobile ? 'py-3' : ''
+                        }`}
+                      >
+                        <Loader2
+                          className={`text-muted-foreground animate-spin ${isMobile ? 'w-5 h-5' : 'w-4 h-4'}`}
+                          aria-hidden="true"
+                        />
+                        <span
+                          className={`text-muted-foreground ${isMobile ? 'text-sm' : 'text-xs'}`}
+                        >
+                          {translations[lang].ui.typingIndicator}
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </motion.div>
+              ) : (
+                /* Voice mode — orb centered */
+                <motion.div
+                  key="voice-mode"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex-1 flex items-center justify-center overflow-hidden"
+                >
+                  <VoiceOrb
+                    status={voiceMode.state.status}
+                    getInputLevel={voiceMode.getInputLevel}
+                    getOutputLevel={voiceMode.getOutputLevel}
+                    remainingSeconds={voiceMode.state.remainingSeconds}
+                    statusText={getVoiceStatusText()}
+                    transcript={undefined}
+                    isMobile={isMobile}
+                  />
+
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Source badges in voice mode — positioned at bottom above input */}
+            {mode === 'voice' && voiceMode.voiceSources.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-1.5 px-4 py-2 border-t border-border/50 bg-card/80">
+                {voiceMode.voiceSources.map((source, si) => {
+                  const targetPath = lang === 'es' ? source.page_path_es : source.page_path_en;
+                  const sectionLabels = getSectionLabels()[targetPath] || {};
+                  const anchorId = source.section_anchor.replace(/^#/, '');
+                  const sectionName = sectionLabels[anchorId] || '';
+                  const articleName = getPageTitles()[targetPath] || source.article_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+                  return (
                     <button
-                      key={i}
-                      onClick={() => handlePromptClick(prompt.query)}
+                      key={`voice-${source.article_id}-${si}`}
+                      onClick={() => {
+                        if (targetPath) {
+                          navigate(targetPath + (source.section_anchor || ''));
+                        }
+                      }}
                       className={`flex items-center gap-1.5 rounded-full font-medium bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:border-primary/40 active:bg-primary/30 transition-colors duration-200 ${
-                        isMobile
-                          ? 'px-4 py-2.5 text-sm min-h-[44px]'
-                          : 'px-3 py-1.5 text-xs'
+                        isMobile ? 'px-3 py-1.5 text-xs' : 'px-2.5 py-1 text-[10px]'
                       }`}
                     >
-                      <PromptIcon icon={prompt.icon} />
-                      {prompt.label}
+                      <FileText className="w-3 h-3 shrink-0" />
+                      {articleName}{sectionName ? ` · ${sectionName}` : ''}
                     </button>
-                  ))}
-                </motion.div>
-              )}
+                  );
+                })}
+              </div>
+            )}
 
-              {/* Contact CTA after 2+ exchanges */}
-              {userMessageCount >= 2 && !isLoading && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="pt-3"
-                >
-                  <div className="p-3 rounded-xl bg-gradient-theme-10 border border-primary/20 text-center">
-                    <p className="text-sm font-medium text-foreground mb-2">
-                      {t.contactCtaTitle}
-                    </p>
-                    <a
-                      href={`mailto:${translations[lang].email}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-theme-r text-white text-sm font-medium hover:brightness-110 hover:shadow-lg hover:shadow-primary/25 active:brightness-95 transition-all duration-200"
-                    >
-                      <Mail className="w-4 h-4" aria-hidden="true" />
-                      {translations[lang].email}
-                    </a>
-                  </div>
-                </motion.div>
-              )}
-
-              {isLoading && messages[messages.length - 1]?.content === '' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-start"
-                >
-                  <div
-                    className={`bg-muted px-4 py-2.5 rounded-2xl rounded-bl-md flex items-center gap-2 ${
-                      isMobile ? 'py-3' : ''
-                    }`}
-                  >
-                    <Loader2
-                      className={`text-muted-foreground animate-spin ${isMobile ? 'w-5 h-5' : 'w-4 h-4'}`}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className={`text-muted-foreground ${isMobile ? 'text-sm' : 'text-xs'}`}
-                    >
-                      {translations[lang].ui.typingIndicator}
-                    </span>
-                  </div>
-                </motion.div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input - más grande en móvil, respeta safe area inferior */}
+            {/* Input area — transforms between text and voice modes */}
             <div
               className="p-4 border-t border-border bg-card"
               style={
@@ -803,36 +942,85 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                   : undefined
               }
             >
-              <div className="flex gap-2">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={t.placeholder}
-                  aria-label={t.placeholder}
-                  disabled={isLoading}
-                  enterKeyHint="send"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  className={`flex-1 px-4 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-colors disabled:opacity-50 ${
-                    isMobile ? 'py-3 text-base' : 'py-2.5 text-sm'
-                  }`}
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => sendMessage()}
-                  disabled={isLoading || !input.trim()}
-                  aria-label={lang === 'en' ? 'Send message' : 'Enviar mensaje'}
-                  className={`rounded-xl bg-gradient-theme flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity ${
-                    isMobile ? 'w-12 h-12' : 'w-10 h-10'
-                  }`}
-                >
-                  <Send className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} aria-hidden="true" />
-                </motion.button>
-              </div>
+              {mode === 'text' ? (
+                <div className="flex gap-2">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={t.placeholder}
+                    aria-label={t.placeholder}
+                    disabled={isLoading}
+                    enterKeyHint="send"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    className={`flex-1 px-4 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-colors disabled:opacity-50 ${
+                      isMobile ? 'py-3 text-base' : 'py-2.5 text-sm'
+                    }`}
+                  />
+                  {/* Mic button */}
+                  {canStartVoice && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleStartVoice}
+                      disabled={isLoading || isStreaming}
+                      aria-label={v.start}
+                      title={v.start}
+                      className={`rounded-xl bg-muted border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                        isMobile ? 'w-12 h-12' : 'w-10 h-10'
+                      }`}
+                    >
+                      <Mic className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} aria-hidden="true" />
+                    </motion.button>
+                  )}
+                  {/* Send button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => sendMessage()}
+                    disabled={isLoading || !input.trim()}
+                    aria-label={lang === 'en' ? 'Send message' : 'Enviar mensaje'}
+                    className={`rounded-xl bg-gradient-theme flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed transition-opacity ${
+                      isMobile ? 'w-12 h-12' : 'w-10 h-10'
+                    }`}
+                  >
+                    <Send className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} aria-hidden="true" />
+                  </motion.button>
+                </div>
+              ) : (
+                /* Voice mode controls */
+                <div className="flex gap-2 justify-center">
+                  {/* Switch to text */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleSwitchToText}
+                    aria-label={v.switchToText}
+                    className={`rounded-xl bg-muted border border-border flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors ${
+                      isMobile ? 'px-4 py-3 text-sm' : 'px-3 py-2.5 text-xs'
+                    }`}
+                  >
+                    <MessageSquare className={isMobile ? 'w-4 h-4' : 'w-3.5 h-3.5'} aria-hidden="true" />
+                    {v.switchToText}
+                  </motion.button>
+                  {/* End voice session */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleStopVoice}
+                    aria-label={v.stop}
+                    className={`rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 hover:bg-red-500/20 hover:border-red-500/30 transition-colors ${
+                      isMobile ? 'px-4 py-3 text-sm' : 'px-3 py-2.5 text-xs'
+                    }`}
+                  >
+                    <PhoneOff className={isMobile ? 'w-4 h-4' : 'w-3.5 h-3.5'} aria-hidden="true" />
+                    {v.stop}
+                  </motion.button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
