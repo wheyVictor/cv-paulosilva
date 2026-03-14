@@ -250,10 +250,10 @@ export function filterSourcesByResponse(sources, responseText) {
 // Static article routes — used to generate badges from keywords regardless of RAG
 export const ARTICLE_ROUTES = {
   'n8n-for-pms':          { page_path_es: '/n8n-para-pms', page_path_en: '/n8n-for-pms' },
-  'jacobo':               { page_path_es: '/ai-agent-jacobo', page_path_en: '/ai-agent-jacobo' },
-  'business-os':          { page_path_es: '/business-os', page_path_en: '/business-os' },
+  'jacobo':               { page_path_es: '/agente-ia-jacobo', page_path_en: '/ai-agent-jacobo' },
+  'business-os':          { page_path_es: '/business-os-para-airtable', page_path_en: '/business-os-for-airtable' },
   'programmatic-seo':     { page_path_es: '/seo-programatico', page_path_en: '/programmatic-seo' },
-  'self-healing-chatbot': { page_path_es: '/self-healing-chatbot', page_path_en: '/self-healing-chatbot' },
+  'self-healing-chatbot': { page_path_es: '/chatbot-que-se-cura-solo', page_path_en: '/self-healing-chatbot' },
   'santifer-irepair':     { page_path_es: '/santifer-irepair', page_path_en: '/santifer-irepair-founder' },
 }
 
