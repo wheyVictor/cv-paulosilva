@@ -153,6 +153,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const drainTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pendingRagSourcesRef = useRef<RagSource[]>([]);
   const pendingRagDegradedRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   // Scroll-up detection: don't yank user back down during streaming
   const isAtBottomRef = useRef(true);
@@ -369,9 +370,14 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
         throw new Error('offline');
       }
 
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           messages: [...messages, { role: 'user', content: text }].filter(
             (m) => m.role !== 'assistant' || m.content !== t.greeting,
@@ -485,6 +491,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
         });
       }
     } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') return;
       const isOffline = !navigator.onLine || (err instanceof Error && err.message === 'offline');
       const errorMsg = isOffline ? t.offline : t.error;
       // Clear streaming state on error
@@ -531,7 +538,10 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) abortRef.current?.abort();
+          setIsOpen(!isOpen);
+        }}
         className="fixed z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
         style={{
           bottom: 'max(1.5rem, env(safe-area-inset-bottom, 0px) + 0.5rem)',
@@ -655,6 +665,7 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
                   <button
                     onClick={() => {
                       if (mode === 'voice') handleStopVoice();
+                      abortRef.current?.abort();
                       setIsOpen(false);
                     }}
                     className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"

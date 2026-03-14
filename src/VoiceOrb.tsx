@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
+import { SESSION_TIMEOUT_S } from './useVoiceMode';
 import type { VoiceStatus } from './useVoiceMode';
 
 interface VoiceOrbProps {
@@ -277,8 +278,6 @@ export default function VoiceOrb({
     </div>
   );
 }
-
-const SESSION_TIMEOUT_S = 120;
 
 function adjustAlpha(color: string, alpha: number): string {
   // For hsl() / hsla() colors — use modern syntax with slash for alpha

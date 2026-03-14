@@ -40,6 +40,7 @@ interface Test {
   lang: 'es' | 'en'
   assertions: Assertion[]
   conversation?: ConversationMessage[]
+  mode?: 'voice'
 }
 
 interface Dataset {
@@ -80,6 +81,9 @@ interface DatasetResult {
 // Configuración
 // Por defecto usa vercel dev (puerto 3000), o se puede especificar otra URL
 const CHAT_API_URL = process.env.CHAT_API_URL || 'http://localhost:3000/api/chat'
+const RAG_SEARCH_URL = process.env.CHAT_API_URL
+  ? process.env.CHAT_API_URL.replace('/api/chat', '/api/rag-search')
+  : 'http://localhost:3000/api/rag-search'
 const DATASETS_DIR = path.join(import.meta.dirname, 'datasets')
 const RESULTS_DIR = path.join(import.meta.dirname, 'results')
 
@@ -155,6 +159,28 @@ async function callChat(input: string, lang: 'es' | 'en', conversation?: Convers
 }
 
 /**
+ * Llama al endpoint /api/rag-search para tests de voice mode
+ */
+async function callVoiceRag(input: string, lang: 'es' | 'en'): Promise<ChatResult> {
+  const response = await fetch(RAG_SEARCH_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: input,
+      traceId: 'eval-' + Date.now(),
+      lang,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`RAG search API error: ${response.status} ${response.statusText}`)
+  }
+
+  const data = await response.json()
+  return { text: data.context || '', ragSources: data.sources || [] }
+}
+
+/**
  * Carga todos los datasets desde el directorio
  */
 function loadDatasets(): Dataset[] {
@@ -208,8 +234,10 @@ async function runDataset(dataset: Dataset): Promise<DatasetResult> {
     process.stdout.write(`   ${test.id}: `)
 
     try {
-      // Llamar al chat
-      const { text: response, ragSources } = await callChat(test.input, test.lang, test.conversation)
+      // Llamar al chat (o al endpoint de voice RAG si mode === 'voice')
+      const { text: response, ragSources } = test.mode === 'voice'
+        ? await callVoiceRag(test.input, test.lang)
+        : await callChat(test.input, test.lang, test.conversation)
 
       // Ejecutar assertions
       const assertionResults = await runAssertions(response, test.assertions, ragSources)

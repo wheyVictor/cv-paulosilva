@@ -115,7 +115,7 @@ export async function searchDocuments(queryText, queryEmbedding) {
   } catch (err) {
     clearTimeout(timeout)
     if (err.name === 'AbortError') {
-      throw new Error('Supabase search timeout (>400ms)')
+      throw new Error('Supabase search timeout (>2s)')
     }
     throw err
   }
@@ -344,9 +344,16 @@ export async function searchPortfolio(query, trace, anthropicClient) {
       return result
     }
 
+    // Filter out low-similarity chunks before reranking
+    const filteredChunks = searchResult.chunks.filter(c => (c.similarity || 0) >= 0.3)
+    if (!filteredChunks.length) {
+      result.degradedReason = 'no_match'
+      return result
+    }
+
     // 3. Re-rank
     const rerankSpan = trace?.span({ name: 'reranking', metadata: { query } })
-    const rerankResult = await rerankChunks(query, searchResult.chunks, anthropicClient)
+    const rerankResult = await rerankChunks(query, filteredChunks, anthropicClient)
     result.metrics.rerankMs = rerankResult.latencyMs
     if (rerankResult.usage) {
       result.usage.rerankInputTokens = rerankResult.usage.input_tokens
@@ -382,10 +389,11 @@ export function classifyIntent(text) {
   const tags = []
 
   const jailbreakPatterns = [
-    'ignore', 'pretend', 'roleplay', 'act as', 'you are now',
+    'ignore previous', 'ignora las instrucciones', 'ignora todo',
+    'pretend', 'roleplay', 'act as', 'you are now',
     'forget', 'disregard', 'bypass', 'override', 'jailbreak',
-    'dan', 'developer mode', 'evil', 'malicious', 'hack',
-    'prompt', 'system prompt', 'instructions', 'ignore previous',
+    'dan', 'developer mode', 'evil', 'malicious', 'hackear', 'hacking',
+    'system prompt', 'tu prompt', 'your prompt', 'instructions',
     'protocolo de defensa', 'olvida todo', 'nueva personalidad',
     'reset your', 'reveal your', 'show me your rules',
     'your objective', 'your orders', 'tus órdenes', 'tus reglas',

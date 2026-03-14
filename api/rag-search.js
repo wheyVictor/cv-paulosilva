@@ -39,31 +39,34 @@ async function reasonWithClaude(query, formattedChunks, span, langfuse) {
   try {
     const { text: systemPromptText } = await getSystemPrompt(langfuse)
 
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 300,
-      system: `${systemPromptText}\n\n${VOICE_OVERRIDE}`,
-      messages: [
-        { role: 'user', content: query },
-        {
-          role: 'assistant',
-          content: [{
-            type: 'tool_use',
-            id: 'voice_rag_call',
-            name: 'search_portfolio',
-            input: { query },
-          }],
-        },
-        {
-          role: 'user',
-          content: [{
-            type: 'tool_result',
-            tool_use_id: 'voice_rag_call',
-            content: formattedChunks,
-          }],
-        },
-      ],
-    })
+    const response = await Promise.race([
+      client.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        system: `${systemPromptText}\n\n${VOICE_OVERRIDE}`,
+        messages: [
+          { role: 'user', content: query },
+          {
+            role: 'assistant',
+            content: [{
+              type: 'tool_use',
+              id: 'voice_rag_call',
+              name: 'search_portfolio',
+              input: { query },
+            }],
+          },
+          {
+            role: 'user',
+            content: [{
+              type: 'tool_result',
+              tool_use_id: 'voice_rag_call',
+              content: formattedChunks,
+            }],
+          },
+        ],
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Claude reasoning timeout (>3s)')), 3000)),
+    ])
 
     const answer = response.content
       .filter(b => b.type === 'text')
@@ -102,6 +105,13 @@ export default async function handler(req) {
   try {
     const { query, traceId, currentPage } = await req.json()
 
+    if (!traceId) {
+      return new Response(JSON.stringify({ error: 'Missing traceId' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
     if (!query) {
       return new Response(JSON.stringify({ error: 'Missing query' }), {
         status: 400,
@@ -116,6 +126,8 @@ export default async function handler(req) {
       trace = langfuse.trace({ id: traceId })
     }
     const ragSpan = trace?.span({ name: 'voice-rag', metadata: { query } })
+
+    const t0 = Date.now()
 
     try {
       const ragResult = await searchPortfolio(query, ragSpan, client)
@@ -134,8 +146,9 @@ export default async function handler(req) {
         },
       })
 
-      // Claude reasoning: turn raw chunks into a verified, voice-ready answer
-      const reasonedAnswer = ragResult.chunks
+      // Latency budget: skip Claude reasoning if RAG already took >1.5s
+      const ragElapsedMs = Date.now() - t0
+      const reasonedAnswer = (ragResult.chunks && ragElapsedMs <= 1500)
         ? await reasonWithClaude(query, formattedChunks, trace, langfuse)
         : null
 

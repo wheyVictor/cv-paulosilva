@@ -51,7 +51,18 @@ export default async function handler(req) {
   try {
     const { messages, lang, sessionId, currentPage } = await req.json()
 
-    const lastUserMessage = messages.filter(m => m.role === 'user').pop()?.content || ''
+    // Input length validation
+    const bodySize = JSON.stringify({ messages, lang, sessionId, currentPage }).length
+    if (bodySize > 50000) {
+      return new Response(JSON.stringify({ error: 'Request too large' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Truncate overly long user messages
+    const rawLastMessage = messages.filter(m => m.role === 'user').pop()?.content || ''
+    const lastUserMessage = rawLastMessage.slice(0, 2000)
     const intentTags = classifyIntent(lastUserMessage)
 
     if (intentTags.includes('jailbreak-attempt')) {
@@ -142,7 +153,7 @@ export default async function handler(req) {
 
       const firstResponse = await client.messages.create({
         model: 'claude-sonnet-4-6',
-        max_tokens: 800,
+        max_tokens: 300,
         system: systemBlocks,
         messages: cleanMessages,
         tools: [PORTFOLIO_TOOL],
@@ -177,7 +188,7 @@ export default async function handler(req) {
         // Build tool_result and make second call (streaming)
         const toolResultContent = ragResult.chunks
           ? formatChunksForContext(ragResult.chunks)
-          : 'No relevant content found in portfolio articles.'
+          : 'No relevant content found in portfolio articles. You MUST NOT fabricate project details. Say you don\'t have that information and suggest contacting Santiago directly.'
 
         const messagesWithTool = [
           ...cleanMessages,
@@ -291,6 +302,7 @@ function streamResponse({
   const encoder = new TextEncoder()
   let fullOutput = ''
   let leakDetected = false
+  let generationCost = 0
 
   const generationSpan = trace?.span({
     name: 'generation',
@@ -358,12 +370,13 @@ function streamResponse({
 
           const pcIn = precomputedResponse.usage?.input_tokens || 0
           const pcOut = precomputedResponse.usage?.output_tokens || 0
+          generationCost = calcCost('claude-sonnet-4-6', pcIn, pcOut)
           generationSpan?.end({
             metadata: {
               outputTokens: pcOut,
               inputTokens: pcIn,
               latencyMs: Date.now() - t0,
-              cost: calcCost('claude-sonnet-4-6', pcIn, pcOut),
+              cost: generationCost,
             },
           })
         } else {
@@ -372,6 +385,7 @@ function streamResponse({
           let lastStreamError = null
 
           for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+            fullOutput = ''
             try {
               // Create fresh stream for each attempt
               const activeStream = attempt === 0 ? stream : client.messages.stream({
@@ -413,13 +427,14 @@ function streamResponse({
                 const finalMessage = await activeStream.finalMessage()
                 const genIn = finalMessage.usage?.input_tokens || 0
                 const genOut = finalMessage.usage?.output_tokens || 0
+                generationCost = calcCost('claude-sonnet-4-6', genIn, genOut)
                 generationSpan?.end({
                   metadata: {
                     outputTokens: genOut,
                     inputTokens: genIn,
                     latencyMs: Date.now() - t0,
                     attempt,
-                    cost: calcCost('claude-sonnet-4-6', genIn, genOut),
+                    cost: generationCost,
                   },
                 })
               }
@@ -440,6 +455,7 @@ function streamResponse({
 
               if (attempt < MAX_RETRIES) {
                 await new Promise(r => setTimeout(r, 500)) // brief pause before retry
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: '', replace: true })}\n\n`))
               }
             }
           }
@@ -453,8 +469,8 @@ function streamResponse({
             toolDecision: calcCost('claude-sonnet-4-6', tdInputTokens || 0, tdOutputTokens || 0),
             embedding: calcCost('text-embedding-3-small', ragUsage?.embeddingTokens || 0),
             reranking: calcCost('claude-haiku-4-5-20251001', ragUsage?.rerankInputTokens || 0, ragUsage?.rerankOutputTokens || 0),
+            generation: generationCost,
           }
-          // generation cost already tracked in span — estimate from fullOutput or precomputed
           costBreakdown.total = Object.values(costBreakdown).reduce((a, b) => a + b, 0)
 
           // Update trace with RAG metadata + cost + prompt version
@@ -527,9 +543,33 @@ function streamResponse({
             // Send degraded status so frontend knows RAG failed
             controller.enqueue(encoder.encode(`event: rag-status\ndata: ${JSON.stringify({ status: 'degraded', reason: 'streaming_fallback' })}\n\n`))
 
+            let fallbackOutput = ''
+            let fallbackLeakDetected = false
+
             for await (const event of fallbackStream) {
+              if (fallbackLeakDetected) break
+
               if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
                 const chunk = event.delta.text
+                fallbackOutput += chunk
+
+                // Fingerprint + canary check (same as main stream)
+                if (fallbackOutput.length % 200 < chunk.length || fallbackOutput.length < 200) {
+                  if (containsFingerprint(fallbackOutput) || fallbackOutput.includes(canary)) {
+                    fallbackLeakDetected = true
+                    trace?.update({
+                      tags: [...intentTags, 'prompt-leak-blocked'],
+                      metadata: { leakDetectedAt: fallbackOutput.length, stream: 'fallback' },
+                    })
+                    controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: LEAK_RESPONSE, replace: true })}\n\n`))
+                    controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+                    controller.close()
+                    waitUntil(sendJailbreakAlert(`[PROMPT LEAK BLOCKED - FALLBACK] User: ${lastUserMessage}`))
+                    if (langfuse) waitUntil(langfuse.flushAsync())
+                    return
+                  }
+                }
+
                 controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`))
               }
             }

@@ -32,7 +32,7 @@ export interface RagSource {
   article_slug_es: string;
 }
 
-const SESSION_TIMEOUT_S = 120;
+export const SESSION_TIMEOUT_S = 120;
 
 export function useVoiceMode() {
   const [status, setStatus] = useState<VoiceStatus>('idle');
@@ -535,6 +535,7 @@ export function useVoiceMode() {
           const outNode = newCtx.createAnalyser();
           outNode.connect(newCtx.destination);
           analyserNodeRef.current = outNode;
+          outputAnalyser.connect(outNode);
         }
         setStatus('listening');
         break;
@@ -570,7 +571,11 @@ export function useVoiceMode() {
           }
           totalAudioDurationRef.current += chunkDuration;
 
-          playAudioChunk(audioData, playbackContextRef.current);
+          try {
+            playAudioChunk(audioData, playbackContextRef.current);
+          } catch (e) {
+            console.warn('[Voice] Audio chunk playback error:', e);
+          }
         }
         break;
       }
