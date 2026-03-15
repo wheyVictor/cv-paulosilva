@@ -19,7 +19,7 @@ export const pseoContent = {
       date: '25 feb 2026',
     },
     intro: {
-      hook: 'En el sector de reparación de dispositivos en España, nadie estaba haciendo SEO programático. Cada combinación de dispositivo, marca, modelo, tipo de reparación y ciudad era una oportunidad long-tail sin explotar.',
+      hook: 'SEO programático es generar miles de páginas automáticamente desde una base de datos, cada una optimizada para una búsqueda long-tail específica. Construí 4.730 landing pages desde un ERP en Airtable. En el sector de reparación de dispositivos en España, nadie más lo estaba haciendo.',
       body: 'La idea era simple: si alguien busca "reparar iPhone batería Sevilla", debería existir una página específica para esa búsqueda, con el precio real, el tiempo estimado y fotos de reparaciones reales. Pero crear esas páginas a mano para miles de combinaciones no era viable. Necesitaba un sistema que generase las páginas automáticamente desde el ERP, y que fuera lo suficientemente inteligente para decidir cuáles indexar y cuáles no.',
       context: 'Santifer iRepair fue mi negocio de reparación de dispositivos en Sevilla desde 2009. 16 años, más de 30.000 reparaciones. En 2024 decidí que la web del negocio necesitaba dejar de ser un folleto en Squarespace y empezar a capturar la demanda que ya existía en Google. Construí este sistema de SEO programático como ventaja competitiva y vendí el negocio en septiembre 2025, en su punto más alto.',
       tldr: {
