@@ -103,7 +103,7 @@ export default async function handler(req, res) {
         },
         agenticObservability: {
           heading: 'Observabilidad Agéntica',
-          body: 'La observabilidad LLM estándar registra qué entró y qué salió. Yo registro cada decisión que el sistema toma por su cuenta.\n\nCuando un usuario pregunta por Jacobo, Langfuse captura 6 generation observations: Claude decidiendo si buscar (Sonnet, 200ms), el embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku seleccionando los top 5 (reranking, 50 tokens out), la respuesta final (Sonnet, 800ms), y el score de calidad (Haiku, 0ms añadidos). Cada observación lleva model ID, conteo real de tokens, y coste calculado.\n\nUn dashboard custom de operaciones agrega todo esto: conversaciones, coste por span, precisión del RAG, funnel de seguridad, pass rate de evals, analíticas de voz, versiones de prompt, y salud del sistema.',
+          body: 'Observabilidad agéntica es trazar cada decisión autónoma del pipeline de IA, no solo lo que entró y salió.\n\nLa observabilidad LLM estándar registra qué entró y qué salió. Yo registro cada decisión que el sistema toma por su cuenta.\n\nCuando un usuario pregunta por Jacobo, Langfuse captura 6 generation observations: Claude decidiendo si buscar (Sonnet, 200ms), el embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku seleccionando los top 5 (reranking, 50 tokens out), la respuesta final (Sonnet, 800ms), y el score de calidad (Haiku, 0ms añadidos). Cada observación lleva model ID, conteo real de tokens, y coste calculado.\n\nUn dashboard custom de operaciones agrega todo esto: conversaciones, coste por span, precisión del RAG, funnel de seguridad, pass rate de evals, analíticas de voz, versiones de prompt, y salud del sistema.',
         },
         howItWasBuilt: {
           heading: 'Cómo Se Construyó: The MMA Loop',
@@ -247,7 +247,7 @@ Producción
           },
           developerLoop: {
             heading: 'El Developer Feedback Loop',
-            body: 'El closed loop llega al propio proceso de desarrollo. Claude Code consulta las trazas de producción en Langfuse, diagnostica problemas en el pipeline RAG, y genera el fix.\n\nEn una sesión, detectó que una query de RAG tenía sesgo de confirmación. La búsqueda usaba "n8n for product managers" en vez de solo "n8n", perdiendo chunks relevantes. Propuso el fix y generó el eval para prevenir regresión.\n\nIA manteniendo IA. El chatbot corre en producción, Langfuse captura cada decisión, Claude Code lee las trazas y añade un test. El sistema mejora sin que yo lo toque.',
+            body: 'Un developer feedback loop es cuando la herramienta de IA que construyó el sistema también lo diagnostica y repara usando datos de producción.\n\nEl closed loop llega al propio proceso de desarrollo. Claude Code consulta las trazas de producción en Langfuse, diagnostica problemas en el pipeline RAG, y genera el fix.\n\nEn una sesión, detectó que una query de RAG tenía sesgo de confirmación. La búsqueda usaba "n8n for product managers" en vez de solo "n8n", perdiendo chunks relevantes. Propuso el fix y generó el eval para prevenir regresión.\n\nIA manteniendo IA. El chatbot corre en producción, Langfuse captura cada decisión, Claude Code lee las trazas y añade un test. El sistema mejora sin que yo lo toque.',
           },
         },
         cost: {
@@ -468,7 +468,7 @@ export default async function handler(req, res) {
         },
         agenticObservability: {
           heading: 'Agentic Observability',
-          body: 'Standard LLM observability tracks what went in and what came out. I track every decision the system makes on its own.\n\nWhen a user asks about Jacobo, Langfuse captures 6 generation observations: Claude choosing to search (Sonnet, 200ms), the embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku reranking the top 5 (50 tokens out), the final response (Sonnet, 800ms), and quality scoring (Haiku, 0ms added). Each observation carries model ID, real token counts, and calculated cost.\n\nA custom ops dashboard aggregates all of this: conversations, costs per span, RAG accuracy, security funnel, eval pass rates, voice analytics, prompt versions, and system health.',
+          body: 'Agentic observability means tracing every autonomous decision in an AI pipeline, not just what went in and what came out.\n\nStandard LLM observability tracks what went in and what came out. I track every decision the system makes on its own.\n\nWhen a user asks about Jacobo, Langfuse captures 6 generation observations: Claude choosing to search (Sonnet, 200ms), the embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku reranking the top 5 (50 tokens out), the final response (Sonnet, 800ms), and quality scoring (Haiku, 0ms added). Each observation carries model ID, real token counts, and calculated cost.\n\nA custom ops dashboard aggregates all of this: conversations, costs per span, RAG accuracy, security funnel, eval pass rates, voice analytics, prompt versions, and system health.',
         },
         howItWasBuilt: {
           heading: 'How It Was Built: The MMA Loop',
@@ -612,7 +612,7 @@ Production
           },
           developerLoop: {
             heading: 'The Developer Feedback Loop',
-            body: 'The closed loop extends to the development process itself. Claude Code queries production traces in Langfuse, diagnoses issues in the RAG pipeline, and generates the fix.\n\nIn one session, it found that a RAG query had confirmation bias. The search used "n8n for product managers" instead of just "n8n", missing relevant chunks. It proposed the fix and generated an eval to prevent regression.\n\nAI maintaining AI. The chatbot runs in production, Langfuse captures every decision, Claude Code reads the traces and adds a test. The system improves without me touching it.',
+            body: 'A developer feedback loop is when the AI coding tool that built a system can also diagnose and fix it using production data.\n\nThe closed loop extends to the development process itself. Claude Code queries production traces in Langfuse, diagnoses issues in the RAG pipeline, and generates the fix.\n\nIn one session, it found that a RAG query had confirmation bias. The search used "n8n for product managers" instead of just "n8n", missing relevant chunks. It proposed the fix and generated an eval to prevent regression.\n\nAI maintaining AI. The chatbot runs in production, Langfuse captures every decision, Claude Code reads the traces and adds a test. The system improves without me touching it.',
           },
         },
         cost: {

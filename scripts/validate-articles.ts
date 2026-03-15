@@ -31,6 +31,7 @@ const SOURCE_MAP: Record<string, string> = {
   'business-os': 'src/BusinessOS.tsx',
   'programmatic-seo': 'src/ProgrammaticSeo.tsx',
   'santifer-irepair': 'src/SantiferIRepair.tsx',
+  'self-healing-chatbot': 'src/SelfHealingChatbot.tsx',
 }
 
 // ---------------------------------------------------------------------------
