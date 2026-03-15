@@ -2491,6 +2491,13 @@ function App() {
               </a>
             </div>
           </AnimatedSection>
+          <p className="mt-12 text-xs text-muted-foreground">
+            &copy; {new Date().getFullYear()} Santiago Fernández de Valderrama
+            <span className="mx-2 text-border">|</span>
+            <Link to={lang === 'es' ? '/privacidad' : '/privacy'} className="hover:text-primary transition-colors">
+              {lang === 'es' ? 'Privacidad' : 'Privacy'}
+            </Link>
+          </p>
         </div>
       </footer>
 

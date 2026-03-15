@@ -10,6 +10,7 @@ import { articleRegistry, getEsSlugs } from './articles/registry'
 const FloatingChat = lazy(() => import('./FloatingChat'))
 const MusicToggle = lazy(() => import('./MusicToggle'))
 const OpsDashboard = lazy(() => import('./ops/OpsDashboard'))
+const PrivacyPolicy = lazy(() => import('./PrivacyPolicy'))
 
 // Lazy-load article components from registry
 const articleComponents: Record<string, React.LazyExoticComponent<ComponentType<{ lang: 'es' | 'en' }>>> = {}
@@ -169,6 +170,8 @@ const app = (
             <Route path="/" element={<App />} />
             <Route path="/en" element={<App />} />
             <Route path="/ops" element={<OpsDashboard />} />
+            <Route path="/privacidad" element={<PrivacyPolicy lang="es" />} />
+            <Route path="/privacy" element={<PrivacyPolicy lang="en" />} />
             {articleRegistry.map((article) => {
               const ArticleComponent = articleComponents[article.id]
               return [

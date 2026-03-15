@@ -102,7 +102,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
 
           {/* Intro narrative */}
           <Prose variant="hook">
-            {t.intro.hook}
+            <span dangerouslySetInnerHTML={{ __html: t.intro.hook }} />
           </Prose>
           <Prose>
             {t.intro.body}
@@ -318,6 +318,16 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
 
           {/* Lessons Learned */}
           <LessonsSection heading={t.lessons.heading} items={t.lessons.items} />
+
+          {/* Cross-link: Business OS */}
+          <CaseStudyCta
+            heading={lang === 'es' ? '¿Qué automaticé con esas 170 horas?' : 'What did I automate with those 170 hours?'}
+            body={lang === 'es'
+              ? 'Estos workflows son una fracción de un sistema más amplio: 12 bases de Airtable, 50+ automatizaciones y un agente IA que gestiona clientes 24/7. Todo documentado en el case study del Business OS.'
+              : 'These workflows are a fraction of a larger system: 12 Airtable bases, 50+ automations, and an AI agent handling customers 24/7. All documented in the Business OS case study.'}
+            ctaLabel={lang === 'es' ? 'Ver Business OS →' : 'Read Business OS →'}
+            ctaHref={lang === 'es' ? '/business-os-para-airtable' : '/business-os-for-airtable'}
+          />
 
           {/* FAQ */}
           <FaqSection heading={t.faq.heading} items={t.faq.items} />

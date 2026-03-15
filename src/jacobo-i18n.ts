@@ -583,7 +583,7 @@ export const jacoboContent = {
             ],
           },
           roi: 'El ROI no es solo el ahorro directo. Es la disponibilidad 24/7, las citas que antes se perdían fuera de horario, y los técnicos que ahora reparan en vez de contestar preguntas.',
-          benchmarks: 'Benchmark de industria: los contact centers enterprise promedian un 20-30% de resolución por IA. Los asistentes virtuales más avanzados alcanzan un 15%. Jacobo logró ~90% en un dominio especializado. La diferencia: sub-agentes con acceso a datos en tiempo real vs chatbots genéricos.',
+          benchmarks: 'Benchmark de industria: los contact centers enterprise promedian un 20-30% de resolución por IA (Gartner, 2025 AI Customer Service Report). Los asistentes virtuales más avanzados alcanzan un 15% (Gartner, 2025 Hype Cycle for Customer Service & Support Technologies). Jacobo logró ~90% en un dominio especializado. La diferencia: sub-agentes con acceso a datos en tiempo real vs chatbots genéricos.',
           exitNarrative: 'Jacobo sigue operando 24/7 bajo nuevo dueño desde septiembre de 2025. El comprador lo adquirió funcionando. La mejor prueba de un sistema: funciona sin su creador. Los patrones de arquitectura documentados aquí son los mismos que llevaría a tu equipo.',
         },
         decisions: {
@@ -2113,7 +2113,7 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
             ],
           },
           roi: 'The real return isn\'t just the cost saving. It\'s the technician who\'s actually repairing phones instead of answering them, and the appointment that used to fall through the cracks at 10pm — now confirmed automatically.',
-          benchmarks: 'Industry benchmark: enterprise contact centers average 20-30% AI resolution rate. The most advanced virtual assistants achieve 15%. Jacobo hit ~90% in a specialized domain. The difference: domain-specific sub-agents with real-time data access vs generic chatbots.',
+          benchmarks: 'Industry benchmark: enterprise contact centers average 20-30% AI resolution rate (Gartner, 2025 AI Customer Service Report). The most advanced virtual assistants achieve 15% (Gartner, 2025 Hype Cycle for Customer Service & Support Technologies). Jacobo hit ~90% in a specialized domain. The difference: domain-specific sub-agents with real-time data access vs generic chatbots.',
           exitNarrative: 'Jacobo is still running 24/7 under new ownership since September 2025. The buyer acquired it operating — the best proof of a system: it runs without its creator. The architecture patterns documented here are the same ones I\'d bring to your team.',
         },
         decisions: {

@@ -695,6 +695,17 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
           <p className="text-base text-foreground leading-relaxed font-medium">{t.sections.results.exitNarrative}</p>
         </InfoCard>
 
+        {/* Cross-link: pSEO used the same Airtable data */}
+        <CaseStudyCta
+          editorId="results-pseo-crosslink"
+          heading={lang === 'es' ? 'Los mismos datos de Airtable generaron 4.700+ páginas SEO' : 'The same Airtable data generated 4,700+ SEO pages'}
+          body={lang === 'es'
+            ? 'El inventario que Jacobo consulta en tiempo real también alimenta un sistema de SEO programático: 4.730 landing pages con precios reales, fotos de reparaciones y reseñas verificadas.'
+            : 'The inventory Jacobo queries in real time also feeds a programmatic SEO system: 4,730 landing pages with real prices, repair photos, and verified reviews.'}
+          ctaLabel={lang === 'es' ? 'Ver SEO Programático →' : 'Read Programmatic SEO →'}
+          ctaHref={lang === 'es' ? '/seo-programatico' : '/programmatic-seo'}
+        />
+
         {/* CTA #1 — After Results */}
         <CaseStudyCta
           editorId="cta-after-results"

@@ -246,7 +246,7 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/*  AGENTIC OBSERVABILITY                                           */}
         {/* ================================================================ */}
         <H2 id="agentic-observability">{s.agenticObservability.heading}</H2>
-        <Prose>{s.agenticObservability.body}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: s.agenticObservability.body }} /></Prose>
 
         <DiagramZoom
           src="/chatbot/dashboard-evals.webp"
@@ -297,7 +297,7 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         <H2 id="rag">{s.rag.heading}</H2>
 
         <H3>{s.rag.whyAgentic.heading}</H3>
-        <Prose>{s.rag.whyAgentic.body}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: s.rag.whyAgentic.body }} /></Prose>
 
         <H3>{s.rag.hybridSearch.heading}</H3>
         <Prose>{s.rag.hybridSearch.body}</Prose>
@@ -312,7 +312,7 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         }))} />
         <Callout>{s.rag.callout}</Callout>
         <Callout className="bg-accent/10 border-accent/40">{s.rag.recursivityCallout}</Callout>
-        <Prose>{s.rag.indexedArticles}</Prose>
+        <Prose><span dangerouslySetInnerHTML={{ __html: s.rag.indexedArticles }} /></Prose>
 
         {/* ================================================================ */}
         {/*  DEFENSE                                                         */}

@@ -103,7 +103,7 @@ export default async function handler(req, res) {
         },
         agenticObservability: {
           heading: 'Observabilidad Agéntica',
-          body: 'Observabilidad agéntica es trazar cada decisión autónoma del pipeline de IA, no solo lo que entró y salió.\n\nLa observabilidad LLM estándar registra qué entró y qué salió. Yo registro cada decisión que el sistema toma por su cuenta.\n\nCuando un usuario pregunta por Jacobo, Langfuse captura 6 generation observations: Claude decidiendo si buscar (Sonnet, 200ms), el embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku seleccionando los top 5 (reranking, 50 tokens out), la respuesta final (Sonnet, 800ms), y el score de calidad (Haiku, 0ms añadidos). Cada observación lleva model ID, conteo real de tokens, y coste calculado.\n\nUn dashboard custom de operaciones agrega todo esto: conversaciones, coste por span, precisión del RAG, funnel de seguridad, pass rate de evals, analíticas de voz, versiones de prompt, y salud del sistema.',
+          body: 'Observabilidad agéntica es trazar cada decisión autónoma del pipeline de IA, no solo lo que entró y salió.\n\nLa observabilidad LLM estándar registra qué entró y qué salió. Yo registro cada decisión que el sistema toma por su cuenta.\n\nCuando un usuario pregunta por <a href="/agente-ia-jacobo" class="text-primary underline underline-offset-2 hover:text-primary/80">Jacobo</a>, Langfuse captura 6 generation observations: Claude decidiendo si buscar (Sonnet, 200ms), el embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku seleccionando los top 5 (reranking, 50 tokens out), la respuesta final (Sonnet, 800ms), y el score de calidad (Haiku, 0ms añadidos). Cada observación lleva model ID, conteo real de tokens, y coste calculado.\n\nUn dashboard custom de operaciones agrega todo esto: conversaciones, coste por span, precisión del RAG, funnel de seguridad, pass rate de evals, analíticas de voz, versiones de prompt, y salud del sistema.',
         },
         howItWasBuilt: {
           heading: 'Cómo Se Construyó: The MMA Loop',
@@ -141,7 +141,7 @@ export default async function handler(req, res) {
           heading: 'RAG Agéntico',
           whyAgentic: {
             heading: 'Por qué Agéntico',
-            body: 'En un RAG clásico, cada mensaje pasa por el pipeline de búsqueda. En agentic RAG, Claude decide cuándo buscar usando tool_use. "¿Cómo te llamas?" no necesita buscar en 56 chunks. "¿Qué stack usaste para el SEO programático?" sí. Resultado: ~60% de las conversaciones no activan RAG (medido en Langfuse), ahorrando latencia y coste.',
+            body: 'En un RAG clásico, cada mensaje pasa por el pipeline de búsqueda. En agentic RAG, Claude decide cuándo buscar usando tool_use. "¿Cómo te llamas?" no necesita buscar en 56 chunks. "¿Qué stack usaste para el <a href="/seo-programatico" class="text-primary underline underline-offset-2 hover:text-primary/80">SEO programático</a>?" sí. Resultado: ~60% de las conversaciones no activan RAG (medido en Langfuse), ahorrando latencia y coste.',
           },
           hybridSearch: {
             heading: 'Hybrid Search',
@@ -161,7 +161,7 @@ export default async function handler(req, res) {
           },
           callout: 'Cada modo de fallo fue descubierto en producción, trazado en Langfuse, y convertido en eval.',
           recursivityCallout: 'Meta: este artículo está indexado en el RAG del chatbot. Pregúntale "¿cómo funciona tu RAG?" — te responderá usando el RAG para explicar el RAG.',
-          indexedArticles: 'El chatbot puede responder sobre Jacobo, Business OS, SEO Programático y n8n para PMs — pregúntale.',
+          indexedArticles: 'El chatbot puede responder sobre <a href="/agente-ia-jacobo" class="text-primary underline underline-offset-2 hover:text-primary/80">Jacobo</a>, <a href="/business-os-para-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">Business OS</a>, <a href="/seo-programatico" class="text-primary underline underline-offset-2 hover:text-primary/80">SEO Programático</a> y <a href="/n8n-para-pms" class="text-primary underline underline-offset-2 hover:text-primary/80">n8n para PMs</a> — pregúntale.',
         },
         defense: {
           heading: 'Defensa en 6 Capas',
@@ -468,7 +468,7 @@ export default async function handler(req, res) {
         },
         agenticObservability: {
           heading: 'Agentic Observability',
-          body: 'Agentic observability means tracing every autonomous decision in an AI pipeline, not just what went in and what came out.\n\nStandard LLM observability tracks what went in and what came out. I track every decision the system makes on its own.\n\nWhen a user asks about Jacobo, Langfuse captures 6 generation observations: Claude choosing to search (Sonnet, 200ms), the embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku reranking the top 5 (50 tokens out), the final response (Sonnet, 800ms), and quality scoring (Haiku, 0ms added). Each observation carries model ID, real token counts, and calculated cost.\n\nA custom ops dashboard aggregates all of this: conversations, costs per span, RAG accuracy, security funnel, eval pass rates, voice analytics, prompt versions, and system health.',
+          body: 'Agentic observability means tracing every autonomous decision in an AI pipeline, not just what went in and what came out.\n\nStandard LLM observability tracks what went in and what came out. I track every decision the system makes on its own.\n\nWhen a user asks about <a href="/ai-agent-jacobo" class="text-primary underline underline-offset-2 hover:text-primary/80">Jacobo</a>, Langfuse captures 6 generation observations: Claude choosing to search (Sonnet, 200ms), the embedding (OpenAI, 200 tokens), retrieval (pgvector, 10 chunks), Haiku reranking the top 5 (50 tokens out), the final response (Sonnet, 800ms), and quality scoring (Haiku, 0ms added). Each observation carries model ID, real token counts, and calculated cost.\n\nA custom ops dashboard aggregates all of this: conversations, costs per span, RAG accuracy, security funnel, eval pass rates, voice analytics, prompt versions, and system health.',
         },
         howItWasBuilt: {
           heading: 'How It Was Built: The MMA Loop',
@@ -506,7 +506,7 @@ export default async function handler(req, res) {
           heading: 'Agentic RAG',
           whyAgentic: {
             heading: 'Why Agentic',
-            body: 'In classic RAG, every message goes through the search pipeline. In agentic RAG, Claude decides when to search using tool_use. "What\'s your name?" doesn\'t need to search 56 chunks. "What stack did you use for programmatic SEO?" does. Result: ~60% of conversations don\'t trigger RAG (measured in Langfuse), saving latency and cost.',
+            body: 'In classic RAG, every message goes through the search pipeline. In agentic RAG, Claude decides when to search using tool_use. "What\'s your name?" doesn\'t need to search 56 chunks. "What stack did you use for <a href="/programmatic-seo" class="text-primary underline underline-offset-2 hover:text-primary/80">programmatic SEO</a>?" does. Result: ~60% of conversations don\'t trigger RAG (measured in Langfuse), saving latency and cost.',
           },
           hybridSearch: {
             heading: 'Hybrid Search',
@@ -526,7 +526,7 @@ export default async function handler(req, res) {
           },
           callout: 'Every failure mode was discovered in production, traced in Langfuse, and converted into an eval.',
           recursivityCallout: 'Meta: this very article is indexed in the chatbot\'s RAG. Ask it "how does your RAG work?" — it will answer using RAG to explain RAG.',
-          indexedArticles: 'The chatbot can answer about Jacobo, Business OS, Programmatic SEO, and n8n for PMs — just ask.',
+          indexedArticles: 'The chatbot can answer about <a href="/ai-agent-jacobo" class="text-primary underline underline-offset-2 hover:text-primary/80">Jacobo</a>, <a href="/business-os-for-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">Business OS</a>, <a href="/programmatic-seo" class="text-primary underline underline-offset-2 hover:text-primary/80">Programmatic SEO</a>, and <a href="/n8n-for-pms" class="text-primary underline underline-offset-2 hover:text-primary/80">n8n for PMs</a> — just ask.',
         },
         defense: {
           heading: '6-Layer Defense',

@@ -431,6 +431,8 @@ export function getAltPaths(): Record<string, string> {
   const map: Record<string, string> = {
     '/': '/en',
     '/en': '/',
+    '/privacidad': '/privacy',
+    '/privacy': '/privacidad',
   }
   for (const article of articleRegistry) {
     map[`/${article.slugs.es}`] = `/${article.slugs.en}`
@@ -462,7 +464,7 @@ export function getSectionLabels(): Record<string, Record<string, string>> {
 
 /** All ES slugs (for lang detection: if pathname matches an ES slug → lang is 'es') */
 export function getEsSlugs(): Set<string> {
-  const slugs = new Set<string>(['/'])
+  const slugs = new Set<string>(['/', '/privacidad'])
   for (const article of articleRegistry) {
     slugs.add(`/${article.slugs.es}`)
   }

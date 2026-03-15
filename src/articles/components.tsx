@@ -203,7 +203,13 @@ export function ArticleFooter({ lang, utmCampaign }: ArticleFooterProps) {
           GitHub
         </a>
       </div>
-      <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} Santiago Fernández de Valderrama. {f.copyright}</p>
+      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <span>&copy; {new Date().getFullYear()} Santiago Fernández de Valderrama. {f.copyright}</span>
+        <span className="text-border">|</span>
+        <Link to={lang === 'es' ? '/privacidad' : '/privacy'} className="hover:text-primary transition-colors">
+          {lang === 'es' ? 'Privacidad' : 'Privacy'}
+        </Link>
+      </div>
     </footer>
   )
 }

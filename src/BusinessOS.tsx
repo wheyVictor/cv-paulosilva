@@ -658,6 +658,17 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
         />
         <Prose editorId="replicability-closing" className="mb-8">{t.sections.replicability.closing}</Prose>
 
+        {/* Cross-link: Chatbot uses the same systems thinking */}
+        <CaseStudyCta
+          editorId="crosslink-chatbot"
+          heading={lang === 'es' ? 'El mismo enfoque de sistemas, aplicado a LLMOps' : 'The same systems thinking, applied to LLMOps'}
+          body={lang === 'es'
+            ? 'El chatbot de este portfolio usa los mismos principios: observabilidad agéntica, closed-loop automático y 71 tests. De automatizar un negocio físico a automatizar un pipeline de IA.'
+            : 'The chatbot on this portfolio uses the same principles: agentic observability, automatic closed-loop, and 71 tests. From automating a physical business to automating an AI pipeline.'}
+          ctaLabel={lang === 'es' ? 'Ver El Chatbot Que Se Cura Solo →' : 'Read The Self-Healing Chatbot →'}
+          ctaHref={lang === 'es' ? '/chatbot-que-se-cura-solo' : '/self-healing-chatbot'}
+        />
+
         {/* CTA */}
         <CaseStudyCta
           heading={t.cta.heading}

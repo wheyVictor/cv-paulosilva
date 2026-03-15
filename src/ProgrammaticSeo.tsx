@@ -1013,6 +1013,16 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           }))}
         />
 
+        {/* Cross-link: Jacobo uses the same Airtable data */}
+        <CaseStudyCta
+          heading={lang === 'es' ? 'El mismo ERP alimenta un agente IA' : 'The same ERP powers an AI agent'}
+          body={lang === 'es'
+            ? 'Los datos de Airtable que generan estas 4.700+ páginas también los consulta Jacobo, un agente IA omnicanal que atiende por WhatsApp y teléfono. Misma fuente de verdad, dos canales de adquisición.'
+            : 'The Airtable data that generates these 4,700+ pages is also queried by Jacobo, an omnichannel AI agent that handles WhatsApp and phone. Same source of truth, two acquisition channels.'}
+          ctaLabel={lang === 'es' ? 'Ver case study de Jacobo →' : 'Read Jacobo case study →'}
+          ctaHref={lang === 'es' ? '/agente-ia-jacobo' : '/ai-agent-jacobo'}
+        />
+
         {/* CTA */}
         <CaseStudyCta
           heading={t.cta.heading}

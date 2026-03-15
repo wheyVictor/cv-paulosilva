@@ -48,7 +48,7 @@ export const n8nContent = {
       date: '24 feb 2026',
     },
     intro: {
-      hook: 'n8n es una plataforma de automatización que conecta tus herramientas con workflows visuales — sin código. Yo automaticé 170 horas al mes de tareas repetitivas con dos workflows que se montan en una tarde.',
+      hook: 'n8n es una plataforma de automatización que conecta tus herramientas con workflows visuales — sin código. Yo automaticé <a href="/business-os-para-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">170 horas al mes de tareas repetitivas</a> con dos workflows que se montan en una tarde.',
       body: 'Yo lo medí. Veinte. Algunas semanas, treinta. Sprint reports que se comen un día entero. Feedback disperso en cinco herramientas que tenía que leer, clasificar y convertir en tickets uno por uno. Status updates escritos desde cero cada lunes.',
       punchline: 'No era product manager. Era un router de datos muy caro. Moviendo información entre herramientas que deberían hablarse entre ellas. Gastaba 170 horas al mes en esto en mi propia empresa antes de automatizarlo todo. Hoy te enseño cómo hacer lo mismo con dos workflows que puedes montar en una tarde.',
     },
@@ -261,7 +261,7 @@ export const n8nContent = {
       date: 'Feb 24, 2026',
     },
     intro: {
-      hook: 'n8n is a workflow automation platform that connects your tools visually — no code required. I automated 170 hours a month of repetitive tasks with two workflows you can build in an afternoon.',
+      hook: 'n8n is a workflow automation platform that connects your tools visually — no code required. I automated <a href="/business-os-for-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">170 hours a month of repetitive tasks</a> with two workflows you can build in an afternoon.',
       body: 'I tracked mine. It was twenty. Some weeks, thirty. Sprint reports that take a full day. Feedback scattered across five tools that I had to read, classify, and turn into tickets one by one. Status updates typed from scratch every Monday.',
       punchline: 'I wasn\'t a product manager. I was a very expensive data router. Moving information between tools that should have been talking to each other. I spent 170 hours a month on this at my own company before I automated all of it. Both workflows are free, importable as JSON, and run on n8n Cloud\'s free tier. No API keys, no infrastructure, no permission from engineering. Today I\'ll show you how to build them in an afternoon.',
     },
