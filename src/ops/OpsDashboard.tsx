@@ -214,7 +214,7 @@ function OverviewTab({ stats, loading }: TabProps) {
         <KpiCard label="Total Cost" value={totals.totalCost} format="currency" />
         <KpiCard label="Avg Latency" value={totals.avgLatencyMs} format="ms" />
         <KpiCard label="Eval Pass Rate" value={totals.evalPassRate} format="percent" />
-        <KpiCard label="Avg Safety" value={totals.avgSafetyScore} format="percent" />
+        <KpiCard label="Avg Safety" value={totals.avgSafetyScore != null ? totals.avgSafetyScore : '—'} format={totals.avgSafetyScore != null ? 'percent' : undefined} />
       </div>
 
       {/* Timeline charts */}

@@ -5,6 +5,17 @@ export interface ArticleSeo {
   description: string
 }
 
+export interface ArticleSeoMeta {
+  datePublished: string
+  dateModified: string
+  keywords: string[]
+  articleType: 'Article' | 'TechArticle'
+  articleTags: string
+  images: string[]
+  about: Array<Record<string, string>>
+  extra?: Record<string, string>
+}
+
 export interface ArticleConfig {
   id: string
   slugs: { es: string; en: string }
@@ -19,6 +30,8 @@ export interface ArticleConfig {
   xDefaultSlug?: string
   /** Whether this article is ready for RAG indexing (default: false) */
   ragReady?: boolean
+  /** SEO metadata for prerender JSON-LD + article meta tags */
+  seoMeta?: ArticleSeoMeta
 }
 
 export const articleRegistry: ArticleConfig[] = [
@@ -64,6 +77,19 @@ export const articleRegistry: ArticleConfig[] = [
     ragReady: true,
     ogImage: 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp',
     component: () => import('../N8nForPMs.tsx'),
+    seoMeta: {
+      datePublished: '2026-02-24',
+      dateModified: '2026-03-06',
+      keywords: ['n8n', 'product manager', 'automation', 'AI', 'workflow', 'sprint report', 'feedback classification', 'no-code', 'n8n tutorial', 'AI workflow automation'],
+      articleType: 'TechArticle',
+      articleTags: 'n8n,product manager,automation,AI,workflow,no-code',
+      images: ['https://santifer.io/workflows/n8n-sprint-report-automation-workflow.webp', 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp'],
+      about: [
+        { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io', applicationCategory: 'Workflow Automation' },
+        { '@type': 'Thing', name: 'Product Management Automation' },
+      ],
+      extra: { proficiencyLevel: 'Beginner', dependencies: 'n8n Cloud (free tier), Airtable, Slack' },
+    },
   },
   {
     id: 'jacobo',
@@ -119,6 +145,21 @@ export const articleRegistry: ArticleConfig[] = [
     ragReady: true,
     ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.png',
     component: () => import('../JacoboAgent.tsx'),
+    seoMeta: {
+      datePublished: '2026-02-25',
+      dateModified: '2026-03-07',
+      keywords: ['multi-agent AI', 'multi agent orchestration', 'AI agent', 'sub-agent architecture', 'tool calling production', 'n8n workflows', 'n8n ai agent', 'ai agent case study', 'customer service AI', 'WhatsApp AI agent', 'ElevenLabs voice agent', 'voice AI', 'HITL', 'human in the loop', 'ia para pymes', 'agente ia whatsapp', 'multi-model orchestration', 'OpenRouter', 'FDE portfolio', 'solutions architect AI', 'AI production manager', 'enterprise AI patterns', 'voice AI platform', 'conversational AI case study', 'agentic workflows'],
+      articleType: 'TechArticle',
+      articleTags: 'AI agent,multi-agent,n8n,ElevenLabs,HITL,tool calling,WhatsApp,voice AI',
+      images: ['https://santifer.io/jacobo/og-jacobo-agent.png'],
+      about: [
+        { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io', applicationCategory: 'Workflow Automation' },
+        { '@type': 'SoftwareApplication', name: 'ElevenLabs', url: 'https://elevenlabs.io', applicationCategory: 'Voice AI' },
+        { '@type': 'Thing', name: 'Multi-Agent Orchestration' },
+        { '@type': 'Thing', name: 'AI Customer Service' },
+      ],
+      extra: { proficiencyLevel: 'Expert', dependencies: 'n8n, OpenRouter, ElevenLabs, WATI, Airtable, Aircall, YouCanBookMe' },
+    },
   },
   {
     id: 'business-os',
@@ -170,6 +211,21 @@ export const articleRegistry: ArticleConfig[] = [
     ragReady: true,
     ogImage: 'https://santifer.io/business-os/og-business-os.png',
     component: () => import('../BusinessOS.tsx'),
+    seoMeta: {
+      datePublished: '2026-02-25',
+      dateModified: '2026-03-06',
+      keywords: ['Business OS', 'Airtable ERP', 'Airtable as ERP', 'no-code ERP', 'Airtable automation', 'CRM gamification', 'phone repair', 'inventory management', 'custom ERP case study', 'repair shop management', 'programmatic SEO', 'Airtable CRM', 'single source of truth', 'business operating system', 'multi-base architecture'],
+      articleType: 'TechArticle',
+      articleTags: 'Business OS,Airtable,n8n,ERP,CRM,automation,phone repair',
+      images: ['https://santifer.io/business-os/og-business-os.png'],
+      about: [
+        { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com', applicationCategory: 'Database Platform' },
+        { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io', applicationCategory: 'Workflow Automation' },
+        { '@type': 'Thing', name: 'Enterprise Resource Planning' },
+        { '@type': 'Thing', name: 'Business Process Automation' },
+      ],
+      extra: { proficiencyLevel: 'Advanced', dependencies: 'Airtable Pro, n8n, YouCanBookMe, WATI (WhatsApp API), DataForSEO' },
+    },
   },
   {
     id: 'programmatic-seo',
@@ -182,7 +238,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
       en: {
         title: 'Programmatic SEO: 4,000+ Pages from an ERP | santifer.io',
-        description: 'Case study: how I built 4,730 static landing pages with Airtable as headless CMS, DataForSEO for crawl budget optimization, and Astro SSG. 2M+ impressions, 19K+ clicks.',
+        description: 'Case study: 4,730 static landing pages from Airtable as headless CMS with DataForSEO crawl budget optimization and Astro SSG. 2M+ impressions, 19K+ clicks.',
       },
     },
     sectionLabels: {
@@ -237,6 +293,20 @@ export const articleRegistry: ArticleConfig[] = [
     ragReady: true,
     ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
     component: () => import('../ProgrammaticSeo.tsx'),
+    seoMeta: {
+      datePublished: '2026-02-25',
+      dateModified: '2026-03-10',
+      keywords: ['programmatic SEO', 'Airtable', 'headless CMS', 'Astro', 'DataForSEO', 'crawl budget', 'phone repair', 'static site generation', 'local SEO', 'ERP'],
+      articleType: 'TechArticle',
+      articleTags: 'programmatic SEO,Airtable,Astro,DataForSEO,crawl budget,phone repair,ERP,local SEO',
+      images: ['https://santifer.io/pseo/og-programmatic-seo.png'],
+      about: [
+        { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com', applicationCategory: 'Database Platform' },
+        { '@type': 'SoftwareApplication', name: 'Astro', url: 'https://astro.build', applicationCategory: 'Static Site Generator' },
+        { '@type': 'SoftwareApplication', name: 'DataForSEO', url: 'https://dataforseo.com', applicationCategory: 'SEO Data API' },
+      ],
+      extra: { proficiencyLevel: 'Intermediate', dependencies: 'Airtable, Astro, DataForSEO API, Node.js' },
+    },
   },
   {
     id: 'self-healing-chatbot',
@@ -249,7 +319,7 @@ export const articleRegistry: ArticleConfig[] = [
       },
       en: {
         title: 'The Self-Healing Chatbot: From Widget to Production LLMOps',
-        description: 'Case study: how I evolved a 50-line chatbot into a production LLMOps system with agentic RAG, 6-layer jailbreak defense, 71 automated evals, and a closed-loop that generates tests from real failures.',
+        description: 'Case study: production LLMOps with agentic observability, 6-layer defense, 71 evals, voice mode, and a closed-loop that generates tests from real failures.',
       },
     },
     sectionLabels: {
@@ -288,6 +358,21 @@ export const articleRegistry: ArticleConfig[] = [
     ragReady: true,
     ogImage: 'https://santifer.io/chatbot/og-self-healing-chatbot.png',
     component: () => import('../SelfHealingChatbot.tsx'),
+    seoMeta: {
+      datePublished: '2026-03-11',
+      dateModified: '2026-03-14',
+      keywords: ['LLMOps', 'self-healing chatbot', 'agentic RAG', 'jailbreak defense', 'prompt injection', 'LLM evaluation', 'closed loop LLM', 'Langfuse', 'prompt versioning', 'adversarial testing', 'trace-to-eval', 'hybrid search pgvector', 'AI portfolio', 'chatbot evals', 'CI gate LLM', 'voice mode chatbot', 'OpenAI Realtime API', 'speech-to-speech AI', 'agentic observability', 'developer feedback loop', 'AI maintaining AI'],
+      articleType: 'TechArticle',
+      articleTags: 'LLMOps,self-healing chatbot,agentic RAG,jailbreak defense,Langfuse,evals,closed-loop,prompt injection',
+      images: ['https://santifer.io/chatbot/og-self-healing-chatbot.png'],
+      about: [
+        { '@type': 'SoftwareApplication', name: 'Langfuse', url: 'https://langfuse.com', applicationCategory: 'LLM Observability' },
+        { '@type': 'SoftwareApplication', name: 'Supabase', url: 'https://supabase.com', applicationCategory: 'Database' },
+        { '@type': 'Thing', name: 'LLMOps' },
+        { '@type': 'Thing', name: 'Retrieval-Augmented Generation' },
+      ],
+      extra: { proficiencyLevel: 'Expert', dependencies: 'Claude, Langfuse, Supabase, Vercel, OpenAI, Resend, GitHub Actions' },
+    },
   },
   {
     id: 'santifer-irepair',

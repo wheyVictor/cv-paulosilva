@@ -1027,7 +1027,7 @@ return records.map(r => ({
     readingTime: '37 min read',
     seo: {
       title: 'Programmatic SEO: 4,000+ Pages from an ERP | santifer.io',
-      description: 'Case study: how I built 4,730 static landing pages with Airtable as headless CMS, DataForSEO for crawl budget optimization, and Astro SSG. 2M+ impressions, 19K+ clicks.',
+      description: 'Case study: 4,730 static landing pages from Airtable as headless CMS with DataForSEO crawl budget optimization and Astro SSG. 2M+ impressions, 19K+ clicks.',
     },
     nav: {
       breadcrumbHome: 'Home',

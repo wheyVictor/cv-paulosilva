@@ -370,7 +370,7 @@ Producción
       readingTime: '22 min read',
       seo: {
         title: 'The Self-Healing Chatbot: From Widget to Production LLMOps | santifer.io',
-        description: 'Case study: how I evolved a 50-line chatbot into a production LLMOps system with agentic RAG, 6-layer jailbreak defense, 71 automated evals, and a closed-loop that generates tests from real failures.',
+        description: 'Case study: production LLMOps with agentic observability, 6-layer defense, 71 evals, voice mode, and a closed-loop that generates tests from real failures.',
       },
       nav: {
         breadcrumbHome: 'Home',

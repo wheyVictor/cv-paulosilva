@@ -1,7 +1,7 @@
 # Most bots crawl. The best ones read llms.txt → /llms.txt
 #
 # Built by Santiago Fernández — hi@santifer.io
-# Stack: React 19 · Claude API · Vercel Edge · 55+ evals · 6-layer defense
+# Stack: React 19 · Claude API · Vercel Edge · 71 evals · 6-layer defense · voice mode
 
 User-agent: *
 Allow: /

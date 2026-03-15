@@ -1,4 +1,5 @@
 import { validateOpsAuth, langfuseAuth, langfuseBaseUrl } from '../_shared/ops-auth.js'
+import evalResults from './_eval-results.js'
 
 export const config = { runtime: 'edge' }
 
@@ -165,7 +166,7 @@ export default async function handler(req) {
         avgCostPerConversation: conversations > 0 ? round(totalCost / conversations) : 0,
         avgLatencyMs: latencyCount > 0 ? Math.round(totalLatency / latencyCount) : 0,
         avgSafetyScore: safetyCount > 0 ? round(safetySum / safetyCount) : null,
-        evalPassRate: 0,
+        evalPassRate: evalResults?.passRate ?? 0,
       },
       daily: dailyArray,
       distributions: {

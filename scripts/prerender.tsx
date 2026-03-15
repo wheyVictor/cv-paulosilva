@@ -22,7 +22,22 @@ import Critters from 'critters';
 import App from '../src/App.tsx';
 import GlobalNav from '../src/GlobalNav.tsx';
 import { articleRegistry, type ArticleConfig } from '../src/articles/registry.ts';
+import { buildArticleJsonLd } from '../src/articles/json-ld.ts';
 import { seo } from '../src/i18n.ts';
+import { n8nContent } from '../src/n8n-i18n.ts';
+import { jacoboContent } from '../src/jacobo-i18n.ts';
+import { businessOsContent } from '../src/business-os-i18n.ts';
+import { pseoContent } from '../src/pseo-i18n.ts';
+import { chatbotContent } from '../src/chatbot-i18n.ts';
+
+// Map article id → i18n content for JSON-LD generation
+const i18nMap: Record<string, Record<string, { header: { h1: string }; nav: { breadcrumbHome: string; breadcrumbCurrent: string }; faq: { items: readonly { q: string; a: string }[] } }>> = {
+  'n8n-for-pms': n8nContent,
+  'jacobo': jacoboContent,
+  'business-os': businessOsContent,
+  'programmatic-seo': pseoContent,
+  'self-healing-chatbot': chatbotContent,
+};
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
@@ -166,7 +181,7 @@ function buildArticlePage(
 
   const hreflangLinks = `<link rel="alternate" hreflang="${lang}" href="${url}" /><link rel="alternate" hreflang="${altLang}" href="${altUrl}" /><link rel="alternate" hreflang="x-default" href="${xDefaultHref}" />`;
 
-  return indexHtml
+  let result = indexHtml
     .replace('<div id="root"></div>', `<div id="root">${renderedHtml}</div>`)
     .replace('<html lang="es" class="dark">', `<html lang="${htmlLang}" class="dark">`)
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(articleSeo.title)}</title>`)
@@ -188,6 +203,52 @@ function buildArticlePage(
     .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${esc(config.ogImage || 'https://santifer.io/og-image.png')}" />`)
     .replace(/<meta property="og:image:alt" content="[^"]*" \/>/, `<meta property="og:image:alt" content="${esc(articleSeo.title)}" />`)
     .replace(/<meta name="twitter:image" content="[^"]*" \/>/, config.ogImage ? `<meta name="twitter:image" content="${esc(config.ogImage)}" />` : '');
+
+  // Inject article:published_time + article:modified_time + article:tag
+  const seoMeta = config.seoMeta;
+  if (seoMeta) {
+    const articleMetaTags = [
+      `<meta property="article:published_time" content="${seoMeta.datePublished}" />`,
+      `<meta property="article:modified_time" content="${seoMeta.dateModified}" />`,
+      `<meta property="article:author" content="https://www.linkedin.com/in/santifer" />`,
+      `<meta property="article:tag" content="${esc(seoMeta.articleTags)}" />`,
+    ].join('\n    ');
+    result = result.replace('</head>', `    ${articleMetaTags}\n  </head>`);
+  }
+
+  // Inject article JSON-LD (replace homepage Person/WebSite schema)
+  const i18n = i18nMap[config.id];
+  if (seoMeta && i18n) {
+    const t = i18n[lang];
+    if (t) {
+      const jsonLd = buildArticleJsonLd({
+        lang,
+        url: `https://santifer.io/${slug}`,
+        altUrl: `https://santifer.io/${altSlug}`,
+        headline: t.header.h1,
+        alternativeHeadline: articleSeo.title,
+        description: articleSeo.description,
+        datePublished: seoMeta.datePublished,
+        dateModified: seoMeta.dateModified,
+        keywords: seoMeta.keywords,
+        images: seoMeta.images,
+        breadcrumbHome: t.nav.breadcrumbHome,
+        breadcrumbCurrent: t.nav.breadcrumbCurrent,
+        faq: t.faq.items,
+        articleType: seoMeta.articleType,
+        about: seoMeta.about,
+        extra: seoMeta.extra,
+      });
+      const jsonLdScript = `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>`;
+      // Replace the homepage JSON-LD with article-specific one
+      result = result.replace(
+        /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
+        jsonLdScript,
+      );
+    }
+  }
+
+  return result;
 }
 
 // Load article components and build pages
