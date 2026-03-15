@@ -450,7 +450,7 @@ export function WorkflowDownloadCard({ icon, name, subtitle, description, href, 
       <div className="flex items-start gap-3 mb-3">
         <span className="shrink-0 text-primary">{icon}</span>
         <div className="min-w-0">
-          <h4 className="font-display font-semibold text-foreground text-base leading-tight">{name}</h4>
+          <p className="font-display font-semibold text-foreground text-base leading-tight">{name}</p>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
       </div>

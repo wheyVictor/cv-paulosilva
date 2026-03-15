@@ -263,10 +263,10 @@ export const n8nContent = {
     intro: {
       hook: 'n8n is a workflow automation platform that connects your tools visually — no code required. I automated 170 hours a month of repetitive tasks with two workflows you can build in an afternoon.',
       body: 'I tracked mine. It was twenty. Some weeks, thirty. Sprint reports that take a full day. Feedback scattered across five tools that I had to read, classify, and turn into tickets one by one. Status updates typed from scratch every Monday.',
-      punchline: 'I wasn\'t a product manager. I was a very expensive data router. Moving information between tools that should have been talking to each other. I spent 170 hours a month on this at my own company before I automated all of it. Today I\'ll show you how to do the same with two workflows you can build in an afternoon.',
+      punchline: 'I wasn\'t a product manager. I was a very expensive data router. Moving information between tools that should have been talking to each other. I spent 170 hours a month on this at my own company before I automated all of it. Both workflows are free, importable as JSON, and run on n8n Cloud\'s free tier. No API keys, no infrastructure, no permission from engineering. Today I\'ll show you how to build them in an afternoon.',
     },
     previewCta: {
-      text: 'This is a preview of what I teach as a Teaching Fellow at <a>Marily Nika\'s AI PM Bootcamp</a>. The full course covers how to build AI products end-to-end — from discovery to production.',
+      text: 'This is a preview of what I teach as a Teaching Fellow at <a>Marily Nika\'s AI PM Bootcamp</a>. The full course covers how to build AI products end-to-end — from discovery to production. Both workflows below are real: I use them weekly at my own company.',
     },
     timeSinks: {
       heading: 'The 5 PM Time Sinks (20-30 hours/week)',

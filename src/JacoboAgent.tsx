@@ -495,7 +495,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Photo1 editorId="booking-nl-to-calendar" src={`/jacobo/nl-to-calendar-${lang === 'es' ? 'es' : 'en'}.webp`} alt={lang === 'es' ? 'De lenguaje natural a slots de calendario' : 'From natural language to calendar slots'} />
 
         {/* Challenge */}
-        <H4>{t.sections.deepDiveBooking.challenge.heading}</H4>
+        <H3>{t.sections.deepDiveBooking.challenge.heading}</H3>
         <Prose editorId="booking-challenge-body" className="mb-6">{t.sections.deepDiveBooking.challenge.body}</Prose>
 
         {/* Workflow screenshot */}
@@ -558,7 +558,7 @@ export default function JacoboAgent({ lang = 'en' }: { lang?: Lang }) {
         <Prose editorId="quotes-body">{t.sections.deepDiveQuotes.body}</Prose>
 
         {/* Challenge */}
-        <H4>{t.sections.deepDiveQuotes.challenge.heading}</H4>
+        <H3>{t.sections.deepDiveQuotes.challenge.heading}</H3>
         <Prose editorId="quotes-challenge-body" className="mb-6">{t.sections.deepDiveQuotes.challenge.body}</Prose>
 
         {/* Workflow screenshot */}
