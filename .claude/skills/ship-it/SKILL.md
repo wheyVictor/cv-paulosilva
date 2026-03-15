@@ -92,6 +92,16 @@ Si el build pasa pero tiene **warnings de `validate-prerender`**, hacer triage:
 
 **Warnings que son errores** (`ERR` en el output) siempre bloquean — arreglar antes de continuar.
 
+#### Image budget warnings — auto-resolve
+
+Si los warnings son de `Image over budget` y la imagen es un diagrama o screenshot que necesita ser grande (texto fino, DiagramZoom thumbnail), **no preguntar al usuario** — añadirla directamente a `scripts/image-budget-exceptions.json` con la razón, rebuild, y continuar:
+
+```json
+{ "path": "articulo/nombre-imagen.webp", "reason": "DiagramZoom thumbnail with fine text" }
+```
+
+Solo preguntar si la imagen parece optimizable (foto genérica, OG card, avatar).
+
 ### Paso 6 — Commit
 
 Staging selectivo (NUNCA `git add .` ni `git add -A`):
@@ -132,6 +142,29 @@ Tabla central de checks. Si cambió el archivo "Trigger", ejecutar los checks li
 | `public/llms.txt` | Hechos alineados con `chatbot-prompt.txt` |
 | `package.json` | Si nuevos deps → verificar badges en README Tech Stack |
 | Archivos añadidos/eliminados | Sección "Project Structure" del README (EN+ES) |
+
+---
+
+## Regla de Autoridad — Artículos de la Academia (Maven/Marily Nika)
+
+Cuando un artículo menciona la AI Product Academy o Maven en el **cuerpo del texto** (no solo en el footer):
+
+- **NUNCA** usar `publisher` de la academia. Santiago publica en santifer.io — él es el publisher implícito.
+- **SÍ** usar `isBasedOn` con el Course/masterclass de Maven como contexto. Esto indica que el contenido se basa en una clase, sin ceder autoría.
+- **SÍ** usar `mentions` para las herramientas referenciadas (n8n, Airtable, etc.).
+
+Patrón correcto:
+```json
+"author": { "@id": "https://santifer.io/#person" }
+"isBasedOn": { "@type": "Course", "name": "...", "provider": { "name": "Maven" }, "url": "..." }
+```
+
+Patrón incorrecto:
+```json
+"publisher": { "name": "AI Product Academy" }  ← NO — implica que la academia publicó el artículo
+```
+
+Aplicar este patrón a cualquier artículo futuro que surja de una clase, workshop, o colaboración. El `author` siempre es Santiago. El contexto externo va en `isBasedOn`.
 
 ---
 

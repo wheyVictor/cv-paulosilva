@@ -57,7 +57,6 @@ function buildJsonLd(lang: N8nLang) {
       instructor: { '@type': 'Person', name: 'Dr. Marily Nika' },
       url: 'https://maven.com/p/52fc7d/masterclass-n8n-for-p-ms',
     },
-    publisher: { name: 'AI Product Academy', url: 'https://maven.com/marily-nika/ai-product-manager' },
     mentions: [
       { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io' },
       { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com' },
