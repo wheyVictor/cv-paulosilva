@@ -146,7 +146,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
-    ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.png',
+    ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.webp',
     heroImage: 'https://santifer.io/jacobo/santiago-headphones-thinking.webp',
     component: () => import('../JacoboAgent.tsx'),
     seoMeta: {
@@ -155,7 +155,7 @@ export const articleRegistry: ArticleConfig[] = [
       keywords: ['multi-agent AI', 'multi agent orchestration', 'AI agent', 'sub-agent architecture', 'tool calling production', 'n8n workflows', 'n8n ai agent', 'ai agent case study', 'customer service AI', 'WhatsApp AI agent', 'ElevenLabs voice agent', 'voice AI', 'HITL', 'human in the loop', 'ia para pymes', 'agente ia whatsapp', 'multi-model orchestration', 'OpenRouter', 'FDE portfolio', 'solutions architect AI', 'AI production manager', 'enterprise AI patterns', 'voice AI platform', 'conversational AI case study', 'agentic workflows'],
       articleType: 'TechArticle',
       articleTags: 'AI agent,multi-agent,n8n,ElevenLabs,HITL,tool calling,WhatsApp,voice AI',
-      images: ['https://santifer.io/jacobo/og-jacobo-agent.png'],
+      images: ['https://santifer.io/jacobo/og-jacobo-agent.webp'],
       about: [
         { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io', applicationCategory: 'Workflow Automation' },
         { '@type': 'SoftwareApplication', name: 'ElevenLabs', url: 'https://elevenlabs.io', applicationCategory: 'Voice AI' },
@@ -213,7 +213,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
-    ogImage: 'https://santifer.io/business-os/og-business-os.png',
+    ogImage: 'https://santifer.io/business-os/og-business-os.webp',
     heroImage: 'https://santifer.io/business-os/web-landing-hero.webp',
     component: () => import('../BusinessOS.tsx'),
     seoMeta: {
@@ -222,7 +222,7 @@ export const articleRegistry: ArticleConfig[] = [
       keywords: ['Business OS', 'Airtable ERP', 'Airtable as ERP', 'no-code ERP', 'Airtable automation', 'CRM gamification', 'phone repair', 'inventory management', 'custom ERP case study', 'repair shop management', 'programmatic SEO', 'Airtable CRM', 'single source of truth', 'business operating system', 'multi-base architecture'],
       articleType: 'TechArticle',
       articleTags: 'Business OS,Airtable,n8n,ERP,CRM,automation,phone repair',
-      images: ['https://santifer.io/business-os/og-business-os.png'],
+      images: ['https://santifer.io/business-os/og-business-os.webp'],
       about: [
         { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com', applicationCategory: 'Database Platform' },
         { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io', applicationCategory: 'Workflow Automation' },
@@ -362,7 +362,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
-    ogImage: 'https://santifer.io/chatbot/og-self-healing-chatbot.png',
+    ogImage: 'https://santifer.io/chatbot/og-self-healing-chatbot.webp',
     heroImage: 'https://santifer.io/chatbot/hero-self-healing-chatbot.webp',
     component: () => import('../SelfHealingChatbot.tsx'),
     seoMeta: {
@@ -371,7 +371,7 @@ export const articleRegistry: ArticleConfig[] = [
       keywords: ['LLMOps', 'self-healing chatbot', 'agentic RAG', 'jailbreak defense', 'prompt injection', 'LLM evaluation', 'closed loop LLM', 'Langfuse', 'prompt versioning', 'adversarial testing', 'trace-to-eval', 'hybrid search pgvector', 'AI portfolio', 'chatbot evals', 'CI gate LLM', 'voice mode chatbot', 'OpenAI Realtime API', 'speech-to-speech AI', 'agentic observability', 'developer feedback loop', 'AI maintaining AI'],
       articleType: 'TechArticle',
       articleTags: 'LLMOps,self-healing chatbot,agentic RAG,jailbreak defense,Langfuse,evals,closed-loop,prompt injection',
-      images: ['https://santifer.io/chatbot/og-self-healing-chatbot.png'],
+      images: ['https://santifer.io/chatbot/og-self-healing-chatbot.webp'],
       about: [
         { '@type': 'SoftwareApplication', name: 'Langfuse', url: 'https://langfuse.com', applicationCategory: 'LLM Observability' },
         { '@type': 'SoftwareApplication', name: 'Supabase', url: 'https://supabase.com', applicationCategory: 'Database' },
@@ -397,7 +397,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     sectionLabels: { es: {}, en: {} },
     type: 'bridge',
-    ogImage: 'https://santifer.io/business-os/og-business-os.png',
+    ogImage: 'https://santifer.io/business-os/og-business-os.webp',
     component: () => import('../SantiferIRepair.tsx'),
     xDefaultSlug: 'santifer-irepair',
   },

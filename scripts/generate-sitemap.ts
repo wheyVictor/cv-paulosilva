@@ -73,13 +73,15 @@ for (const article of articleRegistry) {
   const enUrl = `${base}/${article.slugs.en}`
   const xDefault = `${base}/${article.xDefaultSlug ?? article.slugs.es}`
 
+  const articleLastmod = article.seoMeta?.dateModified ?? today
+
   // ES version
   urls.push({
     loc: esUrl,
     hreflangEs: esUrl,
     hreflangEn: enUrl,
     xDefault,
-    lastmod: today,
+    lastmod: articleLastmod,
     priority: '0.8',
   })
 
@@ -90,7 +92,7 @@ for (const article of articleRegistry) {
       hreflangEs: esUrl,
       hreflangEn: enUrl,
       xDefault,
-      lastmod: today,
+      lastmod: articleLastmod,
       priority: '0.8',
     })
   }

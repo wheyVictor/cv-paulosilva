@@ -55,7 +55,7 @@ export default function SantiferIRepair({ lang }: { lang: IRepairLang }) {
     altSlug: t.altSlug,
     title: t.seo.title,
     description: t.seo.description,
-    image: 'https://santifer.io/business-os/og-business-os.png',
+    image: 'https://santifer.io/business-os/og-business-os.webp',
     publishedTime: '2026-03-08',
     articleTags: 'Santifer iRepair, phone repair, Seville, exit, founder',
     jsonLd,

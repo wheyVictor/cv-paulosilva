@@ -9,7 +9,7 @@
  *   npx tsx --tsconfig tsconfig.app.json scripts/validate-prerender.ts
  */
 
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { articleRegistry, type ArticleConfig } from '../src/articles/registry.ts'
@@ -166,6 +166,65 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
     }
   }
 
+  // 13. Broken internal links
+  const linkMatches = html.match(/<a\s[^>]*href="(\/[^"#]*)"/g) || []
+  for (const tag of linkMatches) {
+    const hrefMatch = tag.match(/href="(\/[^"#]*)"/)
+    if (!hrefMatch) continue
+    const href = hrefMatch[1]
+    // Skip special paths
+    if (href.startsWith('/api/') || href.startsWith('/ops')) continue
+    // Check if file exists: dist/{path}/index.html or dist/{path}
+    const cleanPath = href.replace(/\/$/, '') || ''
+    const candidate1 = resolve(dist, cleanPath.slice(1), 'index.html')
+    const candidate2 = resolve(dist, cleanPath.slice(1))
+    if (!existsSync(candidate1) && !existsSync(candidate2)) {
+      issues.push({
+        severity: 'warn',
+        msg: `Broken internal link: ${href}`,
+        skill: '/seo technical',
+      })
+    }
+  }
+
+  // 14. Word count minimum
+  const fullStripped = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ')
+  const wordCount = fullStripped.split(/\s+/).filter(w => w.length > 0).length
+  if (wordCount < 1500) {
+    issues.push({
+      severity: 'warn',
+      msg: `Low word count: ${wordCount} words (min 1500 for articles).`,
+      skill: '/seo content',
+    })
+  }
+
+  // 15. Heading hierarchy — no skipped levels
+  const headingMatches = html.match(/<h([1-6])[\s>]/g) || []
+  const levels = headingMatches.map(m => parseInt(m.match(/<h([1-6])/)?.[1] || '0'))
+  for (let i = 1; i < levels.length; i++) {
+    if (levels[i] > levels[i - 1] + 1) {
+      issues.push({
+        severity: 'warn',
+        msg: `Heading hierarchy skip: h${levels[i - 1]} -> h${levels[i]} (missing h${levels[i - 1] + 1}).`,
+        skill: '/seo page',
+      })
+      break // one warning is enough
+    }
+  }
+
+  // 16. OG image format check
+  const ogImageMatch = html.match(/<meta\s+property="og:image"\s+content="([^"]*)"/)
+  if (ogImageMatch) {
+    const ogUrl = ogImageMatch[1]
+    if (!ogUrl || !ogUrl.startsWith('https://')) {
+      issues.push({
+        severity: 'warn',
+        msg: `og:image URL invalid or not HTTPS: "${ogUrl}"`,
+        skill: '/seo images',
+      })
+    }
+  }
+
   return issues
 }
 
@@ -253,7 +312,67 @@ function validateGlobalFiles(): Issue[] {
     }
   }
 
+  // Image size budget — scan dist/ recursively
+  const imageExts = new Set(['.webp', '.png', '.jpg', '.jpeg'])
+  function scanImages(dir: string) {
+    if (!existsSync(dir)) return
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const fullPath = resolve(dir, entry.name)
+      if (entry.isDirectory()) {
+        scanImages(fullPath)
+      } else {
+        const ext = entry.name.slice(entry.name.lastIndexOf('.')).toLowerCase()
+        if (imageExts.has(ext)) {
+          const size = statSync(fullPath).size
+          const sizeKB = Math.round(size / 1024)
+          const relPath = fullPath.replace(dist + '/', '')
+          if (size > 500 * 1024) {
+            issues.push({ severity: 'error', msg: `Image too large: ${relPath} (${sizeKB}KB > 500KB)`, skill: '/seo images' })
+          } else if (size > 200 * 1024) {
+            issues.push({ severity: 'warn', msg: `Image over budget: ${relPath} (${sizeKB}KB > 200KB)`, skill: '/seo images' })
+          }
+        }
+      }
+    }
+  }
+  scanImages(dist)
+
+  // Bundle size budget — check dist/assets/ for JS and CSS
+  const assetsDir = resolve(dist, 'assets')
+  if (existsSync(assetsDir)) {
+    for (const entry of readdirSync(assetsDir)) {
+      const fullPath = resolve(assetsDir, entry)
+      const stat = statSync(fullPath)
+      if (!stat.isFile()) continue
+      const sizeKB = Math.round(stat.size / 1024)
+      if (entry.endsWith('.js') && stat.size > 500 * 1024) {
+        issues.push({ severity: 'warn', msg: `JS bundle over budget: assets/${entry} (${sizeKB}KB > 500KB)`, skill: '/seo technical' })
+      }
+      if (entry.endsWith('.css') && stat.size > 100 * 1024) {
+        issues.push({ severity: 'warn', msg: `CSS bundle over budget: assets/${entry} (${sizeKB}KB > 100KB)`, skill: '/seo technical' })
+      }
+    }
+  }
+
   return issues
+}
+
+// ---------------------------------------------------------------------------
+// Helpers for cross-article checks
+// ---------------------------------------------------------------------------
+
+function extractMetaDescription(htmlPath: string): string | null {
+  if (!existsSync(htmlPath)) return null
+  const html = readFileSync(htmlPath, 'utf-8')
+  const match = html.match(/<meta\s+name="description"\s+content="([^"]*)"/)
+  return match ? match[1] : null
+}
+
+function extractWordCount(htmlPath: string): number {
+  if (!existsSync(htmlPath)) return 0
+  const html = readFileSync(htmlPath, 'utf-8')
+  const stripped = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ')
+  return stripped.split(/\s+/).filter(w => w.length > 0).length
 }
 
 // ---------------------------------------------------------------------------
@@ -288,7 +407,10 @@ for (const article of articleRegistry) {
   printIssues(validateRegistryConfig(article), `${article.id} [registry]`)
 }
 
-// Per-article HTML checks
+// Per-article HTML checks + collect data for cross-article validation
+const metaDescriptions: Map<string, string[]> = new Map() // description -> [labels]
+const wordCounts: Map<string, { es: number; en: number }> = new Map()
+
 for (const article of articleRegistry) {
   if (article.type === 'bridge') continue
   for (const [lang, slug] of Object.entries(article.slugs) as ['es' | 'en', string][]) {
@@ -298,7 +420,59 @@ for (const article of articleRegistry) {
     } else {
       console.log(`\x1b[32m✓\x1b[0m ${article.id} [${lang}] — clean`)
     }
+
+    // Collect meta description
+    const htmlPath = resolve(dist, slug, 'index.html')
+    const desc = extractMetaDescription(htmlPath)
+    if (desc) {
+      const label = `${article.id} [${lang}]`
+      const existing = metaDescriptions.get(desc) || []
+      existing.push(label)
+      metaDescriptions.set(desc, existing)
+    }
+
+    // Collect word count
+    const wc = extractWordCount(htmlPath)
+    const counts = wordCounts.get(article.id) || { es: 0, en: 0 }
+    counts[lang] = wc
+    wordCounts.set(article.id, counts)
   }
+}
+
+// Cross-article checks
+const crossIssues: Issue[] = []
+
+// 17. Duplicate meta descriptions
+for (const [desc, labels] of metaDescriptions) {
+  if (labels.length > 1) {
+    crossIssues.push({
+      severity: 'warn',
+      msg: `Duplicate meta description across: ${labels.join(', ')} — "${desc.slice(0, 60)}..."`,
+      skill: '/seo content',
+    })
+  }
+}
+
+// 18. ES/EN content parity
+for (const article of articleRegistry) {
+  if (article.type === 'bridge') continue
+  const counts = wordCounts.get(article.id)
+  if (!counts || counts.es === 0 || counts.en === 0) continue
+  const ratio = Math.min(counts.es, counts.en) / Math.max(counts.es, counts.en)
+  if (ratio < 0.7) {
+    const shorter = counts.es < counts.en ? 'ES' : 'EN'
+    crossIssues.push({
+      severity: 'warn',
+      msg: `${article.id}: ${shorter} version has ${Math.round(ratio * 100)}% of the other's word count (ES: ${counts.es}, EN: ${counts.en}).`,
+      skill: '/seo hreflang',
+    })
+  }
+}
+
+if (crossIssues.length > 0) {
+  printIssues(crossIssues, 'Cross-article checks')
+} else {
+  console.log(`\x1b[32m✓\x1b[0m Cross-article checks — clean`)
 }
 
 // Global checks
