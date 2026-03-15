@@ -313,7 +313,9 @@ function validateGlobalFiles(): Issue[] {
   }
 
   // Image size budget — scan dist/ recursively
+  // HD images (used as DiagramZoom lightbox) get a higher threshold (500KB warn, 1MB error)
   const imageExts = new Set(['.webp', '.png', '.jpg', '.jpeg'])
+  const isHdImage = (name: string) => name.includes('-hd.') || name.includes('-hd-') || name.includes('-full.')
   function scanImages(dir: string) {
     if (!existsSync(dir)) return
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -326,10 +328,19 @@ function validateGlobalFiles(): Issue[] {
           const size = statSync(fullPath).size
           const sizeKB = Math.round(size / 1024)
           const relPath = fullPath.replace(dist + '/', '')
-          if (size > 500 * 1024) {
-            issues.push({ severity: 'error', msg: `Image too large: ${relPath} (${sizeKB}KB > 500KB)`, skill: '/seo images' })
-          } else if (size > 200 * 1024) {
-            issues.push({ severity: 'warn', msg: `Image over budget: ${relPath} (${sizeKB}KB > 200KB)`, skill: '/seo images' })
+          if (isHdImage(entry.name)) {
+            // HD lightbox images: relaxed thresholds
+            if (size > 1024 * 1024) {
+              issues.push({ severity: 'error', msg: `HD image too large: ${relPath} (${sizeKB}KB > 1MB)`, skill: '/seo images' })
+            }
+            // No warn for HD images 200-1MB — they need to be big for zoom
+          } else {
+            // Regular images: strict thresholds
+            if (size > 500 * 1024) {
+              issues.push({ severity: 'error', msg: `Image too large: ${relPath} (${sizeKB}KB > 500KB)`, skill: '/seo images' })
+            } else if (size > 200 * 1024) {
+              issues.push({ severity: 'warn', msg: `Image over budget: ${relPath} (${sizeKB}KB > 200KB)`, skill: '/seo images' })
+            }
           }
         }
       }
