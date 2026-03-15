@@ -23,8 +23,10 @@ export interface ArticleConfig {
   seo: { es: ArticleSeo; en: ArticleSeo }
   sectionLabels: { es: Record<string, string>; en: Record<string, string> }
   type: 'collab' | 'case-study' | 'bridge'
-  /** Absolute OG image URL for prerender (social cards) */
+  /** Absolute OG image URL for prerender (social cards: LinkedIn, Twitter) */
   ogImage?: string
+  /** Hero image path for JSON-LD / GEO (what AI search engines see). Falls back to ogImage if not set. */
+  heroImage?: string
   component: () => Promise<{ default: ComponentType<{ lang: 'es' | 'en' }> }>
   /** x-default hreflang slug (defaults to ES slug) */
   xDefaultSlug?: string
@@ -76,6 +78,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'collab',
     ragReady: true,
     ogImage: 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp',
+    heroImage: 'https://santifer.io/workflows/n8n-sprint-report-automation-workflow.webp',
     component: () => import('../N8nForPMs.tsx'),
     seoMeta: {
       datePublished: '2026-02-24',
@@ -144,6 +147,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ragReady: true,
     ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.png',
+    heroImage: 'https://santifer.io/jacobo/santiago-headphones-thinking.webp',
     component: () => import('../JacoboAgent.tsx'),
     seoMeta: {
       datePublished: '2026-02-25',
@@ -210,6 +214,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ragReady: true,
     ogImage: 'https://santifer.io/business-os/og-business-os.png',
+    heroImage: 'https://santifer.io/business-os/web-landing-hero.webp',
     component: () => import('../BusinessOS.tsx'),
     seoMeta: {
       datePublished: '2026-02-25',
@@ -292,6 +297,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ragReady: true,
     ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
+    heroImage: 'https://santifer.io/pseo/ss-repair-page-hero.webp',
     component: () => import('../ProgrammaticSeo.tsx'),
     seoMeta: {
       datePublished: '2026-02-25',
@@ -357,6 +363,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ragReady: true,
     ogImage: 'https://santifer.io/chatbot/og-self-healing-chatbot.png',
+    heroImage: 'https://santifer.io/chatbot/hero-self-healing-chatbot.webp',
     component: () => import('../SelfHealingChatbot.tsx'),
     seoMeta: {
       datePublished: '2026-03-11',

@@ -1,9 +1,9 @@
 /**
- * Post-prerender validation for SEO invariants.
+ * Post-prerender validation for SEO + GEO invariants.
  *
  * Runs AFTER prerender to validate the static HTML output in dist/.
- * Checks that article pages have proper JSON-LD, meta tags, alt text,
- * and description lengths in the actual HTML that bots will see.
+ * Each warning includes a skill hint so the developer knows which
+ * Claude Code skill to invoke for the fix.
  *
  * Usage:
  *   npx tsx --tsconfig tsconfig.app.json scripts/validate-prerender.ts
@@ -12,7 +12,7 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { articleRegistry } from '../src/articles/registry.ts'
+import { articleRegistry, type ArticleConfig } from '../src/articles/registry.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = resolve(__dirname, '..')
@@ -23,11 +23,10 @@ const dist = resolve(root, 'dist')
 // ---------------------------------------------------------------------------
 
 type Severity = 'error' | 'warn'
-interface Issue { severity: Severity; msg: string }
-interface ArticleResult { id: string; slug: string; issues: Issue[] }
+interface Issue { severity: Severity; msg: string; skill?: string }
 
 // ---------------------------------------------------------------------------
-// Validators
+// Per-article HTML checks
 // ---------------------------------------------------------------------------
 
 function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Issue[] {
@@ -41,15 +40,16 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
 
   const html = readFileSync(htmlPath, 'utf-8')
 
-  // 1. JSON-LD: article schema must be present (not just homepage Person/WebSite)
+  // 1. JSON-LD: article schema present
   const jsonLdBlocks = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) || []
-  const hasArticleSchema = jsonLdBlocks.some(block =>
+  const articleJsonLd = jsonLdBlocks.find(block =>
     block.includes('"TechArticle"') || block.includes('"Article"') || block.includes('"BlogPosting"')
   )
-  if (!hasArticleSchema) {
+  if (!articleJsonLd) {
     issues.push({
       severity: 'error',
-      msg: `Article JSON-LD missing in prerender (only homepage schema found). Article pages need TechArticle/Article schema for Google.`,
+      msg: `Article JSON-LD missing in prerender. Add seoMeta to registry.`,
+      skill: '/seo schema',
     })
   }
 
@@ -60,100 +60,109 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
     if (descLen > 160) {
       issues.push({
         severity: 'warn',
-        msg: `Meta description too long: ${descLen} chars (max 160). Google will truncate.`,
+        msg: `Meta description too long: ${descLen} chars (max 160).`,
+        skill: '/seo content',
       })
     }
     if (descLen < 70) {
       issues.push({
         severity: 'warn',
-        msg: `Meta description too short: ${descLen} chars (min ~70 for good CTR).`,
+        msg: `Meta description too short: ${descLen} chars (min ~70).`,
+        skill: '/seo content',
       })
     }
   } else {
-    issues.push({ severity: 'error', msg: 'Meta description tag not found in prerender' })
+    issues.push({ severity: 'error', msg: 'Meta description not found in prerender' })
   }
 
-  // 3. Title tag
+  // 3. Title tag length
   const titleMatch = html.match(/<title>([^<]*)<\/title>/)
   if (titleMatch) {
-    const titleLen = titleMatch[1].length
-    if (titleLen > 65) {
+    if (titleMatch[1].length > 70) {
       issues.push({
         severity: 'warn',
-        msg: `Title tag long: ${titleLen} chars (ideal ≤60, max ~65).`,
+        msg: `Title tag: ${titleMatch[1].length} chars (ideal ≤60, truncates ~70).`,
+        skill: '/seo page',
       })
     }
   } else {
-    issues.push({ severity: 'error', msg: 'Title tag not found in prerender' })
+    issues.push({ severity: 'error', msg: 'Title tag not found' })
   }
 
-  // 4. OG article meta tags
+  // 4. article:published_time + modified_time
   if (!html.includes('article:published_time')) {
-    issues.push({ severity: 'warn', msg: 'article:published_time missing in prerender (injected client-side only)' })
+    issues.push({ severity: 'warn', msg: 'article:published_time missing', skill: '/seo page' })
+  }
+  if (!html.includes('article:modified_time')) {
+    issues.push({ severity: 'warn', msg: 'article:modified_time missing', skill: '/seo page' })
   }
 
-  // 5. Canonical tag points to correct URL
+  // 5. Canonical
   const canonicalMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]*)"/)
   if (canonicalMatch) {
     if (!canonicalMatch[1].includes(slug)) {
-      issues.push({
-        severity: 'error',
-        msg: `Canonical URL doesn't match slug: ${canonicalMatch[1]} (expected to contain "${slug}")`,
-      })
+      issues.push({ severity: 'error', msg: `Canonical doesn't match slug: ${canonicalMatch[1]}`, skill: '/seo technical' })
     }
   } else {
-    issues.push({ severity: 'error', msg: 'Canonical tag not found in prerender' })
+    issues.push({ severity: 'error', msg: 'Canonical tag not found', skill: '/seo technical' })
   }
 
-  // 6. Hreflang tags
+  // 6. Hreflang
   if (!html.includes('hreflang="en"') || !html.includes('hreflang="es"')) {
-    issues.push({ severity: 'warn', msg: 'Hreflang tags incomplete (need both en + es)' })
+    issues.push({ severity: 'warn', msg: 'Hreflang incomplete (need en + es)', skill: '/seo hreflang' })
   }
 
   // 7. OG image
   if (!html.includes('og:image')) {
-    issues.push({ severity: 'error', msg: 'og:image meta tag not found in prerender' })
+    issues.push({ severity: 'error', msg: 'og:image missing', skill: '/seo page' })
   }
 
-  // 8. Images without alt text
+  // 8. Images without alt
   const imgTags = html.match(/<img\s[^>]*>/g) || []
   const noAlt = imgTags.filter(tag => !tag.includes('alt='))
   if (noAlt.length > 0) {
-    issues.push({
-      severity: 'warn',
-      msg: `${noAlt.length} image(s) without alt text in prerender`,
-    })
+    issues.push({ severity: 'warn', msg: `${noAlt.length} image(s) without alt text`, skill: '/seo images' })
   }
 
-  // 9. H1 tag present and unique
+  // 9. H1 unique
   const h1s = html.match(/<h1[\s>]/g) || []
   if (h1s.length === 0) {
-    issues.push({ severity: 'error', msg: 'No H1 tag found in prerender' })
+    issues.push({ severity: 'error', msg: 'No H1 found', skill: '/seo page' })
   } else if (h1s.length > 1) {
-    issues.push({ severity: 'warn', msg: `Multiple H1 tags found: ${h1s.length} (should be exactly 1)` })
+    issues.push({ severity: 'warn', msg: `${h1s.length} H1 tags (should be 1)`, skill: '/seo page' })
   }
 
-  // 10. article:published_time and article:modified_time present
-  if (!html.includes('article:published_time')) {
-    issues.push({ severity: 'warn', msg: 'article:published_time missing in prerender' })
-  }
-  if (!html.includes('article:modified_time')) {
-    issues.push({ severity: 'warn', msg: 'article:modified_time missing in prerender' })
-  }
-
-  // 11. JSON-LD has image property (Google recommends for Article rich results)
-  const articleJsonLd = jsonLdBlocks.find(block =>
-    block.includes('"TechArticle"') || block.includes('"Article"')
-  )
-  if (articleJsonLd && !articleJsonLd.includes('"image"')) {
-    issues.push({ severity: 'warn', msg: 'Article JSON-LD missing "image" property (recommended for rich results)' })
+  // 10. JSON-LD image (for rich results + GEO)
+  if (articleJsonLd) {
+    if (!articleJsonLd.includes('"image"')) {
+      issues.push({ severity: 'warn', msg: 'JSON-LD missing "image" — poor rich results + GEO visibility', skill: '/seo schema' })
+    }
   }
 
-  // 12. Title tag length (ideal ≤60)
-  if (titleMatch) {
-    const titleLen = titleMatch[1].length
-    if (titleLen > 70) {
-      issues.push({ severity: 'warn', msg: `Title tag very long: ${titleLen} chars (ideal ≤60, Google truncates ~65-70)` })
+  // 11. GEO: JSON-LD image should be hero, not OG
+  if (articleJsonLd) {
+    const imgInLd = articleJsonLd.match(/"image"\s*:\s*\[\s*"([^"]+)"/)
+    if (imgInLd && (imgInLd[1].includes('og-') || imgInLd[1].includes('og_'))) {
+      issues.push({
+        severity: 'warn',
+        msg: `JSON-LD image uses OG card instead of hero. Set heroImage in registry.`,
+        skill: '/seo geo',
+      })
+    }
+  }
+
+  // 12. GEO: citability — first 300 chars should have definition or number
+  const bodyStart = html.match(/<article[^>]*>([\s\S]{0,1000})/)?.[1] || ''
+  const stripped = bodyStart.replace(/<[^>]+>/g, '').trim().slice(0, 300)
+  if (stripped.length > 50) {
+    const hasDef = /\b(is|means|refers to|es|significa|se refiere)\b/i.test(stripped)
+    const hasNum = /\d/.test(stripped)
+    if (!hasDef && !hasNum) {
+      issues.push({
+        severity: 'warn',
+        msg: 'GEO: first 300 chars lack definition ("X is/means...") and numbers. Low AI citability.',
+        skill: '/seo geo',
+      })
     }
   }
 
@@ -161,49 +170,85 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
 }
 
 // ---------------------------------------------------------------------------
-// Global checks (not per-article)
+// Registry config checks (catch issues before HTML)
+// ---------------------------------------------------------------------------
+
+function validateRegistryConfig(config: ArticleConfig): Issue[] {
+  const issues: Issue[] = []
+
+  if (!config.seoMeta) {
+    issues.push({ severity: 'error', msg: 'seoMeta missing — no JSON-LD in prerender', skill: '/seo schema' })
+    return issues
+  }
+
+  if (!config.heroImage) {
+    issues.push({ severity: 'warn', msg: 'heroImage missing — JSON-LD uses ogImage. Set heroImage for GEO.', skill: '/seo geo' })
+  }
+
+  if (!config.ogImage) {
+    issues.push({ severity: 'warn', msg: 'ogImage missing — social cards use default', skill: '/seo page' })
+  }
+
+  const meta = config.seoMeta
+  if (meta.keywords.length < 5) {
+    issues.push({ severity: 'warn', msg: `Only ${meta.keywords.length} keywords (recommend 10+)`, skill: '/seo content' })
+  }
+
+  if (meta.about.length === 0) {
+    issues.push({ severity: 'warn', msg: 'No "about" entities — weakens JSON-LD', skill: '/seo schema' })
+  }
+
+  if (!meta.articleTags || meta.articleTags.split(',').length < 3) {
+    issues.push({ severity: 'warn', msg: 'Fewer than 3 article tags', skill: '/seo content' })
+  }
+
+  for (const lang of ['es', 'en'] as const) {
+    if (!config.seo[lang]?.description) {
+      issues.push({ severity: 'error', msg: `SEO description missing [${lang}]`, skill: '/seo content' })
+    }
+  }
+
+  return issues
+}
+
+// ---------------------------------------------------------------------------
+// Global file checks
 // ---------------------------------------------------------------------------
 
 function validateGlobalFiles(): Issue[] {
   const issues: Issue[] = []
 
-  // robots.txt: key AI crawlers present
   const robotsPath = resolve(dist, 'robots.txt')
   if (existsSync(robotsPath)) {
     const robots = readFileSync(robotsPath, 'utf-8')
-    const requiredCrawlers = ['GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'OAI-SearchBot']
-    for (const crawler of requiredCrawlers) {
+    for (const crawler of ['GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'OAI-SearchBot']) {
       if (!robots.includes(crawler)) {
-        issues.push({ severity: 'warn', msg: `robots.txt missing AI crawler: ${crawler}` })
+        issues.push({ severity: 'warn', msg: `robots.txt missing AI crawler: ${crawler}`, skill: '/seo geo' })
       }
     }
     if (!robots.includes('Sitemap:')) {
-      issues.push({ severity: 'warn', msg: 'robots.txt missing Sitemap directive' })
+      issues.push({ severity: 'warn', msg: 'robots.txt missing Sitemap directive', skill: '/seo technical' })
     }
   } else {
-    issues.push({ severity: 'error', msg: 'robots.txt not found in dist/' })
+    issues.push({ severity: 'error', msg: 'robots.txt not found' })
   }
 
-  // llms.txt: present and not stale
   const llmsPath = resolve(dist, 'llms.txt')
   if (existsSync(llmsPath)) {
     const llms = readFileSync(llmsPath, 'utf-8')
-    // Check that eval count matches (search for the number in registry seoMeta)
     if (llms.includes('56 automated evals') || llms.includes('56 evals')) {
-      issues.push({ severity: 'warn', msg: 'llms.txt contains stale eval count "56" — should match current count' })
+      issues.push({ severity: 'warn', msg: 'llms.txt has stale "56" eval count', skill: '/seo content' })
     }
   } else {
-    issues.push({ severity: 'warn', msg: 'llms.txt not found in dist/' })
+    issues.push({ severity: 'warn', msg: 'llms.txt not found — hurts AI search visibility', skill: '/seo geo' })
   }
 
-  // security headers: check vercel.json
-  const vercelJsonPath = resolve(dist, '..', 'vercel.json')
+  const vercelJsonPath = resolve(root, 'vercel.json')
   if (existsSync(vercelJsonPath)) {
-    const vercelJson = readFileSync(vercelJsonPath, 'utf-8')
-    const requiredHeaders = ['X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy']
-    for (const header of requiredHeaders) {
-      if (!vercelJson.includes(header)) {
-        issues.push({ severity: 'warn', msg: `vercel.json missing security header: ${header}` })
+    const vj = readFileSync(vercelJsonPath, 'utf-8')
+    for (const h of ['X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy']) {
+      if (!vj.includes(h)) {
+        issues.push({ severity: 'warn', msg: `vercel.json missing header: ${h}`, skill: '/seo technical' })
       }
     }
   }
@@ -215,54 +260,56 @@ function validateGlobalFiles(): Issue[] {
 // Main
 // ---------------------------------------------------------------------------
 
-console.log('\n[validate-prerender] Post-prerender SEO validation\n')
+console.log('\n[validate-prerender] Post-prerender SEO + GEO validation\n')
 
 let totalErrors = 0
 let totalWarnings = 0
 
-// Per-article checks
+function printIssues(issues: Issue[], label: string) {
+  const errors = issues.filter(i => i.severity === 'error').length
+  const warnings = issues.filter(i => i.severity === 'warn').length
+  totalErrors += errors
+  totalWarnings += warnings
+
+  if (issues.length === 0) return
+
+  const icon = errors > 0 ? '\x1b[31m✗\x1b[0m' : '\x1b[33m⚠\x1b[0m'
+  console.log(`${icon} ${label} — ${errors} errors, ${warnings} warnings`)
+  for (const issue of issues) {
+    const prefix = issue.severity === 'error' ? '\x1b[31m  ERR\x1b[0m' : '\x1b[33m  WARN\x1b[0m'
+    const hint = issue.skill ? ` → run ${issue.skill}` : ''
+    console.log(`${prefix}  ${issue.msg}${hint}`)
+  }
+}
+
+// Registry checks
 for (const article of articleRegistry) {
   if (article.type === 'bridge') continue
+  printIssues(validateRegistryConfig(article), `${article.id} [registry]`)
+}
 
+// Per-article HTML checks
+for (const article of articleRegistry) {
+  if (article.type === 'bridge') continue
   for (const [lang, slug] of Object.entries(article.slugs) as ['es' | 'en', string][]) {
     const issues = validatePrerenderHtml(article.id, slug, lang)
-    const errors = issues.filter(i => i.severity === 'error').length
-    const warnings = issues.filter(i => i.severity === 'warn').length
-    totalErrors += errors
-    totalWarnings += warnings
-
     if (issues.length > 0) {
-      const icon = errors > 0 ? '\x1b[31m✗\x1b[0m' : '\x1b[33m⚠\x1b[0m'
-      console.log(`${icon} ${article.id} [${lang}] — ${errors} errors, ${warnings} warnings`)
-      for (const issue of issues) {
-        const prefix = issue.severity === 'error' ? '\x1b[31m  ERR\x1b[0m' : '\x1b[33m  WARN\x1b[0m'
-        console.log(`${prefix}  ${issue.msg}`)
-      }
+      printIssues(issues, `${article.id} [${lang}]`)
     } else {
       console.log(`\x1b[32m✓\x1b[0m ${article.id} [${lang}] — clean`)
     }
   }
 }
 
-// Global checks (robots.txt, llms.txt, vercel.json)
+// Global checks
 const globalIssues = validateGlobalFiles()
-const globalErrors = globalIssues.filter(i => i.severity === 'error').length
-const globalWarnings = globalIssues.filter(i => i.severity === 'warn').length
-totalErrors += globalErrors
-totalWarnings += globalWarnings
-
 if (globalIssues.length > 0) {
-  const icon = globalErrors > 0 ? '\x1b[31m✗\x1b[0m' : '\x1b[33m⚠\x1b[0m'
-  console.log(`\n${icon} Global files — ${globalErrors} errors, ${globalWarnings} warnings`)
-  for (const issue of globalIssues) {
-    const prefix = issue.severity === 'error' ? '\x1b[31m  ERR\x1b[0m' : '\x1b[33m  WARN\x1b[0m'
-    console.log(`${prefix}  ${issue.msg}`)
-  }
+  printIssues(globalIssues, 'Global files')
 } else {
   console.log(`\n\x1b[32m✓\x1b[0m Global files — clean`)
 }
 
-console.log(`\nArticle pages: ${articleRegistry.filter(a => a.type !== 'bridge').length * 2} | Errors: ${totalErrors} | Warnings: ${totalWarnings}\n`)
+console.log(`\nPages: ${articleRegistry.filter(a => a.type !== 'bridge').length * 2} | Errors: ${totalErrors} | Warnings: ${totalWarnings}\n`)
 
 if (totalErrors > 0) {
   console.error('\x1b[31m✗ Prerender validation failed. Fix errors before deploying.\x1b[0m\n')

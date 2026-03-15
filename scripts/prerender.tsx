@@ -231,7 +231,7 @@ function buildArticlePage(
         datePublished: seoMeta.datePublished,
         dateModified: seoMeta.dateModified,
         keywords: seoMeta.keywords,
-        images: seoMeta.images,
+        images: config.heroImage ? [config.heroImage] : seoMeta.images,
         breadcrumbHome: t.nav.breadcrumbHome,
         breadcrumbCurrent: t.nav.breadcrumbCurrent,
         faq: t.faq.items,
