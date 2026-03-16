@@ -55,10 +55,11 @@ const HEAL_PARTICLES = [
 ]
 
 function BeamPill({ children }: { children: React.ReactNode }) {
+  const hydrated = useHydrated()
   return (
-    <span className="beam-pill relative inline-block pl-0 pr-0">
+    <span className={`relative inline-block pl-0 pr-0 ${hydrated ? 'beam-pill' : ''}`}>
       <span className="relative z-10">{children}</span>
-      {HEAL_PARTICLES.map((p, i) => (
+      {hydrated && HEAL_PARTICLES.map((p, i) => (
         <span
           key={i}
           className="absolute pointer-events-none select-none"
