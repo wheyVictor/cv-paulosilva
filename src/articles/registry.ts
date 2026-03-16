@@ -46,12 +46,12 @@ export const articleRegistry: ArticleConfig[] = [
     titles: { es: 'n8n para PMs', en: 'n8n for PMs' },
     seo: {
       es: {
-        title: 'n8n para Product Managers: Automatiza con IA',
-        description: 'Guía práctica de n8n para PMs: automatiza sprint reports y clasifica feedback con IA. 2 workflows gratis y tutorial.',
+        title: 'n8n para PMs: Cheat Sheet + Templates IA Gratis | santifer.io',
+        description: 'Cheat sheet de n8n para Product Managers: automatiza sprint reports y clasifica feedback con IA. 2 templates importables gratis. Tutorial paso a paso.',
       },
       en: {
-        title: 'n8n for Product Managers: Automate with AI',
-        description: 'Practical n8n cheat sheet for PMs: automate sprint reports and classify feedback with AI. 2 free workflow templates.',
+        title: 'n8n for PMs: Cheat Sheet + Free AI Templates | santifer.io',
+        description: 'n8n cheat sheet for Product Managers: automate sprint reports and classify feedback with AI. 2 free importable workflow templates. Step-by-step tutorial.',
       },
     },
     sectionLabels: {
@@ -86,7 +86,7 @@ export const articleRegistry: ArticleConfig[] = [
     seoMeta: {
       datePublished: '2026-02-24',
       dateModified: '2026-03-06',
-      keywords: ['n8n', 'product manager', 'automation', 'AI', 'workflow', 'sprint report', 'feedback classification', 'no-code', 'n8n tutorial', 'AI workflow automation'],
+      keywords: ['n8n', 'n8n tutorial', 'n8n templates', 'n8n AI', 'n8n workflow', 'n8n automation', 'n8n cheat sheet', 'product manager', 'AI workflow automation', 'sprint report automation', 'feedback classification AI', 'no-code automation', 'n8n for product managers', 'workflow templates free'],
       articleType: 'TechArticle',
       articleTags: 'n8n,product manager,automation,AI,workflow,no-code',
       images: ['https://santifer.io/workflows/n8n-sprint-report-automation-workflow.webp', 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp'],

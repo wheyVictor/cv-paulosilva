@@ -33,8 +33,8 @@ export const n8nContent = {
     altSlug: 'n8n-for-pms',
     readingTime: '5 min de lectura',
     seo: {
-      title: 'Qué es n8n y cómo lo usan los Product Managers para automatizar con IA',
-      description: 'Guía práctica de n8n para Product Managers: qué es, cómo automatizar sprint reports y clasificar feedback con IA. 2 workflows importables gratis, prompt listo y tutorial paso a paso.',
+      title: 'n8n para PMs: Cheat Sheet + Templates IA Gratis | santifer.io',
+      description: 'Cheat sheet de n8n para Product Managers: automatiza sprint reports y clasifica feedback con IA. 2 templates importables gratis. Tutorial paso a paso.',
     },
     nav: {
       back: 'santifer.io',
@@ -43,20 +43,20 @@ export const n8nContent = {
     },
     header: {
       kicker: 'Lightning Session — <a>AI Product Academy de Marily Nika</a>',
-      h1: 'n8n para Product Managers',
-      subtitle: 'Guía práctica: automatiza sprint reports y clasifica feedback con IA usando workflows de n8n — sin escribir código.',
+      h1: 'n8n para Product Managers: Cheat Sheet con Templates',
+      subtitle: 'Guía práctica: automatiza sprint reports y clasifica feedback con IA usando workflows de n8n — sin escribir código. 2 templates importables gratis.',
       date: '24 feb 2026',
     },
     intro: {
-      hook: 'n8n es una plataforma de automatización que conecta tus herramientas con workflows visuales — sin código. Yo automaticé <a href="/business-os-para-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">170 horas al mes de tareas repetitivas</a> con dos workflows que se montan en una tarde.',
+      hook: '¿Cuántas horas a la semana dedicas a trabajo que no tiene nada que ver con producto?',
       body: 'Yo lo medí. Veinte. Algunas semanas, treinta. Sprint reports que se comen un día entero. Feedback disperso en cinco herramientas que tenía que leer, clasificar y convertir en tickets uno por uno. Status updates escritos desde cero cada lunes.',
-      punchline: 'No era product manager. Era un router de datos muy caro. Moviendo información entre herramientas que deberían hablarse entre ellas. Gastaba 170 horas al mes en esto en mi propia empresa antes de automatizarlo todo. Hoy te enseño cómo hacer lo mismo con dos workflows que puedes montar en una tarde.',
+      punchline: 'No era product manager. Era un router de datos muy caro. Moviendo información entre herramientas que deberían hablarse entre ellas. Gastaba 170 horas al mes en esto en mi propia empresa antes de automatizarlo todo. Los dos workflows son gratis, importables como JSON, y corren en el free tier de n8n Cloud. Sin infraestructura, sin pedir permiso a ingeniería. Hoy te enseño cómo montarlos en una tarde.',
     },
     previewCta: {
       text: 'Esto es un adelanto de lo que enseño como Teaching Fellow en el <a>AI PM Bootcamp de Marily Nika</a>. El curso completo cubre de principio a fin cómo construir productos de IA — desde discovery hasta producción.',
     },
     timeSinks: {
-      heading: 'Las 5 Tareas que te Roban el Tiempo (20-30 h/semana, según el Asana Work Index los PMs dedican el 58% de su tiempo a trabajo operativo)',
+      heading: 'Las 5 Tareas que te Roban el Tiempo (20-30 h/semana)',
       columns: { num: '#', sink: 'Tarea', hours: 'Horas/semana', pattern: 'Patrón de automatización' },
       rows: [
         { num: '1', sink: 'Sprint reports', hours: '8-12/sprint', pattern: 'Schedule → Query → Format → Send' },
@@ -216,6 +216,10 @@ export const n8nContent = {
           q: '¿Y si la IA clasifica algo mal?',
           a: 'Cambias el prompt. Añades un signal word, ajustas la tiebreaker rule, añades una categoría. Iteras en texto plano, no en código. Y el log de Airtable te permite revisar y corregir.',
         },
+        {
+          q: '¿Puedo descargar los templates de n8n de este artículo?',
+          a: 'Sí. Los 2 workflows están disponibles como archivos JSON importables directamente en n8n Cloud (free tier). Descárgalos desde la sección "Importa los Workflows" y en 5 minutos están funcionando.',
+        },
       ],
     },
     import: {
@@ -246,8 +250,8 @@ export const n8nContent = {
     altSlug: 'n8n-para-pms',
     readingTime: '5 min read',
     seo: {
-      title: 'n8n for Product Managers: Automate Sprint Reports & Classify Feedback with AI',
-      description: 'Practical cheat sheet for Product Managers: automate sprint reports and classify feedback with AI using n8n. 2 importable workflow templates, a ready-to-use prompt, and step-by-step guide.',
+      title: 'n8n for PMs: Cheat Sheet + Free AI Templates | santifer.io',
+      description: 'n8n cheat sheet for Product Managers: automate sprint reports and classify feedback with AI. 2 free importable workflow templates. Step-by-step tutorial.',
     },
     nav: {
       back: 'santifer.io',
@@ -256,20 +260,20 @@ export const n8nContent = {
     },
     header: {
       kicker: 'Lightning Session — <a>Marily Nika\'s AI Product Academy</a>',
-      h1: 'n8n for Product Managers',
-      subtitle: 'Practical cheat sheet: automate your sprint reports and classify feedback with AI — no code required.',
+      h1: 'n8n for Product Managers: Cheat Sheet with Templates',
+      subtitle: 'Practical cheat sheet: automate your sprint reports and classify feedback with AI using n8n workflows — no code required. 2 free importable templates.',
       date: 'Feb 24, 2026',
     },
     intro: {
-      hook: 'n8n is a workflow automation platform that connects your tools visually — no code required. I automated <a href="/business-os-for-airtable" class="text-primary underline underline-offset-2 hover:text-primary/80">170 hours a month of repetitive tasks</a> with two workflows you can build in an afternoon.',
+      hook: 'How many hours a week do you spend on work that has nothing to do with product?',
       body: 'I tracked mine. It was twenty. Some weeks, thirty. Sprint reports that take a full day. Feedback scattered across five tools that I had to read, classify, and turn into tickets one by one. Status updates typed from scratch every Monday.',
-      punchline: 'I wasn\'t a product manager. I was a very expensive data router. Moving information between tools that should have been talking to each other. I spent 170 hours a month on this at my own company before I automated all of it. Both workflows are free, importable as JSON, and run on n8n Cloud\'s free tier. No API keys, no infrastructure, no permission from engineering. Today I\'ll show you how to build them in an afternoon.',
+      punchline: 'I wasn\'t a product manager. I was a very expensive data router. Moving information between tools that should have been talking to each other. I spent 170 hours a month on this at my own company before I automated all of it. Both workflows are free, importable as JSON, and run on n8n Cloud\'s free tier. No infrastructure, no permission from engineering. Today I\'ll show you how to build them in an afternoon.',
     },
     previewCta: {
       text: 'This is a preview of what I teach as a Teaching Fellow at <a>Marily Nika\'s AI PM Bootcamp</a>. The full course covers how to build AI products end-to-end — from discovery to production. Both workflows below are real: I use them weekly at my own company.',
     },
     timeSinks: {
-      heading: 'The 5 PM Time Sinks (20-30 hours/week — per the Asana Work Index, PMs spend 58% of their time on work about work)',
+      heading: 'The 5 PM Time Sinks (20-30 hours/week)',
       columns: { num: '#', sink: 'Time Sink', hours: 'Hours/Week', pattern: 'Automation Pattern' },
       rows: [
         { num: '1', sink: 'Sprint reports', hours: '8-12/sprint', pattern: 'Schedule → Query → Format → Send' },
@@ -424,6 +428,10 @@ export const n8nContent = {
         {
           q: 'What if the AI classifies something wrong?',
           a: 'You change the prompt. Add a new signal word, adjust the tiebreaker rule, add a category. You iterate in plain English, not in code. And the Airtable log lets you review and correct.',
+        },
+        {
+          q: 'Can I download the n8n templates from this article?',
+          a: 'Yes. Both workflows are available as JSON files you can import directly into n8n Cloud (free tier). Download them from the "Import Workflows" section and they\'ll be running in 5 minutes.',
         },
       ],
     },

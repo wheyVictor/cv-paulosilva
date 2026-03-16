@@ -82,6 +82,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
     xDefaultSlug: 'n8n-para-pms',
   })
 
+  const MASTERCLASS_URL = 'https://maven.com/p/52fc7d/masterclass-n8n-for-p-ms'
   const BOOTCAMP_URL = 'https://maven.com/marily-nika/ai-pm-bootcamp?utm_source=santifer&utm_medium=cheatsheet&utm_campaign=n8n-for-pms'
 
   return (
@@ -90,7 +91,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
         <ArticleHeader
           editorId="hero-header"
           kicker={t.header.kicker}
-          kickerLink={BOOTCAMP_URL}
+          kickerLink={MASTERCLASS_URL}
           h1={t.header.h1}
           subtitle={t.header.subtitle}
           date={t.header.date}
@@ -132,6 +133,11 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
 
           {/* Time Sinks Table */}
           <H2 id="time-sinks">{t.timeSinks.heading}</H2>
+          <p className="text-sm text-muted-foreground mb-4">
+            {lang === 'es'
+              ? 'Según el Asana Work Index, los PMs dedican el 58% de su tiempo a trabajo operativo.'
+              : 'Per the Asana Work Index, PMs spend 58% of their time on work about work.'}
+          </p>
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="w-full text-left border-collapse">
               <thead>
