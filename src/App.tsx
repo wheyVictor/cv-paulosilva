@@ -1262,17 +1262,17 @@ function App() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-center md:text-left"
             >
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                {t.greeting} <span className="text-gradient-theme">@santifer</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-6">
-                {t.role}
+              <p className="text-lg text-muted-foreground mb-2">
+                {lang === 'es' ? 'Hola, soy' : "Hi, I'm"} <span className="text-gradient-theme font-semibold">@santifer</span>,
               </p>
+              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                {t.greeting} {t.role}
+              </h1>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-3">
                 <span className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm font-medium text-primary">AI Product Manager</span>
-                <span className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm font-medium text-primary">Solutions Architect</span>
-                <span className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm font-medium text-primary">AI FDE</span>
+                <span className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm font-medium text-primary">AI Solutions Architect</span>
+                <span className="px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-sm font-medium text-primary">Forward Deployed Engineer</span>
               </div>
             </motion.div>
           </div>

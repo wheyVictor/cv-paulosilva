@@ -75,7 +75,9 @@
     { "source": "/seo-programatico", "destination": "/seo-programatico/index.html" },
     { "source": "/programmatic-seo", "destination": "/programmatic-seo/index.html" },
     { "source": "/santifer-irepair", "destination": "/santifer-irepair/index.html" },
-    { "source": "/santifer-irepair-founder", "destination": "/santifer-irepair-founder/index.html" }
+    { "source": "/santifer-irepair-founder", "destination": "/santifer-irepair-founder/index.html" },
+    { "source": "/privacidad", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" }
   ],
   "crons": [
     {

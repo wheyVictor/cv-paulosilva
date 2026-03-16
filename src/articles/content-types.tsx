@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, Fragment, type ReactNode } from 'react'
 import { motion } from 'motion/react'
-import { ChevronRight, List, Copy, Check, ZoomIn } from 'lucide-react'
+import { ChevronRight, List, Copy, Check, ZoomIn, X } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
 // Editor Mode
@@ -1228,18 +1228,18 @@ export function FloatingToc() {
         {tocNav}
       </div>
 
-      {/* Mobile: floating button + drawer */}
+      {/* Mobile/Tablet: hamburger in header + slide-down panel */}
       <button
         onClick={() => setTocOpen(o => !o)}
-        className="xl:hidden fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center"
+        className="xl:hidden fixed top-[1.05rem] left-4 z-[60] w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center hover:border-primary/50 transition-colors"
         aria-label="Toggle table of contents"
       >
-        <List className="w-5 h-5" />
+        {tocOpen ? <X className="w-4 h-4 text-primary" /> : <List className="w-4 h-4 text-muted-foreground" />}
       </button>
       {tocOpen && (
         <>
           <div className="xl:hidden fixed inset-0 bg-background/60 backdrop-blur-sm z-40" onClick={() => setTocOpen(false)} />
-          <div className="xl:hidden fixed bottom-20 right-6 z-50 w-64 max-h-[70vh] overflow-y-auto bg-card border border-border rounded-xl shadow-xl p-4">
+          <div className="xl:hidden fixed top-14 left-4 z-50 w-72 max-h-[70vh] overflow-y-auto bg-card border border-border rounded-xl shadow-xl p-4">
             {tocNav}
           </div>
         </>

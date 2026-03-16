@@ -3,21 +3,21 @@ export const seo = {
     title:
       'santifer | Builder · AI PM · Solutions Architect · AI FDE',
     description:
-      'AI Product Manager & Solutions Architect. De automatizar mi propio negocio (2,100+ campos, 170h/mes) a llevar esa mentalidad a equipos más grandes. LLMs, agentes, no-code enterprise.',
+      'AI Product Manager & Solutions Architect. 16 años construyendo sistemas que funcionan solos. LLMOps, agentes IA, observabilidad agéntica, no-code enterprise.',
   },
   en: {
     title:
       'santifer | Builder · AI PM · Solutions Architect · AI FDE',
     description:
-      'AI Product Manager & Solutions Architect. From automating my own business (2,100+ fields, 170h/mo saved) to bringing that mindset to bigger teams. LLMs, agents, no-code.',
+      'AI Product Manager & Solutions Architect. 16 years building systems that run themselves. LLMOps, agentic observability, AI agents, no-code enterprise.',
   },
 };
 
 export const translations = {
   es: {
-    greeting: 'Hola, soy',
+    greeting: 'AI Product Manager que construye',
     email: 'hola@santifer.io',
-    role: 'Convierto trabajo manual en sistemas reutilizables.',
+    role: 'sistemas LLMOps que se curan solos.',
     story: {
       context: '+15 años construyendo+ todo desde cero.',
       reflections: ['Funciona. Sin mí.', '...¿y ahora qué?'],
@@ -187,7 +187,7 @@ export const translations = {
           title: 'Self-Healing Chatbot',
           badge: 'En producción',
           badgeBuilding: '',
-          desc: 'Chatbot LLMOps con RAG agéntico, defensa en 6 capas, 71 evals automatizados y closed-loop que genera tests desde fallos reales. <$0.005 por conversación.',
+          desc: 'Self-healing chatbot con observabilidad agéntica, RAG agéntico, defensa en 6 capas, 71 evals, modo voz y closed-loop que genera tests desde fallos reales. <$0.005 por conversación.',
           tech: ['Claude API', 'Langfuse', 'Supabase pgvector', 'OpenAI Embeddings', 'Vercel Edge'],
           link: '',
           caseStudyUrl: '/chatbot-que-se-cura-solo',
@@ -749,9 +749,9 @@ export const translations = {
     },
   },
   en: {
-    greeting: "Hi, I'm",
+    greeting: 'AI Product Manager who builds',
     email: 'hi@santifer.io',
-    role: 'I turn manual work into reusable systems.',
+    role: 'self-healing LLMOps systems.',
     story: {
       context: '+15 years building+ everything from scratch.',
       reflections: ['It works. It actually works.', '...now what?'],
@@ -921,7 +921,7 @@ export const translations = {
           title: 'Self-Healing Chatbot',
           badge: 'In production',
           badgeBuilding: '',
-          desc: 'LLMOps chatbot with agentic RAG, 6-layer jailbreak defense, 71 automated evals, and a closed-loop that generates tests from real failures. <$0.005 per conversation.',
+          desc: 'Self-healing chatbot with agentic observability, agentic RAG, 6-layer defense, 71 evals, voice mode, and a closed-loop that generates tests from real failures. <$0.005 per conversation.',
           tech: ['Claude API', 'Langfuse', 'Supabase pgvector', 'OpenAI Embeddings', 'Vercel Edge'],
           link: '',
           caseStudyUrl: '/self-healing-chatbot',

@@ -172,8 +172,8 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
     const hrefMatch = tag.match(/href="(\/[^"#]*)"/)
     if (!hrefMatch) continue
     const href = hrefMatch[1]
-    // Skip special paths
-    if (href.startsWith('/api/') || href.startsWith('/ops')) continue
+    // Skip special paths (API, ops dashboard, SPA-only utility pages)
+    if (href.startsWith('/api/') || href.startsWith('/ops') || href === '/privacidad' || href === '/privacy') continue
     // Check if file exists: dist/{path}/index.html or dist/{path}
     const cleanPath = href.replace(/\/$/, '') || ''
     const candidate1 = resolve(dist, cleanPath.slice(1), 'index.html')

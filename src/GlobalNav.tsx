@@ -286,8 +286,8 @@ export default function GlobalNav() {
           className="absolute inset-0 bg-background/80 backdrop-blur-md border-b border-border"
           style={animateBar ? fade('0.35s') : undefined}
         />
-        <div className="relative pt-4 pb-3 px-6 flex items-center justify-between">
-          {/* Left: back link on inner pages, empty on home */}
+        <div className="relative pt-4 pb-3 px-6 pl-14 xl:pl-6 flex items-center justify-between">
+          {/* Left: back link on inner pages, empty on home (pl-14 leaves room for ToC hamburger on mobile) */}
           <div className="min-w-0 flex items-center">
             {!isHome && (
               <nav
