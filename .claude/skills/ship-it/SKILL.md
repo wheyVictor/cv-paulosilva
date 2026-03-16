@@ -59,7 +59,19 @@ Solo si los cambios afectan features documentadas. Ver tabla de lógica README a
 
 SIEMPRE actualizar EN y ES simétricamente. Seguir formato del skill `readme-pro`.
 
-### Paso 5 — Build + SEO Triage
+### Paso 5 — Console Error Check (si localhost está corriendo)
+
+Si `vite dev` o `vite preview` está corriendo (verificar con `curl -s http://localhost:5173 > /dev/null 2>&1`), ejecutar:
+
+```bash
+npx tsx scripts/check-console-errors.ts http://localhost:5173
+```
+
+Esto navega headless por CADA url del sitemap + utility pages, captura `console.error` y `pageerror`, y reporta. Si hay errores (hydration mismatch, runtime errors, etc.) → arreglar antes de continuar.
+
+Si localhost no está corriendo → saltar este paso (se validará post-deploy contra producción si es necesario).
+
+### Paso 6 — Build + SEO Triage
 
 ```bash
 npm run build
@@ -102,7 +114,7 @@ Si los warnings son de `Image over budget` y la imagen es un diagrama o screensh
 
 Solo preguntar si la imagen parece optimizable (foto genérica, OG card, avatar).
 
-### Paso 6 — Commit
+### Paso 7 — Commit
 
 Staging selectivo (NUNCA `git add .` ni `git add -A`):
 - Añadir solo archivos relevantes por nombre
@@ -114,7 +126,7 @@ Mensaje con conventional commits, SIN Co-Authored-By:
 git commit -m "tipo: descripción concisa"
 ```
 
-### Paso 7 — Push
+### Paso 8 — Push
 
 ```bash
 git push origin main
@@ -126,7 +138,7 @@ git pull --rebase origin main
 git push origin main
 ```
 
-### Paso 8 — Verificación Post-Deploy (OBLIGATORIO)
+### Paso 9 — Verificación Post-Deploy (OBLIGATORIO)
 
 Después del push, esperar a que Vercel despliegue y verificar que producción funciona. **Este paso NO es opcional** — un deploy roto puede pasar desapercibido horas.
 
@@ -167,6 +179,26 @@ Después del push, esperar a que Vercel despliegue y verificar que producción f
 6. **Reportar al usuario**: Siempre informar del resultado de la verificación post-deploy. Nunca cerrar el ship-it sin este paso.
 
 **Contexto**: El 15-16 mar 2026 un CSS mismatch pasó desapercibido 16 horas. La página se veía rota (layout descolocado, FloatingToc invisible, chat widget desubicado) mientras el build local funcionaba perfecto. La causa: Vercel sirvió un CSS de un build anterior que no coincidía con el HTML nuevo.
+
+### Paso 10 — SEO Ping (post-deploy, automático)
+
+Después de verificar que el deploy funciona, notificar a los motores de búsqueda:
+
+1. **IndexNow** (Bing, Yandex, Naver) — ya integrado en el build pipeline (`scripts/indexnow-ping.ts`). Se ejecuta automáticamente si `INDEXNOW_ENABLED=true` en Vercel.
+
+2. **Google Search Console** — submit sitemap via GSC MCP si está disponible:
+   ```bash
+   # Si GSC MCP está disponible:
+   mcp__gsc__submit_sitemap https://santifer.io/sitemap.xml
+   ```
+   Si GSC MCP no está disponible, hacer ping HTTP directo:
+   ```bash
+   curl -s "https://www.google.com/ping?sitemap=https://santifer.io/sitemap.xml"
+   ```
+
+3. **Reportar** qué motores fueron notificados.
+
+Este paso es non-blocking — si falla el ping, no revertir el deploy. Solo informar.
 
 ---
 
