@@ -126,6 +126,48 @@ git pull --rebase origin main
 git push origin main
 ```
 
+### Paso 8 — Verificación Post-Deploy (OBLIGATORIO)
+
+Después del push, esperar a que Vercel despliegue y verificar que producción funciona. **Este paso NO es opcional** — un deploy roto puede pasar desapercibido horas.
+
+1. **Esperar 90 segundos** para que Vercel complete el build:
+   ```bash
+   sleep 90
+   ```
+
+2. **Verificar CSS hash** — que el CSS que sirve producción coincida con el del build local:
+   ```bash
+   PROD_CSS=$(curl -s https://santifer.io | grep -o 'href="/assets/index-[^"]*\.css"' | head -1)
+   LOCAL_CSS=$(ls dist/assets/*.css | head -1 | sed 's|.*/|href="/assets/|;s|$|"|')
+   if [ "$PROD_CSS" = "$LOCAL_CSS" ]; then
+     echo "✅ CSS hash matches"
+   else
+     echo "❌ CSS MISMATCH — prod: $PROD_CSS, local: $LOCAL_CSS"
+     echo "   Vercel may be serving a stale build. Run: vercel --prod"
+   fi
+   ```
+
+3. **Verificar que la página responde 200** y tiene contenido:
+   ```bash
+   STATUS=$(curl -sI https://santifer.io | head -1 | grep -o '[0-9]\{3\}')
+   BODY_SIZE=$(curl -s https://santifer.io | wc -c | tr -d ' ')
+   echo "Status: $STATUS, Body: ${BODY_SIZE} bytes"
+   if [ "$STATUS" != "200" ] || [ "$BODY_SIZE" -lt 10000 ]; then
+     echo "❌ PRODUCTION IS DOWN OR BROKEN"
+   fi
+   ```
+
+4. **Verificar un artículo** (al menos uno):
+   ```bash
+   curl -sI https://santifer.io/self-healing-chatbot | head -1
+   ```
+
+5. **Si CSS no coincide**: ejecutar `vercel --prod` para forzar un deploy directo con los archivos locales. Luego re-verificar.
+
+6. **Reportar al usuario**: Siempre informar del resultado de la verificación post-deploy. Nunca cerrar el ship-it sin este paso.
+
+**Contexto**: El 15-16 mar 2026 un CSS mismatch pasó desapercibido 16 horas. La página se veía rota (layout descolocado, FloatingToc invisible, chat widget desubicado) mientras el build local funcionaba perfecto. La causa: Vercel sirvió un CSS de un build anterior que no coincidía con el HTML nuevo.
+
 ---
 
 ## Matriz de Consistencia
