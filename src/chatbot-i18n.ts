@@ -62,6 +62,8 @@ export default async function handler(req, res) {
             { date: '11 mar PM', title: 'LLMOps closed-loop', detail: 'Cost scoring, CI gate, adversarial testing, trace-to-eval automático.' },
             { date: '14 mar AM', title: 'Voice mode', detail: 'OpenAI Realtime API: audio-to-audio nativo con RAG compartido.' },
             { date: '14 mar PM', title: 'Ops dashboard', detail: 'Dashboard custom con 8 tabs, observabilidad agéntica (generation observations), y 67 contract tests.' },
+            { date: '16 mar', title: 'Context Engineering', detail: 'Auditoría multi-agente: un agente diagnostica, otro arregla. Artefactos persistentes como puente entre sesiones.' },
+            { date: 'WIP', title: 'MCP Server', detail: 'Observabilidad agéntica como MCP: herramientas que cualquier agente puede usar para diagnosticar el sistema en producción.' },
           ],
           callout: 'Una persona. Zero downtime.',
           beforeAfter: {
@@ -247,7 +249,7 @@ Producción
           },
           developerLoop: {
             heading: 'El Developer Feedback Loop',
-            body: 'Un developer feedback loop es cuando la herramienta de IA que construyó el sistema también lo diagnostica y repara usando datos de producción.\n\nEl closed loop llega al propio proceso de desarrollo. Claude Code consulta las trazas de producción en Langfuse, diagnostica problemas en el pipeline RAG, y genera el fix.\n\nEn una sesión, detectó que una query de RAG tenía sesgo de confirmación. La búsqueda usaba "n8n for product managers" en vez de solo "n8n", perdiendo chunks relevantes. Propuso el fix y generó el eval para prevenir regresión.\n\nIA manteniendo IA. El chatbot corre en producción, Langfuse captura cada decisión, Claude Code lee las trazas y añade un test. El sistema mejora sin que yo lo toque.',
+            body: 'Un developer feedback loop es cuando la herramienta de IA que construyó el sistema también lo diagnostica y repara usando datos de producción.\n\nEl closed loop llega al propio proceso de desarrollo. Claude Code consulta las trazas de producción en Langfuse, diagnostica problemas en el pipeline RAG, y genera el fix.\n\nEn una sesión, detectó que una query de RAG tenía sesgo de confirmación. La búsqueda usaba "n8n for product managers" en vez de solo "n8n", perdiendo chunks relevantes. Propuso el fix y generó el eval para prevenir regresión.\n\nIA manteniendo IA. El chatbot corre en producción, Langfuse captura cada decisión, Claude Code lee las trazas y añade un test. El sistema mejora sin que yo lo toque.\n\nEl siguiente paso es formalizar esto como Context Engineering: un agente audita el sistema y documenta hallazgos en artefactos persistentes, otro agente los consume y ejecuta los fixes. El mismo patrón producer/consumer que usan los equipos de agentes en producción, aplicado al propio ciclo de desarrollo.',
           },
         },
         cost: {
@@ -427,6 +429,8 @@ export default async function handler(req, res) {
             { date: 'Mar 11 PM', title: 'LLMOps closed-loop', detail: 'Cost scoring, CI gate, adversarial testing, automatic trace-to-eval.' },
             { date: 'Mar 14 AM', title: 'Voice mode', detail: 'OpenAI Realtime API: native audio-to-audio with shared RAG.' },
             { date: 'Mar 14 PM', title: 'Ops dashboard', detail: 'Custom dashboard with 8 tabs, agentic observability (generation observations), and 67 contract tests.' },
+            { date: 'Mar 16', title: 'Context Engineering', detail: 'Multi-agent audit: one agent diagnoses, another fixes. Persistent artifacts as bridge between sessions.' },
+            { date: 'WIP', title: 'MCP Server', detail: 'Agentic observability as MCP: tools any agent can use to diagnose the system in production.' },
           ],
           callout: 'One person. Zero downtime.',
           beforeAfter: {
@@ -612,7 +616,7 @@ Production
           },
           developerLoop: {
             heading: 'The Developer Feedback Loop',
-            body: 'A developer feedback loop is when the AI coding tool that built a system can also diagnose and fix it using production data.\n\nThe closed loop extends to the development process itself. Claude Code queries production traces in Langfuse, diagnoses issues in the RAG pipeline, and generates the fix.\n\nIn one session, it found that a RAG query had confirmation bias. The search used "n8n for product managers" instead of just "n8n", missing relevant chunks. It proposed the fix and generated an eval to prevent regression.\n\nAI maintaining AI. The chatbot runs in production, Langfuse captures every decision, Claude Code reads the traces and adds a test. The system improves without me touching it.',
+            body: 'A developer feedback loop is when the AI coding tool that built a system can also diagnose and fix it using production data.\n\nThe closed loop extends to the development process itself. Claude Code queries production traces in Langfuse, diagnoses issues in the RAG pipeline, and generates the fix.\n\nIn one session, it found that a RAG query had confirmation bias. The search used "n8n for product managers" instead of just "n8n", missing relevant chunks. It proposed the fix and generated an eval to prevent regression.\n\nAI maintaining AI. The chatbot runs in production, Langfuse captures every decision, Claude Code reads the traces and adds a test. The system improves without me touching it.\n\nThe next step formalizes this as Context Engineering: one agent audits the system and documents findings in persistent artifacts, another agent consumes them and executes fixes. The same producer/consumer pattern that production agent teams use, applied to the development cycle itself.',
           },
         },
         cost: {
