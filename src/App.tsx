@@ -80,6 +80,58 @@ function BeamPill({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Inject animation styles once (avoids hydration mismatch from inline <style> in h1)
+const HERO_STYLES_ID = 'hero-beam-styles'
+function useHeroStyles() {
+  useEffect(() => {
+    if (document.getElementById(HERO_STYLES_ID)) return
+    const style = document.createElement('style')
+    style.id = HERO_STYLES_ID
+    style.textContent = `
+      @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+      @keyframes heal-float {
+        0% { opacity: 0; transform: translateY(0) scale(0.6); }
+        12% { opacity: 0.25; }
+        40% { opacity: 0.15; }
+        100% { opacity: 0; transform: translateY(-65px) scale(0.2); }
+      }
+      @property --beam-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+      }
+      @keyframes beam-spin {
+        0% { --beam-angle: 0deg; }
+        100% { --beam-angle: 360deg; }
+      }
+      .beam-pill::before {
+        content: '';
+        position: absolute;
+        inset: 2px -7px -5px -7px;
+        border-radius: 9999px;
+        padding: 2px;
+        background: conic-gradient(
+          from var(--beam-angle),
+          transparent 0%,
+          transparent 82%,
+          rgba(74, 222, 128, 0.05) 86%,
+          rgba(74, 222, 128, 0.15) 89%,
+          rgba(74, 222, 128, 0.35) 92%,
+          rgba(74, 222, 128, 0.6) 95%,
+          rgba(74, 222, 128, 0.9) 98%,
+          #4ade80 100%,
+          transparent 100%
+        );
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: beam-spin 2s linear infinite;
+      }
+    `
+    document.head.appendChild(style)
+  }, [])
+}
+
 function useTypewriterRotation(roles: readonly string[], { typeSpeed = 80, deleteSpeed = 60, pauseAfterType = 2000, pauseAfterDelete = 300 } = {}) {
   const [roleIndex, setRoleIndex] = useState(0)
   const [displayText, setDisplayText] = useState(roles[0])
@@ -1276,6 +1328,7 @@ function App() {
   const lang: Lang = location.pathname === '/en' ? 'en' : 'es'
   const t = translations[lang]
   const hydrated = useHydrated()
+  useHeroStyles()
   const { displayText: roleText, roleIndex } = useTypewriterRotation(t.greetingRoles)
 
 
@@ -1344,47 +1397,6 @@ function App() {
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight">
                 <span className="text-gradient-theme">{hydrated ? roleText : t.greetingRoles[0]}</span>
                 {hydrated && <span className="inline-block w-[3px] h-[0.85em] bg-primary ml-1 rounded-sm translate-y-[2px]" style={{ animation: 'blink 1s step-end infinite' }} />}
-                <style>{`
-                  @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
-                  @keyframes heal-float {
-                    0% { opacity: 0; transform: translateY(0) scale(0.6); }
-                    12% { opacity: 0.25; }
-                    40% { opacity: 0.15; }
-                    100% { opacity: 0; transform: translateY(-65px) scale(0.2); }
-                  }
-                  @property --beam-angle {
-                    syntax: '<angle>';
-                    inherits: false;
-                    initial-value: 0deg;
-                  }
-                  @keyframes beam-spin {
-                    0% { --beam-angle: 0deg; }
-                    100% { --beam-angle: 360deg; }
-                  }
-                  .beam-pill::before {
-                    content: '';
-                    position: absolute;
-                    inset: 2px -7px -5px -7px;
-                    border-radius: 9999px;
-                    padding: 2px;
-                    background: conic-gradient(
-                      from var(--beam-angle),
-                      transparent 0%,
-                      transparent 82%,
-                      rgba(74, 222, 128, 0.05) 86%,
-                      rgba(74, 222, 128, 0.15) 89%,
-                      rgba(74, 222, 128, 0.35) 92%,
-                      rgba(74, 222, 128, 0.6) 95%,
-                      rgba(74, 222, 128, 0.9) 98%,
-                      #4ade80 100%,
-                      transparent 100%
-                    );
-                    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-                    -webkit-mask-composite: xor;
-                    mask-composite: exclude;
-                    animation: beam-spin 2s linear infinite;
-                  }
-                `}</style>
                 <br />
                 {t.greeting}
                 <br />
