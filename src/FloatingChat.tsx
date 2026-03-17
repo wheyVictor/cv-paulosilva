@@ -128,7 +128,14 @@ function saveSession(messages: Message[], sessionId: string) {
 export default function FloatingChat({ lang }: FloatingChatProps) {
   const t = translations[lang].chat;
   const v = t.voice;
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => window.location.hash === '#chat');
+
+  // Open chat when navigating to #chat
+  useEffect(() => {
+    const onHash = () => { if (window.location.hash === '#chat') setIsOpen(true) }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
   const [session] = useState(() => loadSession(t.greeting));
   const [messages, setMessages] = useState<Message[]>(session.messages);
