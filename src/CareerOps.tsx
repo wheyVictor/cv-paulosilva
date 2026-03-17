@@ -243,6 +243,22 @@ export default function CareerOps({ lang = 'en' }: { lang?: Lang }) {
           detail: step.detail,
         }))} />
 
+        <figure className="rounded-lg overflow-hidden border border-border shadow-lg mb-6">
+          <video
+            src="/career-ops/pipeline-demo.mp4"
+            controls
+            preload="none"
+            playsInline
+            className="w-full"
+            poster="/career-ops/datadog.webp"
+          />
+          <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">
+            {lang === 'es'
+              ? 'Demo: auto-pipeline evaluando la oferta de Datadog Staff AI Engineer en tiempo real'
+              : 'Demo: auto-pipeline evaluating the Datadog Staff AI Engineer offer in real time'}
+          </figcaption>
+        </figure>
+
         <H3>{s.pipeline.batch.heading}</H3>
         <Prose>{s.pipeline.batch.body}</Prose>
         <MetricsGrid items={s.pipeline.batch.metrics} columns={3} compact />
