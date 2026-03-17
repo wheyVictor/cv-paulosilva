@@ -6,8 +6,8 @@ export const careerOpsContent = {
     altSlug: 'career-ops-system',
     readingTime: '18 min de lectura',
     seo: {
-      title: 'Career-Ops: AI Job Search con Multi-Agent System y HITL',
-      description: 'Case study: sistema multi-agente que automatiza la búsqueda de empleo con AI resume builder, scoring 10D, batch processing y auto-apply HITL. 631 evaluaciones.',
+      title: 'Career-Ops: Agente IA que Automatiza Mi Búsqueda de Empleo',
+      description: 'Case study: agente IA multi-agente que evalúa ofertas en 10 dimensiones, crea CV con IA personalizados por oferta y automatiza aplicaciones. 631 evaluaciones.',
     },
     nav: {
       breadcrumbHome: 'Inicio',
@@ -15,8 +15,8 @@ export const careerOpsContent = {
     },
     header: {
       kicker: 'Case Study: Sistema en producción',
-      h1: 'Career-Ops: AI Job Search Tool con Multi-Agent System',
-      subtitle: 'Construí mi propio AI job search tool: un multi-agent system que evalúa ofertas en 10 dimensiones, genera AI resumes personalizados por oferta, y automatiza aplicaciones con HITL. 631 evaluaciones, 12 modos, una persona.',
+      h1: 'Career-Ops: Cómo un Agente IA Automatiza Mi Búsqueda de Empleo',
+      subtitle: 'Construí un sistema multi-agente que evalúa ofertas en 10 dimensiones, crea CV con IA personalizados por oferta y automatiza aplicaciones. 631 evaluaciones, 12 modos, una persona.',
       badge: 'Sistema en producción — en uso activo',
       date: '17 mar 2026',
     },
@@ -66,8 +66,8 @@ export const careerOpsContent = {
         punchline: 'No es que sea difícil. Es que es repetitivo. Y lo repetitivo se automatiza.',
       },
       architecture: {
-        heading: 'Los 12 Modos del Multi-Agent System',
-        body: 'Career-Ops no es un script ni un auto-apply bot. Es un multi-agent system con 12 modos operativos, cada uno un skill file de Claude Code con su propio contexto, reglas y herramientas. Un agente que razona sobre el dominio del problema y ejecuta la acción correcta.',
+        heading: 'Los 12 Modos del Agente IA',
+        body: 'Career-Ops no es un script ni un bot de auto-apply. Es un sistema multi-agente con 12 modos operativos, cada uno un skill file de Claude Code con su propio contexto, reglas y herramientas. Un agente IA que razona sobre el dominio del problema y ejecuta la acción correcta.',
         whyModes: {
           heading: 'Por Qué Modos, No Un Prompt',
           items: [
@@ -143,8 +143,8 @@ export const careerOpsContent = {
         },
       },
       pdf: {
-        heading: 'AI Resume Builder Personalizado',
-        body: 'Un CV genérico pierde. Career-Ops funciona como un AI resume builder que genera un PDF distinto para cada oferta, inyectando keywords de la JD y reordenando la experiencia por relevancia. No es un template: es un ATS-optimized resume construido desde los proof points del CV real.',
+        heading: 'Crear CV con IA — Personalizado por Oferta',
+        body: 'Un CV genérico pierde. Career-Ops crea CV con IA: genera un PDF distinto para cada oferta, inyectando keywords de la JD y reordenando la experiencia por relevancia. No es un template: es un CV optimizado para ATS construido desde los proof points del CV real.',
         steps: [
           { label: 'Extraer 15-20 keywords de la JD.', detail: 'Las keywords aterrizan en el summary, primera bullet de cada rol y sección de skills.' },
           { label: 'Detectar idioma.', detail: 'JD en inglés genera CV en inglés. JD en español genera CV en español.' },
@@ -272,8 +272,8 @@ export const careerOpsContent = {
     altSlug: 'career-ops',
     readingTime: '18 min read',
     seo: {
-      title: 'Career-Ops: AI Job Search Tool Built as a Multi-Agent System',
-      description: 'Case study: AI job search tool built as a multi-agent system — AI resume builder, 10D scoring, automated job application with HITL. 631 evaluations.',
+      title: 'Career-Ops: How I Built My Own AI Job Search Tool',
+      description: 'Case study: AI job search tool built as a multi-agent system. AI resume builder, 10D scoring, automated job application with HITL. 631 evaluations.',
     },
     nav: {
       breadcrumbHome: 'Home',
@@ -281,8 +281,8 @@ export const careerOpsContent = {
     },
     header: {
       kicker: 'Case Study: Production system',
-      h1: 'Career-Ops: AI Job Search Tool Built as a Multi-Agent System',
-      subtitle: 'I built my own AI job search tool: a multi-agent system that scores offers across 10 dimensions, generates AI resumes per listing, and automates job applications with HITL. 631 evaluations, 12 modes, one person.',
+      h1: 'Career-Ops: How I Built My Own AI Job Search Tool',
+      subtitle: 'A multi-agent system that scores offers across 10 dimensions, works as an AI resume builder per listing, and automates job applications with HITL. 631 evaluations, 12 modes, one person.',
       badge: 'Live production system — actively in use',
       date: 'Mar 17, 2026',
     },

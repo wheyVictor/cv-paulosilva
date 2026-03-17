@@ -422,12 +422,12 @@ export const articleRegistry: ArticleConfig[] = [
     titles: { es: 'Career-Ops', en: 'Career-Ops' },
     seo: {
       es: {
-        title: 'Career-Ops: AI Job Search con Multi-Agent System y HITL',
-        description: 'Case study: sistema multi-agente que automatiza la búsqueda de empleo con AI resume builder, scoring 10D, batch processing y auto-apply HITL. 631 evaluaciones.',
+        title: 'Career-Ops: Agente IA que Automatiza Mi Búsqueda de Empleo',
+        description: 'Case study: agente IA multi-agente que evalúa ofertas en 10 dimensiones, crea CV con IA personalizados por oferta y automatiza aplicaciones. 631 evaluaciones.',
       },
       en: {
-        title: 'Career-Ops: Multi-Agent Job Search System | santifer.io',
-        description: 'Case study: AI job search tool built as a multi-agent system — AI resume builder, 10D scoring, automated job application with HITL. 631 evaluations.',
+        title: 'Career-Ops: How I Built My Own AI Job Search Tool',
+        description: 'Case study: AI job search tool built as a multi-agent system. AI resume builder, 10D scoring, automated job application with HITL. 631 evaluations.',
       },
     },
     sectionLabels: {
@@ -464,7 +464,7 @@ export const articleRegistry: ArticleConfig[] = [
     seoMeta: {
       datePublished: '2026-03-17',
       dateModified: '2026-03-17',
-      keywords: ['ai job search', 'ai job search tool', 'ai powered job search', 'ai resume builder', 'ai resume', 'multi agent system', 'multi agent orchestration', 'automated job application', 'ATS-optimized resume', 'Claude Code', 'batch processing', 'HITL', 'job search automation', 'career automation', 'career-ops', 'Playwright automation', 'ai auto apply', 'multi-agent architecture', 'resume optimization AI', 'job search pipeline'],
+      keywords: ['ai job search', 'ai job search tool', 'ai powered job search', 'ai resume builder', 'ai resume', 'multi agent system', 'multi agent orchestration', 'automated job application', 'ATS-optimized resume', 'Claude Code', 'batch processing', 'HITL', 'job search automation', 'career-ops', 'ai auto apply', 'agente ia', 'crear cv con ia', 'automatizacion con ia', 'sistema multiagente', 'busqueda de empleo ia'],
       articleType: 'TechArticle',
       articleTags: 'multi-agent,job search,Claude Code,ATS,batch processing,HITL,automation,Playwright',
       images: ['https://santifer.io/career-ops/og-career-ops.webp'],
