@@ -102,7 +102,10 @@ export function useArticleSeo(opts: ArticleSeoOpts) {
       createdLinks.push(link)
     }
 
-    // JSON-LD
+    // JSON-LD — remove any pre-existing (from prerender) before adding
+    const existing = document.querySelector('script[type="application/ld+json"]')
+    if (existing) existing.remove()
+
     const script = document.createElement('script')
     script.type = 'application/ld+json'
     script.textContent = JSON.stringify(jsonLd)
