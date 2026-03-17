@@ -273,6 +273,38 @@ button, a, [role="button"], summary { cursor: pointer; }
     --linkedin: 210 88% 71%;
   }
 
+  /* ========== PROFILE: BLUEPRINT - Structural Lines ========== */
+  /* Activate: document.documentElement.classList.toggle('theme-blueprint') */
+  .theme-blueprint.dark {
+    --background: 0 0% 4%;            /* deeper black #0A0A0A */
+    --foreground: 0 0% 93%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 55%;
+    --primary: 187 100% 50%;          /* sharp cyan */
+    --primary-foreground: 0 0% 0%;
+    --accent: 270 91% 70%;            /* keep purple */
+    --accent-foreground: 0 0% 100%;
+    --border: 0 0% 16%;               /* more visible structural lines */
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 93%;
+    --gradient-from: 187 100% 50%;
+    --gradient-to: 270 91% 78%;
+    --gold: 45 97% 49%;
+    --success: 142 71% 45%;
+    --tool: 187 100% 50%;
+    --linkedin: 210 88% 71%;
+    --codeblock: 0 0% 3%;
+    --codeblock-text: 0 0% 85%;
+    --code-keyword: 187 100% 60%;
+    --code-string: 24 80% 65%;
+    --code-comment: 0 0% 40%;
+    --code-number: 45 90% 60%;
+    --code-heading: 187 100% 60%;
+    --code-var: 270 70% 75%;
+  }
+
+  /* Blueprint color variables only — geometric overrides are outside @layer base (below) */
+
   * {
     margin: 0;
     padding: 0;
@@ -549,4 +581,63 @@ section[id], footer[id] {
     0%, 100% { opacity: 0.6; }
     50% { opacity: 0.7; }
   }
+}
+
+/* =============================================================
+   THEME: BLUEPRINT — Structural lines & dot grid
+   Activate: document.documentElement.classList.toggle('theme-blueprint')
+   These rules are OUTSIDE @layer so they override Tailwind utilities.
+   ============================================================= */
+
+/* Dot grid background on body */
+.theme-blueprint body {
+  background-color: hsl(0 0% 4%) !important;
+  background-image: radial-gradient(circle, hsl(0 0% 18%) 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+}
+
+/* Structural lines between sections */
+.theme-blueprint section,
+.theme-blueprint .mb-12,
+.theme-blueprint .mb-16 {
+  border-bottom: 1px solid hsl(0 0% 14%);
+  padding-bottom: 3rem;
+}
+.theme-blueprint section:last-child {
+  border-bottom: none;
+}
+
+/* Nav & header bottom line */
+.theme-blueprint nav,
+.theme-blueprint header {
+  border-bottom: 1px solid hsl(0 0% 16%);
+}
+
+/* More visible card borders */
+.theme-blueprint .border-border {
+  border-color: hsl(0 0% 22%) !important;
+}
+
+/* H2 left accent line */
+.theme-blueprint h2 {
+  border-left: 3px solid hsl(var(--primary));
+  padding-left: 0.75rem;
+}
+
+/* Badges get visible border */
+.theme-blueprint .badge {
+  border: 1px solid hsl(var(--primary) / 0.3) !important;
+}
+
+/* Footer top line */
+.theme-blueprint footer {
+  border-top: 1px solid hsl(0 0% 20%);
+}
+
+/* Monospace for metadata */
+.theme-blueprint .badge,
+.theme-blueprint time,
+.theme-blueprint .text-xs {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  letter-spacing: 0.03em;
 }

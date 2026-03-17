@@ -132,6 +132,90 @@ function useHeroStyles() {
   }, [])
 }
 
+// ---------------------------------------------------------------------------
+// GridSnakes — subtle animated trails on the dot grid (hero only)
+// ---------------------------------------------------------------------------
+const GRID = 24                // matches CSS dot grid size
+const SNAKE_COUNT = 3
+const SNAKE_LENGTH = 8         // dots per trail
+const TICK_MS = 180            // movement speed (lower = faster)
+const DIRS: [number, number][] = [[1,0],[-1,0],[0,1],[0,-1]]
+
+function GridSnakes() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const parent = canvas.parentElement
+    if (!parent) return
+
+    const resize = () => {
+      canvas.width = parent.clientWidth
+      canvas.height = parent.clientHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    // Initialize snakes at random grid positions
+    const cols = () => Math.floor(canvas.width / GRID)
+    const rows = () => Math.floor(canvas.height / GRID)
+
+    type Snake = { trail: [number, number][]; dir: [number, number] }
+    const snakes: Snake[] = Array.from({ length: SNAKE_COUNT }, () => {
+      const x = Math.floor(Math.random() * cols())
+      const y = Math.floor(Math.random() * rows())
+      return { trail: [[x, y]], dir: DIRS[Math.floor(Math.random() * 4)] }
+    })
+
+    const tick = () => {
+      const c = cols()
+      const r = rows()
+
+      for (const snake of snakes) {
+        // 30% chance to turn
+        if (Math.random() < 0.3) {
+          snake.dir = DIRS[Math.floor(Math.random() * 4)]
+        }
+        const [hx, hy] = snake.trail[snake.trail.length - 1]
+        let nx = hx + snake.dir[0]
+        let ny = hy + snake.dir[1]
+
+        // Wrap around edges
+        if (nx < 0) nx = c - 1
+        if (nx >= c) nx = 0
+        if (ny < 0) ny = r - 1
+        if (ny >= r) ny = 0
+
+        snake.trail.push([nx, ny])
+        if (snake.trail.length > SNAKE_LENGTH) snake.trail.shift()
+      }
+
+      // Draw
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (const snake of snakes) {
+        for (let i = 0; i < snake.trail.length; i++) {
+          const [gx, gy] = snake.trail[i]
+          const alpha = ((i + 1) / snake.trail.length) * 0.5
+          ctx.beginPath()
+          ctx.arc(gx * GRID + GRID / 2, gy * GRID + GRID / 2, 1.5, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(0, 217, 255, ${alpha})`
+          ctx.fill()
+        }
+      }
+    }
+
+    const interval = setInterval(tick, TICK_MS)
+    return () => { clearInterval(interval); window.removeEventListener('resize', resize) }
+  }, [])
+
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[1]" />
+}
+
+
 function useTypewriterRotation(roles: readonly string[], { typeSpeed = 80, deleteSpeed = 60, pauseAfterType = 2000, pauseAfterDelete = 300 } = {}) {
   const [roleIndex, setRoleIndex] = useState(0)
   const [displayText, setDisplayText] = useState(roles[0])
@@ -1337,7 +1421,7 @@ function App() {
   useHomeSeo({ lang, title: seoData.title, description: seoData.description })
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-200" role="main">
+    <div className="min-h-screen bg-background transition-colors duration-200 bg-[length:24px_24px] [background-image:radial-gradient(circle,hsl(var(--muted-foreground)/0.15)_1px,transparent_1px)]" role="main">
       {/* Skip navigation — accessible keyboard shortcut */}
       <a
         href="#main-content"
@@ -1350,6 +1434,7 @@ function App() {
 
       {/* Hero Section */}
       <header id="main-content" className="relative overflow-hidden">
+        <GridSnakes />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/2 hidden sm:block" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-2xl md:blur-3xl translate-y-1/2 -translate-x-1/2 hidden sm:block" />
@@ -1398,12 +1483,18 @@ function App() {
                 <span className="text-gradient-theme">{hydrated ? roleText : t.greetingRoles[0]}</span>
                 {hydrated && <span className="inline-block w-[3px] h-[0.85em] bg-primary ml-1 rounded-sm translate-y-[2px]" style={{ animation: 'blink 1s step-end infinite' }} />}
                 <br />
-                {t.greeting}
-                <br />
                 {lang === 'es' ? (
-                  <>LLMOps que se <BeamPill>curan solos.</BeamPill></>
+                  <>
+                    {t.greeting}
+                    <br />
+                    LLMOps que se <BeamPill>curan solos.</BeamPill>
+                  </>
                 ) : (
-                  <><BeamPill>self-healing</BeamPill> LLMOps systems.</>
+                  <>
+                    {t.greeting} <BeamPill>self-healing</BeamPill>
+                    <br />
+                    {t.role}
+                  </>
                 )}
               </h1>
 

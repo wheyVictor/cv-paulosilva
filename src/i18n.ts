@@ -755,7 +755,7 @@ export const translations = {
     greeting: 'who builds',
     greetingRoles: ['AI Product Manager', 'AI Solutions Architect', 'Forward Deployed Engineer'],
     email: 'hi@santifer.io',
-    role: 'self-healing LLMOps systems.',
+    role: 'LLMOps systems.',
     story: {
       context: '+15 years building+ everything from scratch.',
       reflections: ['It works. It actually works.', '...now what?'],
