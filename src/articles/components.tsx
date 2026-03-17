@@ -363,6 +363,18 @@ export function CaseStudyCta({ heading, body, ctaLabel, ctaHref, external, secon
                 {ctaLabel}
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
+            ) : ctaHref.startsWith('#') ? (
+              <a
+                href={ctaHref}
+                onClick={(e) => {
+                  e.preventDefault()
+                  window.location.hash = ctaHref
+                  window.dispatchEvent(new HashChangeEvent('hashchange'))
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors text-sm cursor-pointer"
+              >
+                {ctaLabel}
+              </a>
             ) : (
               <Link
                 to={ctaHref}
