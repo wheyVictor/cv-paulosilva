@@ -249,7 +249,6 @@ export default function CareerOps({ lang = 'en' }: { lang?: Lang }) {
               src="https://player.mux.com/Zhl5qjj02PoD2g01ZsOwJptHNTvThw7udv47tnza1VLUc?accent-color=%2300D9FF"
               className="absolute inset-0 w-full h-full"
               allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
               loading="lazy"
             />
           </div>
