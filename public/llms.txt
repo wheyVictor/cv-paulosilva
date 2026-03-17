@@ -136,8 +136,8 @@ Python + FastAPI service for LLM-powered content ingestion and digest generation
 ### Life OS (Private · On Request)
 Personal productivity system I built to run my life through conversation. Orchestrates Claude Code with native MCPs (Apple Reminders/Calendar, GitHub), 15 custom skills, 5 automation hooks, and semantic search (BM25 + SQLite FTS5). Pipes into Content Digest for a full knowledge loop and powers Career Ops for HITL automated job search.
 
-### Career Ops (Private · On Request)
-HITL job search pipeline — AI periodically evaluates offers across 10 dimensions (A-F scoring), spins up ATS-optimized PDF resumes per listing, and pre-fills applications. I review, filter, and decide which ones to ship. Batch-processes 48+ offers in parallel (conductor + workers), scans portals with dedup, and adapts narrative framing per role archetype. Plugs into Life OS as a specialized skill.
+### Career Ops (Private · On Request) — [Case Study](https://santifer.io/career-ops-system)
+AI job search tool built as a multi-agent system. 12 operational modes, 10-dimension scoring (A-F), AI resume builder that generates ATS-optimized PDFs per listing, automated job application with Playwright, batch processing 122 URLs in parallel (conductor + workers). 631 evaluations, 354 PDFs generated, 680 URLs deduplicated. HITL design: AI analyzes, I decide. Plugs into Life OS as a specialized skill.
 
 ### Claude Pulse (Open Source)
 SwiftBar plugin for real-time Claude Code usage monitoring on macOS. Consumption metrics and rate limit predictions.
@@ -158,6 +158,7 @@ Productivity system for Solutions Architects working with multiple DTC clients. 
 Interactive CV with self-healing AI chatbot, voice mode (OpenAI Realtime API), and agentic observability. RAG pipeline (Supabase pgvector + OpenAI embeddings + Haiku reranking), 6-layer jailbreak defense (50+ keyword patterns, canary tokens, fingerprinting, anti-extract, real-time safety scoring, adversarial red team), 71 automated evals (10 categories including multi-turn, source badges, and voice) with CI gate, closed-loop improvement (trace-to-eval, adversarial testing, prompt versioning via Langfuse). Batch eval with Sonnet scores intent, quality, safety and jailbreak detection; alerts via Resend. Custom ops dashboard with 8 tabs: conversations, costs, RAG, security, evals, voice, prompts, system. Developer feedback loop: Claude Code queries Langfuse traces and generates fixes. <$0.005/conversation text, ~$0.25/session voice, $0 infrastructure.
 
 ### Published Case Studies
+- [Career-Ops: AI Job Search Tool](https://santifer.io/career-ops-system): Multi-agent system for job search — 10D scoring, AI resume builder, batch processing 122 URLs, HITL design. 631 evaluations.
 - [The Self-Healing Chatbot](https://santifer.io/self-healing-chatbot): LLMOps case study — agentic observability, 71 evals, voice mode, closed-loop
 - [AI Agent Jacobo](https://santifer.io/ai-agent-jacobo): Omnichannel multi-agent AI — 90% self-service, voice + WhatsApp
 - [Business OS](https://santifer.io/business-os-for-airtable): Custom ERP with 12 Airtable bases, 2100 fields, 170h/month saved

@@ -54,6 +54,10 @@ export const jacoboContent = {
           text: 'SEO Programático | Case Study',
           href: '/seo-programatico',
         },
+        careerOps: {
+          text: 'Career-Ops: Agente IA Multi-Agente | Case Study',
+          href: '/career-ops',
+        },
       },
       sections: {
         theProblem: {
@@ -1581,6 +1585,10 @@ Presupuesto reparándolo todo junto: \${totalConDescuento.toFixed(2)} €\`;`,
         pseo: {
           text: 'Programmatic SEO — Case Study',
           href: '/programmatic-seo',
+        },
+        careerOps: {
+          text: 'Career-Ops: AI Job Search Multi-Agent | Case Study',
+          href: '/career-ops-system',
         },
       },
       sections: {
