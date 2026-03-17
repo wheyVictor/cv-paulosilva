@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { type CareerOpsLang as Lang } from './career-ops-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
@@ -243,21 +244,29 @@ export default function CareerOps({ lang = 'en' }: { lang?: Lang }) {
           detail: step.detail,
         }))} />
 
-        <figure className="rounded-lg overflow-hidden border border-border shadow-lg mb-6">
-          <div className="relative w-full" style={{ paddingBottom: '62.5%' }}>
-            <iframe
-              src="https://player.mux.com/Zhl5qjj02PoD2g01ZsOwJptHNTvThw7udv47tnza1VLUc?accent-color=%2300D9FF"
-              className="absolute inset-0 w-full h-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
-          </div>
-          <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">
-            {lang === 'es'
-              ? 'Demo: auto-pipeline evaluando la oferta de Datadog Staff AI Engineer en tiempo real'
-              : 'Demo: auto-pipeline evaluating the Datadog Staff AI Engineer offer in real time'}
-          </figcaption>
-        </figure>
+        {(() => {
+          const [ready, setReady] = useState(false)
+          useEffect(() => setReady(true), [])
+          return (
+            <figure className="rounded-lg overflow-hidden border border-border shadow-lg mb-6">
+              <div className="relative w-full" style={{ paddingBottom: '62.5%' }}>
+                {ready && (
+                  <iframe
+                    src="https://player.mux.com/Zhl5qjj02PoD2g01ZsOwJptHNTvThw7udv47tnza1VLUc?accent-color=%2300D9FF"
+                    className="absolute inset-0 w-full h-full"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">
+                {lang === 'es'
+                  ? 'Demo: auto-pipeline evaluando la oferta de Datadog Staff AI Engineer en tiempo real'
+                  : 'Demo: auto-pipeline evaluating the Datadog Staff AI Engineer offer in real time'}
+              </figcaption>
+            </figure>
+          )
+        })()}
 
         <H3>{s.pipeline.batch.heading}</H3>
         <Prose>{s.pipeline.batch.body}</Prose>
