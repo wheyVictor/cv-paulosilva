@@ -175,6 +175,8 @@ export const translations = {
           desc: 'Pipeline HITL de búsqueda de empleo: la IA evalúa ofertas periódicamente en 10 dimensiones (scoring A-F), genera CVs PDF optimizados para ATS por oferta, y pre-rellena aplicaciones — yo reviso, filtro y decido cuáles enviar. Procesamiento batch de 48+ ofertas en paralelo (arquitectura conductor + workers), escaneo de portales con deduplicación, y framing adaptativo por arquetipo de rol. Integrado con **Life OS** como skill especializado.',
           tech: ['Claude Code', 'Batch Architecture', 'WebSearch', 'HITL Design'],
           link: '',
+          caseStudyUrl: '/career-ops',
+          caseStudyLabel: 'Leer: AI Job Search multi-agente',
         },
         {
           title: 'santifer.io',
@@ -192,7 +194,7 @@ export const translations = {
           tech: ['Claude API', 'Langfuse', 'Supabase pgvector', 'OpenAI Embeddings', 'Vercel Edge'],
           link: '',
           caseStudyUrl: '/chatbot-que-se-cura-solo',
-          caseStudyLabel: 'Ver case study',
+          caseStudyLabel: 'Leer: Chatbot self-healing con LLMOps',
         },
         {
           title: 'Claude Pulse',
@@ -279,7 +281,7 @@ export const translations = {
         role: 'Fundador & Product Lead (AI Automation)',
         period: '2009 - 2025 · Retail / Servicios B2B-B2C',
         caseStudyUrl: '/business-os-para-airtable',
-        caseStudyLabel: 'Cómo convertí el caos en un sistema →',
+        caseStudyLabel: 'Leer: Business OS con Airtable',
         exit: 'Exit 2025',
         exitDesc:
           'Construí, escalé y vendí el negocio como venta en funcionamiento',
@@ -342,7 +344,7 @@ export const translations = {
               text: 'Cita previa online con verificación de stock: confirma cita o genera pedido urgente',
             },
           ],
-          footer: 'Leer el caso de éxito',
+          footer: 'Leer: Business OS con Airtable',
         },
         jacobo: {
           title: 'Agente AI Omnicanal "Jacobo"',
@@ -370,7 +372,7 @@ export const translations = {
               text: 'HITL handoff: escala a humano con contexto completo',
             },
           ],
-          soldWith: 'Leer el caso de éxito',
+          soldWith: 'Leer: Agente IA multi-agente',
           caseStudyUrl: '/agente-ia-jacobo',
         },
         webSeo: {
@@ -396,7 +398,7 @@ export const translations = {
             },
             { icon: 'bot', text: 'Optimización de crawl budget' },
           ],
-          codeAvailable: 'Leer el caso de éxito',
+          codeAvailable: 'Leer: SEO Programático',
           caseStudyUrl: '/seo-programatico',
         },
         erp: {
@@ -910,6 +912,8 @@ export const translations = {
           desc: "HITL job search pipeline — AI periodically evaluates offers across 10 dimensions (A-F scoring), spins up ATS-optimized PDF resumes per listing, and pre-fills applications. I review, filter, and decide which ones to ship. Batch-processes 48+ offers in parallel (conductor + workers), scans portals with dedup, and adapts narrative framing per role archetype. Plugs into **Life OS** as a specialized skill.",
           tech: ['Claude Code', 'Batch Architecture', 'WebSearch', 'HITL Design'],
           link: '',
+          caseStudyUrl: '/career-ops-system',
+          caseStudyLabel: 'Case Study: AI Job Search',
         },
         {
           title: 'santifer.io',
@@ -927,7 +931,7 @@ export const translations = {
           tech: ['Claude API', 'Langfuse', 'Supabase pgvector', 'OpenAI Embeddings', 'Vercel Edge'],
           link: '',
           caseStudyUrl: '/self-healing-chatbot',
-          caseStudyLabel: 'Read the case study',
+          caseStudyLabel: 'Case Study: Self-Healing LLMOps',
         },
         {
           title: 'Claude Pulse',
@@ -1014,7 +1018,7 @@ export const translations = {
         role: 'Founder & Product Lead (AI Automation)',
         period: '2009 - 2025 · Retail / Services B2B-B2C',
         caseStudyUrl: '/business-os-for-airtable',
-        caseStudyLabel: 'How I turned chaos into a system →',
+        caseStudyLabel: 'Case Study: Business OS with Airtable',
         exit: 'Exit 2025',
         exitDesc: 'Built, scaled, and sold the business as a going concern',
         highlights: [
@@ -1073,7 +1077,7 @@ export const translations = {
               text: 'Online booking with stock check: confirms appointment or triggers urgent order',
             },
           ],
-          footer: 'Read the case study',
+          footer: 'Case Study: Business OS with Airtable',
         },
         jacobo: {
           title: 'Omnichannel AI Agent "Jacobo"',
@@ -1101,7 +1105,7 @@ export const translations = {
               text: 'HITL handoff: escalates to human with full context',
             },
           ],
-          soldWith: 'Read the case study',
+          soldWith: 'Case Study: Multi-Agent AI',
           caseStudyUrl: '/ai-agent-jacobo',
         },
         webSeo: {
@@ -1127,7 +1131,7 @@ export const translations = {
             },
             { icon: 'bot', text: 'Crawl budget optimization' },
           ],
-          codeAvailable: 'Read the case study',
+          codeAvailable: 'Case Study: Programmatic SEO',
           caseStudyUrl: '/programmatic-seo',
         },
         erp: {
