@@ -17,6 +17,8 @@ export interface ArticleSeoMeta {
   citation?: Array<{ '@type': string; name: string; url: string }>
   isBasedOn?: Record<string, unknown>
   mentions?: Array<Record<string, string>>
+  discussionUrl?: string
+  relatedLink?: string
 }
 
 export interface ArticleConfig {
@@ -35,6 +37,8 @@ export interface ArticleConfig {
   xDefaultSlug?: string
   /** Whether this article is ready for RAG indexing (default: false) */
   ragReady?: boolean
+  /** Path to i18n content file relative to project root (required when ragReady=true) */
+  i18nFile?: string
   /** SEO metadata for prerender JSON-LD + article meta tags */
   seoMeta?: ArticleSeoMeta
 }
@@ -80,6 +84,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'collab',
     ragReady: true,
+    i18nFile: 'src/n8n-i18n.ts',
     ogImage: 'https://santifer.io/workflows/n8n-ai-feedback-classification-workflow.webp',
     heroImage: 'https://santifer.io/workflows/n8n-sprint-report-automation-workflow.webp',
     component: () => import('../N8nForPMs.tsx'),
@@ -163,6 +168,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
+    i18nFile: 'src/jacobo-i18n.ts',
     ogImage: 'https://santifer.io/jacobo/og-jacobo-agent.webp',
     heroImage: 'https://santifer.io/jacobo/santiago-headphones-thinking.webp',
     component: () => import('../JacoboAgent.tsx'),
@@ -230,6 +236,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
+    i18nFile: 'src/business-os-i18n.ts',
     ogImage: 'https://santifer.io/business-os/og-business-os.webp',
     heroImage: 'https://santifer.io/business-os/web-landing-hero.webp',
     component: () => import('../BusinessOS.tsx'),
@@ -316,6 +323,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
+    i18nFile: 'src/pseo-i18n.ts',
     ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
     heroImage: 'https://santifer.io/pseo/ss-repair-page-hero.webp',
     component: () => import('../ProgrammaticSeo.tsx'),
@@ -385,6 +393,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
+    i18nFile: 'src/chatbot-i18n.ts',
     ogImage: 'https://santifer.io/chatbot/og-self-healing-chatbot.webp',
     heroImage: 'https://santifer.io/chatbot/hero-self-healing-chatbot.webp',
     component: () => import('../SelfHealingChatbot.tsx'),
@@ -458,6 +467,7 @@ export const articleRegistry: ArticleConfig[] = [
     },
     type: 'case-study',
     ragReady: true,
+    i18nFile: 'src/career-ops-i18n.ts',
     ogImage: 'https://santifer.io/career-ops/og-career-ops.webp',
     heroImage: 'https://santifer.io/career-ops/hero-career-ops.webp',
     component: () => import('../CareerOps.tsx'),
@@ -485,6 +495,8 @@ export const articleRegistry: ArticleConfig[] = [
         { '@type': 'SoftwareApplication', name: 'Puppeteer', url: 'https://pptr.dev' },
         { '@type': 'SoftwareApplication', name: 'Node.js', url: 'https://nodejs.org' },
       ],
+      discussionUrl: 'https://www.reddit.com/r/SideProject/comments/1rw1lg4/i_automated_my_job_search_with_ai_agents_516/',
+      relatedLink: 'https://dev.to/santifer/i-built-a-multi-agent-job-search-system-with-claude-code-631-evaluations-12-modes-2cd0',
     },
   },
   {

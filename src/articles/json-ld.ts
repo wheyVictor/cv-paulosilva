@@ -29,6 +29,10 @@ interface JsonLdOptions {
   isBasedOn?: Record<string, unknown>
   /** mentions — tools and platforms referenced */
   mentions?: Array<Record<string, string>>
+  /** discussionUrl — link to Reddit/HN thread */
+  discussionUrl?: string
+  /** relatedLink — link to cross-posted article (Dev.to, etc.) */
+  relatedLink?: string
 }
 
 const PERSON = {
@@ -40,6 +44,8 @@ const PERSON = {
   sameAs: [
     'https://www.linkedin.com/in/santifer',
     'https://github.com/santifer',
+    'https://x.com/santifer',
+    'https://dev.to/santifer',
   ],
 }
 
@@ -81,6 +87,8 @@ export function buildArticleJsonLd(opts: JsonLdOptions) {
       ...(opts.citation ? { citation: opts.citation } : {}),
       ...(opts.isBasedOn ? { isBasedOn: opts.isBasedOn } : {}),
       ...(opts.mentions ? { mentions: opts.mentions } : {}),
+      ...(opts.discussionUrl ? { discussionUrl: opts.discussionUrl } : {}),
+      ...(opts.relatedLink ? { relatedLink: opts.relatedLink } : {}),
       workTranslation: { '@id': `${opts.altUrl}/#article` },
     },
     PERSON,
