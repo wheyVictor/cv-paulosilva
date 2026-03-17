@@ -2742,8 +2742,12 @@ function App() {
       </section>
 
       {/* Footer CTA */}
-      <footer id="contact" className="py-16 md:py-24">
-        <div className="max-w-5xl mx-auto px-6 text-center">
+      <footer id="contact" className="relative py-16 md:py-24">
+        {/* Vignette horizontal — zona limpia central, puntos en bordes */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'linear-gradient(90deg, transparent 0%, hsl(var(--background)) 25%, hsl(var(--background)) 75%, transparent 100%)',
+        }} />
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
               {t.cta.title}
