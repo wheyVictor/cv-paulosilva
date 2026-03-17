@@ -46,6 +46,7 @@ const PERSON = {
     'https://github.com/santifer',
     'https://x.com/santifer',
     'https://dev.to/santifer',
+    'https://www.wikidata.org/wiki/Q138710224',
   ],
 }
 
