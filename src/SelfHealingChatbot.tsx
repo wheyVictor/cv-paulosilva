@@ -24,6 +24,7 @@ import {
   StackGrid,
   FloatingToc,
   DiagramZoom,
+  ArchitectureDiagram,
 } from './articles/content-types'
 import { chatbotContent } from './chatbot-i18n'
 
@@ -154,6 +155,9 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         date={t.header.date}
         readingTime={t.readingTime}
       />
+      <a href="#architecture" className="inline-flex items-center gap-2 -mt-4 mb-6 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+        {lang === 'es' ? 'Ver demo interactiva de la arquitectura →' : 'See interactive architecture demo →'}
+      </a>
 
       <img
         src="/chatbot/hero-self-healing-chatbot.webp"
@@ -208,14 +212,19 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/* ================================================================ */}
         <H2 id="architecture">{s.architecture.heading}</H2>
         <Prose>{s.architecture.body}</Prose>
-        <img
-          src="/chatbot/diagram-architecture.webp"
-          alt={lang === 'es' ? 'Diagrama de arquitectura: User → Edge Function → Langfuse → Trace-to-Eval, Red Team, CI Gate' : 'Architecture diagram: User → Edge Function → Langfuse → Trace-to-Eval, Red Team, CI Gate'}
-          className="w-full max-w-lg mx-auto rounded-xl my-8"
-          width={1400}
-          height={1875}
-          loading="lazy"
+        <ArchitectureDiagram
+          src={lang === 'es' ? '/chatbot/architecture-diagram.html' : '/chatbot/architecture-diagram-en.html'}
+          thumbnail="/chatbot/diagram-thumbnail.webp"
+          alt={lang === 'es'
+            ? 'Diagrama interactivo: 10 fases de la arquitectura del chatbot con audio narrado, zoom y pan'
+            : 'Interactive diagram: 10 phases of the chatbot architecture with narrated audio, zoom and pan'}
+          label={lang === 'es' ? 'Arquitectura Interactiva' : 'Interactive Architecture'}
+          subtitle={lang === 'es' ? '10 fases · audio narrado · zoom + pan' : '10 phases · narrated audio · zoom + pan'}
         />
+        <Prose className="text-xs !text-muted-foreground/60 -mt-4 mb-6">{lang === 'es'
+          ? 'Este diagrama se generó con una skill de Claude Code que lee el JSON de arquitectura y produce un HTML interactivo con audio narrado, pan/zoom y dark mode. La misma filosofía que el chatbot: automatizar lo repetitivo.'
+          : 'This diagram was generated with a Claude Code skill that reads the architecture JSON and produces an interactive HTML with narrated audio, pan/zoom, and dark mode. Same philosophy as the chatbot: automate the repetitive.'
+        }</Prose>
         <CardStack items={s.architecture.layers.map(l => ({
           title: l.title,
           detail: l.detail,

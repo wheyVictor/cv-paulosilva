@@ -1440,8 +1440,8 @@ function App() {
       <header id="main-content" className="relative overflow-hidden">
         <GridSnakes />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/2 hidden sm:block" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-2xl md:blur-3xl translate-y-1/2 -translate-x-1/2 hidden sm:block" />
+        <div className="absolute top-0 right-[max(0px,calc(50%-40rem))] w-[600px] h-[600px] rounded-full blur-3xl -translate-y-1/3 translate-x-1/3 hidden sm:block animate-[hero-glow_8s_ease-in-out_infinite]" style={{ backgroundColor: 'hsl(var(--primary) / 0.08)' }} />
+        <div className="absolute bottom-0 left-[max(0px,calc(50%-40rem))] w-[650px] h-[650px] rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 hidden sm:block animate-[hero-glow_11s_ease-in-out_infinite_reverse]" style={{ backgroundColor: 'hsl(var(--accent) / 0.14)' }} />
 
         <div className="relative max-w-5xl mx-auto px-6 py-20 md:py-32">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">

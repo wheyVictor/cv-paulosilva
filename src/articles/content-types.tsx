@@ -1302,3 +1302,122 @@ function formatHighlight(text: string, highlight: string) {
     </>
   )
 }
+
+// ---------------------------------------------------------------------------
+// ArchitectureDiagram — interactive diagram with fullscreen modal + theme sync
+// ---------------------------------------------------------------------------
+
+interface ArchitectureDiagramProps {
+  /** Path to the HTML file in public/ (e.g. '/chatbot/architecture-diagram.html') */
+  src: string
+  /** Static thumbnail image */
+  thumbnail: string
+  /** Alt text for the thumbnail */
+  alt: string
+  /** CTA label */
+  label: string
+  /** Optional subtitle under the label */
+  subtitle?: string
+  editorId?: string
+}
+
+export function ArchitectureDiagram({ src, thumbnail, alt, label, subtitle, editorId }: ArchitectureDiagramProps) {
+  const [open, setOpen] = useState(false)
+  const iframeRef = useCallback((iframe: HTMLIFrameElement | null) => {
+    if (!iframe) return
+    // Sync theme on load + inject Escape listener into iframe
+    const onLoad = () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      iframe.contentWindow?.postMessage({ theme: isDark ? 'dark' : 'light' }, '*')
+      // Inject Escape key forwarding into iframe
+      try {
+        iframe.contentWindow?.document.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Escape') window.postMessage({ type: 'escape' }, '*')
+        })
+      } catch { /* cross-origin — ignore */ }
+    }
+    iframe.addEventListener('load', onLoad)
+    // Watch for theme changes
+    const syncTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      iframe.contentWindow?.postMessage({ theme: isDark ? 'dark' : 'light' }, '*')
+    }
+    const observer = new MutationObserver(syncTheme)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
+  // Lock body scroll + hide floating UI (chat, music) when open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+      // Dispatch event so FloatingChat and other floating UI can hide
+      window.dispatchEvent(new CustomEvent('immersive', { detail: { active: true } }))
+      return () => {
+        document.body.style.overflow = ''
+        window.dispatchEvent(new CustomEvent('immersive', { detail: { active: false } }))
+      }
+    }
+  }, [open])
+
+  // Close on Escape (listen on both parent window and iframe messages)
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    const onMessage = (e: MessageEvent) => { if (e.data?.type === 'escape') setOpen(false) }
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('message', onMessage)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('message', onMessage)
+    }
+  }, [open])
+
+  return (
+    <EditorLabel name="ArchitectureDiagram" id={editorId}>
+      {/* CTA with gradient border — same style as home "coming soon" cards */}
+      <div
+        className="relative rounded-2xl p-[1.5px] bg-gradient-theme mb-8 cursor-pointer group"
+        onClick={() => setOpen(true)}
+      >
+        <div className="rounded-[calc(1rem-1.5px)] overflow-hidden bg-card">
+          <img
+            src={thumbnail}
+            alt={alt}
+            className="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+            loading="lazy"
+          />
+          <div className="p-5 flex items-center justify-between">
+            <div>
+              <p className="font-display font-semibold text-foreground">{label}</p>
+              {subtitle && <p className="text-sm text-muted-foreground mt-0.5">{subtitle}</p>}
+            </div>
+            <span className="px-4 py-2 rounded-lg bg-primary/10 border border-primary/30 text-sm font-medium text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all">
+              <ZoomIn className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+              Explorar
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Fullscreen modal — below GlobalNav (z-40) so nav stays accessible */}
+      {open && (
+        <div className="fixed inset-0 top-14 z-[35] bg-background">
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-3 right-4 z-10 w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center hover:border-primary/50 transition-colors"
+            aria-label="Close diagram"
+          >
+            <X className="w-4 h-4 text-muted-foreground" />
+          </button>
+          <iframe
+            ref={iframeRef}
+            src={src}
+            className="w-full h-full border-0"
+            allow="autoplay"
+          />
+        </div>
+      )}
+    </EditorLabel>
+  )
+}

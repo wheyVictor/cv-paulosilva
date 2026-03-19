@@ -129,12 +129,20 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const t = translations[lang].chat;
   const v = t.voice;
   const [isOpen, setIsOpen] = useState(() => window.location.hash === '#chat');
+  const [immersive, setImmersive] = useState(false);
 
   // Open chat when navigating to #chat
   useEffect(() => {
     const onHash = () => { if (window.location.hash === '#chat') setIsOpen(true) }
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  // Hide when immersive mode is active (architecture diagram, etc.)
+  useEffect(() => {
+    const onImmersive = (e: Event) => setImmersive((e as CustomEvent).detail?.active ?? false)
+    window.addEventListener('immersive', onImmersive)
+    return () => window.removeEventListener('immersive', onImmersive)
   }, [])
 
   const [session] = useState(() => loadSession(t.greeting));
@@ -535,6 +543,8 @@ export default function FloatingChat({ lang }: FloatingChatProps) {
   const handlePromptClick = (query: string) => {
     sendMessage(query);
   };
+
+  if (immersive) return null;
 
   return (
     <>
