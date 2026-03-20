@@ -1,3 +1,0 @@
-# Memory Log
-
-- **[2026-03-03 14:09](entries/2026-03-03-1409.md)** — Restructured the "Deep Dive: Others" section in JacoboAgent.tsx with 4 sub-agents (hacerPedido, Calculadora, HITL, En...
