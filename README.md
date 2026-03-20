@@ -24,7 +24,8 @@ A production-grade interactive portfolio that **demonstrates the skills it descr
 - **LLMOps Dashboard** — Private `/ops` with 8 tabs: Overview, Conversations, Costs, RAG, Security, Evals, Voice, System. Real data from Langfuse + Supabase
 - **Closed Loop** — Trace → online scoring → quality < 0.7 → auto-generate test → CI gate blocks deploy
 - **Voice Mode** — OpenAI Realtime API, audio-to-audio, shared RAG pipeline, ~$0.25/session
-- **5 Published Case Studies** — Bilingual (ES/EN) with JSON-LD, prerendered HTML, and cross-linked RAG
+- **6 Published Case Studies** — Bilingual (ES/EN) with JSON-LD, prerendered HTML, cross-linked RAG, and interactive architecture diagrams
+- **Interactive Architecture Diagram** — GSAP-animated SVG with narrated audio, pan/zoom, dark mode sync. [Explore it →](https://santifer.io/chatbot/architecture-diagram.html)
 - **GEO-ready** — `llms.txt`, structured data (JSON-LD), AI crawler-friendly robots.txt
 
 ---
@@ -45,6 +46,9 @@ A production-grade interactive portfolio that **demonstrates the skills it descr
 ---
 
 ## Chatbot Architecture
+
+[![Interactive Architecture Diagram](public/chatbot/diagram-thumbnail.webp)](https://santifer.io/chatbot/architecture-diagram.html)
+> **[Explore the interactive diagram →](https://santifer.io/chatbot/architecture-diagram.html)** 10 phases · narrated audio · zoom + pan
 
 ```
 User message → FloatingChat.tsx → api/chat.js (Vercel Edge)
@@ -157,7 +161,7 @@ All scripts live in `scripts/` and run via `npm run`:
 ### Build Pipeline
 | Command | Script | Description |
 |---------|--------|-------------|
-| `npm run build` | (chained) | rag:sync → prompt:sync → embed-evals → tsc → vite → sitemap → validate → prerender |
+| `npm run build` | (chained) | rag:sync → prompt:sync → embed-evals → reddit-stats → tsc → vite → sitemap → validate → prerender |
 | — | `scripts/embed-evals.ts` | Parse eval reports → embed in dashboard |
 | — | `scripts/generate-sitemap.ts` | Generate sitemap.xml with lastmod |
 | — | `scripts/validate-articles.ts` | SEO validation (dates, keywords, OG images) |
@@ -264,6 +268,7 @@ chatbot-prompt.txt           # System prompt (fallback, prod uses Langfuse)
 | Article | Slugs | Type |
 |---------|-------|------|
 | Self-Healing Chatbot | `/chatbot-que-se-cura-solo` `/self-healing-chatbot` | case-study |
+| Career-Ops | `/career-ops` `/career-ops-system` | case-study |
 | Jacobo AI Agent | `/agente-ia-jacobo` `/ai-agent-jacobo` | case-study |
 | Business OS | `/business-os-para-airtable` `/business-os-for-airtable` | case-study |
 | Programmatic SEO | `/seo-programatico` `/programmatic-seo` | case-study |
@@ -312,7 +317,8 @@ Un portfolio interactivo de nivel producción que **demuestra las habilidades qu
 - **Dashboard LLMOps** — `/ops` privado con 8 pestañas: Overview, Conversations, Costs, RAG, Security, Evals, Voice, System. Datos reales de Langfuse + Supabase
 - **Closed Loop** — Traza → scoring online → quality < 0.7 → auto-genera test → CI gate bloquea deploy
 - **Modo voz** — OpenAI Realtime API, audio-to-audio, mismo pipeline RAG, ~$0.25/sesión
-- **5 Case Studies publicados** — Bilingües (ES/EN) con JSON-LD, HTML prerenderizado y RAG cross-linked
+- **6 Case Studies publicados** — Bilingües (ES/EN) con JSON-LD, HTML prerenderizado, RAG cross-linked y diagramas de arquitectura interactivos
+- **Diagrama de Arquitectura Interactivo** — SVG animado con GSAP, audio narrado, pan/zoom, sync dark mode. [Explorar →](https://santifer.io/chatbot/architecture-diagram.html)
 - **GEO-ready** — `llms.txt`, datos estructurados (JSON-LD), robots.txt amigable con crawlers IA
 
 ---
@@ -333,6 +339,9 @@ Un portfolio interactivo de nivel producción que **demuestra las habilidades qu
 ---
 
 ## Arquitectura del Chatbot
+
+[![Diagrama Interactivo de Arquitectura](public/chatbot/diagram-thumbnail.webp)](https://santifer.io/chatbot/architecture-diagram.html)
+> **[Explorar el diagrama interactivo →](https://santifer.io/chatbot/architecture-diagram.html)** 10 fases · audio narrado · zoom + pan
 
 ```
 Mensaje → FloatingChat.tsx → api/chat.js (Vercel Edge)
@@ -524,6 +533,7 @@ chatbot-prompt.txt           # System prompt (fallback, producción usa Langfuse
 | Artículo | Slugs | Tipo |
 |----------|-------|------|
 | Chatbot que se cura solo | `/chatbot-que-se-cura-solo` `/self-healing-chatbot` | case-study |
+| Career-Ops | `/career-ops` `/career-ops-system` | case-study |
 | Agente IA Jacobo | `/agente-ia-jacobo` `/ai-agent-jacobo` | case-study |
 | Business OS | `/business-os-para-airtable` `/business-os-for-airtable` | case-study |
 | SEO Programático | `/seo-programatico` `/programmatic-seo` | case-study |
