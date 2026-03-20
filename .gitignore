@@ -33,8 +33,19 @@ chatbot/audit/
 
 # Backups and drafts
 backup/
+_backup_*/
+*.bak
 linkedin-post.md
 .env*.local
+.env.vercel
+.second-brain.yaml
+
+# Test artifacts
+test-results/
+chatbot/.playwright-mcp/
+
+# Stray screenshots in root
+/*.png
 
 # RAG
 .rag-hashes.json
