@@ -99,7 +99,7 @@ button, a, [role="button"], summary { cursor: pointer; }
     --background: 220 6% 96%;
     --foreground: 240 10% 4%;
     --muted: 220 6% 86%;
-    --muted-foreground: 240 5% 35%;
+    --muted-foreground: 240 5% 28%;
     --primary: 187 74% 28%;
     --primary-foreground: 0 0% 100%;
     --accent: 270 70% 38%;
@@ -200,7 +200,7 @@ button, a, [role="button"], summary { cursor: pointer; }
     --background: 220 6% 96%;
     --foreground: 240 10% 4%;
     --muted: 220 6% 86%;
-    --muted-foreground: 240 5% 35%;
+    --muted-foreground: 240 5% 28%;
     --primary: 187 74% 28%;
     --primary-foreground: 0 0% 100%;
     --accent: 270 70% 38%;

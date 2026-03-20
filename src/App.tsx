@@ -1506,10 +1506,10 @@ function App() {
                 {t.greetingRoles.map((role, i) => (
                   <span
                     key={role}
-                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
                       hydrated && i === roleIndex
-                        ? 'border-primary bg-primary/15 text-primary scale-105'
-                        : 'border-primary/30 bg-primary/5 text-primary/60'
+                        ? 'border border-[#20d6ee] bg-[#20d6ee]/15 text-foreground scale-105'
+                        : 'border border-[#20d6ee]/30 bg-background/80 text-muted-foreground'
                     }`}
                   >
                     {role}
