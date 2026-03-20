@@ -324,7 +324,7 @@ export const articleRegistry: ArticleConfig[] = [
     type: 'case-study',
     ragReady: true,
     i18nFile: 'src/pseo-i18n.ts',
-    ogImage: 'https://santifer.io/pseo/og-programmatic-seo.png',
+    ogImage: 'https://santifer.io/pseo/og-programmatic-seo.webp',
     heroImage: 'https://santifer.io/pseo/ss-repair-page-hero.webp',
     component: () => import('../ProgrammaticSeo.tsx'),
     seoMeta: {
