@@ -500,6 +500,132 @@ if (crossIssues.length > 0) {
   console.log(`\x1b[32m✓\x1b[0m Cross-article checks — clean`)
 }
 
+// ---------------------------------------------------------------------------
+// Structural checks (sameAs sync, duplicate ogImage, FAQ length, dates, vercel.json)
+// ---------------------------------------------------------------------------
+
+function validateStructural(): Issue[] {
+  const issues: Issue[] = []
+
+  // S1. Person sameAs count: index.html vs json-ld.ts must match
+  const indexHtmlPath = resolve(dist, 'index.html')
+  if (existsSync(indexHtmlPath)) {
+    const indexHtml = readFileSync(indexHtmlPath, 'utf-8')
+    const homeSameAs = indexHtml.match(/"sameAs"\s*:\s*\[([\s\S]*?)\]/)?.[1]
+    const homeSameAsCount = homeSameAs ? (homeSameAs.match(/https?:\/\//g) || []).length : 0
+
+    const jsonLdPath = resolve(root, 'src/articles/json-ld.ts')
+    if (existsSync(jsonLdPath)) {
+      const jsonLdSrc = readFileSync(jsonLdPath, 'utf-8')
+      const artSameAs = jsonLdSrc.match(/sameAs:\s*\[([\s\S]*?)\]/)?.[1]
+      const artSameAsCount = artSameAs ? (artSameAs.match(/https?:\/\//g) || []).length : 0
+      if (homeSameAsCount > 0 && artSameAsCount > 0 && homeSameAsCount !== artSameAsCount) {
+        issues.push({
+          severity: 'warn',
+          msg: `Person sameAs count diverges: index.html has ${homeSameAsCount}, json-ld.ts has ${artSameAsCount}`,
+          skill: '/seo schema',
+        })
+      }
+    }
+  }
+
+  // S2. No duplicate ogImage across articles
+  const ogImages = new Map<string, string[]>()
+  for (const article of articleRegistry) {
+    if (!article.ogImage) continue
+    const labels = ogImages.get(article.ogImage) || []
+    labels.push(article.id)
+    ogImages.set(article.ogImage, labels)
+  }
+  for (const [img, ids] of ogImages) {
+    if (ids.length > 1) {
+      issues.push({
+        severity: 'warn',
+        msg: `Duplicate ogImage "${img}" used by: ${ids.join(', ')}`,
+        skill: '/og-image',
+      })
+    }
+  }
+
+  // S3. FAQ answers >= 100 words
+  for (const article of articleRegistry) {
+    if (article.type === 'bridge' || !article.seoMeta) continue
+    for (const [lang, slug] of Object.entries(article.slugs) as ['es' | 'en', string][]) {
+      const htmlPath = resolve(dist, slug, 'index.html')
+      if (!existsSync(htmlPath)) continue
+      const html = readFileSync(htmlPath, 'utf-8')
+      const faqBlock = html.match(/"FAQPage"[\s\S]*?"mainEntity"\s*:\s*\[([\s\S]*?)\]\s*\}/)?.[1]
+      if (!faqBlock) continue
+      const answers = faqBlock.match(/"text"\s*:\s*"([^"]*)"/g) || []
+      for (const ans of answers) {
+        const text = ans.replace(/"text"\s*:\s*"/, '').replace(/"$/, '')
+        const wordCount = text.split(/\s+/).filter(w => w.length > 0).length
+        if (wordCount < 100) {
+          issues.push({
+            severity: 'warn',
+            msg: `${article.id} [${lang}] FAQ answer too short: ${wordCount} words (min 100 for AI citation)`,
+            skill: '/seo content',
+          })
+          break // one warning per lang is enough
+        }
+      }
+    }
+  }
+
+  // S4. Home dateModified format YYYY-MM-DD
+  if (existsSync(indexHtmlPath)) {
+    const indexHtml = readFileSync(indexHtmlPath, 'utf-8')
+    const dateModMatch = indexHtml.match(/"dateModified"\s*:\s*"([^"]*)"/)
+    if (dateModMatch) {
+      const dateVal = dateModMatch[1]
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateVal)) {
+        issues.push({
+          severity: 'error',
+          msg: `Home dateModified not YYYY-MM-DD: "${dateVal}"`,
+          skill: '/seo schema',
+        })
+      }
+    }
+  }
+
+  // S5. Trailing slash redirect exists in vercel.json
+  const vercelJsonPath = resolve(root, 'vercel.json')
+  if (existsSync(vercelJsonPath)) {
+    const vj = readFileSync(vercelJsonPath, 'utf-8')
+    if (!vj.includes('/:path+/')) {
+      issues.push({
+        severity: 'warn',
+        msg: 'vercel.json missing generic trailing slash redirect (/:path+/ → /:path+)',
+        skill: '/seo technical',
+      })
+    }
+
+    // S6. All registry slugs have vercel.json rewrites
+    const vjData = JSON.parse(vj)
+    const rewriteSources = new Set((vjData.rewrites || []).map((r: { source: string }) => r.source))
+    for (const article of articleRegistry) {
+      for (const [lang, slug] of Object.entries(article.slugs) as ['es' | 'en', string][]) {
+        if (!rewriteSources.has(`/${slug}`)) {
+          issues.push({
+            severity: 'warn',
+            msg: `Registry slug "/${slug}" (${article.id} [${lang}]) missing rewrite in vercel.json`,
+            skill: '/seo technical',
+          })
+        }
+      }
+    }
+  }
+
+  return issues
+}
+
+const structuralIssues = validateStructural()
+if (structuralIssues.length > 0) {
+  printIssues(structuralIssues, 'Structural checks')
+} else {
+  console.log(`\x1b[32m✓\x1b[0m Structural checks — clean`)
+}
+
 // Global checks
 const globalIssues = validateGlobalFiles()
 if (globalIssues.length > 0) {

@@ -22,7 +22,7 @@ export const careerOpsContent = {
     },
     heroMetrics: [
       { value: '631', label: 'Evaluaciones' },
-      { value: '302', label: 'Aplicaciones' },
+      { value: '302', label: 'Apps procesadas' },
       { value: '12', label: 'Modos' },
       { value: '10', label: 'Dimensiones' },
       { value: '680', label: 'URLs dedup' },
@@ -288,7 +288,7 @@ export const careerOpsContent = {
     },
     heroMetrics: [
       { value: '631', label: 'Evaluations' },
-      { value: '302', label: 'Applications' },
+      { value: '302', label: 'Apps processed' },
       { value: '12', label: 'Modes' },
       { value: '10', label: 'Dimensions' },
       { value: '680', label: 'URLs deduped' },

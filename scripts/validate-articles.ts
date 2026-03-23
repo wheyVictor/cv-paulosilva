@@ -32,6 +32,7 @@ const SOURCE_MAP: Record<string, string> = {
   'programmatic-seo': 'src/ProgrammaticSeo.tsx',
   'santifer-irepair': 'src/SantiferIRepair.tsx',
   'self-healing-chatbot': 'src/SelfHealingChatbot.tsx',
+  'career-ops': 'src/CareerOps.tsx',
 }
 
 // ---------------------------------------------------------------------------
@@ -165,6 +166,29 @@ function validateArticle(config: typeof articleRegistry[0]): { issues: Issue[]; 
   const jsonKeywords = extractArray(jsonLdBlock, 'keywords')
   const jsonArticleType = extractString(jsonLdBlock, 'articleType')
   const aboutCount = countAboutEntries(jsonLdBlock)
+
+  // ===== REGISTRY-LEVEL ERRORS =====
+
+  // 0a. Case-study MUST have citation + mentions in seoMeta
+  if (config.type === 'case-study' && config.seoMeta) {
+    if (!config.seoMeta.citation || config.seoMeta.citation.length === 0) {
+      issues.push({ severity: 'error', msg: `Case-study "${config.id}" missing citation in seoMeta` })
+    }
+    if (!config.seoMeta.mentions || config.seoMeta.mentions.length === 0) {
+      issues.push({ severity: 'error', msg: `Case-study "${config.id}" missing mentions in seoMeta` })
+    }
+  }
+
+  // 0b. datePublished + dateModified MUST be YYYY-MM-DD format
+  if (config.seoMeta) {
+    const dateRe = /^\d{4}-\d{2}-\d{2}$/
+    if (!dateRe.test(config.seoMeta.datePublished)) {
+      issues.push({ severity: 'error', msg: `datePublished "${config.seoMeta.datePublished}" not YYYY-MM-DD format` })
+    }
+    if (!dateRe.test(config.seoMeta.dateModified)) {
+      issues.push({ severity: 'error', msg: `dateModified "${config.seoMeta.dateModified}" not YYYY-MM-DD format` })
+    }
+  }
 
   // ===== ERRORS (break build in --check) =====
 

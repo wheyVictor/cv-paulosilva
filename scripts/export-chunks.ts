@@ -18,13 +18,6 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { articleRegistry } from '../src/articles/registry.ts'
 
-// i18n content imports
-import { jacoboContent } from '../src/jacobo-i18n.ts'
-import { businessOsContent } from '../src/business-os-i18n.ts'
-import { n8nContent } from '../src/n8n-i18n.ts'
-import { pseoContent } from '../src/pseo-i18n.ts'
-import { chatbotContent } from '../src/chatbot-i18n.ts'
-
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = resolve(__dirname, '..')
 const CHUNKS_DIR = resolve(root, 'scripts/chunks')
@@ -109,13 +102,33 @@ interface I18nSource {
   sourceFile: string
 }
 
-const I18N_SOURCES: I18nSource[] = [
-  { articleId: 'jacobo', content: jacoboContent as Record<string, unknown>, sourceFile: 'src/jacobo-i18n.ts' },
-  { articleId: 'business-os', content: businessOsContent as Record<string, unknown>, sourceFile: 'src/business-os-i18n.ts' },
-  { articleId: 'n8n-for-pms', content: n8nContent as Record<string, unknown>, sourceFile: 'src/n8n-i18n.ts' },
-  { articleId: 'programmatic-seo', content: pseoContent as Record<string, unknown>, sourceFile: 'src/pseo-i18n.ts' },
-  { articleId: 'self-healing-chatbot', content: chatbotContent as Record<string, unknown>, sourceFile: 'src/chatbot-i18n.ts' },
-]
+async function loadI18nSources(): Promise<I18nSource[]> {
+  const sources: I18nSource[] = []
+
+  for (const article of articleRegistry) {
+    if (!article.ragReady || !article.i18nFile) continue
+
+    const modulePath = resolve(root, article.i18nFile)
+    try {
+      const mod = await import(modulePath)
+      // Find the *Content export that is an object (e.g. jacoboContent, chatbotContent)
+      const contentKey = Object.keys(mod).find(k => k.endsWith('Content') && typeof mod[k] === 'object' && mod[k] !== null)
+      if (!contentKey) {
+        console.warn(`  ⚠ ${article.id}: no *Content export found in ${article.i18nFile}, skipping`)
+        continue
+      }
+      sources.push({
+        articleId: article.id,
+        content: mod[contentKey] as Record<string, unknown>,
+        sourceFile: article.i18nFile,
+      })
+    } catch (err) {
+      console.warn(`  ⚠ ${article.id}: failed to import ${article.i18nFile} — ${err}`)
+    }
+  }
+
+  return sources
+}
 
 function parseI18n(source: I18nSource): Chunk[] {
   const article = articleRegistry.find(a => a.id === source.articleId)
@@ -348,20 +361,17 @@ void parseMarkdown
 // Main
 // ---------------------------------------------------------------------------
 
-function main() {
+async function main() {
   console.log('📦 Exporting content chunks for RAG...\n')
 
   mkdirSync(CHUNKS_DIR, { recursive: true })
 
+  const i18nSources = await loadI18nSources()
   let totalChunks = 0
 
-  // Process i18n sources (only ragReady articles)
-  for (const source of I18N_SOURCES) {
-    const article = articleRegistry.find(a => a.id === source.articleId)
-    if (!article?.ragReady) {
-      console.log(`  ⏭  ${source.articleId} — ragReady=false, skipping`)
-      continue
-    }
+  // Process i18n sources (already filtered to ragReady articles)
+  for (const source of i18nSources) {
+    const article = articleRegistry.find(a => a.id === source.articleId)!
 
     const chunks = parseI18n(source)
     if (chunks.length === 0) continue

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { type N8nLang as Lang } from './n8n-i18n'
 import { buildArticleJsonLd } from './articles/json-ld'
 import { useArticleSeo } from './articles/use-article-seo'
@@ -418,6 +419,34 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/* ================================================================ */}
         <H2 id="voice">{s.voice.heading}</H2>
         <Prose variant="hook">{s.voice.hook}</Prose>
+
+        {(() => {
+          const [ready, setReady] = useState(false)
+          useEffect(() => setReady(true), [])
+          return (
+            <figure className="rounded-lg overflow-hidden border border-border shadow-lg mb-8">
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                {ready && (
+                  <iframe
+                    src="https://www.youtube.com/embed/D6ZWgx1viFk"
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    title={lang === 'es'
+                      ? 'Demo: chatbot con modo texto streaming y cambio a modo voz en vivo'
+                      : 'Demo: chatbot with text streaming and live voice mode switch'}
+                  />
+                )}
+              </div>
+              <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">
+                {lang === 'es'
+                  ? 'Demo: modo texto con streaming → cambio a modo voz en tiempo real'
+                  : 'Demo: text mode with streaming → live voice mode switch'}
+              </figcaption>
+            </figure>
+          )
+        })()}
 
         <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto my-8">
           <figure>

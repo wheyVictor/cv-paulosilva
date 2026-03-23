@@ -46,6 +46,9 @@ const PERSON = {
     'https://github.com/santifer',
     'https://x.com/santifer',
     'https://dev.to/santifer',
+    'https://santifer.substack.com',
+    'https://contentdigest.santifer.io',
+    'https://www.youtube.com/@santifer_io',
     'https://www.wikidata.org/wiki/Q138710224',
   ],
 }

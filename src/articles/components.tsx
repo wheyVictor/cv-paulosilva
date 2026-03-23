@@ -74,6 +74,7 @@ interface ArticleHeaderProps {
   readingTime: string
   authorName?: string
   authorUrl?: string
+  authorBio?: string
   avatarSrc?: string
   editorId?: string
 }
@@ -87,6 +88,7 @@ export function ArticleHeader({
   readingTime,
   authorName = 'Santiago Fernández de Valderrama',
   authorUrl = 'https://linkedin.com/in/santifer',
+  authorBio,
   avatarSrc = '/foto-avatar-sm.webp',
 }: ArticleHeaderProps) {
   return (
@@ -128,6 +130,7 @@ export function ArticleHeader({
             </a>
             <ExternalLink className="w-3 h-3 text-muted-foreground" />
           </div>
+          {authorBio && <p className="text-xs text-muted-foreground">{authorBio}</p>}
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span>{date}</span>
             <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{readingTime}</span>

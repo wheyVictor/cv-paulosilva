@@ -62,7 +62,8 @@
   ],
   "redirects": [
     { "source": "/jacobo", "destination": "/agente-ia-jacobo", "permanent": true },
-    { "source": "/en/", "destination": "/en", "permanent": true }
+    { "source": "/en/", "destination": "/en", "permanent": true },
+    { "source": "/:path+/", "destination": "/:path+", "permanent": true }
   ],
   "rewrites": [
     { "source": "/en", "destination": "/en/index.html" },
@@ -76,6 +77,10 @@
     { "source": "/programmatic-seo", "destination": "/programmatic-seo/index.html" },
     { "source": "/santifer-irepair", "destination": "/santifer-irepair/index.html" },
     { "source": "/santifer-irepair-founder", "destination": "/santifer-irepair-founder/index.html" },
+    { "source": "/chatbot-que-se-cura-solo", "destination": "/chatbot-que-se-cura-solo/index.html" },
+    { "source": "/self-healing-chatbot", "destination": "/self-healing-chatbot/index.html" },
+    { "source": "/career-ops", "destination": "/career-ops/index.html" },
+    { "source": "/career-ops-system", "destination": "/career-ops-system/index.html" },
     { "source": "/privacidad", "destination": "/index.html" },
     { "source": "/privacy", "destination": "/index.html" }
   ],

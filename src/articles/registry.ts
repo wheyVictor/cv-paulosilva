@@ -186,6 +186,18 @@ export const articleRegistry: ArticleConfig[] = [
         { '@type': 'Thing', name: 'AI Customer Service' },
       ],
       extra: { proficiencyLevel: 'Expert', dependencies: 'n8n, OpenRouter, ElevenLabs, WATI, Airtable, Aircall, YouCanBookMe' },
+      citation: [
+        { '@type': 'WebPage', name: 'n8n Documentation', url: 'https://docs.n8n.io' },
+        { '@type': 'WebPage', name: 'ElevenLabs Voice AI Documentation', url: 'https://elevenlabs.io/docs' },
+        { '@type': 'WebPage', name: 'OpenRouter API Documentation', url: 'https://openrouter.ai/docs' },
+      ],
+      mentions: [
+        { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io' },
+        { '@type': 'SoftwareApplication', name: 'ElevenLabs', url: 'https://elevenlabs.io' },
+        { '@type': 'SoftwareApplication', name: 'OpenRouter', url: 'https://openrouter.ai' },
+        { '@type': 'SoftwareApplication', name: 'WATI', url: 'https://www.wati.io' },
+        { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com' },
+      ],
     },
   },
   {
@@ -256,6 +268,10 @@ export const articleRegistry: ArticleConfig[] = [
       extra: { proficiencyLevel: 'Advanced', dependencies: 'Airtable Pro, n8n, YouCanBookMe, WATI (WhatsApp API), DataForSEO' },
       citation: [
         { '@type': 'WebPage', name: 'Airtable Enterprise Platform', url: 'https://airtable.com/platform' },
+      ],
+      mentions: [
+        { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com' },
+        { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io' },
       ],
     },
   },
@@ -342,6 +358,11 @@ export const articleRegistry: ArticleConfig[] = [
       extra: { proficiencyLevel: 'Intermediate', dependencies: 'Airtable, Astro, DataForSEO API, Node.js' },
       citation: [
         { '@type': 'WebPage', name: 'Google Search Central: Crawl Budget', url: 'https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget' },
+      ],
+      mentions: [
+        { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com' },
+        { '@type': 'SoftwareApplication', name: 'Astro', url: 'https://astro.build' },
+        { '@type': 'SoftwareApplication', name: 'DataForSEO', url: 'https://dataforseo.com' },
       ],
     },
   },
@@ -515,7 +536,6 @@ export const articleRegistry: ArticleConfig[] = [
     },
     sectionLabels: { es: {}, en: {} },
     type: 'bridge',
-    ogImage: 'https://santifer.io/business-os/og-business-os.webp',
     component: () => import('../SantiferIRepair.tsx'),
     xDefaultSlug: 'santifer-irepair',
   },
