@@ -495,7 +495,8 @@ function streamResponse({
           })
 
           // Online scoring (Block 2): score every response asynchronously
-          if (langfuse && trace && fullOutput) {
+          // DISABLED: set ENABLE_ONLINE_SCORING=true to re-enable (saves ~$0.001/conversation)
+          if (process.env.ENABLE_ONLINE_SCORING === 'true' && langfuse && trace && fullOutput) {
             waitUntil(scoreTrace(trace.id, lastUserMessage, fullOutput, ragUsed, langfuse))
           }
 
