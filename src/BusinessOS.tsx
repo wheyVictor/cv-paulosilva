@@ -116,6 +116,7 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
       <FloatingToc />
       <ArticleHeader
         editorId="hero-header"
+        lang={lang}
         kicker={t.header.kicker}
         h1={t.header.h1}
         subtitle={t.header.subtitle}

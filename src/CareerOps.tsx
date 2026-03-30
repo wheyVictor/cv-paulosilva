@@ -109,6 +109,7 @@ export default function CareerOps({ lang = 'en' }: { lang?: Lang }) {
     <ArticleLayout lang={lang}>
       <FloatingToc />
       <ArticleHeader
+        lang={lang}
         kicker={t.header.kicker}
         h1={t.header.h1}
         subtitle={t.header.subtitle}

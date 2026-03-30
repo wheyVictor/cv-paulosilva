@@ -90,6 +90,7 @@ export default function N8nForPMs({ lang = 'en' }: { lang?: N8nLang }) {
         <FloatingToc />
         <ArticleHeader
           editorId="hero-header"
+          lang={lang}
           kicker={t.header.kicker}
           kickerLink={MASTERCLASS_URL}
           h1={t.header.h1}

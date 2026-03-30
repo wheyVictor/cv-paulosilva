@@ -283,6 +283,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
       <FloatingToc />
       <ArticleHeader
         editorId="hero-header"
+        lang={lang}
         kicker={t.header.kicker}
         kickerLink={(t.header as any).kickerLink}
         h1={t.header.h1}

@@ -78,6 +78,7 @@ interface ArticleHeaderProps {
   authorUrl?: string
   authorBio?: string
   avatarSrc?: string
+  lang?: 'es' | 'en'
   editorId?: string
 }
 
@@ -90,10 +91,12 @@ export function ArticleHeader({
   dateISO,
   readingTime,
   authorName = 'Santiago Fernández de Valderrama',
-  authorUrl = '/about',
+  authorUrl,
   authorBio,
   avatarSrc = '/foto-avatar-sm.webp',
+  lang,
 }: ArticleHeaderProps) {
+  const resolvedAuthorUrl = authorUrl ?? (lang === 'es' ? '/sobre-mi' : '/about')
   return (
     <header className="mb-10">
       <p className="text-primary font-medium text-sm mb-3 tracking-wide uppercase">
@@ -124,7 +127,7 @@ export function ArticleHeader({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <a
-              href={authorUrl}
+              href={resolvedAuthorUrl}
               rel="author"
               className="font-medium text-foreground hover:text-primary transition-colors"
             >
