@@ -1425,7 +1425,7 @@ function App() {
   useHomeSeo({ lang, title: seoData.title, description: seoData.description })
 
   return (
-    <div className="min-h-screen bg-background bg-[length:24px_24px] [background-image:radial-gradient(circle,hsl(var(--dot-grid))_1px,transparent_1px)]" role="main">
+    <main className="min-h-screen bg-background bg-[length:24px_24px] [background-image:radial-gradient(circle,hsl(var(--dot-grid))_1px,transparent_1px)]">
       {/* Skip navigation — accessible keyboard shortcut */}
       <a
         href="#main-content"
@@ -1481,7 +1481,7 @@ function App() {
               className="text-center md:text-left"
             >
               <p className="text-lg text-muted-foreground mb-2">
-                {lang === 'es' ? 'Hola, soy' : "Hi, I'm"} <span className="text-gradient-theme font-semibold">@santifer</span>,
+                {lang === 'es' ? 'Hola, soy' : "Hi, I'm"} <Link to={lang === 'es' ? '/sobre-mi' : '/about'} className="text-gradient-theme font-semibold hover:opacity-80 transition-opacity">@santifer</Link>,
               </p>
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight">
                 <span className="text-gradient-theme">{hydrated ? roleText : t.greetingRoles[0]}</span>
@@ -2458,7 +2458,7 @@ function App() {
                   className="flex flex-col p-5 rounded-2xl bg-card border border-border/50 border-t-2 border-t-[#FF4500] hover:border-border transition-colors group"
                 >
                   <div className="flex gap-3">
-                    <img src="/foto-avatar.webp" alt="" role="presentation" className="w-10 h-10 rounded-full shrink-0 mt-0.5" />
+                    <img src="/foto-avatar.webp" alt="" role="presentation" width={384} height={384} className="w-10 h-10 rounded-full shrink-0 mt-0.5" />
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-2">
                         <p className="text-sm text-foreground leading-relaxed">{t.redditPost.hook}<span className="text-muted-foreground">...</span> <span className="text-[#FF4500] group-hover:text-[#FF4500] transition-colors">ver más</span></p>
@@ -2498,7 +2498,7 @@ function App() {
                   className="flex flex-col p-5 rounded-2xl bg-card border border-border/50 border-t-2 border-t-[hsl(var(--linkedin))] hover:border-border transition-colors group h-full"
                 >
                   <div className="flex gap-3 flex-1">
-                    <img src="/foto-avatar.webp" alt="" role="presentation" className="w-10 h-10 rounded-full shrink-0 mt-0.5" />
+                    <img src="/foto-avatar.webp" alt="" role="presentation" width={384} height={384} className="w-10 h-10 rounded-full shrink-0 mt-0.5" />
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-2">
                         <p className="text-sm text-foreground leading-relaxed">{post.hook}<span className="text-muted-foreground">...</span> <span className="text-[hsl(var(--linkedin))] group-hover:text-[hsl(var(--linkedin))] transition-colors">ver más</span></p>
@@ -2787,7 +2787,7 @@ function App() {
         </div>
       </footer>
 
-    </div>
+    </main>
   )
 }
 

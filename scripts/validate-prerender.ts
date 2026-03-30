@@ -124,6 +124,21 @@ function validatePrerenderHtml(id: string, slug: string, lang: 'es' | 'en'): Iss
     issues.push({ severity: 'warn', msg: `${noAlt.length} image(s) without alt text`, skill: '/seo images' })
   }
 
+  // 8b. Images without width/height (CLS risk)
+  const noDimensions = imgTags.filter(tag => {
+    // Skip decorative images (role="presentation") and tiny icons
+    if (tag.includes('role="presentation"')) return false
+    if (tag.includes('aria-hidden="true"')) return false
+    return !tag.includes('width=') || !tag.includes('height=')
+  })
+  if (noDimensions.length > 0) {
+    issues.push({
+      severity: 'warn',
+      msg: `${noDimensions.length} image(s) without width/height (CLS risk)`,
+      skill: '/seo images',
+    })
+  }
+
   // 9. H1 unique
   const h1s = html.match(/<h1[\s>]/g) || []
   if (h1s.length === 0) {

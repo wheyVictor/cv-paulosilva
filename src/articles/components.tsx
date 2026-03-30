@@ -71,6 +71,8 @@ interface ArticleHeaderProps {
   h1: string
   subtitle: string
   date: string
+  /** ISO 8601 date for <time> element (e.g. '2026-03-11') */
+  dateISO?: string
   readingTime: string
   authorName?: string
   authorUrl?: string
@@ -85,9 +87,10 @@ export function ArticleHeader({
   h1,
   subtitle,
   date,
+  dateISO,
   readingTime,
   authorName = 'Santiago Fernández de Valderrama',
-  authorUrl = 'https://linkedin.com/in/santifer',
+  authorUrl = '/about',
   authorBio,
   avatarSrc = '/foto-avatar-sm.webp',
 }: ArticleHeaderProps) {
@@ -122,17 +125,15 @@ export function ArticleHeader({
           <div className="flex items-center gap-2">
             <a
               href={authorUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              rel="author"
               className="font-medium text-foreground hover:text-primary transition-colors"
             >
               {authorName}
             </a>
-            <ExternalLink className="w-3 h-3 text-muted-foreground" />
           </div>
           {authorBio && <p className="text-xs text-muted-foreground">{authorBio}</p>}
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span>{date}</span>
+            {dateISO ? <time dateTime={dateISO}>{date}</time> : <span>{date}</span>}
             <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{readingTime}</span>
           </div>
         </div>

@@ -1,13 +1,13 @@
 export const seo = {
   es: {
     title:
-      'santifer | Builder · AI PM · Solutions Architect · AI FDE',
+      'santifer | AI PM · Solutions Architect · Sistemas que se curan solos',
     description:
       'AI Product Manager & Solutions Architect. 16 años construyendo sistemas que funcionan solos. LLMOps, agentes IA, observabilidad agéntica, no-code enterprise.',
   },
   en: {
     title:
-      'santifer | Builder · AI PM · Solutions Architect · AI FDE',
+      'santifer | AI PM · Solutions Architect · Self-Healing Systems',
     description:
       'AI Product Manager & Solutions Architect. 16 years building systems that run themselves. LLMOps, agentic observability, AI agents, no-code enterprise.',
   },
@@ -488,8 +488,8 @@ export const translations = {
     },
     redditPost: {
       hook: 'Automaticé mi búsqueda de empleo con agentes IA — 516 evaluaciones, 66 aplicaciones, zero screening manual.',
-      upvotes: '515',
-      comments: '290',
+      upvotes: '525',
+      comments: '301',
       subreddit: 'r/SideProject',
       cta: 'Leer en Reddit',
       url: 'https://www.reddit.com/r/SideProject/comments/1rw1lg4/i_automated_my_job_search_with_ai_agents_516/',
@@ -1229,8 +1229,8 @@ export const translations = {
     },
     redditPost: {
       hook: 'I automated my job search with AI agents — 516 evaluations, 66 applications, zero manual screening.',
-      upvotes: '515',
-      comments: '290',
+      upvotes: '525',
+      comments: '301',
       subreddit: 'r/SideProject',
       cta: 'Read on Reddit',
       url: 'https://www.reddit.com/r/SideProject/comments/1rw1lg4/i_automated_my_job_search_with_ai_agents_516/',

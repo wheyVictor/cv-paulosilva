@@ -417,6 +417,8 @@ interface PhotoItem {
   src: string
   alt: string
   loading?: 'lazy' | 'eager'
+  width?: number
+  height?: number
 }
 
 interface Photo1Props extends PhotoItem {
@@ -425,11 +427,11 @@ interface Photo1Props extends PhotoItem {
   editorId?: string
 }
 
-export function Photo1({ src, alt, caption, loading = 'lazy', className, editorId }: Photo1Props) {
+export function Photo1({ src, alt, caption, loading = 'lazy', width, height, className, editorId }: Photo1Props) {
   return (
     <EditorLabel name="Photo1" id={editorId}>
       <figure className={`rounded-lg overflow-hidden border border-border shadow-lg mb-6 ${className ?? ''}`}>
-        <img src={src} alt={alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} decoding="async" />
+        <img src={src} alt={alt} width={width} height={height} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} decoding="async" />
         {caption && <figcaption className="px-4 py-2 text-sm text-muted-foreground text-center bg-card">{caption}</figcaption>}
       </figure>
     </EditorLabel>
@@ -446,11 +448,15 @@ interface DiagramZoomProps {
   alt: string
   caption?: ReactNode
   loading?: 'lazy' | 'eager'
+  width?: number
+  height?: number
+  hdWidth?: number
+  hdHeight?: number
   className?: string
   editorId?: string
 }
 
-export function DiagramZoom({ src, hdSrc, alt, caption, loading = 'lazy', className, editorId }: DiagramZoomProps) {
+export function DiagramZoom({ src, hdSrc, alt, caption, loading = 'lazy', width, height, hdWidth, hdHeight, className, editorId }: DiagramZoomProps) {
   const [lightbox, setLightbox] = useState(false)
 
   return (
@@ -459,7 +465,7 @@ export function DiagramZoom({ src, hdSrc, alt, caption, loading = 'lazy', classN
         className={`relative rounded-lg overflow-hidden border border-border shadow-lg mb-6 group cursor-zoom-in ${className ?? ''}`}
         onClick={() => setLightbox(true)}
       >
-        <img src={src} alt={alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} decoding="async" />
+        <img src={src} alt={alt} width={width} height={height} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={loading} decoding="async" />
         <span className="absolute top-3 right-3 p-1.5 rounded-md bg-black/40 text-white/50 group-hover:text-white/90 transition-colors">
           <ZoomIn className="w-4 h-4" />
         </span>
@@ -470,7 +476,7 @@ export function DiagramZoom({ src, hdSrc, alt, caption, loading = 'lazy', classN
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 cursor-zoom-out p-4"
           onClick={() => setLightbox(false)}
         >
-          <img src={hdSrc} alt={alt} className="max-w-full max-h-full rounded-lg shadow-2xl" />
+          <img src={hdSrc} alt={alt} width={hdWidth} height={hdHeight} className="max-w-full max-h-full rounded-lg shadow-2xl" />
         </div>
       )}
     </EditorLabel>
@@ -491,7 +497,7 @@ export function Photo2({ items, caption, className, editorId }: Photo2Props) {
         <div className="grid grid-cols-2 gap-0">
           {items.map(item => (
             <div key={item.src} className="overflow-hidden">
-              <img src={item.src} alt={item.alt} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={item.loading ?? 'lazy'} decoding="async" />
+              <img src={item.src} alt={item.alt} width={item.width} height={item.height} className="w-full h-auto min-h-[200px] object-contain bg-card" loading={item.loading ?? 'lazy'} decoding="async" />
             </div>
           ))}
         </div>
@@ -513,7 +519,7 @@ export function Photo3({ items, className, editorId }: Photo3Props) {
       <div className={`grid grid-cols-3 gap-3 mb-6 ${className ?? ''}`}>
         {items.map(item => (
           <figure key={item.src} className="rounded-lg overflow-hidden border border-border shadow-md">
-            <img src={item.src} alt={item.alt} className="w-full h-auto" loading={item.loading ?? 'lazy'} decoding="async" />
+            <img src={item.src} alt={item.alt} width={item.width} height={item.height} className="w-full h-auto" loading={item.loading ?? 'lazy'} decoding="async" />
           </figure>
         ))}
       </div>
@@ -982,7 +988,7 @@ export function StoryBridge({ lines, className, editorId }: StoryBridgeProps) {
 // 17. ScreenshotGrid + ScreenshotCaption (moved from JacoboAgent)
 // ---------------------------------------------------------------------------
 
-function ScreenshotFigure({ src, alt, summaryEn, lang, className }: { src: string; alt: string; summaryEn: string; lang: 'es' | 'en'; className?: string }) {
+function ScreenshotFigure({ src, alt, summaryEn, lang, width, height, className }: { src: string; alt: string; summaryEn: string; lang: 'es' | 'en'; width?: number; height?: number; className?: string }) {
   const showOverlay = lang === 'en'
   const [hovered, setHovered] = useState(false)
   return (
@@ -992,7 +998,7 @@ function ScreenshotFigure({ src, alt, summaryEn, lang, className }: { src: strin
       onMouseLeave={showOverlay ? () => setHovered(false) : undefined}
       onClick={showOverlay ? () => setHovered(h => !h) : undefined}
     >
-      <img src={src} alt={alt} className="w-full h-auto min-h-[120px] object-contain bg-card dark:brightness-[0.85]" loading="lazy" decoding="async" />
+      <img src={src} alt={alt} width={width} height={height} className="w-full h-auto min-h-[120px] object-contain bg-card dark:brightness-[0.85]" loading="lazy" decoding="async" />
       {showOverlay && (
         <div
           className="absolute inset-0 flex items-center justify-center p-3 transition-opacity duration-200"
@@ -1009,6 +1015,8 @@ export interface ScreenshotItem {
   src: string
   altEs: string
   altEn: string
+  width?: number
+  height?: number
 }
 
 interface ScreenshotGridProps {
@@ -1030,6 +1038,8 @@ export function ScreenshotGrid({ items, lang, basePath = '/jacobo/screenshots', 
               alt={lang === 'es' ? n.altEs : n.altEn}
               summaryEn={n.altEn}
               lang={lang}
+              width={n.width}
+              height={n.height}
               className="w-1/2 sm:w-1/3"
             />
           ))}
@@ -1047,6 +1057,8 @@ export function ScreenshotGrid({ items, lang, basePath = '/jacobo/screenshots', 
             alt={lang === 'es' ? n.altEs : n.altEn}
             summaryEn={n.altEn}
             lang={lang}
+            width={n.width}
+            height={n.height}
           />
         ))}
       </div>

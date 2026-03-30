@@ -109,6 +109,8 @@ export default function PrivacyPolicy({ lang = 'es' }: { lang?: 'es' | 'en' }) {
 
   useEffect(() => {
     document.title = `${t.title} | santifer.io`
+
+    // noindex
     let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement
     if (!robots) {
       robots = document.createElement('meta')
@@ -116,8 +118,21 @@ export default function PrivacyPolicy({ lang = 'es' }: { lang?: 'es' | 'en' }) {
       document.head.appendChild(robots)
     }
     robots.content = 'noindex, nofollow'
-    return () => { robots.content = 'index, follow' }
-  }, [t.title])
+
+    // Fix canonical (SPA fallback serves homepage canonical — override it)
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
+    if (canonical) canonical.href = `https://santifer.io/${lang === 'es' ? 'privacidad' : 'privacy'}`
+
+    // Fix meta description
+    let desc = document.querySelector('meta[name="description"]') as HTMLMetaElement
+    if (desc) desc.content = lang === 'es'
+      ? 'Politica de privacidad de santifer.io. Como se recopilan y utilizan los datos del chatbot y la web.'
+      : 'Privacy policy for santifer.io. How chatbot and website data is collected and used.'
+
+    return () => {
+      robots.content = 'index, follow'
+    }
+  }, [lang, t.title])
 
   return (
     <ArticleLayout lang={lang}>

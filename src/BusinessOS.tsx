@@ -28,13 +28,13 @@ function ReelCard({ reelId, caption }: { reelId: string; caption: string }) {
     >
       <div className="flex items-center gap-2 px-3 py-2.5">
         <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[1.5px] shrink-0">
-          <img src="/business-os/ig-avatar.jpg" alt="santifer" className="w-full h-full rounded-full object-cover" />
+          <img src="/business-os/ig-avatar.jpg" alt="santifer" width={100} height={100} className="w-full h-full rounded-full object-cover" />
         </div>
         <p className="text-xs font-semibold text-foreground leading-tight flex-1 min-w-0">santifer</p>
         <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
       </div>
       <div className="relative overflow-hidden aspect-[9/16]">
-        <img src={`/business-os/reel-${reelId}.jpg`} alt={caption} className="w-full h-full object-cover" loading="lazy" />
+        <img src={`/business-os/reel-${reelId}.jpg`} alt={caption} width={360} height={640} className="w-full h-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
         <div className="absolute inset-0 flex items-center justify-center -translate-x-[3px] translate-y-[1px]">
           <svg viewBox="0 0 48 48" className="w-[72px] h-[72px] drop-shadow-lg" fill="none">
@@ -132,8 +132,8 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
       <Photo2
         editorId="hero-storefront"
         items={[
-          { src: '/business-os/hero-storefront.webp', alt: lang === 'es' ? 'Fachada de Santifer iRepair — tienda de reparación de móviles en Madrid' : 'Santifer iRepair storefront — phone repair shop in Madrid' },
-          { src: '/business-os/hero-storefront-urban.webp', alt: lang === 'es' ? 'Santifer iRepair de noche — vista urbana con la tienda iluminada' : 'Santifer iRepair at night — urban view with the shop lit up' },
+          { src: '/business-os/hero-storefront.webp', alt: lang === 'es' ? 'Fachada de Santifer iRepair — tienda de reparación de móviles en Madrid' : 'Santifer iRepair storefront — phone repair shop in Madrid', width: 900, height: 1200 },
+          { src: '/business-os/hero-storefront-urban.webp', alt: lang === 'es' ? 'Santifer iRepair de noche — vista urbana con la tienda iluminada' : 'Santifer iRepair at night — urban view with the shop lit up', width: 800, height: 1067 },
         ]}
         className="mb-8"
       />
@@ -154,8 +154,8 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
         <Photo2
           editorId="day-counter"
           items={[
-            { src: '/business-os/counter-organized-front.webp', alt: lang === 'es' ? 'Interior de Santifer iRepair — lo que ve el cliente al entrar: mostrador con iMac, logo y lámpara esférica' : 'Santifer iRepair interior — what the customer sees walking in: counter with iMac, logo and spherical lamp' },
-            { src: '/business-os/after-elevator-lamp.webp', alt: lang === 'es' ? 'Montacargas de madera junto a lámpara esférica y logo Santifer — conexión entre mostrador y taller' : 'Wooden dumbwaiter next to spherical lamp and Santifer logo — connection between counter and workshop' },
+            { src: '/business-os/counter-organized-front.webp', alt: lang === 'es' ? 'Interior de Santifer iRepair — lo que ve el cliente al entrar: mostrador con iMac, logo y lámpara esférica' : 'Santifer iRepair interior — what the customer sees walking in: counter with iMac, logo and spherical lamp', width: 360, height: 480 },
+            { src: '/business-os/after-elevator-lamp.webp', alt: lang === 'es' ? 'Montacargas de madera junto a lámpara esférica y logo Santifer — conexión entre mostrador y taller' : 'Wooden dumbwaiter next to spherical lamp and Santifer logo — connection between counter and workshop', width: 360, height: 480 },
           ]}
           caption={lang === 'es' ? 'Lo que ve el cliente al entrar / El montacargas que conecta mostrador y taller' : 'What the customer sees walking in / The dumbwaiter connecting counter and workshop'}
         />
@@ -182,8 +182,8 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
         <Photo2
           editorId="why-before-photos"
           items={[
-            { src: '/business-os/before-chaos-desktop.webp', alt: lang === 'es' ? 'Escritorio con Checkout POS, calendario, notas y cajonera de piezas — julio 2015' : 'Desktop with Checkout POS, calendar, notes and parts drawers — July 2015' },
-            { src: '/business-os/before-multisystem.webp', alt: lang === 'es' ? 'Checkout POS, Slack, scripts de facturación y recordatorios — todo abierto a la vez' : 'Checkout POS, Slack, invoicing scripts and reminders — all open at once' },
+            { src: '/business-os/before-chaos-desktop.webp', alt: lang === 'es' ? 'Escritorio con Checkout POS, calendario, notas y cajonera de piezas — julio 2015' : 'Desktop with Checkout POS, calendar, notes and parts drawers — July 2015', width: 1200, height: 900 },
+            { src: '/business-os/before-multisystem.webp', alt: lang === 'es' ? 'Checkout POS, Slack, scripts de facturación y recordatorios — todo abierto a la vez' : 'Checkout POS, Slack, invoicing scripts and reminders — all open at once', width: 1200, height: 838 },
           ]}
           caption={lang === 'es' ? 'POS + calendario + notas (2015) / POS + Slack + scripts + recordatorios (2019)' : 'POS + calendar + notes (2015) / POS + Slack + scripts + reminders (2019)'}
           className="mb-8"
@@ -247,8 +247,8 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
               {idx === 0 && (
                 <Photo2 editorId="repair-counter-watch"
                   items={[
-                    { src: '/business-os/after-counter-pov.webp', alt: lang === 'es' ? 'Mostrador de Santifer desde el punto de vista del empleado — iMac con Airtable abierto, citas programadas' : 'Santifer counter from employee POV — iMac with Airtable open, appointments scheduled' },
-                    { src: '/business-os/after-apple-watch-booking.webp', alt: lang === 'es' ? 'Apple Watch del técnico mostrando la próxima cita' : 'Technician Apple Watch showing next appointment' },
+                    { src: '/business-os/after-counter-pov.webp', alt: lang === 'es' ? 'Mostrador de Santifer desde el punto de vista del empleado — iMac con Airtable abierto, citas programadas' : 'Santifer counter from employee POV — iMac with Airtable open, appointments scheduled', width: 800, height: 1067 },
+                    { src: '/business-os/after-apple-watch-booking.webp', alt: lang === 'es' ? 'Apple Watch del técnico mostrando la próxima cita' : 'Technician Apple Watch showing next appointment', width: 800, height: 1067 },
                   ]}
                   caption={lang === 'es' ? 'Planta baja: citas en Airtable / Planta alta: carga de trabajo en la muñeca' : 'Ground floor: appointments in Airtable / Upstairs: workload on the wrist'}
                 />
@@ -256,17 +256,17 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
               {idx === 1 && (
                 <Photo2 editorId="proc-accessories"
                   items={[
-                    { src: '/business-os/accessories-cases-shelf.webp', alt: lang === 'es' ? 'Fundas organizadas por modelo' : 'Cases organized by model' },
-                    { src: '/business-os/accessories-led-shelf.webp', alt: lang === 'es' ? 'Mueble LED con accesorios' : 'LED display shelf with accessories' },
+                    { src: '/business-os/accessories-cases-shelf.webp', alt: lang === 'es' ? 'Fundas organizadas por modelo' : 'Cases organized by model', width: 1200, height: 900 },
+                    { src: '/business-os/accessories-led-shelf.webp', alt: lang === 'es' ? 'Mueble LED con accesorios' : 'LED display shelf with accessories', width: 1200, height: 900 },
                   ]}
                   caption={lang === 'es' ? 'Cada SKU sincronizado con Airtable — precio, margen, rotación' : 'Every SKU synced with Airtable — price, margin, rotation'}
                 />
               )}
               {idx === 2 && (
-                <Photo1 editorId="content-before-after" src="/business-os/web-before-after.webp" alt={lang === 'es' ? 'Before/after de reparaciones reales' : 'Real repair before/after'} caption={lang === 'es' ? 'Before/after reales + reseñas — fotos del ERP, specs de gsmarena-api' : 'Real before/after + reviews — photos from ERP, specs from gsmarena-api'} />
+                <Photo1 editorId="content-before-after" src="/business-os/web-before-after.webp" alt={lang === 'es' ? 'Before/after de reparaciones reales' : 'Real repair before/after'} width={1560} height={1040} caption={lang === 'es' ? 'Before/after reales + reseñas — fotos del ERP, specs de gsmarena-api' : 'Real before/after + reviews — photos from ERP, specs from gsmarena-api'} />
               )}
               {idx === 3 && (
-                <Photo1 editorId="lifecycle-automations" src="/business-os/automatizaciones-mensajes.webp" alt={lang === 'es' ? 'Automatizaciones de mensajes en Airtable' : 'Airtable messaging automations'} caption={lang === 'es' ? 'Automatizaciones de comunicación: reseñas por tier, notificaciones, campañas y WhatsApp' : 'Communication automations: tier-based reviews, notifications, campaigns and WhatsApp'} />
+                <Photo1 editorId="lifecycle-automations" src="/business-os/automatizaciones-mensajes.webp" alt={lang === 'es' ? 'Automatizaciones de mensajes en Airtable' : 'Airtable messaging automations'} width={1560} height={1040} caption={lang === 'es' ? 'Automatizaciones de comunicación: reseñas por tier, notificaciones, campañas y WhatsApp' : 'Communication automations: tier-based reviews, notifications, campaigns and WhatsApp'} />
               )}
 
               {/* Trigger line */}
@@ -291,13 +291,14 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                       editorId="repair-automation"
                       src="/business-os/automatizacion.webp"
                       alt={lang === 'es' ? 'Automatización Airtable — webhook unificado que decide el flujo según stock' : 'Airtable automation — unified webhook that routes the flow based on stock'}
+                      width={1560} height={1040}
                       caption={lang === 'es' ? 'Webhook unificado — si hay stock crea la OT, si no cancela cita y genera pedido' : 'Unified webhook — creates work order if in stock, cancels appointment and auto-orders if not'}
                     />
                     <Photo2
                       editorId="repair-parts"
                       items={[
-                        { src: '/business-os/parts-organized-screens.webp', alt: lang === 'es' ? 'Pantallas de iPhone organizadas por modelo en estantería' : 'iPhone screens organized by model on shelf' },
-                        { src: '/business-os/parts-pcb-microscope.webp', alt: lang === 'es' ? 'Técnico trabajando con microscopio en placa PCB' : 'Technician working with microscope on PCB board' },
+                        { src: '/business-os/parts-organized-screens.webp', alt: lang === 'es' ? 'Pantallas de iPhone organizadas por modelo en estantería' : 'iPhone screens organized by model on shelf', width: 1200, height: 900 },
+                        { src: '/business-os/parts-pcb-microscope.webp', alt: lang === 'es' ? 'Técnico trabajando con microscopio en placa PCB' : 'Technician working with microscope on PCB board', width: 1200, height: 900 },
                       ]}
                       caption={lang === 'es' ? 'Piezas organizadas por Airtable / El técnico se centra en lo que importa' : 'Parts organized by Airtable / The technician focuses on what matters'}
                     />
@@ -305,12 +306,14 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                       editorId="repair-ot"
                       src="/business-os/airtable-ot-repair.webp"
                       alt={lang === 'es' ? 'Interfaz Airtable — pestaña de reparación con piezas, garantías y accesorios' : 'Airtable interface — repair tab with parts, warranties and accessories'}
+                      width={1560} height={1040}
                       caption={lang === 'es' ? 'OT en Airtable — reparación, garantías y accesorios' : 'Work order in Airtable — repair, warranties and accessories'}
                     />
                     <Photo1
                       editorId="repair-warranties"
                       src="/business-os/airtable-warranties.webp"
                       alt={lang === 'es' ? 'Interfaz Airtable de garantías' : 'Airtable warranties interface'}
+                      width={1560} height={1040}
                       caption={lang === 'es' ? 'Gestión de garantías: pieza → proveedor → pedido original → estado de reclamación' : 'Warranty management: part → supplier → original order → claim status'}
                     />
                   </>
@@ -319,18 +322,18 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                 {/* HP1: Procurement */}
                 {idx === 1 && (
                   <>
-                    <Photo1 editorId="proc-inventory" className="mt-4" src="/business-os/airtable-inventory.webp" alt={lang === 'es' ? 'Interfaz Airtable de inventario — pieza con foto real, stock, ubicación física' : 'Airtable inventory interface — part with real photo, stock, physical location'} caption={lang === 'es' ? 'Ficha de pieza: stock, proveedor, foto real y ubicación física (armario, cajón)' : 'Part record: stock, supplier, real photo and physical location (cabinet, drawer)'} />
-                    <Photo1 editorId="proc-inventory-2" src="/business-os/airtable-inventory-2.webp" alt={lang === 'es' ? 'Segunda vista de inventario — foto de ubicación real' : 'Second inventory view — real shelf location photo'} caption={lang === 'es' ? 'Foto de ubicación real: el empleado ve la estantería exacta' : 'Real location photo: the employee sees the exact shelf'} />
-                    <Photo1 editorId="proc-orders" src="/business-os/airtable-purchase-orders.webp" alt={lang === 'es' ? 'Interfaz Airtable de pedidos' : 'Airtable purchase orders interface'} caption={lang === 'es' ? 'Stock bajo → pedido automático → recepción → inventario actualizado' : 'Low stock → auto order → reception → inventory updated'} />
+                    <Photo1 editorId="proc-inventory" className="mt-4" src="/business-os/airtable-inventory.webp" alt={lang === 'es' ? 'Interfaz Airtable de inventario — pieza con foto real, stock, ubicación física' : 'Airtable inventory interface — part with real photo, stock, physical location'} width={1560} height={1040} caption={lang === 'es' ? 'Ficha de pieza: stock, proveedor, foto real y ubicación física (armario, cajón)' : 'Part record: stock, supplier, real photo and physical location (cabinet, drawer)'} />
+                    <Photo1 editorId="proc-inventory-2" src="/business-os/airtable-inventory-2.webp" alt={lang === 'es' ? 'Segunda vista de inventario — foto de ubicación real' : 'Second inventory view — real shelf location photo'} width={1560} height={1040} caption={lang === 'es' ? 'Foto de ubicación real: el empleado ve la estantería exacta' : 'Real location photo: the employee sees the exact shelf'} />
+                    <Photo1 editorId="proc-orders" src="/business-os/airtable-purchase-orders.webp" alt={lang === 'es' ? 'Interfaz Airtable de pedidos' : 'Airtable purchase orders interface'} width={1560} height={1040} caption={lang === 'es' ? 'Stock bajo → pedido automático → recepción → inventario actualizado' : 'Low stock → auto order → reception → inventory updated'} />
                   </>
                 )}
 
                 {/* HP2: Content Pipeline */}
                 {idx === 2 && (
                   <>
-                    <Photo1 editorId="content-catalog" className="mt-4" src="/business-os/airtable-models-catalog.webp" alt={lang === 'es' ? 'Catálogo de modelos en Airtable' : 'Airtable models catalog'} caption={lang === 'es' ? 'Catálogo de modelos: de aquí salen landings, precios y fotos' : 'Models catalog: this feeds landings, prices and photos'} />
-                    <Photo1 editorId="content-landing" src="/business-os/web-landing-hero.webp" alt={lang === 'es' ? 'Landing de reparación generada desde Airtable' : 'Repair landing generated from Airtable'} caption={lang === 'es' ? 'Landing 100% generada: precio, reseñas, specs (gsmarena-api) y SEO dinámico' : 'Landing 100% generated: price, reviews, specs (gsmarena-api) and dynamic SEO'} />
-                    <Photo1 editorId="content-repairs" src="/business-os/web-repairs-catalog.webp" alt={lang === 'es' ? 'Catálogo de reparaciones iPhone 11' : 'iPhone 11 repair catalog'} caption={lang === 'es' ? 'Catálogo de averías por modelo — generado desde el ERP' : 'Repair catalog by model — generated from the ERP'} />
+                    <Photo1 editorId="content-catalog" className="mt-4" src="/business-os/airtable-models-catalog.webp" alt={lang === 'es' ? 'Catálogo de modelos en Airtable' : 'Airtable models catalog'} width={1560} height={1040} caption={lang === 'es' ? 'Catálogo de modelos: de aquí salen landings, precios y fotos' : 'Models catalog: this feeds landings, prices and photos'} />
+                    <Photo1 editorId="content-landing" src="/business-os/web-landing-hero.webp" alt={lang === 'es' ? 'Landing de reparación generada desde Airtable' : 'Repair landing generated from Airtable'} width={1560} height={1040} caption={lang === 'es' ? 'Landing 100% generada: precio, reseñas, specs (gsmarena-api) y SEO dinámico' : 'Landing 100% generated: price, reviews, specs (gsmarena-api) and dynamic SEO'} />
+                    <Photo1 editorId="content-repairs" src="/business-os/web-repairs-catalog.webp" alt={lang === 'es' ? 'Catálogo de reparaciones iPhone 11' : 'iPhone 11 repair catalog'} width={1560} height={1040} caption={lang === 'es' ? 'Catálogo de averías por modelo — generado desde el ERP' : 'Repair catalog by model — generated from the ERP'} />
                   </>
                 )}
 
@@ -451,7 +454,7 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
 
                 {/* CC0: Data Guardrails */}
                 {idx === 0 && (
-                  <Photo1 editorId="cc-guardrails" className="mt-4" src="/business-os/airtable-ot-terminal.webp" alt={lang === 'es' ? 'Interfaz Airtable — orden de trabajo con datos del terminal' : 'Airtable interface — work order with device data'} caption={lang === 'es' ? 'Formulario de entrada — cada campo validado automáticamente' : 'Intake form — every field automatically validated'} />
+                  <Photo1 editorId="cc-guardrails" className="mt-4" src="/business-os/airtable-ot-terminal.webp" alt={lang === 'es' ? 'Interfaz Airtable — orden de trabajo con datos del terminal' : 'Airtable interface — work order with device data'} width={1560} height={1040} caption={lang === 'es' ? 'Formulario de entrada — cada campo validado automáticamente' : 'Intake form — every field automatically validated'} />
                 )}
 
                 {/* CC1: Event-Driven Notifications */}
@@ -495,8 +498,8 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
                       editorId="cc-signage"
                       className="mt-4"
                       items={[
-                        { src: '/business-os/digital-signage-storefront.webp', alt: lang === 'es' ? 'Pantalla digital en escaparate — reparación de móviles' : 'Digital signage in storefront — mobile repair' },
-                        { src: '/business-os/digital-signage-storefront-2.webp', alt: lang === 'es' ? 'Pantalla digital en escaparate — Apple Watch' : 'Digital signage in storefront — Apple Watch' },
+                        { src: '/business-os/digital-signage-storefront.webp', alt: lang === 'es' ? 'Pantalla digital en escaparate — reparación de móviles' : 'Digital signage in storefront — mobile repair', width: 600, height: 800 },
+                        { src: '/business-os/digital-signage-storefront-2.webp', alt: lang === 'es' ? 'Pantalla digital en escaparate — Apple Watch' : 'Digital signage in storefront — Apple Watch', width: 360, height: 480 },
                       ]}
                       caption={lang === 'es' ? 'Digital signage — imágenes generadas con IA desde el catálogo de Airtable' : 'Digital signage — AI-generated images from the Airtable catalog'}
                     />
@@ -563,21 +566,21 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
         <Prose editorId="before-label" className="text-sm font-medium">
           {lang === 'es' ? 'Así se gestionaba antes:' : 'How things were managed before:'}
         </Prose>
-        <Photo1 editorId="before-backlog" src="/business-os/before-terminals-backlog.webp" alt={lang === 'es' ? 'Terminales acumulados pendientes de recoger' : 'Devices piling up waiting for pickup'} caption={lang === 'es' ? 'Terminales acumulados pendientes de recoger' : 'Devices piling up waiting for pickup'} />
+        <Photo1 editorId="before-backlog" src="/business-os/before-terminals-backlog.webp" alt={lang === 'es' ? 'Terminales acumulados pendientes de recoger' : 'Devices piling up waiting for pickup'} width={1200} height={900} caption={lang === 'es' ? 'Terminales acumulados pendientes de recoger' : 'Devices piling up waiting for pickup'} />
         <Photo2
           editorId="before-notes-pos"
           items={[
-            { src: '/business-os/before-icloud-notes.webp', alt: lang === 'es' ? 'Notas de iCloud como sistema de pedidos' : 'iCloud Notes as order system' },
-            { src: '/business-os/before-checkout-pos-stock.webp', alt: lang === 'es' ? 'Checkout POS Manager — inventario manual' : 'Checkout POS Manager — manual inventory' },
+            { src: '/business-os/before-icloud-notes.webp', alt: lang === 'es' ? 'Notas de iCloud como sistema de pedidos' : 'iCloud Notes as order system', width: 800, height: 1422 },
+            { src: '/business-os/before-checkout-pos-stock.webp', alt: lang === 'es' ? 'Checkout POS Manager — inventario manual' : 'Checkout POS Manager — manual inventory', width: 1200, height: 2133 },
           ]}
           caption={lang === 'es' ? 'Pedidos en Notas de iCloud / Stock en Checkout POS' : 'Orders in iCloud Notes / Stock in Checkout POS'}
         />
-        <Photo1 editorId="before-chaos" src="/business-os/before-workshop-chaos.webp" alt={lang === 'es' ? 'Taller saturado' : 'Overwhelmed workshop'} caption={lang === 'es' ? 'Taller saturado — sin sistema de prioridades' : 'Overwhelmed workshop — no priority system'} />
+        <Photo1 editorId="before-chaos" src="/business-os/before-workshop-chaos.webp" alt={lang === 'es' ? 'Taller saturado' : 'Overwhelmed workshop'} width={1200} height={522} caption={lang === 'es' ? 'Taller saturado — sin sistema de prioridades' : 'Overwhelmed workshop — no priority system'} />
         <Photo2
           editorId="before-sketch-founder"
           items={[
-            { src: '/business-os/before-notebook-sketch.webp', alt: lang === 'es' ? 'Boceto en libreta' : 'Notebook sketch' },
-            { src: '/business-os/before-founder-overwhelmed.webp', alt: lang === 'es' ? 'Santiago en el taller' : 'Santiago in the workshop' },
+            { src: '/business-os/before-notebook-sketch.webp', alt: lang === 'es' ? 'Boceto en libreta' : 'Notebook sketch', width: 800, height: 1067 },
+            { src: '/business-os/before-founder-overwhelmed.webp', alt: lang === 'es' ? 'Santiago en el taller' : 'Santiago in the workshop', width: 600, height: 800 },
           ]}
           caption={lang === 'es' ? 'Primer boceto de integración / De este caos nació un Product Builder' : 'First integration sketch / This chaos built a Product Builder'}
           className="mb-6"
@@ -612,16 +615,16 @@ export default function BusinessOS({ lang = 'en' }: { lang?: Lang }) {
         <Photo2
           editorId="after-store-orders"
           items={[
-            { src: '/business-os/after-store-interior.webp', alt: lang === 'es' ? 'Interior de Santifer iRepair' : 'Santifer iRepair interior' },
-            { src: '/business-os/after-orders-organized.webp', alt: lang === 'es' ? 'Órdenes de trabajo organizadas' : 'Organized work orders' },
+            { src: '/business-os/after-store-interior.webp', alt: lang === 'es' ? 'Interior de Santifer iRepair' : 'Santifer iRepair interior', width: 1200, height: 900 },
+            { src: '/business-os/after-orders-organized.webp', alt: lang === 'es' ? 'Órdenes de trabajo organizadas' : 'Organized work orders', width: 1200, height: 900 },
           ]}
           caption={lang === 'es' ? 'Un iMac, un sistema / Envíos COVID organizados con Airtable' : 'One iMac, one system / COVID shipments organized with Airtable'}
         />
         <Photo2
           editorId="after-workshop-accessories"
           items={[
-            { src: '/business-os/after-workshop-organized.webp', alt: lang === 'es' ? 'Taller organizado' : 'Organized workshop' },
-            { src: '/business-os/after-accessories-display.webp', alt: lang === 'es' ? 'Estantería LED con accesorios' : 'LED shelf with accessories' },
+            { src: '/business-os/after-workshop-organized.webp', alt: lang === 'es' ? 'Taller organizado' : 'Organized workshop', width: 1200, height: 900 },
+            { src: '/business-os/after-accessories-display.webp', alt: lang === 'es' ? 'Estantería LED con accesorios' : 'LED shelf with accessories', width: 1024, height: 768 },
           ]}
           caption={lang === 'es' ? 'Taller organizado / Cada accesorio con ubicación y stock en Airtable' : 'Organized workshop / Every accessory with location and stock in Airtable'}
           className="mb-8"

@@ -329,11 +329,13 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
         {/* ================================================================ */}
         <H2 id="defense">{s.defense.heading}</H2>
         <img
-          src="/chatbot/diagram-defense-layers.webp"
+          src="/chatbot/diagram-defense-layers-1400w.webp"
+          srcSet="/chatbot/diagram-defense-layers-1400w.webp 1400w, /chatbot/diagram-defense-layers.webp 5504w"
+          sizes="(max-width: 768px) 100vw, 672px"
           alt={lang === 'es' ? '6 capas de defensa: Keywords (50+ patrones) → Canary Tokens (UUID trap) → Fingerprinting (12 frases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (ataques evolutivos)' : '6 defense layers: Keywords (50+ patterns) → Canary Tokens (UUID trap) → Fingerprinting (12 phrases) → Anti-Extract → Safety Score (Haiku real-time) → Red Team (evolving attacks)'}
           className="w-full max-w-2xl mx-auto rounded-xl my-8"
-          width={5504}
-          height={3072}
+          width={1400}
+          height={781}
           loading="lazy"
         />
         <CardStack items={s.defense.layers.map(l => ({
@@ -515,9 +517,11 @@ export default function SelfHealingChatbot({ lang = 'en' }: { lang?: Lang }) {
             {lang === 'es' ? '¿Escuchaste eso?' : 'Did you hear that?'}
           </summary>
           <img
-            src="/chatbot/yo-dawg-rag.jpg"
+            src="/chatbot/yo-dawg-rag.webp"
             alt="Yo Dawg, I heard you like RAG, so I put RAG in my chat so it can RAG while you RAG"
             className="mt-4 rounded-lg"
+            width={622}
+            height={401}
             loading="lazy"
           />
         </details>

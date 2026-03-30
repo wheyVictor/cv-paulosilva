@@ -117,13 +117,15 @@ export default function CareerOps({ lang = 'en' }: { lang?: Lang }) {
       />
 
       <img
-        src="/career-ops/hero-career-ops.webp"
+        src="/career-ops/hero-career-ops-1400w.webp"
+        srcSet="/career-ops/hero-career-ops-1400w.webp 1400w, /career-ops/hero-career-ops.webp 3024w"
+        sizes="(max-width: 768px) 100vw, 768px"
         alt={lang === 'es'
           ? 'Career Pipeline: dashboard del tracker con 516 ofertas evaluadas, scores 4.0-4.5, empresas como Datadog, Langfuse, OpenAI, LangChain'
           : 'Career Pipeline: tracker dashboard with 516 evaluated offers, scores 4.0-4.5, companies like Datadog, Langfuse, OpenAI, LangChain'}
         className="w-full rounded-2xl mb-8"
         width={1400}
-        height={782}
+        height={875}
         fetchPriority="high"
       />
 

@@ -297,7 +297,18 @@ function validateArticle(config: typeof articleRegistry[0]): { issues: Issue[]; 
     issues.push({ severity: 'warn', msg: `articleType missing or not TechArticle for case-study (${sourceRel})` })
   }
 
-  // 12. editorId in ArticleHeader/ArticleFooter
+  // 12. Images without width/height in source (CLS prevention)
+  const imgTagsInSource = source.match(/<img\s[^>]*>/g) || []
+  const imgsMissingDims = imgTagsInSource.filter(tag => {
+    if (tag.includes('role="presentation"')) return false
+    if (tag.includes('aria-hidden')) return false
+    return !tag.includes('width=') || !tag.includes('height=')
+  })
+  if (imgsMissingDims.length > 0) {
+    issues.push({ severity: 'warn', msg: `${imgsMissingDims.length} <img> without width/height in source (CLS risk) (${sourceRel})` })
+  }
+
+  // 13. editorId in ArticleHeader/ArticleFooter
   if (!source.includes('ArticleHeader') || !/<ArticleHeader[^>]+editorId/.test(source)) {
     issues.push({ severity: 'warn', msg: `editorId missing in ArticleHeader (${sourceRel})` })
   }

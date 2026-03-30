@@ -75,7 +75,7 @@ const stackIcons: Record<string, ReactNode> = {
     <svg viewBox="0 0 24 24" className="w-8 h-8"><path fill="#18BFFF" d="M11.992 1.966c-.434 0-.87.086-1.28.257L1.779 5.917c-.503.208-.49.908.012 1.116l8.982 3.558a3.266 3.266 0 0 0 2.454 0l8.982-3.558c.503-.196.503-.908.012-1.116l-8.957-3.694a3.255 3.255 0 0 0-1.272-.257z"/><path fill="#FCB400" d="M23.4 8.056a.589.589 0 0 0-.222.045l-10.012 3.877a.612.612 0 0 0-.38.564v8.896a.6.6 0 0 0 .821.552L23.62 18.1a.583.583 0 0 0 .38-.551V8.653a.6.6 0 0 0-.6-.596z"/><path fill="#18BFFF" d="M.676 8.095a.644.644 0 0 0-.48.19C.086 8.396 0 8.53 0 8.69v8.355c0 .442.515.737.908.54l6.27-3.006.307-.147 2.969-1.436c.466-.22.43-.908-.061-1.092L.883 8.138a.57.57 0 0 0-.207-.044z"/></svg>
   ),
   DataForSEO: (
-    <img src="https://avatars.githubusercontent.com/u/29703714?s=200&v=4" alt="DataForSEO" className="w-8 h-8 rounded" />
+    <img src="https://avatars.githubusercontent.com/u/29703714?s=200&v=4" alt="DataForSEO" width={200} height={200} className="w-8 h-8 rounded" />
   ),
   'ERP propio': (
     <Database className="w-8 h-8 text-[#F59E0B]" />
@@ -120,6 +120,7 @@ function OverlayCard({ overlay, hover, model, alt }: { overlay: string; hover: s
         <img
           src={`/pseo/overlays/${overlay}`}
           alt={alt}
+          width={384} height={256}
           className="absolute inset-0 w-full h-full object-contain bg-card transition-opacity duration-300"
           style={{ opacity: hovered ? 0 : 1 }}
           loading="lazy"
@@ -128,6 +129,7 @@ function OverlayCard({ overlay, hover, model, alt }: { overlay: string; hover: s
         <img
           src={`/pseo/overlays/${hover}`}
           alt={`${alt} — ${model}`}
+          width={384} height={256}
           className="absolute inset-0 w-full h-full object-contain bg-card transition-opacity duration-300"
           style={{ opacity: hovered ? 1 : 0 }}
           decoding="async"
@@ -206,6 +208,7 @@ function ReviewCarousel({ alt }: { alt: string }) {
         <img
           src={CAROUSEL_SLIDES[idx]}
           alt={`${alt} ${idx + 1}/${total}`}
+          width={1286} height={533}
           className="w-full h-auto"
           decoding="async"
         />
@@ -335,6 +338,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-homepage.webp"
           alt={lang === 'es' ? 'Homepage de santiferirepair.es' : 'santiferirepair.es homepage'}
+          width={1406} height={1345}
           caption={lang === 'es' ? 'santiferirepair.es: homepage generada con Astro SSG. Buscador de dispositivos, categorías y marcas.' : 'santiferirepair.es: homepage generated with Astro SSG. Device search, categories and brands.'}
         />
 
@@ -417,6 +421,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-airtable-taxonomy.webp"
           hdSrc="/pseo/ss-airtable-taxonomy-hd.webp"
           alt={lang === 'es' ? 'Jerarquía de tablas en Airtable — CMS del SEO programático' : 'Airtable table hierarchy — programmatic SEO CMS'}
+          width={800} height={418} hdWidth={2512} hdHeight={1312}
           caption={lang === 'es' ? 'Las 14 tablas del CMS conectadas al Business OS de 12 bases. Jerarquía de 6 niveles desde tipo de dispositivo hasta variante local.' : 'The 14 CMS tables connected to the 12-base Business OS. 6-level hierarchy from device type to local variant.'}
         />
 
@@ -437,6 +442,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-category-samsung.webp"
           alt={lang === 'es' ? 'Página de categoría Samsung en santiferirepair.es' : 'Samsung category page on santiferirepair.es'}
+          width={1440} height={900}
           caption={lang === 'es' ? 'Página de categoría generada automáticamente. Cada marca tiene su landing con modelos, precios y reseñas.' : 'Auto-generated category page. Each brand gets its own landing with models, pricing, and reviews.'}
         />
 
@@ -459,6 +465,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-airtable-repair-fields.webp"
           hdSrc="/pseo/ss-airtable-repair-fields-hd.webp"
           alt={lang === 'es' ? 'Campos de una reparación en Airtable' : 'Repair record fields in Airtable'}
+          width={800} height={418} hdWidth={2512} hdHeight={1312}
           caption={lang === 'es' ? 'Cada reparación tiene ~60 campos: precios duales, flag indexable, specs del modelo que alimentan el copy dinámico.' : 'Each repair has ~60 fields: dual pricing, indexable flag, model specs that feed the dynamic copy.'}
         />
 
@@ -466,6 +473,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src={t.sections.pageAnatomy.screenshot.src}
           alt={t.sections.pageAnatomy.screenshot.alt}
+          width={1425} height={5277}
           caption={t.sections.pageAnatomy.screenshot.caption}
         />
 
@@ -473,6 +481,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-repair-page-hero.webp"
           alt={lang === 'es' ? 'Hero de una página de reparación en santiferirepair.es' : 'Repair page hero on santiferirepair.es'}
+          width={1440} height={900}
           caption={lang === 'es' ? 'Hero de página de reparación: precio dual (original/compatible), CTA de cita, y breadcrumb semántico.' : 'Repair page hero: dual pricing (original/compatible), booking CTA, and semantic breadcrumb.'}
         />
 
@@ -490,6 +499,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.src}
           hdSrc={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.src.replace('.webp', '-hd.webp')}
           alt={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.alt}
+          width={703} height={673} hdWidth={1406} hdHeight={1345}
           caption={(t.sections.pageAnatomy.dynamicCopy as any).screenshotCopy.caption}
         />
 
@@ -501,6 +511,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.src}
           hdSrc={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.src.replace('.webp', '-hd.webp')}
           alt={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.alt}
+          width={703} height={673} hdWidth={1406} hdHeight={1345}
           caption={(t.sections.pageAnatomy.dynamicCopy as any).screenshotPricing.caption}
         />
 
@@ -514,12 +525,14 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
             src="/pseo/ss-buscador.webp"
             hdSrc="/pseo/ss-buscador-hd.webp"
             alt={lang === 'es' ? 'Buscador en homepage: "12 pro" muestra resultados de todas las marcas' : 'Homepage search: "12 pro" shows results across all brands'}
+            width={600} height={574} hdWidth={1406} hdHeight={1345}
             caption={lang === 'es' ? 'Home: "12 pro" → Xiaomi, Apple, Xiaomi...' : 'Home: "12 pro" → Xiaomi, Apple, Xiaomi...'}
           />
           <DiagramZoom
             src="/pseo/ss-buscador-iphone.webp"
             hdSrc="/pseo/ss-buscador-iphone-hd.webp"
             alt={lang === 'es' ? 'Buscador en página iPhone: "13" solo muestra modelos iPhone' : 'iPhone page search: "13" only shows iPhone models'}
+            width={600} height={574} hdWidth={1406} hdHeight={1345}
             caption={lang === 'es' ? 'Página iPhone: "13" → solo iPhones' : 'iPhone page: "13" → iPhones only'}
           />
         </div>
@@ -544,6 +557,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-airtable-indexable.webp"
           hdSrc="/pseo/ss-airtable-indexable-hd.webp"
           alt={lang === 'es' ? 'Campo indexable en Airtable alimentado por DataForSEO' : 'Indexable field in Airtable driven by DataForSEO'}
+          width={800} height={418} hdWidth={2512} hdHeight={1312}
           caption={lang === 'es' ? 'Motor de decisiones: DataForSEO alimenta el campo indexable. Sin volumen → noindex.' : 'Decision engine: DataForSEO feeds the indexable field. No volume → noindex.'}
         />
 
@@ -607,6 +621,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-airtable-image-pipeline.webp"
           hdSrc="/pseo/ss-airtable-image-pipeline-hd.webp"
           alt={lang === 'es' ? 'Pipeline de imágenes en Airtable' : 'Image pipeline in Airtable'}
+          width={800} height={418} hdWidth={2512} hdHeight={1312}
           caption={lang === 'es' ? 'Pipeline de imágenes: 1 foto de GSM Arena → 18 composiciones automáticas con overlays de reparación. Todo sincronizado con el Business OS.' : 'Image pipeline: 1 GSM Arena photo → 18 auto-composited repair overlays. All synced with the Business OS.'}
         />
 
@@ -668,6 +683,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src={t.sections.imagePipeline.onePhotoDemo.hero.src}
           alt={t.sections.imagePipeline.onePhotoDemo.hero.alt}
+          width={256} height={256}
           caption={t.sections.imagePipeline.onePhotoDemo.hero.caption}
         />
         <ScreenshotGrid
@@ -734,6 +750,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
               <img
                 src={`/pseo/reviews/${item.src}`}
                 alt={lang === 'es' ? item.altEs : item.altEn}
+                width={79} height={79}
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-border"
                 loading="lazy"
                 decoding="async"
@@ -819,6 +836,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-gsc-growth.webp"
           alt={lang === 'es' ? 'Curva de crecimiento en Google Search Console — clicks e impresiones' : 'Growth curve in Google Search Console — clicks and impressions'}
+          width={1178} height={294}
           caption={lang === 'es' ? 'Google Search Console: clicks (azul) e impresiones (violeta) desde noviembre 2024 hasta septiembre 2025.' : 'Google Search Console: clicks (blue) and impressions (purple) from November 2024 through September 2025.'}
         />
 
@@ -848,6 +866,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
               <img
                 src={item.src}
                 alt={item.label}
+                width={330} height={643}
                 className="w-full rounded-xl border border-border shadow-sm"
                 loading="lazy"
                 decoding="async"
@@ -874,8 +893,8 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
 
         <Photo2
           items={[
-            { src: '/pseo/ss-squarespace-mobile.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: homepage móvil' : 'santifer.me on Squarespace: mobile homepage' },
-            { src: '/pseo/ss-squarespace-pricing.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: página de precios con iconos genéricos' : 'santifer.me on Squarespace: pricing page with generic icons' },
+            { src: '/pseo/ss-squarespace-mobile.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: homepage móvil' : 'santifer.me on Squarespace: mobile homepage', width: 800, height: 1422 },
+            { src: '/pseo/ss-squarespace-pricing.webp', alt: lang === 'es' ? 'santifer.me en Squarespace: página de precios con iconos genéricos' : 'santifer.me on Squarespace: pricing page with generic icons', width: 800, height: 1422 },
           ]}
           caption={lang === 'es' ? 'santifer.me en Squarespace. Homepage y página de precios: iconos genéricos, sin fotos reales, sin datos del ERP.' : 'santifer.me on Squarespace. Homepage and pricing page: generic icons, no real photos, no ERP data.'}
         />
@@ -890,13 +909,14 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-audit-sistrix.webp"
           alt={lang === 'es' ? 'SISTRIX: visibilidad orgánica de santifer.me en declive constante desde 2019 hasta 2024' : 'SISTRIX: organic visibility of santifer.me in constant decline from 2019 to 2024'}
+          width={2000} height={1125}
           caption={lang === 'es' ? 'Índice de visibilidad SISTRIX (2019-2024). Tendencia decreciente durante 5 años, de 0.036 a 0.003.' : 'SISTRIX visibility index (2019-2024). 5-year declining trend, from 0.036 to 0.003.'}
         />
 
         <Photo2
           items={[
-            { src: '/pseo/ss-audit-gsc-clicks.webp', alt: lang === 'es' ? 'Google Search Console: clics orgánicos reduciéndose a la mitad en 12 meses' : 'Google Search Console: organic clicks halving over 12 months' },
-            { src: '/pseo/ss-audit-sector.webp', alt: lang === 'es' ? 'SISTRIX: comparativa de visibilidad del sector en España — santifer.me invisible frente a competidores' : 'SISTRIX: sector visibility comparison in Spain — santifer.me invisible vs competitors' },
+            { src: '/pseo/ss-audit-gsc-clicks.webp', alt: lang === 'es' ? 'Google Search Console: clics orgánicos reduciéndose a la mitad en 12 meses' : 'Google Search Console: organic clicks halving over 12 months', width: 2000, height: 1125 },
+            { src: '/pseo/ss-audit-sector.webp', alt: lang === 'es' ? 'SISTRIX: comparativa de visibilidad del sector en España — santifer.me invisible frente a competidores' : 'SISTRIX: sector visibility comparison in Spain — santifer.me invisible vs competitors', width: 2000, height: 1125 },
           ]}
           caption={lang === 'es' ? 'Izquierda: GSC muestra los clics reduciéndose a la mitad (17,3K clics, posición media 23,1). Derecha: comparativa del sector — santifer.me es la línea roja pegada al eje X.' : 'Left: GSC shows clicks halving (17.3K clicks, avg position 23.1). Right: sector comparison — santifer.me is the red line stuck to the X axis.'}
         />
@@ -914,12 +934,14 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
             src="/pseo/ss-audit-h1s.webp"
             hdSrc="/pseo/ss-audit-h1s-hd.webp"
             alt={lang === 'es' ? 'Screaming Frog: 838 páginas con H1s múltiples, 118 duplicados, 255 sin H2' : 'Screaming Frog: 838 pages with multiple H1s, 118 duplicates, 255 without H2'}
+            width={2000} height={1125} hdWidth={3000} hdHeight={1688}
             caption={lang === 'es' ? 'Screaming Frog: 838 páginas con H1s múltiples' : 'Screaming Frog: 838 pages with multiple H1s'}
           />
           <DiagramZoom
             src="/pseo/ss-audit-images.webp"
             hdSrc="/pseo/ss-audit-images-hd.webp"
             alt={lang === 'es' ? 'Screaming Frog: 8.000+ imágenes sin atributos de tamaño, 497 demasiado pesadas, 164 sin alt text' : 'Screaming Frog: 8,000+ images without size attributes, 497 too heavy, 164 without alt text'}
+            width={2000} height={1125} hdWidth={3000} hdHeight={1688}
             caption={lang === 'es' ? 'Screaming Frog: 8.000+ imágenes sin dimensiones' : 'Screaming Frog: 8,000+ images without dimensions'}
           />
         </div>
@@ -935,6 +957,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
         <Photo1
           src="/pseo/ss-squarespace-repair.webp"
           alt={lang === 'es' ? 'Página de reparación en Squarespace: iconos genéricos y precios sin estructura' : 'Repair page on Squarespace: generic icons and unstructured pricing'}
+          width={1200} height={815}
           caption={lang === 'es' ? 'Página de reparación típica en Squarespace. Iconos genéricos, sin fotos reales, sin JSON-LD, sin datos del ERP.' : 'Typical repair page on Squarespace. Generic icons, no real photos, no JSON-LD, no ERP data.'}
         />
 
@@ -942,12 +965,14 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-audit-lighthouse.webp"
           hdSrc="/pseo/ss-audit-lighthouse-hd.webp"
           alt={lang === 'es' ? 'PageSpeed Insights: Lighthouse 21 en móvil, 51 en escritorio. Core Web Vitals: No superada en todas las tipologías' : 'PageSpeed Insights: Lighthouse 21 on mobile, 51 on desktop. Core Web Vitals: Not passed across all page types'}
+          width={2000} height={1125} hdWidth={3000} hdHeight={1688}
           caption={lang === 'es' ? 'Antes: Squarespace. Lighthouse 21/100 móvil. CWV no superada.' : 'Before: Squarespace. Lighthouse 21/100 mobile. CWV not passed.'}
         />
         <DiagramZoom
           src="/pseo/ss-audit-lighthouse-after.webp"
           hdSrc="/pseo/ss-audit-lighthouse-after-hd.webp"
           alt={lang === 'es' ? 'PageSpeed Insights: Lighthouse 97 en móvil, Accesibilidad 100, SEO 100. Core Web Vitals: Superada' : 'PageSpeed Insights: Lighthouse 97 on mobile, Accessibility 100, SEO 100. Core Web Vitals: Passed'}
+          width={2512} height={1312} hdWidth={2512} hdHeight={1312}
           caption={lang === 'es'
             ? <>Después: Astro + Cloudflare. Lighthouse 97/100 móvil. CWV superada. <a href="https://pagespeed.web.dev/analysis/https-santiferirepair-es/rynn9cjrrs?form_factor=mobile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Compruébalo tú mismo →</a></>
             : <>After: Astro + Cloudflare. Lighthouse 97/100 mobile. CWV passed. <a href="https://pagespeed.web.dev/analysis/https-santiferirepair-es/rynn9cjrrs?form_factor=mobile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Check it yourself →</a></>}
@@ -983,6 +1008,7 @@ export default function ProgrammaticSeo({ lang = 'en' }: { lang?: Lang }) {
           src="/pseo/ss-audit-competitors.webp"
           hdSrc="/pseo/ss-audit-competitors-hd.webp"
           alt={lang === 'es' ? 'Comparativa AHREFs del sector: santifer.me con DR 0.1 y 23 backlinks vs competidores con miles' : 'AHREFs sector comparison: santifer.me with DR 0.1 and 23 backlinks vs competitors with thousands'}
+          width={2000} height={1125} hdWidth={3000} hdHeight={1688}
           caption={lang === 'es' ? 'Comparativa de fuerza de dominio (AHREFs). santifer.me: DR 0.1, 23 backlinks. El líder (iriparo.com): DR 44, 21.430 backlinks.' : 'Domain strength comparison (AHREFs). santifer.me: DR 0.1, 23 backlinks. Sector leader (iriparo.com): DR 44, 21,430 backlinks.'}
         />
 
