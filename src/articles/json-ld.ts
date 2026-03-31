@@ -50,6 +50,7 @@ const PERSON = {
     'https://contentdigest.santifer.io',
     'https://www.youtube.com/@santifer_io',
     'https://www.wikidata.org/wiki/Q138710224',
+    'https://www.facebook.com/santifer.io/',
   ],
 }
 

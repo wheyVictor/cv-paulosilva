@@ -108,6 +108,7 @@ export default function AboutPage({ lang = 'es' }: { lang?: AboutLang }) {
           'https://www.crunchbase.com/person/santiago-fernandez-de-valderrama',
           'https://huggingface.co/santifer',
           'https://www.wikidata.org/wiki/Q138710224',
+          'https://www.facebook.com/santifer.io/',
         ],
         subjectOf: {
           '@type': 'NewsArticle',
