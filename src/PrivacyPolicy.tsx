@@ -3,61 +3,61 @@ import { Link } from 'react-router-dom'
 import { ArticleLayout } from './articles/components'
 
 const content = {
-  es: {
-    title: 'Politica de Privacidad',
-    lastUpdated: 'Ultima actualizacion: 15 de marzo de 2026',
-    intro: 'Esta politica describe como se recopilan y utilizan los datos cuando visitas santifer.io.',
+  pt: {
+    title: 'Politica de Privacidade',
+    lastUpdated: 'Ultima atualizacao: 15 de marco de 2026',
+    intro: 'Esta politica descreve como os dados sao coletados e utilizados quando voce visita psilva.io.',
     sections: [
       {
-        heading: 'Que datos se recopilan',
+        heading: 'Quais dados sao coletados',
         items: [
-          'Mensajes del chatbot: cuando interactuas con el chatbot "Santi", los mensajes se procesan para generar respuestas. No se solicita ni almacena informacion personal identificable.',
-          'Audio del modo voz: si activas el modo voz, el audio se procesa en tiempo real para la conversacion y no se almacena de forma permanente.',
-          'Analiticas de uso: se recopilan datos anonimos de navegacion (paginas visitadas, duracion, dispositivo) para mejorar el sitio.',
+          'Mensagens do chatbot: quando voce interage com o chatbot "Victor", as mensagens sao processadas para gerar respostas. Nenhuma informacao pessoal identificavel e solicitada ou armazenada.',
+          'Audio do modo voz: se voce ativar o modo voz, o audio e processado em tempo real para a conversa e nao e armazenado permanentemente.',
+          'Analiticas de uso: dados anonimos de navegacao (paginas visitadas, duracao, dispositivo) sao coletados para melhorar o site.',
         ],
       },
       {
-        heading: 'Como se utilizan los datos',
+        heading: 'Como os dados sao utilizados',
         items: [
-          'Los mensajes del chatbot se utilizan exclusivamente para generar respuestas contextuales sobre la experiencia profesional de Santiago.',
-          'Las trazas de conversacion se almacenan de forma anonimizada para mejorar la calidad de las respuestas y detectar intentos de uso indebido.',
-          'Los datos de analiticas se utilizan para entender patrones de uso y mejorar el rendimiento del sitio.',
+          'As mensagens do chatbot sao utilizadas exclusivamente para gerar respostas contextuais sobre a experiencia profissional de Paulo.',
+          'Os rastros de conversa sao armazenados de forma anonimizada para melhorar a qualidade das respostas e detectar tentativas de uso indevido.',
+          'Os dados de analiticas sao utilizados para entender padroes de uso e melhorar o desempenho do site.',
         ],
       },
       {
-        heading: 'Terceros',
+        heading: 'Terceiros',
         items: [
-          'Anthropic (Claude): procesa los mensajes del chatbot para generar respuestas.',
-          'OpenAI (Realtime API): procesa el audio del modo voz para la conversacion en tiempo real.',
-          'Langfuse: almacena trazas anonimizadas de conversaciones para observabilidad y mejora de calidad.',
-          'Vercel: aloja el sitio web y recopila analiticas anonimas de uso.',
+          'Anthropic (Claude): processa as mensagens do chatbot para gerar respostas.',
+          'OpenAI (Realtime API): processa o audio do modo voz para conversa em tempo real.',
+          'Langfuse: armazena rastros anonimizados de conversas para observabilidade e melhoria de qualidade.',
+          'Vercel: hospeda o site e coleta analiticas anonimas de uso.',
         ],
       },
       {
-        heading: 'Cookies y almacenamiento local',
-        body: 'Este sitio no utiliza cookies de seguimiento ni de terceros. Solo se utiliza localStorage del navegador para preferencias de interfaz (tema visual). No se almacena informacion personal.',
+        heading: 'Cookies e armazenamento local',
+        body: 'Este site nao utiliza cookies de rastreamento nem de terceiros. Apenas o localStorage do navegador e utilizado para preferencias de interface (tema visual). Nenhuma informacao pessoal e armazenada.',
       },
       {
-        heading: 'No hay cuentas de usuario',
-        body: 'Este sitio no requiere registro ni inicio de sesion. No se recopilan nombres, emails ni contrasenas a traves del sitio web.',
+        heading: 'Nao ha contas de usuario',
+        body: 'Este site nao requer cadastro nem login. Nenhum nome, email ou senha e coletado atraves do site.',
       },
       {
-        heading: 'Contacto',
-        body: 'Para cualquier consulta sobre privacidad, puedes escribir a:',
-        email: 'hola@santifer.io',
+        heading: 'Contato',
+        body: 'Para qualquer consulta sobre privacidade, voce pode escrever para:',
+        email: 'hello@psilva.io',
       },
     ],
-    backHome: 'Volver al inicio',
+    backHome: 'Voltar ao inicio',
   },
   en: {
     title: 'Privacy Policy',
     lastUpdated: 'Last updated: March 15, 2026',
-    intro: 'This policy describes how data is collected and used when you visit santifer.io.',
+    intro: 'This policy describes how data is collected and used when you visit psilva.io.',
     sections: [
       {
         heading: 'What data is collected',
         items: [
-          'Chatbot messages: when you interact with the "Santi" chatbot, messages are processed to generate responses. No personally identifiable information is requested or stored.',
+          'Chatbot messages: when you interact with the "Victor" chatbot, messages are processed to generate responses. No personally identifiable information is requested or stored.',
           'Voice mode audio: if you activate voice mode, audio is processed in real time for conversation and is not permanently stored.',
           'Usage analytics: anonymous browsing data (pages visited, duration, device) is collected to improve the site.',
         ],
@@ -65,7 +65,7 @@ const content = {
       {
         heading: 'How data is used',
         items: [
-          "Chatbot messages are used exclusively to generate contextual responses about Santiago's professional experience.",
+          "Chatbot messages are used exclusively to generate contextual responses about Paulo's professional experience.",
           'Conversation traces are stored in anonymized form to improve response quality and detect misuse attempts.',
           'Analytics data is used to understand usage patterns and improve site performance.',
         ],
@@ -90,7 +90,7 @@ const content = {
       {
         heading: 'Contact',
         body: 'For any privacy-related inquiries, you can write to:',
-        email: 'hola@santifer.io',
+        email: 'hello@psilva.io',
       },
     ],
     backHome: 'Back to home',
@@ -104,11 +104,11 @@ interface PrivacySection {
   email?: string
 }
 
-export default function PrivacyPolicy({ lang = 'es' }: { lang?: 'es' | 'en' }) {
+export default function PrivacyPolicy({ lang = 'pt' }: { lang?: 'pt' | 'en' }) {
   const t = content[lang]
 
   useEffect(() => {
-    document.title = `${t.title} | santifer.io`
+    document.title = `${t.title} | psilva.io`
 
     // noindex
     let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement
@@ -121,13 +121,13 @@ export default function PrivacyPolicy({ lang = 'es' }: { lang?: 'es' | 'en' }) {
 
     // Fix canonical (SPA fallback serves homepage canonical — override it)
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
-    if (canonical) canonical.href = `https://santifer.io/${lang === 'es' ? 'privacidad' : 'privacy'}`
+    if (canonical) canonical.href = `https://psilva.io/${lang === 'pt' ? 'privacidade' : 'privacy'}`
 
     // Fix meta description
     let desc = document.querySelector('meta[name="description"]') as HTMLMetaElement
-    if (desc) desc.content = lang === 'es'
-      ? 'Politica de privacidad de santifer.io. Como se recopilan y utilizan los datos del chatbot y la web.'
-      : 'Privacy policy for santifer.io. How chatbot and website data is collected and used.'
+    if (desc) desc.content = lang === 'pt'
+      ? 'Politica de privacidade do psilva.io. Como os dados do chatbot e do site sao coletados e utilizados.'
+      : 'Privacy policy for psilva.io. How chatbot and website data is collected and used.'
 
     return () => {
       robots.content = 'index, follow'
@@ -186,7 +186,7 @@ export default function PrivacyPolicy({ lang = 'es' }: { lang?: 'es' | 'en' }) {
 
         <div className="mt-12 pt-8 border-t border-border">
           <Link
-            to={lang === 'es' ? '/' : '/en'}
+            to={lang === 'pt' ? '/' : '/en'}
             className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
           >
             {'← '}{t.backHome}

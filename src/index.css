@@ -3,6 +3,9 @@
 /* Interactive elements should always show pointer cursor */
 button, a, [role="button"], summary { cursor: pointer; }
 
+/* Instant theme switch — disables all transitions globally */
+html.no-transitions, html.no-transitions * { transition: none !important; }
+
 /* Fade-in for inner-page nav bar */
 @keyframes nav-fade-in {
   from { opacity: 0; transform: translateY(-4px); }
@@ -277,12 +280,23 @@ button, a, [role="button"], summary { cursor: pointer; }
     --card: 20 10% 14%;            /* elevated above background */
     --card-foreground: 30 20% 90%;
     --gradient-from: 24 90% 55%;   /* Orange */
-    --gradient-to: 181 85% 38%;    /* Teal */
+    --gradient-to: 38 92% 50%;     /* Amber */
     /* Semantic accent colors */
-    --gold: 45 97% 49%;
+    --gold: 38 92% 50%;
     --success: 142 71% 45%;
     --tool: 24 90% 55%;
     --linkedin: 210 88% 71%;
+    --hero-orb-primary: 24 90% 55% / 0.08;
+    --hero-orb-accent: 38 92% 50% / 0.10;
+    --dot-grid: 30 15% 60% / 0.15;
+    --codeblock: 20 15% 6%;
+    --codeblock-text: 30 14% 90%;
+    --code-keyword: 24 90% 65%;
+    --code-string: 38 85% 60%;
+    --code-comment: 20 10% 50%;
+    --code-number: 45 90% 60%;
+    --code-heading: 24 90% 65%;
+    --code-var: 181 70% 55%;
   }
 
   /* ========== PROFILE: BLUEPRINT - Structural Lines ========== */

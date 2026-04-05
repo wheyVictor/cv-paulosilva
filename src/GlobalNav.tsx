@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Sun, Moon, House, X, ChevronRight } from 'lucide-react'
 import { translations, type Lang } from './i18n'
-import { getAltPaths, getPageTitles, getSectionLabels, getEsSlugs } from './articles/registry'
+import { getAltPaths, getPageTitles, getSectionLabels, getPtSlugs } from './articles/registry'
 
 /**
  * GlobalNav — unified navigation across all pages.
  *
  * The translucent bar is a "contextual message container" that appears
  * when there's something to communicate:
- * - Inner pages: permanent "← santifer.io" back link
+ * - Inner pages: permanent "← psilva.io" back link
  * - Any page: temporary language suggestion when browser lang ≠ page lang
  *
  * Language suggestion is right-aligned, next to the lang pill, reinforcing
@@ -21,7 +21,7 @@ const ALT_PATH = getAltPaths()
 const BANNER_DISMISSED_KEY = 'lang-banner-dismissed'
 const PAGE_TITLE = getPageTitles()
 const SECTION_LABELS = getSectionLabels()
-const ES_SLUGS = getEsSlugs()
+const PT_SLUGS = getPtSlugs()
 
 /** Observes h2[id] elements and returns the currently visible section ID */
 function useActiveSection(pathname: string, enabled: boolean) {
@@ -80,8 +80,8 @@ function useActiveSection(pathname: string, enabled: boolean) {
 
 function useLang() {
   const { pathname } = useLocation()
-  const isHome = pathname === '/' || pathname === '/en'
-  const lang: 'es' | 'en' = ES_SLUGS.has(pathname) ? 'es' : 'en'
+  const isHome = pathname === '/' || pathname === '/pt'
+  const lang: 'pt' | 'en' = PT_SLUGS.has(pathname) ? 'pt' : 'en'
   const pageTitle = PAGE_TITLE[pathname] ?? null
   return { pathname, isHome, lang, pageTitle }
 }
@@ -106,11 +106,7 @@ function useTheme() {
   }, [])
 
   const toggleTheme = useCallback(() => {
-    // Kill all transitions for instant theme switch
-    document.documentElement.style.setProperty('--theme-transition', 'none')
-    document.querySelectorAll('*').forEach(el => {
-      (el as HTMLElement).style.transition = 'none'
-    })
+    document.documentElement.classList.add('no-transitions')
 
     const next = !isDark
     setIsDark(next)
@@ -118,13 +114,9 @@ function useTheme() {
     document.documentElement.classList.toggle('light', !next)
     localStorage.setItem('theme', next ? 'dark' : 'light')
 
-    // Re-enable transitions after repaint
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        document.documentElement.style.removeProperty('--theme-transition')
-        document.querySelectorAll('*').forEach(el => {
-          (el as HTMLElement).style.transition = ''
-        })
+        document.documentElement.classList.remove('no-transitions')
       })
     })
   }, [isDark])
@@ -149,8 +141,8 @@ function useLanguageBanner(lang: Lang) {
     if (typeof navigator === 'undefined') return
     if (stored) return // already 'shown' or 'dismissed'
 
-    const browserPrefersEn = !navigator.language.toLowerCase().startsWith('es')
-    const mismatch = (lang === 'es' && browserPrefersEn) || (lang === 'en' && !browserPrefersEn)
+    const browserPrefersPt = navigator.language.toLowerCase().startsWith('pt')
+    const mismatch = (lang === 'pt' && !browserPrefersPt) || (lang === 'en' && browserPrefersPt)
     if (!mismatch) return
 
     const timer = setTimeout(() => {
@@ -163,8 +155,8 @@ function useLanguageBanner(lang: Lang) {
   // Auto-dismiss if user switches language via toggle
   useEffect(() => {
     if (!visible) return
-    const browserPrefersEn = !navigator.language.toLowerCase().startsWith('es')
-    const mismatch = (lang === 'es' && browserPrefersEn) || (lang === 'en' && !browserPrefersEn)
+    const browserPrefersPt = navigator.language.toLowerCase().startsWith('pt')
+    const mismatch = (lang === 'pt' && !browserPrefersPt) || (lang === 'en' && browserPrefersPt)
     if (!mismatch) {
       sessionStorage.setItem(BANNER_DISMISSED_KEY, 'dismissed')
       setVisible(false)
@@ -179,15 +171,16 @@ function useLanguageBanner(lang: Lang) {
   return { showBanner: visible, dismiss, animateBanner: visible && isFirstAppearance.current }
 }
 
-/** Circular flag icons — Spain (red-yellow-red) and UK (Union Jack simplified) */
-function FlagES({ className = "w-4 h-4" }: { className?: string }) {
+/** Circular flag icons — Brazil (green-yellow diamond-blue circle) and UK (Union Jack simplified) */
+function FlagPT({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 16 16" aria-hidden="true">
-      <clipPath id="flagCircleES"><circle cx="8" cy="8" r="8" /></clipPath>
-      <g clipPath="url(#flagCircleES)">
-        <rect y="0" width="16" height="4" fill="#c60b1e" />
-        <rect y="4" width="16" height="8" fill="#ffc400" />
-        <rect y="12" width="16" height="4" fill="#c60b1e" />
+      <clipPath id="flagCirclePT"><circle cx="8" cy="8" r="8" /></clipPath>
+      <g clipPath="url(#flagCirclePT)">
+        <rect width="16" height="16" fill="#009c3b" />
+        <polygon points="8,2 15,8 8,14 1,8" fill="#ffdf00" />
+        <circle cx="8" cy="8" r="3" fill="#002776" />
+        <path d="M5.2 8.2 Q8 6.5 10.8 8.2" fill="none" stroke="#fff" strokeWidth="0.5" />
       </g>
     </svg>
   )
@@ -218,7 +211,7 @@ function NavControls({ altPath, altLabel, lang, isDark, toggleTheme }: {
         to={altPath}
         className="inline-flex items-center justify-center gap-1.5 w-[4.5rem] h-10 rounded-full bg-card border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
       >
-        {lang === 'es' ? <FlagES className="w-3.5 h-3.5" /> : <FlagEN className="w-3.5 h-3.5" />}
+        {lang === 'pt' ? <FlagEN className="w-3.5 h-3.5" /> : <FlagPT className="w-3.5 h-3.5" />}
         {altLabel}
       </Link>
       <button
@@ -239,8 +232,8 @@ export default function GlobalNav() {
   const navigate = useNavigate()
   const activeSection = useActiveSection(pathname, !isHome)
 
-  const altPath = ALT_PATH[pathname] || (lang === 'es' ? '/en' : '/')
-  const altLabel = lang === 'es' ? 'ES' : 'EN'
+  const altPath = ALT_PATH[pathname] || (lang === 'pt' ? '/en' : '/')
+  const altLabel = lang === 'pt' ? 'EN' : 'PT'
 
   const t = translations[lang]
   const hasBar = !isHome
@@ -282,7 +275,7 @@ export default function GlobalNav() {
         onClick={switchLang}
         className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary/80 transition-colors"
       >
-        {t.ui.languageBannerSwitchPrefix}{lang === 'es' ? <FlagEN className="w-3.5 h-3.5 mx-0.5" /> : <FlagES className="w-3.5 h-3.5 mx-0.5" />}{t.ui.languageBannerSwitchLang}
+        {t.ui.languageBannerSwitchPrefix}{lang === 'pt' ? <FlagEN className="w-3.5 h-3.5 mx-0.5" /> : <FlagPT className="w-3.5 h-3.5 mx-0.5" />}{t.ui.languageBannerSwitchLang}
       </button>
       <button
         onClick={dismiss}
@@ -316,7 +309,7 @@ export default function GlobalNav() {
                   className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors shrink-0"
                 >
                   <House className="w-4 h-4" />
-                  <span className="hidden sm:inline">santifer.io</span>
+                  <span className="hidden sm:inline">psilva.io</span>
                 </Link>
                 {pageTitle && (
                   <>

@@ -54,7 +54,7 @@ function stripReactSSRTags(html: string): string {
 // ---------------------------------------------------------------------------
 // SSR render per language (home page)
 // ---------------------------------------------------------------------------
-function renderApp(lang: 'es' | 'en'): string {
+function renderApp(lang: 'pt' | 'en'): string {
   const path = lang === 'en' ? '/en' : '/';
   return stripReactSSRTags(renderToString(
     <StaticRouter location={path}>
@@ -70,7 +70,7 @@ function renderApp(lang: 'es' | 'en'): string {
   ));
 }
 
-function renderArticlePage(slug: string, ArticleComponent: ComponentType<{ lang: 'es' | 'en' }>, lang: 'es' | 'en'): string {
+function renderArticlePage(slug: string, ArticleComponent: ComponentType<{ lang: 'pt' | 'en' }>, lang: 'pt' | 'en'): string {
   return stripReactSSRTags(renderToString(
     <StaticRouter location={`/${slug}`}>
       <GlobalNav />
@@ -103,26 +103,26 @@ try {
   process.exit(1);
 }
 
-// --- ES version (inject into existing index.html) ---
-let esHtml: string;
+// --- PT-BR version (inject into existing index.html) ---
+let ptHtml: string;
 try {
-  esHtml = renderApp('es');
+  ptHtml = renderApp('pt');
 } catch (err) {
-  console.error('[prerender] SSR failed for ES, falling back to empty root:', err);
-  esHtml = '';
+  console.error('[prerender] SSR failed for PT, falling back to empty root:', err);
+  ptHtml = '';
 }
 
-const esSeo = seo.es;
+const ptSeo = seo.pt;
 
-const injectedEs = indexHtml
-  .replace('<div id="root"></div>', `<div id="root">${esHtml}</div>`)
-  .replace(/<title>[^<]*<\/title>/, `<title>${esc(esSeo.title)}</title>`)
-  .replace(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(esSeo.title)}" />`)
-  .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(esSeo.description)}" />`)
-  .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(esSeo.title)}" />`)
-  .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(esSeo.description)}" />`)
-  .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(esSeo.title)}" />`)
-  .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${esc(esSeo.description)}" />`);
+const injectedPt = indexHtml
+  .replace('<div id="root"></div>', `<div id="root">${ptHtml}</div>`)
+  .replace(/<title>[^<]*<\/title>/, `<title>${esc(ptSeo.title)}</title>`)
+  .replace(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(ptSeo.title)}" />`)
+  .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(ptSeo.description)}" />`)
+  .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(ptSeo.title)}" />`)
+  .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(ptSeo.description)}" />`)
+  .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(ptSeo.title)}" />`)
+  .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${esc(ptSeo.description)}" />`);
 
 // --- EN version ---
 let enHtml: string;
@@ -137,22 +137,22 @@ const enSeo = seo.en;
 
 let enPage = indexHtml
   .replace('<div id="root"></div>', `<div id="root">${enHtml}</div>`)
-  .replace('<html lang="es" class="dark">', '<html lang="en" class="dark">')
+  .replace('<html lang="pt-BR" class="theme-warm dark">', '<html lang="en" class="theme-warm dark">')
   .replace(/<title>[^<]*<\/title>/, `<title>${esc(enSeo.title)}</title>`)
   .replace(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(enSeo.title)}" />`)
   .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(enSeo.description)}" />`)
-  .replace(/<link rel="canonical" href="[^"]*" \/>/, '<link rel="canonical" href="https://santifer.io/en" />')
-  .replace(/<meta property="og:url" content="[^"]*" \/>/, '<meta property="og:url" content="https://santifer.io/en" />')
+  .replace(/<link rel="canonical" href="[^"]*" \/>/, '<link rel="canonical" href="https://psilva.io/en" />')
+  .replace(/<meta property="og:url" content="[^"]*" \/>/, '<meta property="og:url" content="https://psilva.io/en" />')
   .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(enSeo.title)}" />`)
   .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(enSeo.description)}" />`)
-  .replace(/<meta property="og:locale" content="es_ES" \/>/, '<meta property="og:locale" content="en_US" />')
-  .replace(/<meta property="og:locale:alternate" content="en_US" \/>/, '<meta property="og:locale:alternate" content="es_ES" />')
-  .replace(/<meta name="twitter:url" content="[^"]*" \/>/, '<meta name="twitter:url" content="https://santifer.io/en" />')
+  .replace(/<meta property="og:locale" content="pt_BR" \/>/, '<meta property="og:locale" content="en_US" />')
+  .replace(/<meta property="og:locale:alternate" content="en_US" \/>/, '<meta property="og:locale:alternate" content="pt_BR" />')
+  .replace(/<meta name="twitter:url" content="[^"]*" \/>/, '<meta name="twitter:url" content="https://psilva.io/en" />')
   .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(enSeo.title)}" />`)
   .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${esc(enSeo.description)}" />`);
 
 // ---------------------------------------------------------------------------
-// About / Entity Home — ES (/sobre-mi) + EN (/about)
+// About / Entity Home — ES (/sobre-mim) + EN (/about)
 // ---------------------------------------------------------------------------
 
 const aboutJsonLd = {
@@ -161,70 +161,35 @@ const aboutJsonLd = {
   dateModified: '2026-03-27',
   mainEntity: {
     '@type': 'Person',
-    '@id': 'https://santifer.io/#person',
-    name: 'Santiago Fernández de Valderrama Aparicio',
-    alternateName: ['Santiago Fernández de Valderrama', 'santifer', 'Santi'],
-    url: 'https://santifer.io',
-    image: 'https://santifer.io/foto-avatar.png',
-    email: 'hola@santifer.io',
-    jobTitle: ['AI Product Manager', 'Solutions Architect (No/Low-Code & AI)', 'AI Forward Deployed Engineer'],
+    '@id': 'https://psilva.io/#person',
+    name: 'Paulo Victor Silva',
+    alternateName: ['Paulo Silva', 'Victor'],
+    url: 'https://psilva.io',
+    image: 'https://psilva.io/foto-avatar.png',
+    email: 'hello@psilva.io',
+    jobTitle: ['Senior Tech Lead - Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
     knowsAbout: [
-      { '@type': 'Thing', name: 'Artificial Intelligence', url: 'https://en.wikipedia.org/wiki/Artificial_intelligence' },
-      { '@type': 'Thing', name: 'Machine Learning', url: 'https://en.wikipedia.org/wiki/Machine_learning' },
-      { '@type': 'Thing', name: 'Multi-Agent System', url: 'https://en.wikipedia.org/wiki/Multi-agent_system' },
-      { '@type': 'Thing', name: 'Retrieval-Augmented Generation', url: 'https://en.wikipedia.org/wiki/Retrieval-augmented_generation' },
-      { '@type': 'Thing', name: 'No-code development platform', url: 'https://en.wikipedia.org/wiki/No-code_development_platform' },
-      { '@type': 'Thing', name: 'Prompt Engineering' },
-      { '@type': 'SoftwareApplication', name: 'Airtable', url: 'https://airtable.com' },
-      { '@type': 'SoftwareApplication', name: 'n8n', url: 'https://n8n.io' },
-      { '@type': 'SoftwareApplication', name: 'Claude API', url: 'https://docs.anthropic.com' },
+      { '@type': 'Thing', name: 'Data Engineering', url: 'https://en.wikipedia.org/wiki/Data_engineering' },
+      { '@type': 'Thing', name: 'Data Warehouse', url: 'https://en.wikipedia.org/wiki/Data_warehouse' },
+      { '@type': 'Thing', name: 'ETL', url: 'https://en.wikipedia.org/wiki/Extract,_transform,_load' },
+      { '@type': 'Thing', name: 'Cloud Computing', url: 'https://en.wikipedia.org/wiki/Cloud_computing' },
+      { '@type': 'SoftwareApplication', name: 'Snowflake', url: 'https://www.snowflake.com' },
+      { '@type': 'SoftwareApplication', name: 'dbt', url: 'https://www.getdbt.com' },
+      { '@type': 'SoftwareApplication', name: 'Apache Airflow', url: 'https://airflow.apache.org' },
     ],
     hasCredential: [
-      { '@type': 'EducationalOccupationalCredential', name: 'Introduction to Model Context Protocol', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/4pxam3irsioq' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Claude Code in Action', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/eijx7hwc2x89' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Advanced MCP Topics', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/eiovmq5qaeyd' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Building with the Claude API', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/s4bu5znz53vm' },
-      { '@type': 'EducationalOccupationalCredential', name: 'AI Fluency: Framework & Foundations', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/d6rhfox7ktq6' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Teaching AI Fluency', recognizedBy: { '@type': 'Organization', name: 'Anthropic' }, url: 'https://verify.skilljar.com/c/x3bzuoz99rq5' },
-      { '@type': 'EducationalOccupationalCredential', name: 'AI App Builder Certification', recognizedBy: { '@type': 'Organization', name: 'Airtable' }, url: 'https://verify.skilljar.com/c/gwg7ak9qgf7r' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Airtable Builder Certification', recognizedBy: { '@type': 'Organization', name: 'Airtable' }, url: 'https://verify.skilljar.com/c/id2e4zgqtasv' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Airtable Admin Certification', recognizedBy: { '@type': 'Organization', name: 'Airtable' }, url: 'https://verify.skilljar.com/c/u3r8kgn5wdit' },
-      { '@type': 'EducationalOccupationalCredential', name: 'Make Advanced', recognizedBy: { '@type': 'Organization', name: 'Make Academy' }, url: 'https://www.credly.com/badges/d27b8174-ef20-46bd-9d81-ee05e9c349e8' },
+      { '@type': 'EducationalOccupationalCredential', name: 'SnowPro Core Certification', recognizedBy: { '@type': 'Organization', name: 'Snowflake' } },
+      { '@type': 'EducationalOccupationalCredential', name: 'Introduction to Big Data', recognizedBy: { '@type': 'Organization', name: 'Coursera / UC San Diego' } },
+      { '@type': 'EducationalOccupationalCredential', name: 'Big Data Modeling and Management Systems', recognizedBy: { '@type': 'Organization', name: 'Coursera / UC San Diego' } },
     ],
     alumniOf: [
-      { '@type': 'EducationalOrganization', name: 'Maven - AI Product Management Bootcamp' },
-      { '@type': 'EducationalOrganization', name: 'BIGSEO - Master en Inteligencia Artificial' },
-      { '@type': 'EducationalOrganization', name: 'ETSI - Universidad de Sevilla' },
+      { '@type': 'EducationalOrganization', name: 'UFSCar - MBA in Information, Technology and Innovation' },
+      { '@type': 'EducationalOrganization', name: 'UNIESP - Bachelor of Information Systems' },
     ],
-    founder: {
-      '@type': 'Organization',
-      name: 'Santifer iRepair',
-      url: 'https://santiferirepair.es',
-      foundingDate: '2009',
-    },
     sameAs: [
-      'https://www.linkedin.com/in/santifer',
-      'https://github.com/santifer',
-      'https://x.com/santifer',
-      'https://dev.to/santifer',
-      'https://santifer.substack.com',
-      'https://contentdigest.santifer.io',
-      'https://www.youtube.com/@santifer_io',
-      'https://stackoverflow.com/users/32541743',
-      'https://orcid.org/0009-0006-2192-7210',
-      'https://www.crunchbase.com/person/santiago-fernandez-de-valderrama',
-      'https://huggingface.co/santifer',
-      'https://www.wikidata.org/wiki/Q138710224',
-      'https://www.facebook.com/santifer.io/',
+      'https://www.linkedin.com/in/paulovi',
     ],
-    subjectOf: {
-      '@type': 'NewsArticle',
-      headline: 'Salir de compras: Una solución exprés para el teléfono',
-      publisher: { '@type': 'NewsMediaOrganization', name: 'Diario de Sevilla' },
-      datePublished: '2014-06-19',
-      url: 'https://www.diariodesevilla.es/vivirensevilla/Salir-compras-solucion-expres-telefono_0_817718799.html',
-    },
-    address: { '@type': 'PostalAddress', addressLocality: 'Sevilla', addressCountry: 'ES' },
+    address: { '@type': 'PostalAddress', addressLocality: 'Rio de Janeiro', addressRegion: 'RJ', addressCountry: 'BR' },
   },
 };
 
@@ -237,15 +202,15 @@ interface AboutPageData {
 
 const aboutPages: AboutPageData[] = [];
 
-for (const lang of ['es', 'en'] as const) {
+for (const lang of ['pt', 'en'] as const) {
   const t = aboutContent[lang];
   const slug = t.slug;
   const altSlug = t.altSlug;
-  const url = `https://santifer.io/${slug}`;
-  const altUrl = `https://santifer.io/${altSlug}`;
-  const altLang = lang === 'es' ? 'en' : 'es';
-  const ogLocale = lang === 'es' ? 'es_ES' : 'en_US';
-  const ogLocaleAlt = lang === 'es' ? 'en_US' : 'es_ES';
+  const url = `https://psilva.io/${slug}`;
+  const altUrl = `https://psilva.io/${altSlug}`;
+  const altLang = lang === 'pt' ? 'en' : 'pt';
+  const ogLocale = lang === 'pt' ? 'pt_BR' : 'en_US';
+  const ogLocaleAlt = lang === 'pt' ? 'en_US' : 'pt_BR';
 
   let renderedHtml: string;
   try {
@@ -266,11 +231,11 @@ for (const lang of ['es', 'en'] as const) {
     renderedHtml = '';
   }
 
-  const hreflangLinks = `<link rel="alternate" hreflang="${lang}" href="${url}" /><link rel="alternate" hreflang="${altLang}" href="${altUrl}" /><link rel="alternate" hreflang="x-default" href="https://santifer.io/sobre-mi" />`;
+  const hreflangLinks = `<link rel="alternate" hreflang="${lang}" href="${url}" /><link rel="alternate" hreflang="${altLang}" href="${altUrl}" /><link rel="alternate" hreflang="x-default" href="https://psilva.io/sobre-mim" />`;
 
   let result = indexHtml
     .replace('<div id="root"></div>', `<div id="root">${renderedHtml}</div>`)
-    .replace('<html lang="es" class="dark">', `<html lang="${lang}" class="dark">`)
+    .replace('<html lang="pt-BR" class="theme-warm dark">', `<html lang="${lang === 'pt' ? 'pt-BR' : lang}" class="theme-warm dark">`)
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(t.seo.title)}</title>`)
     .replace(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(t.seo.title)}" />`)
     .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(t.seo.description)}" />`)
@@ -280,7 +245,7 @@ for (const lang of ['es', 'en'] as const) {
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
     .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(t.seo.title)}" />`)
     .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(t.seo.description)}" />`)
-    .replace(/<meta property="og:locale" content="es_ES" \/>/, `<meta property="og:locale" content="${ogLocale}" />`)
+    .replace(/<meta property="og:locale" content="pt_BR" \/>/, `<meta property="og:locale" content="${ogLocale}" />`)
     .replace(/<meta property="og:locale:alternate" content="en_US" \/>/, `<meta property="og:locale:alternate" content="${ogLocaleAlt}" />`)
     .replace(/<meta name="twitter:url" content="[^"]*" \/>/, `<meta name="twitter:url" content="${url}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(t.seo.title)}" />`)
@@ -305,19 +270,19 @@ interface ArticlePage {
 
 function buildArticlePage(
   config: ArticleConfig,
-  lang: 'es' | 'en',
-  ArticleComponent: ComponentType<{ lang: 'es' | 'en' }>,
+  lang: 'pt' | 'en',
+  ArticleComponent: ComponentType<{ lang: 'pt' | 'en' }>,
 ): string {
   const slug = config.slugs[lang];
-  const altSlug = config.slugs[lang === 'es' ? 'en' : 'es'];
-  const url = `https://santifer.io/${slug}`;
-  const altUrl = `https://santifer.io/${altSlug}`;
-  const altLang = lang === 'es' ? 'en' : 'es';
-  const htmlLang = lang;
-  const ogLocale = lang === 'es' ? 'es_ES' : 'en_US';
-  const ogLocaleAlt = lang === 'es' ? 'en_US' : 'es_ES';
+  const altSlug = config.slugs[lang === 'pt' ? 'en' : 'pt'];
+  const url = `https://psilva.io/${slug}`;
+  const altUrl = `https://psilva.io/${altSlug}`;
+  const altLang = lang === 'pt' ? 'en' : 'pt';
+  const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
+  const ogLocale = lang === 'pt' ? 'pt_BR' : 'en_US';
+  const ogLocaleAlt = lang === 'pt' ? 'en_US' : 'pt_BR';
   const articleSeo = config.seo[lang];
-  const xDefaultHref = `https://santifer.io/${config.xDefaultSlug || config.slugs.es}`;
+  const xDefaultHref = `https://psilva.io/${config.xDefaultSlug || config.slugs.pt}`;
 
   let renderedHtml: string;
   try {
@@ -331,7 +296,7 @@ function buildArticlePage(
 
   let result = indexHtml
     .replace('<div id="root"></div>', `<div id="root">${renderedHtml}</div>`)
-    .replace('<html lang="es" class="dark">', `<html lang="${htmlLang}" class="dark">`)
+    .replace('<html lang="pt-BR" class="theme-warm dark">', `<html lang="${htmlLang}" class="theme-warm dark">`)
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(articleSeo.title)}</title>`)
     .replace(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(articleSeo.title)}" />`)
     .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(articleSeo.description)}" />`)
@@ -342,13 +307,13 @@ function buildArticlePage(
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
     .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(articleSeo.title)}" />`)
     .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(articleSeo.description)}" />`)
-    .replace(/<meta property="og:locale" content="es_ES" \/>/, `<meta property="og:locale" content="${ogLocale}" />`)
+    .replace(/<meta property="og:locale" content="pt_BR" \/>/, `<meta property="og:locale" content="${ogLocale}" />`)
     .replace(/<meta property="og:locale:alternate" content="en_US" \/>/, `<meta property="og:locale:alternate" content="${ogLocaleAlt}" />`)
     .replace(/<meta name="twitter:url" content="[^"]*" \/>/, `<meta name="twitter:url" content="${url}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(articleSeo.title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${esc(articleSeo.description)}" />`)
     // OG image — replace with article-specific image if configured
-    .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${esc(config.ogImage || 'https://santifer.io/og-image.webp')}" />`)
+    .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${esc(config.ogImage || 'https://psilva.io/og-image.webp')}" />`)
     .replace(/<meta property="og:image:alt" content="[^"]*" \/>/, `<meta property="og:image:alt" content="${esc(articleSeo.title)}" />`)
     .replace(/<meta name="twitter:image" content="[^"]*" \/>/, config.ogImage ? `<meta name="twitter:image" content="${esc(config.ogImage)}" />` : '');
 
@@ -358,7 +323,7 @@ function buildArticlePage(
     const articleMetaTags = [
       `<meta property="article:published_time" content="${seoMeta.datePublished}" />`,
       `<meta property="article:modified_time" content="${seoMeta.dateModified}" />`,
-      `<meta property="article:author" content="https://www.linkedin.com/in/santifer" />`,
+      `<meta property="article:author" content="https://www.linkedin.com/in/paulovi" />`,
       `<meta property="article:tag" content="${esc(seoMeta.articleTags)}" />`,
     ].join('\n    ');
     result = result.replace('</head>', `    ${articleMetaTags}\n  </head>`);
@@ -371,8 +336,8 @@ function buildArticlePage(
     if (t) {
       const jsonLd = buildArticleJsonLd({
         lang,
-        url: `https://santifer.io/${slug}`,
-        altUrl: `https://santifer.io/${altSlug}`,
+        url: `https://psilva.io/${slug}`,
+        altUrl: `https://psilva.io/${altSlug}`,
         headline: t.header.h1,
         alternativeHeadline: articleSeo.title,
         description: articleSeo.description,
@@ -408,7 +373,7 @@ function buildArticlePage(
 const articlePages: ArticlePage[] = [];
 
 for (const config of articleRegistry) {
-  let ArticleComponent: ComponentType<{ lang: 'es' | 'en' }>;
+  let ArticleComponent: ComponentType<{ lang: 'pt' | 'en' }>;
   try {
     const mod = await config.component();
     ArticleComponent = mod.default;
@@ -418,7 +383,7 @@ for (const config of articleRegistry) {
   }
 
   const seen = new Set<string>();
-  for (const lang of ['es', 'en'] as const) {
+  for (const lang of ['pt', 'en'] as const) {
     const slug = config.slugs[lang];
     if (seen.has(slug)) continue; // same slug for both languages
     seen.add(slug);
@@ -458,7 +423,7 @@ async function writePage(html: string, outputPath: string, label: string) {
 
 async function inlineCriticalCSS() {
   // Home pages
-  await writePage(injectedEs, indexPath, 'ES: dist/index.html updated');
+  await writePage(injectedPt, indexPath, 'PT: dist/index.html updated');
   await writePage(enPage, resolve(distDir, 'en', 'index.html'), 'EN: dist/en/index.html created');
 
   // About pages
@@ -480,7 +445,7 @@ await inlineCriticalCSS();
 const notFoundHtml = indexHtml
   .replace('<div id="root"></div>', `<div id="root"><div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 1.5rem"><p style="font-size:6rem;font-weight:bold;color:var(--primary);margin-bottom:1rem;font-family:var(--font-display)">404</p><h1 style="font-size:1.5rem;font-weight:600;color:var(--foreground);margin-bottom:0.5rem">Page not found</h1><p style="color:var(--muted-foreground);margin-bottom:2rem;max-width:28rem">The page you're looking for doesn't exist or has been moved.</p><a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:0.75rem;background:var(--primary);color:var(--primary-foreground);font-weight:500;text-decoration:none">← Back to home</a></div></div>`)
   .replace(/<meta name="robots" content="[^"]*" \/>/, '<meta name="robots" content="noindex, nofollow" />')
-  .replace(/<title>[^<]*<\/title>/, '<title>404 — Page not found | santifer.io</title>');
+  .replace(/<title>[^<]*<\/title>/, '<title>404 — Page not found | psilva.io</title>');
 
 // Add noindex if no robots meta exists
 if (!notFoundHtml.includes('name="robots"')) {
@@ -513,7 +478,7 @@ function validateHydrationStructure(html: string, label: string) {
 }
 
 // Validate home pages
-validateHydrationStructure(injectedEs, 'home-es');
+validateHydrationStructure(injectedPt, 'home-pt');
 validateHydrationStructure(enPage, 'home-en');
 
 // Validate about pages

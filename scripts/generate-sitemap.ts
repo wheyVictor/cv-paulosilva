@@ -34,7 +34,7 @@ interface SitemapUrl {
 function urlBlock(u: SitemapUrl): string {
   return `  <url>
     <loc>${u.loc}</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="${u.hreflangEs}"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="${u.hreflangEs}"/>
     <xhtml:link rel="alternate" hreflang="en" href="${u.hreflangEn}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${u.xDefault}"/>
     <lastmod>${u.lastmod}</lastmod>
@@ -46,7 +46,7 @@ function urlBlock(u: SitemapUrl): string {
 // Build URLs
 // ---------------------------------------------------------------------------
 
-const base = 'https://santifer.io'
+const base = 'https://psilva.io'
 const urls: SitemapUrl[] = []
 
 // Home ES + EN
@@ -69,18 +69,18 @@ urls.push({
 
 // About / Entity Home — ES + EN
 urls.push({
-  loc: `${base}/sobre-mi`,
-  hreflangEs: `${base}/sobre-mi`,
+  loc: `${base}/sobre-mim`,
+  hreflangEs: `${base}/sobre-mim`,
   hreflangEn: `${base}/about`,
-  xDefault: `${base}/sobre-mi`,
+  xDefault: `${base}/sobre-mim`,
   lastmod: today,
   priority: '0.9',
 })
 urls.push({
   loc: `${base}/about`,
-  hreflangEs: `${base}/sobre-mi`,
+  hreflangEs: `${base}/sobre-mim`,
   hreflangEn: `${base}/about`,
-  xDefault: `${base}/sobre-mi`,
+  xDefault: `${base}/sobre-mim`,
   lastmod: today,
   priority: '0.9',
 })

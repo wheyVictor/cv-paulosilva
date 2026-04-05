@@ -1,235 +1,160 @@
-# Santiago Fernández de Valderrama Aparicio
+# Paulo Victor Silva
 
-> AI Product Manager · Solutions Architect (No/Low-Code & AI) · Forward Deployed Engineer
+> Senior Tech Lead - Data Engineering
 
 ## Contact & Availability
 
-- **Location:** Seville, Spain
-- **Open to:** Remote roles in EU/USA
-- **Email:** hi@santifer.io
-- **Entity Home / About**: https://santifer.io/about
-- **Website:** https://santifer.io
-- **LinkedIn:** https://linkedin.com/in/santifer
-- **GitHub:** https://github.com/santifer
-- **Content Digest:** https://contentdigest.santifer.io
-- **Newsletter (Substack):** https://santifer.substack.com
-- **Facebook:** https://www.facebook.com/santifer.io/
-- **dev.to:** https://dev.to/santifer
+- **Location:** Rio de Janeiro, Brazil
+- **Open to:** Remote roles (US/Global)
+- **Email:** paulovictordasilvarp@gmail.com
+- **Website:** https://psilva.io
+- **LinkedIn:** https://linkedin.com/in/paulovi
 
 ## Professional Summary
 
-Ex-founder with 16+ years building products. After scaling and selling my business (going-concern sale, 2025), I focus on roles where impact scales: turning ambiguous business goals into production-ready AI solutions.
-
-I operate with end-to-end ownership across discovery → prioritization → delivery → adoption, collaborating closely with stakeholders and engineering.
+Data Engineer and Architect with 10+ years of experience designing and delivering scalable data solutions across retail, hospitality, healthcare, automotive, and fast food industries. Currently leading data engineering at Data Meaning (5+ years), with deep expertise in Snowflake architecture, performance tuning, and cost optimization (SnowPro Core Certified), dbt modular and incremental modeling, and AWS cloud infrastructure (S3, Lambda, Glue, Kinesis). Proven track record leading cross-functional teams, driving technical roadmaps, and mentoring engineers.
 
 ## Target Roles
 
-1. **AI Product Manager** - AI product discovery, PRDs, roadmap and prioritization for LLM-powered products
-2. **Solutions Architect (No/Low-Code & AI)** - System design for automation platforms integrated with AI
-3. **AI Forward Deployed Engineer** (role pioneered by Palantir) - Stakeholder workshops, rapid prototyping, production delivery
-
-## Key Achievement: Omnichannel AI Agent "Jacobo"
-
-Built an AI agent achieving **~90% customer self-service rate**:
-
-- **Channels:** Voice (ElevenLabs) + WhatsApp (n8n/WATI) + Aircall cloud PBX
-- **Architecture:** Sub-agent orchestration via tool calling
-- **Components:**
-  - Main router: classifies intent and delegates to specialized sub-agents
-  - Appointments sub-agent: checks slots, books, confirms via WhatsApp
-  - Discounts sub-agent: calculates promotions based on customer history
-  - Orders sub-agent: validates stock, creates order, notifies ETA
-  - HITL handoff: escalates to human with full context when needed
+1. **Senior Data Engineer** - Large-scale pipeline design, Snowflake/dbt optimization, cloud infrastructure
+2. **Staff Data Engineer** - Technical leadership, architecture decisions, cross-team data strategy
+3. **Data Engineering Manager** - Team leadership, roadmap ownership, engineering culture
+4. **Data Architect** - End-to-end data platform design, governance, and modeling standards
 
 ## Core Competencies
 
-- **AI Product Discovery:** Problem definition, AI PRDs, roadmap & prioritization
-- **Enterprise Solution Architecture:** End-to-end system design across departments, APIs/webhooks, data flows, OpenAPI specs
-- **Agentic Workflows:** LLM agents, tool use/function calling, HITL handoff, voice + messaging
-- **LLMOps & AI Governance:** Observability, evals, error handling, retries, SOPs, cost/latency trade-offs, responsible AI
-- **Forward-Deployed Delivery:** Stakeholder workshops, workflow mapping, rapid prototyping
-- **AI Enablement & Thought Leadership:** AI adoption workshops, technical writing with real traction, Teaching Fellow at AI PM Bootcamp, "n8n for Product Managers" lightning session on Maven
-
-## Development Methodology
-
-AI-augmented SDLC: design with clear constraints and threat modeling, implement via small PRs with AI pair programming, validate with eval sets + observability + cost control. Agentic development capabilities are gated with allowlists, HITL confirmations, and monitoring.
+- **Snowflake Architecture & Cost Optimization:** SnowPro Core Certified, performance tuning, warehouse sizing, query optimization
+- **dbt Modeling:** Modular, incremental, and snapshot modeling; Data Vault 2.0; SCD Type 2
+- **AWS Cloud Infrastructure:** S3, Lambda, Glue, Kinesis, EC2, IAM
+- **Event-Driven & Telemetry Pipeline Design:** Real-time and near-real-time data ingestion and processing
+- **Azure & Multi-Cloud:** Azure Data Factory, ADLS Gen2, GCP
+- **Orchestration:** Airflow/Astronomer, Fivetran, Talend, SSIS, Pentaho
+- **Python / PySpark / SQL / PL-SQL:** ETL/ELT development, data transformation, automation
+- **Databricks & Big Data Ecosystem:** Hadoop, Hive, YARN, MapReduce, Apache Spark
+- **LLMs & MCP Integration:** LLM deployment (public & private), Model Context Protocol
+- **Team Leadership & Mentoring:** Cross-functional team leadership, technical roadmaps, engineer development
 
 ## Tech Stack
 
-### AI/LLM
-- Claude (Anthropic) - API integration, Claude Code power user (multi-agent orchestration: 5+ agents in parallel via tmux, inter-agent IPC via JSON, pre-compact memory persistence with Haiku, custom reusable skills)
-- OpenAI - Custom GPTs, tool use via OpenAPI
-- ElevenLabs - Voice AI integration
+### Data Warehousing
+- Snowflake (SnowPro Core Certified), Databricks, DuckDB, SQLite, MS SQL Server, Oracle
 
-### Automation Platforms
-- Airtable - Builder/Admin certified, used as headless CMS and ERP
-- n8n - Workflow automation, WhatsApp integration
-- Make - Advanced certified
-- Zapier
+### Transformation
+- dbt, PySpark, Polars, SQL, Python, PL/SQL
 
-### Integrations
-- Aircall (cloud PBX)
-- WATI (WhatsApp Business API)
-- YouCanBookMe (scheduling)
-- DataForSEO (search volume data)
+### Cloud & Infrastructure
+- AWS (S3, Lambda, Kinesis, Glue, EC2, IAM)
+- Azure (ADF, ADLS Gen2)
+- GCP
 
-### Development
-- Python, FastAPI
-- Node.js, JavaScript, TypeScript
-- React, Astro
-- SQL, GraphQL
-- Git, Vercel
+### Big Data
+- Hadoop, Hive, YARN, MapReduce, Apache Spark
+
+### Orchestration
+- Airflow/Astronomer, Azure Data Factory, Fivetran, Talend, SSIS, Pentaho
+
+### Visualization
+- Streamlit, Plotly, Tableau
+
+### AI/LLMs
+- LLM deployment (public & private), MCP (Model Context Protocol)
+
+### Languages
+- Python, SQL, PySpark, PL/SQL, JavaScript, TypeScript, Java, Scala
 
 ## Work Experience
 
-### Santifer iRepair (2009-2025) - Founder & Product Lead
-**Exit 2025:** Built, scaled and sold the business as a going concern
+### Associate Senior Data Engineer - Data Meaning (Fort Lauderdale, FL, Remote) | Sep 2020 - Present (5+ years)
 
-- Mobile, tablet and smartwatch repairs — +30,000 repairs completed
-- Led end-to-end transformation of service operations
-- Built internal ERP, CRM, booking system, and programmatic SEO website
-- Developed AI agent "Jacobo" achieving ~90% self-service
-- Created custom GPTs for stock/pricing queries via voice/natural language
-- Philosophy: automate everything possible to maximize value delivered
+- Snowflake ownership: architecture, performance tuning, cost optimization across multiple client environments
+- dbt modular modeling: incremental models, snapshot strategies, Data Vault 2.0 / SCD Type 2 patterns
+- AWS cloud pipelines: S3, Lambda, Glue, Kinesis for scalable data ingestion and processing
+- Event-driven & telemetry pipeline design: real-time data flows for operational and analytical use cases
+- Orchestration & CI/CD: Airflow/Astronomer, automated testing, deployment pipelines
+- LLM & MCP integration: deploying language models and Model Context Protocol for data workflows
+- Team leadership: mentoring engineers, driving technical roadmaps, cross-functional collaboration
+- Analytics & visualization: Streamlit dashboards, Plotly, Tableau reporting layers
 
-### Programmatic Web + Automated SEO (2024)
-Only one in the mobile repair sector in Spain:
-- Headless CMS in Airtable as source of truth
-- Integrated with ERP, generating Astro website
-- Pages per model/repair auto-generated
-- Search volume via DataForSEO for indexing decisions
-- Crawl budget optimization
+### Solutions Architect - Keyrus (Ribeirao Preto, Brazil) | Sep 2019 - Sep 2020
 
-### LICO Cosmetics (2024-2025) - Airtable Consultant
-Process and automation consulting for D2C cosmetics brand. Multiple sessions to drive efficiency and co-develop business workflows.
+- End-to-end data architecture design for enterprise clients
+- Pre-sales and delivery: technical discovery, solution scoping, client presentations
+- Cross-functional alignment between business stakeholders and engineering teams
 
-### Everis/NTT DATA (2007-2009) - Test Coordinator & Software Analyst
-Coordinated multi-vendor healthcare product testing: managed functional test suites for a team of 8 testers and acted as liaison with development, business consulting, and other project areas.
-- Built self-learning medical coding thesaurus (graph-based RL engine with automatic feedback loops)
-- Pioneer system pre-LLMs
+### Data Engineer - Keyrus (Ribeirao Preto, Brazil) | Jun 2018 - Sep 2019
+
+- ETL/ELT pipeline development and optimization
+- Data warehouse modeling and implementation
+- BI layers and reporting infrastructure
+
+### DBA / SysOps - Bluestorm Software (Ribeirao Preto, Brazil) | Jul 2017 - Jun 2018
+
+- Database administration and system operations
+
+### Oracle Database Specialist - Alcis (Ribeirao Preto, Brazil) | May 2015 - Jul 2017
+
+- Oracle database design, optimization, and administration
+
+### IT Support Analyst - Secretaria da Educacao do Estado de Sao Paulo | Sep 2014 - Jun 2015
+
+- IT infrastructure support and troubleshooting
 
 ## Education
 
-- **2025** - Maven: AI Product Management Bootcamp (led by Marily Nika, ex-Google PM). Winning project.
-- **2024** - BIGSEO: Master in Artificial Intelligence (Generative AI applied to business)
-- **2023** - BIGSEO: Master in SEO (Technical SEO, content and analytics)
-- **2001-2009** - ETSI Universidad de Sevilla: Telecommunications Engineering (Telematics specialization)
+- **MBA - Information, Technology and Innovation** | UFSCar (Universidade Federal de Sao Carlos)
+- **Bachelor of Information Systems** | UNIESP
 
 ## Certifications
 
-- **Anthropic (2026):** Introduction to Model Context Protocol
-- **Anthropic (2026):** Claude Code in Action
-- **Anthropic (2026):** Advanced MCP Topics
-- **Anthropic (2026):** Building with the Claude API
-- **Anthropic (2026):** AI Fluency: Framework & Foundations — Anthropic's 4D framework for AI interaction: effective, efficient, ethical, safe
-- **Anthropic (2026):** Teaching AI Fluency — Certified to teach AI Fluency to professionals and organizations
-- **Anthropic (2026):** AI Fluency for Educators
-- **Anthropic (2026):** AI Fluency for Students
-- **Airtable (2025):** AI App Builder Certification
-- **Airtable (2024):** Builder Certification
-- **Airtable (2024):** Admin Certification
-- **Make Academy (2024):** Make Advanced
+- **SnowPro Core Certification** - Snowflake
+- **Introduction to Big Data** - Coursera / UC San Diego
+- **Big Data Modeling and Management Systems** - Coursera / UC San Diego
+- **Founder Institute Graduate** - 2019 Cohort
 
-## Projects
+## Key Projects & Achievements
 
-### Content Digest (Maven Capstone)
-Python + FastAPI service for LLM-powered content ingestion and digest generation with eval loops and telemetry.
+### Snowflake Data Platform (Data Meaning)
+End-to-end ownership of Snowflake environments across multiple client engagements. Architecture design, performance tuning, cost optimization, and governance. SnowPro Core Certified.
 
-### Life OS (Private · On Request)
-Personal productivity system I built to run my life through conversation. Orchestrates Claude Code with native MCPs (Apple Reminders/Calendar, GitHub), 15 custom skills, 5 automation hooks, and semantic search (BM25 + SQLite FTS5). Pipes into Content Digest for a full knowledge loop and powers Career Ops for HITL automated job search.
+### dbt Modular Data Models
+Designed and implemented modular dbt projects with incremental models, snapshot strategies, and Data Vault 2.0 patterns. Standardized modeling practices across teams.
 
-### Career Ops (Private · On Request) — [Case Study](https://santifer.io/career-ops-system)
-AI job search tool built as a multi-agent system. 12 operational modes, 10-dimension scoring (A-F), AI resume builder that generates ATS-optimized PDFs per listing, automated job application with Playwright, batch processing 122 URLs in parallel (conductor + workers). 631 evaluations, 354 PDFs generated, 680 URLs deduplicated. HITL design: AI analyzes, I decide. Plugs into Life OS as a specialized skill.
+### Event-Driven Telemetry Pipelines
+Built real-time and near-real-time data pipelines using AWS (Kinesis, Lambda, S3, Glue) for operational telemetry and analytics across retail and fast food clients.
 
-### Claude Pulse (Open Source)
-SwiftBar plugin for real-time Claude Code usage monitoring on macOS. Consumption metrics and rate limit predictions.
+### LLM & MCP Integration
+Deployed language models (public and private) integrated with data workflows via Model Context Protocol for intelligent data processing and automation.
 
-### Claude Eye (Open Source)
-CLI that analyzes web animation videos frame-by-frame using Claude Vision. Detects CSS transition desyncs and generates reports with exact timestamps.
-
-### Claudeable (Open Source)
-Claude Code meta-project for professional web development. Custom skills, templates and pre-configured MCPs.
-
-### ProjectOS Predict (Maven Capstone)
-Risk prediction dashboard for project portfolios. ML model trained on synthetic data flags delays before they happen. Second capstone from Maven AI PM bootcamp (Marily Nika).
-
-### AI Solutions Playbook (Private · On Request)
-Productivity system for Solutions Architects working with multiple DTC clients. Context switching from 30min to 30sec, automatic guardrails for production operations, auto-generated SESSION_BRIEF on project open, ADRs and complete operation logging.
-
-### santifer.io (This Portfolio)
-Interactive CV with self-healing AI chatbot, voice mode (OpenAI Realtime API), and agentic observability. RAG pipeline (Supabase pgvector + OpenAI embeddings + Haiku reranking), 6-layer jailbreak defense (50+ keyword patterns, canary tokens, fingerprinting, anti-extract, real-time safety scoring, adversarial red team), 71 automated evals (10 categories including multi-turn, source badges, and voice) with CI gate, closed-loop improvement (trace-to-eval, adversarial testing, prompt versioning via Langfuse). Batch eval with Sonnet scores intent, quality, safety and jailbreak detection; alerts via Resend. Custom ops dashboard with 8 tabs: conversations, costs, RAG, security, evals, voice, prompts, system. Developer feedback loop: Claude Code queries Langfuse traces and generates fixes. <$0.005/conversation text, ~$0.25/session voice, $0 infrastructure.
-
-### Published Case Studies
-- [Career-Ops: AI Job Search Tool](https://santifer.io/career-ops-system): Multi-agent system for job search — 10D scoring, AI resume builder, batch processing 122 URLs, HITL design. 631 evaluations.
-- [The Self-Healing Chatbot](https://santifer.io/self-healing-chatbot): LLMOps case study — agentic observability, 71 evals, voice mode, closed-loop
-- [AI Agent Jacobo](https://santifer.io/ai-agent-jacobo): Omnichannel multi-agent AI — 90% self-service, voice + WhatsApp
-- [Business OS](https://santifer.io/business-os-for-airtable): Custom ERP with 12 Airtable bases, 2100 fields, 170h/month saved
-- [Programmatic SEO](https://santifer.io/programmatic-seo): 4,730 pages from Airtable as headless CMS, 2M+ impressions
-- [n8n for PMs](https://santifer.io/n8n-for-pms): Automation cheat sheet for product managers
-
-## Lightning Session: n8n for Product Managers (Maven, Feb 2026)
-
-Session taught at AI Product Academy (Maven, Marily Nika). Full material: https://santifer.io/n8n-for-pms
-
-**Problem:** PMs lose 20-30h/week on repetitive tasks (sprint reports, classifying feedback, moving data between tools). Santiago tracked 170h/month before automating.
-
-**Workflow 1 — The Automatable Friday:** Automated sprint report posted to Slack every Friday at 9am. 4 nodes: Schedule Trigger → Airtable (read sprint) → Code (group by assignee, format markdown) → Slack. No AI, pure plumbing. Saves 4-6h per sprint.
-
-**Workflow 2 — The Intelligent Router:** AI-powered feedback classification. Form Trigger → Basic LLM Chain (classify as BUG/FEATURE/QUESTION) → Switch (route by category) → Slack (different channel) + Airtable (log). One AI node turns a "dumb pipe" into a "smart pipe."
-
-**Classification prompt design:** Role, signal words per category, tiebreaker rule (bugs > features > questions), safe default (QUESTION if unclear), strict single-word output.
-
-**Universal pattern:** TRIGGER (when) → READ (get data) → PROCESS (transform/classify) → ACT (notify/log). Structure stays the same — only the prompt and data source change.
-
-**Key lessons:** Automate the boring task first. Your database already has 90% of the data. Automate the trigger, not just the task. Start with one workflow running reliably.
-
-Both workflows are downloadable as importable JSON from the cheat sheet.
-
-## Speaking & Teaching
-
-### AI Fluency Educator
-Certified by Anthropic to teach teams and organizations AI adoption. 4D Framework: Delegation (decide what to delegate), Description (communicate it well), Discernment (evaluate outputs), Diligence (collaborate responsibly). Applied as Teaching Fellow at Maven AI PM Bootcamp.
-
-### Teaching Fellow (2026) — Maven AI PM Bootcamp (Marily Nika)
-Teaching AI product managers to build and ship — not just define.
-
-### No-Code: The AI PM's Secret Weapon (2025) — Maven AI PM Bootcamp
-1h community session on no-code (Zapier, Make, n8n, Airtable) as the AI PM's superpower for faster validation and delivery.
-
-### Hiperautomatiza tu Pyme (2025) — Local Entrepreneurs, Seville
-Workshop on hyperautomation for SMEs: orchestration, RPA, AI and governance. Case study: Santifer iRepair.
-
-## LinkedIn (Technical Content with Real Engagement)
-
-- Post about chatbot security (300+ reactions, 50+ comments): how I detected a hack attempt in 3 seconds with Langfuse
-- Post about business opportunities in niches (115+ reactions, 10+ comments): market data analysis to find the next business
-- Post about Santifer iRepair exit (65+ reactions): 16-year narrative of building and the decision to sell
+### Cross-Industry Data Solutions
+Delivered scalable data architectures across retail, hospitality, healthcare, automotive, and fast food industries, adapting patterns to each domain's requirements.
 
 ## Soft Skills
 
-- Communication
-- Leadership
+- Technical Leadership
+- Cross-Functional Communication
 - Systems Thinking
 - End-to-End Ownership
-- Bias for Action
-- Influence without Authority
-- Dealing with Ambiguity
+- Mentoring & Coaching
+- Problem Solving
+- Stakeholder Management
 
 ## Languages
 
-- **Spanish:** Native
-- **English:** Professional fluency
+- **Portuguese:** Native
+- **English:** Native/Bilingual
+- **Spanish:** Limited Working
 
 ## What I'm Looking For
 
-Senior remote role in EU/USA to:
-- Lead process changes and AI implementation
-- Improve team experience and efficiency
-- Deliver results with clear metrics
+Senior remote role to:
+- Lead data engineering teams and drive technical strategy
+- Design and optimize large-scale data platforms (Snowflake, dbt, AWS)
+- Mentor engineers and build strong engineering culture
+- Deliver measurable business impact through data solutions
 
-## How to Hire Santiago
+## How to Hire Paulo
 
-For AI Product Manager, Solutions Architect, or Forward Deployed Engineer roles:
-- Email: hola@santifer.io
-- LinkedIn: linkedin.com/in/santifer
-- Website: santifer.io (chat with AI avatar for quick questions)
+For Senior Data Engineer, Staff Data Engineer, Data Engineering Manager, or Data Architect roles:
+- Email: paulovictordasilvarp@gmail.com
+- LinkedIn: linkedin.com/in/paulovi
+- Website: psilva.io

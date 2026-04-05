@@ -37,6 +37,7 @@ _backup_*/
 *.bak
 linkedin-post.md
 .env*.local
+.env.local
 .env.vercel
 .second-brain.yaml
 

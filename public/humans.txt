@@ -1,11 +1,11 @@
 /* TEAM */
-Builder: Santiago Fernandez de Valderrama Aparicio
+Builder: Paulo Victor Silva
 Role: AI Product Manager · Solutions Architect · Forward Deployed Engineer
-Contact: hi@santifer.io
-Site: https://santifer.io
-Location: Seville, Spain
-LinkedIn: https://linkedin.com/in/santifer
-GitHub: https://github.com/santifer
+Contact: hello@psilva.io
+Site: https://psilva.io
+Location: Rio de Janeiro, Brazil
+LinkedIn: https://linkedin.com/in/paulovi
+GitHub: https://github.com/paulosilva
 
 /* THANKS */
 AI Pair: Claude Code (Anthropic)
