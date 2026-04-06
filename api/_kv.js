@@ -4,7 +4,7 @@ import Redis from 'ioredis'
 let _kv = null
 export function getKv() {
   if (_kv) return _kv
-  const url = process.env.obs_redis_REDIS_URL
+  const url = process.env.obs_redis_REDIS_URL || process.env.REDIS_URL
   if (!url) return null
   _kv = new Redis(url, { maxRetriesPerRequest: 1, lazyConnect: true })
   return _kv
