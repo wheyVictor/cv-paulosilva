@@ -17,6 +17,7 @@ export const translations = {
   pt: {
     greeting: 'que constrói dados escaláveis',
     greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
+    heroCta: "Não quer rolar? Pergunte à minha IA",
     email: 'pvictor.business@gmail.com',
     role: 'Dados escaláveis, pipelines confiáveis.',
     story: {
@@ -599,6 +600,7 @@ export const translations = {
   en: {
     greeting: 'who builds scalable data',
     greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
+    heroCta: "Don't want to scroll? Ask my AI",
     email: 'pvictor.business@gmail.com',
     role: 'Scalable data, reliable pipelines.',
     story: {
