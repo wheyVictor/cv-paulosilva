@@ -45,9 +45,9 @@ export const aboutContent = {
       'Bacharelado em Sistemas de Informacao — UNIESP',
     ],
     pressHeading: 'Imprensa',
-    press: [],
+    press: [] as readonly { href: string; title: string; publisher: string; date: string }[],
     communityHeading: 'Comunidade',
-    community: [],
+    community: [] as readonly { href: string; title: string; platform: string }[],
     faqHeading: 'Perguntas frequentes',
     faq: [
       { q: 'Quem e Paulo Victor Silva?', a: 'Paulo Victor Silva e um Tech Lead Senior em Engenharia de Dados com mais de 10 anos de experiencia. Atualmente lidera engenharia de dados na Data Meaning, especializado em Snowflake, dbt e AWS.' },
@@ -101,9 +101,9 @@ export const aboutContent = {
       'Bachelor of Information Systems — UNIESP',
     ],
     pressHeading: 'Press',
-    press: [],
+    press: [] as readonly { href: string; title: string; publisher: string; date: string }[],
     communityHeading: 'Community',
-    community: [],
+    community: [] as readonly { href: string; title: string; platform: string }[],
     faqHeading: 'Frequently Asked Questions',
     faq: [
       { q: 'Who is Paulo Victor Silva?', a: 'Paulo Victor Silva is a Senior Tech Lead in Data Engineering with 10+ years of experience. Currently leading data engineering at Data Meaning, specialized in Snowflake, dbt, and AWS.' },

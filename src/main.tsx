@@ -87,7 +87,7 @@ function GlobalChat() {
 
 
 function ConditionalNav() {
-  const { pathname } = useLocation()
+  useLocation() // trigger re-render on navigation
   return <GlobalNav />
 }
 

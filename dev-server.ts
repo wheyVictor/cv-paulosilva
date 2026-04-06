@@ -55,7 +55,7 @@ export function devApiProxy(): Plugin {
         }
 
         const recentMessages = messages.slice(-20).map((m: { role: string; content: string }) => ({
-          role: m.role === 'assistant' ? 'assistant' : 'user',
+          role: m.role === 'assistant' ? 'assistant' as const : 'user' as const,
           content: String(m.content || '').slice(0, 2000),
         }))
 
