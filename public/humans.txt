@@ -1,7 +1,7 @@
 /* TEAM */
 Builder: Paulo Victor Silva
 Role: AI Product Manager · Solutions Architect · Forward Deployed Engineer
-Contact: hello@psilva.io
+Contact: pvictor.business@gmail.com
 Site: https://psilva.io
 Location: Rio de Janeiro, Brazil
 LinkedIn: https://linkedin.com/in/paulovi

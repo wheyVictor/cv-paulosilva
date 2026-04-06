@@ -1,15 +1,15 @@
 export const seo = {
   pt: {
     title:
-      'Paulo Silva | Senior Tech Lead · Data Engineering · Snowflake · dbt · Multi Cloud',
+      'Paulo Silva | Data Engineer · Automação Empresarial · AI Engineer | A.A.T',
     description:
-      'Senior Tech Lead - Data Engineering com 10+ anos de experiência. Snowflake (SnowPro Core), dbt, AWS, pipelines de dados escaláveis. Atualmente na Data Meaning.',
+      'Engenheiro de Dados, Especialista em Automação Empresarial e AI Engineer. 300+ empresas automatizadas desde 2018. Snowflake, dbt, AWS, Claude, MCP, RAG.',
   },
   en: {
     title:
-      'Paulo Silva | Senior Tech Lead · Data Engineering · Snowflake · dbt · Multi Cloud',
+      'Paulo Silva | Data Engineer · Business Automation · AI Engineer | A.A.T',
     description:
-      'Senior Tech Lead - Data Engineering with 10+ years of experience. Snowflake (SnowPro Core), dbt, AWS, scalable data pipelines. Currently at Data Meaning.',
+      'Data Engineer, Business Automation Specialist & AI Engineer. 300+ businesses automated since 2018. Snowflake, dbt, AWS, Claude, MCP, RAG.',
   },
 };
 

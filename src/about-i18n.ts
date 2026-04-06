@@ -5,7 +5,7 @@ export const aboutContent = {
     slug: 'sobre-mim',
     altSlug: 'about',
     seo: {
-      title: 'Paulo Victor Silva | Senior Tech Lead - Data Engineering',
+      title: 'Paulo Victor Silva | Data Engineer · Automação · AI Engineer',
       description: 'Tech Lead Senior em Engenharia de Dados com mais de 10 anos de experiencia. Especializado em Snowflake, dbt e AWS. Atualmente na Data Meaning.',
     },
     heading: 'Paulo Victor Silva',
@@ -61,7 +61,7 @@ export const aboutContent = {
     slug: 'about',
     altSlug: 'sobre-mim',
     seo: {
-      title: 'Paulo Victor Silva | Senior Tech Lead - Data Engineering',
+      title: 'Paulo Victor Silva | Data Engineer · Automation · AI Engineer',
       description: 'Senior Tech Lead in Data Engineering with 10+ years of experience. Specialized in Snowflake, dbt, and AWS. Currently at Data Meaning.',
     },
     heading: 'Paulo Victor Silva',
