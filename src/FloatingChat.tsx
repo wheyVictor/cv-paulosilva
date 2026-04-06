@@ -24,12 +24,15 @@ const SUGGESTIONS = {
 }
 
 export default function FloatingChat({ lang, externalOpen, onOpenChange }: { lang: 'pt' | 'en'; externalOpen?: boolean; onOpenChange?: (open: boolean) => void }) {
-  const [openInternal, setOpenInternal] = useState(false)
-  const open = externalOpen !== undefined ? externalOpen : openInternal
+  const [open, setOpenInternal] = useState(false)
   const setOpen = useCallback((value: boolean) => {
     setOpenInternal(value)
     onOpenChange?.(value)
   }, [onOpenChange])
+
+  useEffect(() => {
+    if (externalOpen) setOpenInternal(true)
+  }, [externalOpen])
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)
