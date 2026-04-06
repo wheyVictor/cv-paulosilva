@@ -13,12 +13,6 @@ import {
   Tooltip,
 } from 'recharts'
 import { Activity } from 'lucide-react'
-import {
-  generateTimeSeries,
-  generateCountryData,
-  generateSourceData,
-  generateKpis,
-} from './observability-data'
 import { useObservabilityData } from './use-observability-data'
 import {
   useSessionDuration,
@@ -93,28 +87,6 @@ function ScrollDepthCard({ label }: { label: string }) {
   )
 }
 
-function generateSimulatedEvents(t: Record<string, string>): LiveEvent[] {
-  const cities = ['Berlin', 'São Paulo', 'London', 'New York', 'Lisboa']
-  const now = new Date()
-  return Array.from({ length: 5 }, (_, i) => {
-    const d = new Date(now.getTime() - (5 - i) * 47000)
-    const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`
-    const templates = [
-      t.viewedProjects?.replace('{city}', cities[i % cities.length]),
-      t.viewedExperience?.replace('{city}', cities[(i + 1) % cities.length]),
-      t.chatStarted,
-      t.themeChanged?.replace('{theme}', 'dark'),
-      t.langSwitched?.replace('{lang}', 'EN'),
-    ]
-    return {
-      id: i,
-      time,
-      event: templates[i % templates.length] ?? '',
-      source: 'web',
-    }
-  })
-}
-
 /* ---------- KPI count-up hook ---------- */
 function useCountUp(target: number, trigger: boolean, duration = 1500): number {
   const [value, setValue] = useState(0)
@@ -153,41 +125,29 @@ export default function ObservabilitySection({ lang, t, AnimatedSection }: Props
   /* time range state */
   const [range, setRange] = useState<TimeRange>('30d')
 
-  /* real data from API, with mock fallback */
+  /* real data from API */
   const { data: apiData } = useObservabilityData()
 
   /* chart data */
   const timeSeries = useMemo(() => {
-    if (apiData?.timeSeries?.length) {
-      const days = daysFor[range]
-      return apiData.timeSeries.slice(-days)
-    }
-    return generateTimeSeries(daysFor[range])
+    const days = daysFor[range]
+    return (apiData?.timeSeries ?? []).slice(-days)
   }, [range, apiData])
 
   const countryData = useMemo(() => {
-    if (apiData?.countries?.length) {
-      return apiData.countries
-        .map((c) => ({ key: c.key, name: countryLabels[c.key] ?? c.key, value: c.value }))
-        .sort((a, b) => b.value - a.value)
-    }
-    return generateCountryData(countryLabels)
+    return (apiData?.countries ?? [])
+      .map((c) => ({ key: c.key, name: countryLabels[c.key] ?? c.key, value: c.value }))
+      .sort((a, b) => b.value - a.value)
   }, [lang, apiData, countryLabels])
 
   const sourceData = useMemo(() => {
-    if (apiData?.sources?.length) {
-      return apiData.sources
-        .map((s) => ({ key: s.key, name: sourceLabels[s.key] ?? s.key, value: s.value }))
-        .sort((a, b) => b.value - a.value)
-    }
-    return generateSourceData(sourceLabels)
+    return (apiData?.sources ?? [])
+      .map((s) => ({ key: s.key, name: sourceLabels[s.key] ?? s.key, value: s.value }))
+      .sort((a, b) => b.value - a.value)
   }, [lang, apiData, sourceLabels])
 
   const kpis = useMemo(() => {
-    if (apiData?.kpis && apiData.kpis.visitors > 0) {
-      return apiData.kpis
-    }
-    return generateKpis()
+    return apiData?.kpis ?? { visitors: 0, countries: 0, conversations: 0 }
   }, [apiData])
 
   /* live telemetry — timer and scroll are isolated in their own components to avoid re-rendering charts */
@@ -200,8 +160,8 @@ export default function ObservabilitySection({ lang, t, AnimatedSection }: Props
         source: e.source,
       }))
     }
-    return generateSimulatedEvents(eventStrings)
-  }, [apiData, eventStrings])
+    return []
+  }, [apiData])
 
   const { events, pushEvent } = useEventLog(apiEvents)
 
