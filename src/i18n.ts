@@ -544,6 +544,10 @@ export const translations = {
       desc: 'Busco um cargo remoto sênior onde possa liderar engenharia de dados, projetar arquiteturas escaláveis e entregar pipelines confiáveis.',
       contact: 'Contato',
     },
+    whatsappCta: {
+      label: 'Fale comigo no WhatsApp',
+      message: 'Olá Paulo! Vi seu site e gostaria de saber mais sobre automação para minha empresa.',
+    },
     ui: {
       languageBanner: 'This site is available in English',
       languageBannerSwitch: 'Switch to EN',
@@ -1130,6 +1134,10 @@ export const translations = {
       title: "Let's talk",
       desc: 'Looking for a senior remote role where I can lead data engineering, design scalable architectures, and deliver reliable pipelines.',
       contact: 'Contact',
+    },
+    whatsappCta: {
+      label: 'Chat on WhatsApp',
+      message: 'Hi Paulo! I saw your website and would like to know more about automation for my business.',
     },
     ui: {
       languageBanner: 'Este site está disponível em Português',
