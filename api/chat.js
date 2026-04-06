@@ -78,7 +78,7 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://psilva.io')
 
     const stream = client.messages.stream({
-      model: 'claude-3-haiku-20240307',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 800,
       system: systemPrompt + langNote,
       messages: recentMessages,
