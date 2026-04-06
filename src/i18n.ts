@@ -16,7 +16,7 @@ export const seo = {
 export const translations = {
   pt: {
     greeting: 'que constrói dados escaláveis',
-    greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
+    greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
     email: 'pvictor.business@gmail.com',
     role: 'Dados escaláveis, pipelines confiáveis.',
     story: {
@@ -68,20 +68,17 @@ export const translations = {
       p2Highlight: 'ingestão → transformação → modelagem → visualização → adoção',
       p2End: ', liderando equipes cross-funcionais e definindo roadmaps técnicos.',
       cards: [
-        {
-          title: 'Arquitetura Snowflake',
-          desc: 'Design de schemas, otimização de performance, clustering keys, gestão de custos (SnowPro Core)',
-        },
-        {
-          title: 'Modelagem dbt',
-          desc: 'Modelos modulares, incrementais e snapshots. Data Vault 2.0, SCD Type 2, testes e documentação',
-        },
-        {
-          title: 'Liderança Técnica',
-          desc: 'Mentoria de engenheiros, code reviews, roadmaps técnicos, balanço 80/20 hands-on/liderança',
-        },
+        { title: 'Data Engineering', desc: 'Pipelines escaláveis, dados confiáveis. Snowflake, dbt, AWS.' },
+        { title: 'Automação Empresarial', desc: '300+ empresas no piloto automático. 8 anos, zero erros.' },
+        { title: 'AI Engineering', desc: 'LLMs, MCP, RAG em produção. Claude, GPT, AI PM.' },
       ],
     },
+    statsBanner: [
+      { value: '10+', label: 'anos de experiência' },
+      { value: '300+', label: 'clientes atendidos' },
+      { value: '8', label: 'anos sem erros' },
+      { value: '0', label: 'pacotes de suporte' },
+    ],
     coreCompetencies: {
       title: 'Competências Principais',
       items: [
@@ -572,7 +569,7 @@ export const translations = {
   },
   en: {
     greeting: 'who builds scalable data',
-    greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
+    greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
     email: 'pvictor.business@gmail.com',
     role: 'Scalable data, reliable pipelines.',
     story: {
@@ -624,20 +621,17 @@ export const translations = {
       p2Highlight: 'ingestion → transformation → modeling → visualization → adoption',
       p2End: ', leading cross-functional teams and driving technical roadmaps.',
       cards: [
-        {
-          title: 'Snowflake Architecture',
-          desc: 'Schema design, performance optimization, clustering keys, cost management (SnowPro Core)',
-        },
-        {
-          title: 'dbt Modeling',
-          desc: 'Modular, incremental, and snapshot models. Data Vault 2.0, SCD Type 2, testing and documentation',
-        },
-        {
-          title: 'Technical Leadership',
-          desc: 'Engineer mentoring, code reviews, technical roadmaps, 80/20 hands-on/leadership balance',
-        },
+        { title: 'Data Engineering', desc: 'Scalable pipelines, reliable data. Snowflake, dbt, AWS.' },
+        { title: 'Business Automation', desc: '300+ businesses on autopilot. 8 years, zero errors.' },
+        { title: 'AI Engineering', desc: 'LLMs, MCP, RAG in production. Claude, GPT, AI PM.' },
       ],
     },
+    statsBanner: [
+      { value: '10+', label: 'years of experience' },
+      { value: '300+', label: 'clients served' },
+      { value: '8', label: 'years error-free' },
+      { value: '0', label: 'support packages' },
+    ],
     coreCompetencies: {
       title: 'Core Competencies',
       items: [
