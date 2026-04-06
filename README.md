@@ -1,4 +1,4 @@
-# psilva.io
+# paulosilva.autoall.tech
 
 Interactive bilingual portfolio (PT-BR / EN) with AI chatbot, observability dashboard, and data storytelling.
 
