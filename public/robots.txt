@@ -1,7 +1,6 @@
-# Most bots crawl. The best ones read llms.txt → /llms.txt
-#
-# Built by Paulo Silva — hello@psilva.io
-# Stack: React 19 · Claude API · Vercel Edge · 71 evals · 6-layer defense · voice mode
+# A.A.T (Auto All Tech) — Conquiste o tempo
+# Built by Paulo Silva — pvictor.business@gmail.com
+# Data Engineering · Business Automation · AI Engineering
 
 User-agent: *
 Allow: /
@@ -27,4 +26,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://psilva.io/sitemap.xml
+Sitemap: https://paulosilva.autoall.tech/sitemap.xml

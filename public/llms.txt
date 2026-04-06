@@ -1,18 +1,29 @@
 # Paulo Victor Silva
 
-> Senior Tech Lead - Data Engineering
+> Data Engineer · Business Automation Specialist · AI Engineer
 
 ## Contact & Availability
 
 - **Location:** Rio de Janeiro, Brazil
 - **Open to:** Remote roles (US/Global)
-- **Email:** paulovictordasilvarp@gmail.com
+- **Email:** pvictor.business@gmail.com
 - **Website:** https://psilva.io
 - **LinkedIn:** https://linkedin.com/in/paulovi
 
 ## Professional Summary
 
-Data Engineer and Architect with 10+ years of experience designing and delivering scalable data solutions across retail, hospitality, healthcare, automotive, and fast food industries. Currently leading data engineering at Data Meaning (5+ years), with deep expertise in Snowflake architecture, performance tuning, and cost optimization (SnowPro Core Certified), dbt modular and incremental modeling, and AWS cloud infrastructure (S3, Lambda, Glue, Kinesis). Proven track record leading cross-functional teams, driving technical roadmaps, and mentoring engineers.
+Data Engineer, Business Automation Specialist, and AI Engineer with 10+ years of experience. Has automated 300+ businesses since 2018, eliminating manual processes across invoicing (nota fiscal), CRM, WhatsApp, ERP integrations, and spreadsheets — with zero support tickets. Deep expertise in Snowflake architecture, dbt modeling, and AWS cloud infrastructure (SnowPro Core Certified). AI Engineering experience includes Claude Code, MCP servers, RAG pipelines, LLM integrations, and AI product management. Currently leading data engineering at Data Meaning (5+ years).
+
+## Three Pillars
+
+### 1. Data Engineering
+Snowflake, dbt, AWS, scalable data pipelines, Data Vault 2.0, event-driven and telemetry pipelines, multi-cloud architecture.
+
+### 2. Business Automation
+300+ businesses automated since 2018. Processes, spreadsheets, nota fiscal, CRM, WhatsApp, ERP integrations, RPA, web scraping with Playwright. Zero support tickets.
+
+### 3. AI Engineering
+Claude Code, MCP servers, RAG pipelines, LLM integrations, AI product management, private and public LLM deployment, Model Context Protocol.
 
 ## Target Roles
 
@@ -20,18 +31,20 @@ Data Engineer and Architect with 10+ years of experience designing and deliverin
 2. **Staff Data Engineer** - Technical leadership, architecture decisions, cross-team data strategy
 3. **Data Engineering Manager** - Team leadership, roadmap ownership, engineering culture
 4. **Data Architect** - End-to-end data platform design, governance, and modeling standards
+5. **AI Engineer / AI Product Manager** - LLM integration, MCP, RAG, agentic workflows
 
 ## Core Competencies
 
 - **Snowflake Architecture & Cost Optimization:** SnowPro Core Certified, performance tuning, warehouse sizing, query optimization
 - **dbt Modeling:** Modular, incremental, and snapshot modeling; Data Vault 2.0; SCD Type 2
 - **AWS Cloud Infrastructure:** S3, Lambda, Glue, Kinesis, EC2, IAM
+- **Business Automation:** 300+ clients, nota fiscal, CRM, WhatsApp, ERP, RPA, Playwright
+- **AI Engineering:** Claude Code, MCP Servers, RAG, LLM deployment, AI product management
 - **Event-Driven & Telemetry Pipeline Design:** Real-time and near-real-time data ingestion and processing
 - **Azure & Multi-Cloud:** Azure Data Factory, ADLS Gen2, GCP
 - **Orchestration:** Airflow/Astronomer, Fivetran, Talend, SSIS, Pentaho
 - **Python / PySpark / SQL / PL-SQL:** ETL/ELT development, data transformation, automation
 - **Databricks & Big Data Ecosystem:** Hadoop, Hive, YARN, MapReduce, Apache Spark
-- **LLMs & MCP Integration:** LLM deployment (public & private), Model Context Protocol
 - **Team Leadership & Mentoring:** Cross-functional team leadership, technical roadmaps, engineer development
 
 ## Tech Stack
@@ -57,7 +70,10 @@ Data Engineer and Architect with 10+ years of experience designing and deliverin
 - Streamlit, Plotly, Tableau
 
 ### AI/LLMs
-- LLM deployment (public & private), MCP (Model Context Protocol)
+- Claude Code, MCP Servers, RAG Pipelines, LLM deployment (public & private), AI product management
+
+### Business Automation
+- RPA, Web Scraping, Playwright, Nota Fiscal Automation, WhatsApp Automation, ERP Integration, CRM Automation
 
 ### Languages
 - Python, SQL, PySpark, PL/SQL, JavaScript, TypeScript, Java, Scala
@@ -86,6 +102,7 @@ Data Engineer and Architect with 10+ years of experience designing and deliverin
 - ETL/ELT pipeline development and optimization
 - Data warehouse modeling and implementation
 - BI layers and reporting infrastructure
+- Business automation: nota fiscal, CRM, ERP integrations for enterprise clients
 
 ### DBA / SysOps - Bluestorm Software (Ribeirao Preto, Brazil) | Jul 2017 - Jun 2018
 
@@ -113,6 +130,9 @@ Data Engineer and Architect with 10+ years of experience designing and deliverin
 
 ## Key Projects & Achievements
 
+### Business Automation at Scale (2018–Present)
+Automated 300+ businesses across Brazil and Latin America. Processes include nota fiscal emission, CRM automation, WhatsApp business workflows, ERP integrations, and spreadsheet elimination. Zero support tickets track record.
+
 ### Snowflake Data Platform (Data Meaning)
 End-to-end ownership of Snowflake environments across multiple client engagements. Architecture design, performance tuning, cost optimization, and governance. SnowPro Core Certified.
 
@@ -122,8 +142,8 @@ Designed and implemented modular dbt projects with incremental models, snapshot 
 ### Event-Driven Telemetry Pipelines
 Built real-time and near-real-time data pipelines using AWS (Kinesis, Lambda, S3, Glue) for operational telemetry and analytics across retail and fast food clients.
 
-### LLM & MCP Integration
-Deployed language models (public and private) integrated with data workflows via Model Context Protocol for intelligent data processing and automation.
+### AI Engineering & MCP Integration
+Deployed language models (public and private) integrated with data workflows via Model Context Protocol. Built RAG pipelines and Claude Code-powered agentic workflows for intelligent data processing and automation.
 
 ### Cross-Industry Data Solutions
 Delivered scalable data architectures across retail, hospitality, healthcare, automotive, and fast food industries, adapting patterns to each domain's requirements.
@@ -149,12 +169,13 @@ Delivered scalable data architectures across retail, hospitality, healthcare, au
 Senior remote role to:
 - Lead data engineering teams and drive technical strategy
 - Design and optimize large-scale data platforms (Snowflake, dbt, AWS)
+- Build AI-powered automation and agentic workflows
 - Mentor engineers and build strong engineering culture
 - Deliver measurable business impact through data solutions
 
 ## How to Hire Paulo
 
-For Senior Data Engineer, Staff Data Engineer, Data Engineering Manager, or Data Architect roles:
-- Email: paulovictordasilvarp@gmail.com
+For Senior Data Engineer, Staff Data Engineer, Data Engineering Manager, Data Architect, or AI Engineer roles:
+- Email: pvictor.business@gmail.com
 - LinkedIn: linkedin.com/in/paulovi
 - Website: psilva.io
