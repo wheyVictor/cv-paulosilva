@@ -3,6 +3,7 @@ import { systemPrompt as embeddedPrompt } from './_prompt.js'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { getKv, todayKey } from './_kv.js'
 
 export const config = { runtime: 'nodejs', maxDuration: 30 }
 
@@ -86,14 +87,30 @@ export default async function handler(req, res) {
       messages: recentMessages,
     })
 
+    let outputTokens = 0
     for await (const event of stream) {
       if (event.type === 'content_block_delta' && event.delta?.type === 'text_delta') {
         res.write(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`)
+      }
+      if (event.type === 'message_delta' && event.usage?.output_tokens) {
+        outputTokens = event.usage.output_tokens
       }
     }
 
     res.write('data: [DONE]\n\n')
     res.end()
+
+    // Fire-and-forget: write chat stats to KV
+    const kv = getKv()
+    if (kv) {
+      const date = todayKey()
+      const inputTokens = recentMessages.reduce((s, m) => s + m.content.length / 4, 0)
+      const totalTokens = Math.round(inputTokens) + outputTokens
+      const cost = totalTokens * 0.000001 // Haiku 4.5 approximate cost
+      kv.incr(`chat:${date}:conversations`).catch(() => {})
+      kv.incrby(`chat:${date}:tokens`, totalTokens).catch(() => {})
+      kv.incrbyfloat(`chat:${date}:cost`, cost).catch(() => {})
+    }
   } catch (err) {
     console.error('Chat error:', err.message)
     if (!res.headersSent) {
