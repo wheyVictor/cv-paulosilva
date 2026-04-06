@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { MapPin, Mail, ExternalLink, Award, GraduationCap, Briefcase, ChevronRight, Clock, Newspaper, HelpCircle, Users } from 'lucide-react'
+import { MapPin, Mail, ExternalLink, Award, GraduationCap, Briefcase, Clock, Newspaper, HelpCircle, Users } from 'lucide-react'
 import { aboutContent, type AboutLang } from './about-i18n'
 
 const SOCIAL_LINKS = [
@@ -164,17 +164,15 @@ export default function AboutPage({ lang = 'pt' }: { lang?: AboutLang }) {
           </h2>
           <div className="space-y-2">
             {t.projects.map((project) => (
-              <Link
+              <div
                 key={project.name}
-                to={project.href}
-                className="flex items-center justify-between p-3 rounded-lg bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                className="flex items-center justify-between p-3 rounded-lg bg-card border border-border"
               >
                 <div>
-                  <p className="font-medium text-foreground text-sm group-hover:text-primary transition-colors">{project.name}</p>
+                  <p className="font-medium text-foreground text-sm">{project.name}</p>
                   <p className="text-xs text-muted-foreground">{project.desc}</p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
-              </Link>
+              </div>
             ))}
           </div>
         </section>

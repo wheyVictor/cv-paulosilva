@@ -1946,20 +1946,20 @@ function App() {
                           <h3 className="font-display font-semibold mt-1 group-hover:text-primary transition-colors">{item.title}</h3>
                           <p className="text-sm text-muted-foreground mt-1">
                             {item.desc}
-                            {('projectLink' in item && item.projectLink) && (
+                            {'projectLink' in item && (item as Record<string, unknown>).projectLink ? (
                               <>
                                 {' '}
                                 <a
-                                  href={`https://${item.projectLink}`}
+                                  href={`https://${(item as Record<string, unknown>).projectLink}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1 text-primary hover:underline"
                                 >
-                                  {item.projectLabel}
+                                  {(item as Record<string, unknown>).projectLabel as string}
                                   <ExternalLink className="w-3 h-3" aria-hidden="true" />
                                 </a>
                               </>
-                            )}
+                            ) : null}
                           </p>
                         </div>
                       </div>

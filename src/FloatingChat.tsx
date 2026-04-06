@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, Send, Loader2, MessageSquare, Briefcase, Rocket, HelpCircle, Mail } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { translations } from './i18n'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -31,8 +30,6 @@ export default function FloatingChat({ lang }: { lang: 'pt' | 'en' }) {
   const [streaming, setStreaming] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
-
-  const t = translations[lang]
 
   const scrollToBottom = useCallback(() => {
     requestAnimationFrame(() => {
