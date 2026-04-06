@@ -31,6 +31,9 @@ CLAUDE.md
 **/.claude/
 chatbot/audit/
 
+# Chatbot system prompt (contains internal rules — never publish)
+chatbot-prompt.txt
+
 # Backups and drafts
 backup/
 _backup_*/
