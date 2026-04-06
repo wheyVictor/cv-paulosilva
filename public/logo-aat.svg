@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" fill="none" role="img" aria-label="A.A.T — Auto All Tech">
+  <defs>
+    <!-- Primary gradient: electric blue to cyan -->
+    <linearGradient id="grad-main" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#20d6ee"/>
+      <stop offset="100%" stop-color="#0e7fff"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Subtle drop shadow for text -->
+    <filter id="text-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!--  ABSTRACT MARK  (80×80, centred at 70,80)          -->
+  <!-- Concept: an infinite loop / Möbius-like ring        -->
+  <!-- broken into three arcs that form implied "A"s       -->
+  <!-- while suggesting rotation / time cycle              -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- Outer ring — full circle ghost track -->
+  <circle cx="70" cy="80" r="38" stroke="#20d6ee" stroke-width="1" stroke-opacity="0.18" fill="none"/>
+
+  <!-- Arc 1 — top-right quadrant, thicker, full gradient -->
+  <path d="M70 42 A38 38 0 0 1 108 80" stroke="url(#grad-main)" stroke-width="5" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+
+  <!-- Arc 2 — bottom half sweeping left -->
+  <path d="M108 80 A38 38 0 0 1 32 80" stroke="url(#grad-main)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+  <!-- Arc 3 — top-left quadrant closing, thinner -->
+  <path d="M32 80 A38 38 0 0 1 70 42" stroke="url(#grad-main)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.45"/>
+
+  <!-- Inner chevron — implied "A" vertex, geometric midpoint marker -->
+  <path d="M52 88 L70 52 L88 88" stroke="url(#grad-main)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+  <!-- Crossbar of the implied A -->
+  <line x1="59" y1="76" x2="81" y2="76" stroke="#20d6ee" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Tiny orbit dot — suggests rotation / time hand -->
+  <circle cx="70" cy="42" r="3.5" fill="#20d6ee" filter="url(#glow)"/>
+  <!-- Orbit counter-point -->
+  <circle cx="108" cy="80" r="2" fill="#20d6ee" opacity="0.5"/>
+
+  <!-- Inner negative-space triangle — creates depth / mystery -->
+  <polygon points="70,60 62,74 78,74" fill="#20d6ee" fill-opacity="0.08"/>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!--  LOGOTYPE                                          -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- "A.A.T" — display letters -->
+  <text
+    x="130" y="95"
+    font-family="'Space Grotesk', 'Inter', system-ui, sans-serif"
+    font-size="52"
+    font-weight="700"
+    letter-spacing="-1"
+    fill="url(#grad-main)"
+    filter="url(#text-glow)"
+  >A.A.T</text>
+
+  <!-- Hairline rule between logotype and tagline -->
+  <line x1="130" y1="105" x2="465" y2="105" stroke="#20d6ee" stroke-width="0.6" stroke-opacity="0.35"/>
+
+  <!-- Tagline — English primary, Portuguese secondary (both included, switcher in React) -->
+  <!-- English tagline -->
+  <text
+    id="aat-tagline-en"
+    x="131" y="120"
+    font-family="'DM Sans', 'Inter', system-ui, sans-serif"
+    font-size="11.5"
+    font-weight="400"
+    letter-spacing="3.5"
+    fill="#20d6ee"
+    fill-opacity="0.65"
+    text-transform="uppercase"
+  >CONQUER TIME</text>
+
+  <!-- Portuguese tagline (hidden by default — shown via CSS class or React swap) -->
+  <text
+    id="aat-tagline-pt"
+    x="131" y="120"
+    font-family="'DM Sans', 'Inter', system-ui, sans-serif"
+    font-size="11.5"
+    font-weight="400"
+    letter-spacing="3"
+    fill="#20d6ee"
+    fill-opacity="0.65"
+    visibility="hidden"
+  >CONQUISTE O TEMPO</text>
+
+</svg>

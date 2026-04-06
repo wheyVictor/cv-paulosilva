@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" role="img" aria-label="A.A.T mark">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#20d6ee"/>
+      <stop offset="100%" stop-color="#0e7fff"/>
+    </linearGradient>
+    <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ghost track ring -->
+  <circle cx="40" cy="40" r="34" stroke="#20d6ee" stroke-width="0.8" stroke-opacity="0.2" fill="none"/>
+
+  <!-- Arc 1 — primary, top-right -->
+  <path d="M40 6 A34 34 0 0 1 74 40" stroke="url(#g)" stroke-width="5" stroke-linecap="round" fill="none" filter="url(#gl)"/>
+
+  <!-- Arc 2 — secondary, bottom sweep -->
+  <path d="M74 40 A34 34 0 0 1 6 40" stroke="url(#g)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.65"/>
+
+  <!-- Arc 3 — tertiary, closing top-left -->
+  <path d="M6 40 A34 34 0 0 1 40 6" stroke="url(#g)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+
+  <!-- Implied A chevron -->
+  <path d="M24 50 L40 16 L56 50" stroke="url(#g)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none" filter="url(#gl)"/>
+
+  <!-- Crossbar -->
+  <line x1="31" y1="40" x2="49" y2="40" stroke="#20d6ee" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Orbit apex dot -->
+  <circle cx="40" cy="6" r="3.5" fill="#20d6ee" filter="url(#gl)"/>
+  <circle cx="74" cy="40" r="2" fill="#20d6ee" opacity="0.5"/>
+
+  <!-- Inner fill triangle -->
+  <polygon points="40,24 33,38 47,38" fill="#20d6ee" fill-opacity="0.09"/>
+</svg>

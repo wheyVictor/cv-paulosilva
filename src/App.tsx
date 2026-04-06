@@ -1440,6 +1440,30 @@ function App() {
             </motion.div>
           </div>
 
+          {/* A.A.T brand badge */}
+          <motion.div
+            initial={hydrated ? { opacity: 0, y: 8 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex items-center gap-3 mb-6"
+          >
+            <img
+              src="/logo-aat-mark.svg"
+              alt="A.A.T mark"
+              className="w-9 h-9 flex-shrink-0"
+              width={36}
+              height={36}
+            />
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-sm font-bold tracking-widest" style={{ color: '#20d6ee' }}>
+                A.A.T
+              </span>
+              <span className="text-xs tracking-[0.22em] uppercase" style={{ color: '#20d6ee', opacity: 0.6 }}>
+                {lang === 'pt' ? 'Conquiste o tempo' : 'Conquer time'}
+              </span>
+            </div>
+          </motion.div>
+
           {/* Role pills */}
           <div className="flex flex-wrap gap-3 mb-8">
             {t.greetingRoles.map((role, i) => (
