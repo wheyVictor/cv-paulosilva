@@ -23,20 +23,12 @@ const SUGGESTIONS = {
   ],
 }
 
-export default function FloatingChat({ lang, externalOpen, onOpenChange }: { lang: 'pt' | 'en'; externalOpen?: boolean; onOpenChange?: (open: boolean) => void }) {
-  const [open, setOpenInternal] = useState(false)
-  const setOpen = useCallback((value: boolean) => {
-    setOpenInternal(value)
-    onOpenChange?.(value)
-  }, [onOpenChange])
+export default function FloatingChat({ lang }: { lang: 'pt' | 'en' }) {
+  const [open, setOpen] = useState(false)
 
+  // Listen for global open event (hero CTA button)
   useEffect(() => {
-    if (externalOpen) setOpenInternal(true)
-  }, [externalOpen])
-
-  // Listen for global open event directly
-  useEffect(() => {
-    const handler = () => setOpenInternal(true)
+    const handler = () => setOpen(true)
     window.addEventListener('open-floating-chat', handler)
     return () => window.removeEventListener('open-floating-chat', handler)
   }, [])
