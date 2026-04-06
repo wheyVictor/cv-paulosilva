@@ -146,6 +146,10 @@ export const translations = {
           name: 'AI / LLMs',
           items: ['LLM deployment', 'MCP (Model Context Protocol)'],
         },
+        {
+          name: 'Automação & Web Scraping',
+          items: ['RPA', 'Web Scraping', 'Playwright'],
+        },
       ],
     },
     projects: {
@@ -728,6 +732,10 @@ export const translations = {
         {
           name: 'AI / LLMs',
           items: ['LLM deployment', 'MCP (Model Context Protocol)'],
+        },
+        {
+          name: 'Testing & Web Automation',
+          items: ['Playwright', 'RPA', 'Web Scraping'],
         },
       ],
     },
