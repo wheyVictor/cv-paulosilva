@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { systemPrompt as embeddedPrompt } from './_prompt.js'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -23,11 +24,12 @@ function isRateLimited(ip) {
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-let systemPrompt = ''
+let systemPrompt = embeddedPrompt
 try {
-  systemPrompt = readFileSync(join(__dirname, '..', 'chatbot-prompt.txt'), 'utf-8')
+  const filePrompt = readFileSync(join(__dirname, '..', 'chatbot-prompt.txt'), 'utf-8')
+  if (filePrompt.trim()) systemPrompt = filePrompt
 } catch {
-  systemPrompt = 'You are Victor, the AI version of Paulo Victor Silva. You speak in first person as a Senior Tech Lead in Data Engineering.'
+  // Use embedded prompt (already set)
 }
 
 export default async function handler(req, res) {
