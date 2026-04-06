@@ -16,8 +16,9 @@ export const seo = {
 export const translations = {
   pt: {
     greeting: 'que constrói dados escaláveis',
-    greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
-    email: 'paulovictordasilvarp@gmail.com',
+    greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
+    heroCta: "Não quer rolar? Pergunte à minha IA",
+    email: 'pvictor.business@gmail.com',
     role: 'Dados escaláveis, pipelines confiáveis.',
     story: {
       context: '+10 anos construindo+ pipelines de dados.',
@@ -68,20 +69,17 @@ export const translations = {
       p2Highlight: 'ingestão → transformação → modelagem → visualização → adoção',
       p2End: ', liderando equipes cross-funcionais e definindo roadmaps técnicos.',
       cards: [
-        {
-          title: 'Arquitetura Snowflake',
-          desc: 'Design de schemas, otimização de performance, clustering keys, gestão de custos (SnowPro Core)',
-        },
-        {
-          title: 'Modelagem dbt',
-          desc: 'Modelos modulares, incrementais e snapshots. Data Vault 2.0, SCD Type 2, testes e documentação',
-        },
-        {
-          title: 'Liderança Técnica',
-          desc: 'Mentoria de engenheiros, code reviews, roadmaps técnicos, balanço 80/20 hands-on/liderança',
-        },
+        { title: 'Data Engineering', desc: 'Pipelines escaláveis, dados confiáveis. Snowflake, dbt, AWS.' },
+        { title: 'Automação Empresarial', desc: '300+ empresas no piloto automático. 8 anos, zero erros.' },
+        { title: 'AI Engineering', desc: 'LLMs, MCP, RAG em produção. Claude, GPT, AI PM.' },
       ],
     },
+    statsBanner: [
+      { value: '10+', label: 'anos de experiência' },
+      { value: '300+', label: 'clientes atendidos' },
+      { value: '8', label: 'anos sem erros' },
+      { value: '0', label: 'pacotes de suporte' },
+    ],
     coreCompetencies: {
       title: 'Competências Principais',
       items: [
@@ -148,6 +146,10 @@ export const translations = {
           name: 'AI / LLMs',
           items: ['LLM deployment', 'MCP (Model Context Protocol)'],
         },
+        {
+          name: 'Automação & Web Scraping',
+          items: ['RPA', 'Web Scraping', 'Playwright'],
+        },
       ],
     },
     projects: {
@@ -212,6 +214,35 @@ export const translations = {
           tech: ['React 19', 'TypeScript', 'Tailwind', 'Vite', 'Motion', 'Vercel'],
           link: '',
         },
+      ],
+    },
+    automation: {
+      title: 'Automação para Empresas',
+      banner: '300+ empresas no piloto automático desde 2018. Zero tickets de suporte.',
+      closing: 'De microempresas a grandes corporações. Se é repetitivo, deveria ser automatizado.',
+      categories: [
+        { icon: 'workflow', title: 'Automação de Processos', desc: 'Workflows que rodam seu negócio sem você' },
+        { icon: 'table', title: 'Automação de Planilhas', desc: 'Excel e Google Sheets no piloto automático' },
+        { icon: 'dollarSign', title: 'Automação Financeira', desc: 'Relatórios, conciliação, fluxo de caixa' },
+        { icon: 'fileText', title: 'Nota Fiscal', desc: 'Emissão e rastreamento de NF-e/NFS-e automatizados' },
+        { icon: 'scale', title: 'Processos Jurídicos', desc: 'Gestão de contratos, prazos e protocolos' },
+        { icon: 'users', title: 'CRM & Funil de Vendas', desc: 'Leads capturados, acompanhados e convertidos' },
+        { icon: 'messageCircle', title: 'WhatsApp & Atendimento', desc: 'Chatbots, respostas automáticas, roteamento' },
+        { icon: 'plug', title: 'Integrações ERP', desc: 'Omie, Bling, Tiny conectados a tudo' },
+        { icon: 'receipt', title: 'Cobranças & Recebíveis', desc: 'Cobranças no automático, nada escapa' },
+        { icon: 'barChart', title: 'Relatórios & Dashboards', desc: 'Visibilidade em tempo real, zero trabalho manual' },
+      ],
+    },
+    aiEngineering: {
+      title: 'AI Engineering',
+      subtitle: 'LLMs, agentes e infraestrutura de IA em produção',
+      highlights: [
+        { icon: 'sparkles', title: 'Claude Code', desc: 'Power user — desenvolvimento assistido por IA com Claude Code CLI' },
+        { icon: 'server', title: 'MCP Servers', desc: 'Desenvolvimento de servidores Model Context Protocol para integração de ferramentas' },
+        { icon: 'database', title: 'RAG Pipelines', desc: 'Arquitetura de pipelines de Retrieval-Augmented Generation em produção' },
+        { icon: 'bot', title: 'Integrações LLM', desc: 'Claude, GPT e modelos open-source integrados a workflows empresariais' },
+        { icon: 'briefcase', title: 'AI Product Management', desc: 'Gestão de produto de IA — do conceito à produção' },
+        { icon: 'cpu', title: 'GPT Integrations', desc: 'Assistentes customizados e fine-tuning para casos de uso específicos' },
       ],
     },
     observability: {
@@ -572,8 +603,9 @@ export const translations = {
   },
   en: {
     greeting: 'who builds scalable data',
-    greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
-    email: 'paulovictordasilvarp@gmail.com',
+    greetingRoles: ['Senior Data Engineer', 'Automation Specialist', 'AI Engineer'],
+    heroCta: "Don't want to scroll? Ask my AI",
+    email: 'pvictor.business@gmail.com',
     role: 'Scalable data, reliable pipelines.',
     story: {
       context: '+10 years building+ data pipelines.',
@@ -624,20 +656,17 @@ export const translations = {
       p2Highlight: 'ingestion → transformation → modeling → visualization → adoption',
       p2End: ', leading cross-functional teams and driving technical roadmaps.',
       cards: [
-        {
-          title: 'Snowflake Architecture',
-          desc: 'Schema design, performance optimization, clustering keys, cost management (SnowPro Core)',
-        },
-        {
-          title: 'dbt Modeling',
-          desc: 'Modular, incremental, and snapshot models. Data Vault 2.0, SCD Type 2, testing and documentation',
-        },
-        {
-          title: 'Technical Leadership',
-          desc: 'Engineer mentoring, code reviews, technical roadmaps, 80/20 hands-on/leadership balance',
-        },
+        { title: 'Data Engineering', desc: 'Scalable pipelines, reliable data. Snowflake, dbt, AWS.' },
+        { title: 'Business Automation', desc: '300+ businesses on autopilot. 8 years, zero errors.' },
+        { title: 'AI Engineering', desc: 'LLMs, MCP, RAG in production. Claude, GPT, AI PM.' },
       ],
     },
+    statsBanner: [
+      { value: '10+', label: 'years of experience' },
+      { value: '300+', label: 'clients served' },
+      { value: '8', label: 'years error-free' },
+      { value: '0', label: 'support packages' },
+    ],
     coreCompetencies: {
       title: 'Core Competencies',
       items: [
@@ -704,6 +733,10 @@ export const translations = {
           name: 'AI / LLMs',
           items: ['LLM deployment', 'MCP (Model Context Protocol)'],
         },
+        {
+          name: 'Testing & Web Automation',
+          items: ['Playwright', 'RPA', 'Web Scraping'],
+        },
       ],
     },
     projects: {
@@ -768,6 +801,35 @@ export const translations = {
           tech: ['React 19', 'TypeScript', 'Tailwind', 'Vite', 'Motion', 'Vercel'],
           link: '',
         },
+      ],
+    },
+    automation: {
+      title: 'Business Automation',
+      banner: '300+ businesses running on autopilot since 2018. Zero support tickets.',
+      closing: 'From micro-businesses to enterprises. If it\'s repetitive, it should be automated.',
+      categories: [
+        { icon: 'workflow', title: 'Process Automation', desc: 'Workflows that run your business without you' },
+        { icon: 'table', title: 'Spreadsheet Automation', desc: 'Excel & Google Sheets on autopilot' },
+        { icon: 'dollarSign', title: 'Financial Automation', desc: 'Reports, reconciliation, cash flow' },
+        { icon: 'fileText', title: 'Nota Fiscal', desc: 'NF-e/NFS-e emission and tracking automated' },
+        { icon: 'scale', title: 'Legal Processes', desc: 'Contract management, deadlines, filings' },
+        { icon: 'users', title: 'CRM & Sales Pipelines', desc: 'Leads captured, followed up, closed' },
+        { icon: 'messageCircle', title: 'WhatsApp & Customer Service', desc: 'Chatbots, auto-responses, routing' },
+        { icon: 'plug', title: 'ERP Integrations', desc: 'Omie, Bling, Tiny connected to everything' },
+        { icon: 'receipt', title: 'Billing & Collections', desc: 'Collections on autopilot, nothing slips' },
+        { icon: 'barChart', title: 'Reports & Dashboards', desc: 'Real-time visibility, zero manual work' },
+      ],
+    },
+    aiEngineering: {
+      title: 'AI Engineering',
+      subtitle: 'LLMs, agents, and AI infrastructure in production',
+      highlights: [
+        { icon: 'sparkles', title: 'Claude Code', desc: 'Power user — AI-assisted development with Claude Code CLI' },
+        { icon: 'server', title: 'MCP Servers', desc: 'Model Context Protocol server development for tool integration' },
+        { icon: 'database', title: 'RAG Pipelines', desc: 'Retrieval-Augmented Generation pipeline architecture in production' },
+        { icon: 'bot', title: 'LLM Integrations', desc: 'Claude, GPT, and open-source models integrated into business workflows' },
+        { icon: 'briefcase', title: 'AI Product Management', desc: 'AI product management — from concept to production' },
+        { icon: 'cpu', title: 'GPT Integrations', desc: 'Custom assistants and fine-tuning for specific use cases' },
       ],
     },
     observability: {

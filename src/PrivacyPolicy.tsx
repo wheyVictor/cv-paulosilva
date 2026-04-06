@@ -44,7 +44,7 @@ const content = {
       {
         heading: 'Contato',
         body: 'Para qualquer consulta sobre privacidade, voce pode escrever para:',
-        email: 'hello@psilva.io',
+        email: 'pvictor.business@gmail.com',
       },
     ],
     backHome: 'Voltar ao inicio',
@@ -90,7 +90,7 @@ const content = {
       {
         heading: 'Contact',
         body: 'For any privacy-related inquiries, you can write to:',
-        email: 'hello@psilva.io',
+        email: 'pvictor.business@gmail.com',
       },
     ],
     backHome: 'Back to home',

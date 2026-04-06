@@ -25,6 +25,13 @@ const SUGGESTIONS = {
 
 export default function FloatingChat({ lang }: { lang: 'pt' | 'en' }) {
   const [open, setOpen] = useState(false)
+
+  // Listen for global open event (hero CTA button)
+  useEffect(() => {
+    const handler = () => setOpen(true)
+    window.addEventListener('open-floating-chat', handler)
+    return () => window.removeEventListener('open-floating-chat', handler)
+  }, [])
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)
