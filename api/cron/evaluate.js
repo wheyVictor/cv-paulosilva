@@ -94,10 +94,10 @@ export default async function handler(req, res) {
 
     for (let i = 0; i < dates.length; i++) {
       const dateStr = dates[i]
-      const views = Number(results[i * 4]) || 0
-      const chats = Number(results[i * 4 + 1]) || 0
-      const tokens = Number(results[i * 4 + 2]) || 0
-      const dayCost = Number(results[i * 4 + 3]) || 0
+      const views = Number(results[i * 4]?.[1]) || 0
+      const chats = Number(results[i * 4 + 1]?.[1]) || 0
+      const tokens = Number(results[i * 4 + 2]?.[1]) || 0
+      const dayCost = Number(results[i * 4 + 3]?.[1]) || 0
       cumulativeCost += dayCost
 
       const d = new Date(dateStr)

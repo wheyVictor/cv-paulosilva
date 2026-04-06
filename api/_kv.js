@@ -1,13 +1,12 @@
-import { createClient } from '@vercel/kv'
+import Redis from 'ioredis'
 
-/** Lazy-initialized KV client. Returns null if env vars are missing. */
+/** Lazy-initialized Redis client. Returns null if env var is missing. */
 let _kv = null
 export function getKv() {
   if (_kv) return _kv
-  const url = process.env.KV_REST_API_URL
-  const token = process.env.KV_REST_API_TOKEN
-  if (!url || !token) return null
-  _kv = createClient({ url, token })
+  const url = process.env.obs_redis_REDIS_URL
+  if (!url) return null
+  _kv = new Redis(url, { maxRetriesPerRequest: 1, lazyConnect: true })
   return _kv
 }
 

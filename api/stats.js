@@ -43,8 +43,8 @@ export default async function handler(req, res) {
     const enCount = Number(langEn) || 0
     const langTotal = ptCount + enCount
 
-    const sum = summary || {}
-    const ts = timeSeries || []
+    const sum = typeof summary === 'string' ? JSON.parse(summary) : (summary || {})
+    const ts = typeof timeSeries === 'string' ? JSON.parse(timeSeries) : (timeSeries || [])
 
     const parsedEvents = (events || []).map((e) => {
       try { return typeof e === 'string' ? JSON.parse(e) : e } catch { return null }
