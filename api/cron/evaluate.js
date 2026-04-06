@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     if (analyticsToken && projectId) {
       const now = new Date()
       const from = new Date(now)
-      from.setDate(from.getDate() - 90)
+      from.setDate(from.getDate() - 30)
       const fromStr = from.toISOString()
       const toStr = now.toISOString()
 
@@ -38,7 +38,9 @@ export default async function handler(req, res) {
         const pvRes = await fetch(`${baseUrl}/stats/path?${params}&limit=1`, { headers })
         if (pvRes.ok) {
           const pvData = await pvRes.json()
-          analyticsVisitors = pvData.total?.visitors || pvData.total?.pageViews || 0
+          analyticsVisitors = typeof pvData.data?.[0]?.total === 'number'
+            ? pvData.data[0].total
+            : (pvData.total?.visitors || pvData.total?.pageViews || 0)
         }
       } catch (e) {
         console.error('Analytics pageviews fetch failed:', e.message)
@@ -50,7 +52,7 @@ export default async function handler(req, res) {
           const geoData = await geoRes.json()
           if (Array.isArray(geoData.data)) {
             for (const row of geoData.data) {
-              analyticsCountries.push({ key: row.key, value: row.total?.visitors || row.total?.pageViews || 0 })
+              analyticsCountries.push({ key: row.key, value: typeof row.total === 'number' ? row.total : (row.total?.visitors || 0) })
             }
           }
         }
@@ -64,7 +66,7 @@ export default async function handler(req, res) {
           const refData = await refRes.json()
           if (Array.isArray(refData.data)) {
             for (const row of refData.data) {
-              analyticsSources.push({ key: row.key || 'direct', value: row.total?.visitors || row.total?.pageViews || 0 })
+              analyticsSources.push({ key: row.key || 'direct', value: typeof row.total === 'number' ? row.total : (row.total?.visitors || 0) })
             }
           }
         }
