@@ -48,7 +48,7 @@ export function devApiProxy(): Plugin {
         const body = JSON.parse(Buffer.concat(chunks).toString())
 
         const { messages, lang } = body || {}
-        if (!messages?.length) {
+        if (!messages || !Array.isArray(messages) || messages.length === 0) {
           res.writeHead(400, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({ error: 'messages array required' }))
           return
