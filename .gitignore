@@ -25,9 +25,7 @@ dist-ssr
 .vercel
 .env
 .env.local
-# Claude Code (memory, settings, plans, skills — all private)
-CLAUDE.md
-**/CLAUDE.md
+# Claude Code (settings, memory — private)
 **/.claude/
 chatbot/audit/
 
