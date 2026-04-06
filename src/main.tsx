@@ -66,10 +66,24 @@ function PageTransition({ children }: { children: ReactNode }) {
   )
 }
 
+// Global event for opening chat from anywhere (hero CTA)
+const OPEN_CHAT_EVENT = 'open-floating-chat'
+
+export function openFloatingChat() {
+  window.dispatchEvent(new CustomEvent(OPEN_CHAT_EVENT))
+}
+
 function GlobalChat() {
   const { pathname } = useLocation()
   const [hydrated, setHydrated] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
   useEffect(() => setHydrated(true), [])
+
+  useEffect(() => {
+    const handler = () => setChatOpen(true)
+    window.addEventListener(OPEN_CHAT_EVENT, handler)
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, handler)
+  }, [])
 
   if (!hydrated) return null
 
@@ -79,7 +93,7 @@ function GlobalChat() {
   return (
     <ChatErrorBoundary>
       <Suspense fallback={null}>
-        <FloatingChat lang={lang} />
+        <FloatingChat lang={lang} externalOpen={chatOpen} onOpenChange={setChatOpen} />
       </Suspense>
     </ChatErrorBoundary>
   )
