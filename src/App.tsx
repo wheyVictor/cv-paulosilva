@@ -2059,7 +2059,7 @@ function App() {
                 {t.cta.contact}
               </a>
               <a
-                href={`https://wa.me/5521999999999?text=${encodeURIComponent(t.whatsappCta.message)}`}
+                href={`https://wa.me/5521966145992?text=${encodeURIComponent(t.whatsappCta.message)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#25D366] text-white font-medium hover:bg-[#20BD5A] transition-colors"
