@@ -19,6 +19,7 @@ import {
   generateSourceData,
   generateKpis,
 } from './observability-data'
+import { useObservabilityData } from './use-observability-data'
 import {
   useSessionDuration,
   useScrollDepth,
@@ -152,15 +153,57 @@ export default function ObservabilitySection({ lang, t, AnimatedSection }: Props
   /* time range state */
   const [range, setRange] = useState<TimeRange>('30d')
 
+  /* real data from API, with mock fallback */
+  const { data: apiData } = useObservabilityData()
+
   /* chart data */
-  const timeSeries = useMemo(() => generateTimeSeries(daysFor[range]), [range])
-  const countryData = useMemo(() => generateCountryData(countryLabels), [lang])
-  const sourceData = useMemo(() => generateSourceData(sourceLabels), [lang])
-  const kpis = useMemo(() => generateKpis(), [])
+  const timeSeries = useMemo(() => {
+    if (apiData?.timeSeries?.length) {
+      const days = daysFor[range]
+      return apiData.timeSeries.slice(-days)
+    }
+    return generateTimeSeries(daysFor[range])
+  }, [range, apiData])
+
+  const countryData = useMemo(() => {
+    if (apiData?.countries?.length) {
+      return apiData.countries
+        .map((c) => ({ key: c.key, name: countryLabels[c.key] ?? c.key, value: c.value }))
+        .sort((a, b) => b.value - a.value)
+    }
+    return generateCountryData(countryLabels)
+  }, [lang, apiData, countryLabels])
+
+  const sourceData = useMemo(() => {
+    if (apiData?.sources?.length) {
+      return apiData.sources
+        .map((s) => ({ key: s.key, name: sourceLabels[s.key] ?? s.key, value: s.value }))
+        .sort((a, b) => b.value - a.value)
+    }
+    return generateSourceData(sourceLabels)
+  }, [lang, apiData, sourceLabels])
+
+  const kpis = useMemo(() => {
+    if (apiData?.kpis && apiData.kpis.visitors > 0) {
+      return apiData.kpis
+    }
+    return generateKpis()
+  }, [apiData])
 
   /* live telemetry — timer and scroll are isolated in their own components to avoid re-rendering charts */
-  const simulatedEvents = useMemo(() => generateSimulatedEvents(eventStrings), [lang])
-  const { events, pushEvent } = useEventLog(simulatedEvents)
+  const apiEvents: LiveEvent[] = useMemo(() => {
+    if (apiData?.events?.length) {
+      return apiData.events.map((e, i) => ({
+        id: i,
+        time: e.time,
+        event: e.event,
+        source: e.source,
+      }))
+    }
+    return generateSimulatedEvents(eventStrings)
+  }, [apiData, eventStrings])
+
+  const { events, pushEvent } = useEventLog(apiEvents)
 
   /* push "you navigated" event on mount */
   const didPush = useRef(false)
@@ -210,8 +253,8 @@ export default function ObservabilitySection({ lang, t, AnimatedSection }: Props
 
 
   /* dark pref percentages */
-  const darkPct = 72
-  const lightPct = 28
+  const darkPct = apiData?.theme?.dark ?? 72
+  const lightPct = apiData?.theme?.light ?? 28
 
   const chartMargin = { top: 10, right: 10, left: 0, bottom: 0 }
 
@@ -387,12 +430,12 @@ export default function ObservabilitySection({ lang, t, AnimatedSection }: Props
             <div className="rounded-xl bg-card border border-border p-4">
               <p className="text-muted-foreground text-sm">{obs.langSplit as string}</p>
               <div className="mt-2 flex h-4 w-full overflow-hidden rounded-full">
-                <div className="h-full bg-primary" style={{ width: '55%' }} />
-                <div className="h-full bg-accent" style={{ width: '45%' }} />
+                <div className="h-full bg-primary" style={{ width: `${apiData?.lang?.pt ?? 55}%` }} />
+                <div className="h-full bg-accent" style={{ width: `${apiData?.lang?.en ?? 45}%` }} />
               </div>
               <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                <span>PT 55%</span>
-                <span>EN 45%</span>
+                <span>PT {apiData?.lang?.pt ?? 55}%</span>
+                <span>EN {apiData?.lang?.en ?? 45}%</span>
               </div>
             </div>
 

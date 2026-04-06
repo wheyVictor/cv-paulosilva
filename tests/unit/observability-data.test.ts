@@ -6,7 +6,7 @@ import {
   generateKpis,
 } from '../../src/observability-data'
 
-describe('observability-data', () => {
+describe('observability-data (fallback generators)', () => {
   describe('generateTimeSeries', () => {
     it('generates correct number of data points', () => {
       expect(generateTimeSeries(7)).toHaveLength(7)

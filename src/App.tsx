@@ -45,6 +45,29 @@ function useInView(threshold = 0.1) {
   return { ref: setRef, isInView }
 }
 
+function useSectionBeacon(sectionId: string) {
+  const fired = useRef(false)
+  const setRef = useCallback((el: HTMLElement | null) => {
+    if (!el || fired.current) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !fired.current) {
+          fired.current = true
+          observer.disconnect()
+          const payload = JSON.stringify({ event: `viewed ${sectionId}` })
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))
+          }
+        }
+      },
+      { threshold: 0.2 },
+    )
+    observer.observe(el)
+  }, [sectionId])
+
+  return setRef
+}
+
 // Inject animation styles once (avoids hydration mismatch from inline <style> in h1)
 const HERO_STYLES_ID = 'hero-beam-styles'
 function useHeroStyles() {
@@ -1373,6 +1396,29 @@ function App() {
   useHeroStyles()
   const { displayText: roleText, roleIndex } = useTypewriterRotation(t.greetingRoles)
 
+  // Observability beacon — fire once on page load
+  const beaconFired = useRef(false)
+  useEffect(() => {
+    if (beaconFired.current) return
+    beaconFired.current = true
+
+    const isDark = document.documentElement.classList.contains('dark')
+    const payload = JSON.stringify({
+      theme: isDark ? 'dark' : 'light',
+      lang,
+      event: 'page loaded',
+    })
+
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/track', new Blob([payload], { type: 'application/json' }))
+    }
+  }, [lang])
+
+  // Section-view beacons
+  const expBeacon = useSectionBeacon('Experience')
+  const projBeacon = useSectionBeacon('Projects')
+  const obsBeacon = useSectionBeacon('Observability')
+  const contactBeacon = useSectionBeacon('Contact')
 
   // SEO: Dynamic meta tags based on language
   const seoData = seo[lang]
@@ -1533,7 +1579,7 @@ function App() {
       <StorySection t={t} />
 
       {/* Experience - Con preámbulo de competencias */}
-      <section id="experience" className="py-16 md:py-24 bg-muted/30" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 2000px' }}>
+      <section id="experience" ref={expBeacon} className="py-16 md:py-24 bg-muted/30" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 2000px' }}>
         <div className="max-w-5xl mx-auto px-6">
           <AnimatedSection>
             <h2 className="font-display text-2xl font-semibold mb-8 flex items-center gap-3">
@@ -1701,7 +1747,7 @@ function App() {
       </section>
 
       {/* Projects & Claude Code */}
-      <section id="projects" className="py-16 md:py-24" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 1500px' }}>
+      <section id="projects" ref={projBeacon} className="py-16 md:py-24" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 1500px' }}>
         <div className="max-w-5xl mx-auto px-6">
           <AnimatedSection>
             <div className="flex items-center justify-between mb-12">
@@ -1871,7 +1917,9 @@ function App() {
 
       {/* Observability */}
       <Suspense fallback={null}>
-        <ObservabilitySection lang={lang} t={t} AnimatedSection={AnimatedSection} />
+        <div ref={obsBeacon}>
+          <ObservabilitySection lang={lang} t={t} AnimatedSection={AnimatedSection} />
+        </div>
       </Suspense>
 
       {/* Education & Certifications */}
@@ -2035,7 +2083,7 @@ function App() {
       </section>
 
       {/* Footer CTA */}
-      <footer id="contact" className="relative py-16 md:py-24">
+      <footer id="contact" ref={contactBeacon} className="relative py-16 md:py-24">
         {/* Vignette horizontal — zona limpia central, puntos en bordes */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'linear-gradient(90deg, transparent 0%, hsl(var(--background)) 25%, hsl(var(--background)) 75%, transparent 100%)',
