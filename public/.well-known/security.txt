@@ -1,7 +1,7 @@
 # Security Policy for psilva.io
 # https://securitytxt.org/ — RFC 9116
 
-Contact: mailto:hello@psilva.io
+Contact: mailto:pvictor.business@gmail.com
 Preferred-Languages: en, es
 Canonical: https://psilva.io/.well-known/security.txt
 Expires: 2027-02-19T00:00:00.000Z
