@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useReducer, useRef, lazy, Suspense } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Network, SkipForward, List, MessageSquareText } from 'lucide-react'
+import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Network, SkipForward, List, MessageSquareText, Workflow, Table, DollarSign, Scale, Plug, BarChart3, FileText, Users, MessageSquare, Receipt, Cpu, Server } from 'lucide-react'
 import { openFloatingChat } from './chat-events'
 import { translations, seo, type Lang } from './i18n'
 import { useHomeSeo } from './articles/use-article-seo'
@@ -1724,7 +1724,7 @@ function App() {
             return (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
                 {allProjects.map((project, i) => (
-                  <AnimatedSection key={project.title} delay={i * 0.1}>
+                  <AnimatedSection key={project.title} delay={i * 0.1} className={i === 0 ? 'lg:col-span-2' : ''}>
                     <div className="h-full p-5 rounded-2xl bg-card border border-border hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5 transition-all duration-200 flex flex-col">
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="font-display font-bold text-sm">{project.title}</h3>
@@ -1748,52 +1748,102 @@ function App() {
             )
           })()}
 
-          {/* Claude Code Power User */}
-          <AnimatedSection delay={0.3}>
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 border border-accent/20">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-display font-bold">{t.claudeCode.title}</h3>
-                    <span className="badge px-2 py-0.5 bg-accent/10 text-accent">{t.claudeCode.badge}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t.claudeCode.desc}</p>
-                  {t.claudeCode.highlights && (
-                    <ul className="mt-3 space-y-1.5">
-                      {(t.claudeCode.highlights as readonly string[]).map((h: string, i: number) => (
-                        <li key={i} className="text-xs text-muted-foreground flex gap-2">
-                          <span className="text-accent mt-0.5 shrink-0">›</span>
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {t.claudeCode.certs && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {t.claudeCode.certs.map((cert: { title: string; url: string }, i: number) => (
-                        <a
-                          key={i}
-                          href={cert.url}
-                          target="_blank"
-                          rel="noopener noreferrer nofollow"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-xs text-muted-foreground hover:text-accent hover:bg-accent/20 transition-colors"
-                        >
-                          <BadgeCheck className="w-3.5 h-3.5" />
-                          {cert.title}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
+        </div>
+      </section>
+
+
+      {/* Business Automation */}
+      <section id="automation" className="py-16 md:py-24 bg-muted/30" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <AnimatedSection>
+            <h2 className="font-display text-2xl font-semibold mb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Workflow className="w-5 h-5 text-primary" />
               </div>
+              {t.automation.title}
+            </h2>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.1}>
+            <div className="p-6 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 mb-8">
+              <p className="text-lg md:text-xl font-display font-bold text-center text-gradient-theme">
+                {t.automation.banner}
+              </p>
             </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+            {t.automation.categories.map((cat, i) => {
+              const iconMap: Record<string, React.ReactNode> = {
+                workflow: <Workflow className="w-5 h-5" />,
+                table: <Table className="w-5 h-5" />,
+                dollarSign: <DollarSign className="w-5 h-5" />,
+                fileText: <FileText className="w-5 h-5" />,
+                scale: <Scale className="w-5 h-5" />,
+                users: <Users className="w-5 h-5" />,
+                messageCircle: <MessageSquare className="w-5 h-5" />,
+                plug: <Plug className="w-5 h-5" />,
+                receipt: <Receipt className="w-5 h-5" />,
+                barChart: <BarChart3 className="w-5 h-5" />,
+              }
+              return (
+                <AnimatedSection key={cat.title} delay={0.1 + i * 0.05}>
+                  <div className="p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors text-center group h-full">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3 text-primary group-hover:bg-primary/20 transition-colors">
+                      {iconMap[cat.icon]}
+                    </div>
+                    <p className="font-medium text-sm mb-1">{cat.title}</p>
+                    <p className="text-xs text-muted-foreground">{cat.desc}</p>
+                  </div>
+                </AnimatedSection>
+              )
+            })}
+          </div>
+
+          <AnimatedSection delay={0.6}>
+            <p className="text-center text-muted-foreground italic">{t.automation.closing}</p>
           </AnimatedSection>
         </div>
       </section>
 
+      {/* AI Engineering */}
+      <section id="ai-engineering" className="py-16 md:py-24" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <AnimatedSection>
+            <h2 className="font-display text-2xl font-semibold mb-2 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <Cpu className="w-5 h-5 text-accent" />
+              </div>
+              {t.aiEngineering.title}
+            </h2>
+            <p className="text-muted-foreground mb-8 ml-[52px]">{t.aiEngineering.subtitle}</p>
+          </AnimatedSection>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.aiEngineering.highlights.map((item, i) => {
+              const iconMap: Record<string, React.ReactNode> = {
+                sparkles: <Sparkles className="w-5 h-5" />,
+                server: <Server className="w-5 h-5" />,
+                database: <Database className="w-5 h-5" />,
+                bot: <Bot className="w-5 h-5" />,
+                briefcase: <Briefcase className="w-5 h-5" />,
+                cpu: <Cpu className="w-5 h-5" />,
+              }
+              return (
+                <AnimatedSection key={item.title} delay={0.1 + i * 0.1}>
+                  <div className="p-5 rounded-2xl bg-card border border-border hover:border-accent/30 transition-colors group h-full">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3 text-accent group-hover:bg-accent/20 transition-colors">
+                      {iconMap[item.icon]}
+                    </div>
+                    <h3 className="font-display font-bold text-sm mb-1 group-hover:text-accent transition-colors">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                </AnimatedSection>
+              )
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Observability */}
       <Suspense fallback={null}>
