@@ -55,7 +55,7 @@ export const aboutContent = {
       { q: 'Quais certificacoes Paulo possui?', a: 'Paulo possui a certificacao SnowPro Core da Snowflake, cursos de Big Data da Coursera/UC San Diego, um MBA pela UFSCar e e graduado pelo Founder Institute.' },
     ],
     connectHeading: 'Conectar',
-    email: 'hello@psilva.io',
+    email: 'pvictor.business@gmail.com',
   },
   en: {
     slug: 'about',
@@ -111,6 +111,6 @@ export const aboutContent = {
       { q: 'What certifications does Paulo have?', a: 'Paulo holds the SnowPro Core certification from Snowflake, Big Data courses from Coursera/UC San Diego, an MBA from UFSCar, and is a Founder Institute graduate.' },
     ],
     connectHeading: 'Connect',
-    email: 'hello@psilva.io',
+    email: 'pvictor.business@gmail.com',
   },
 } as const

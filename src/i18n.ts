@@ -17,7 +17,7 @@ export const translations = {
   pt: {
     greeting: 'que constrói dados escaláveis',
     greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
-    email: 'paulovictordasilvarp@gmail.com',
+    email: 'pvictor.business@gmail.com',
     role: 'Dados escaláveis, pipelines confiáveis.',
     story: {
       context: '+10 anos construindo+ pipelines de dados.',
@@ -573,7 +573,7 @@ export const translations = {
   en: {
     greeting: 'who builds scalable data',
     greetingRoles: ['Senior Tech Lead — Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
-    email: 'paulovictordasilvarp@gmail.com',
+    email: 'pvictor.business@gmail.com',
     role: 'Scalable data, reliable pipelines.',
     story: {
       context: '+10 years building+ data pipelines.',
