@@ -33,6 +33,13 @@ export default function FloatingChat({ lang, externalOpen, onOpenChange }: { lan
   useEffect(() => {
     if (externalOpen) setOpenInternal(true)
   }, [externalOpen])
+
+  // Listen for global open event directly
+  useEffect(() => {
+    const handler = () => setOpenInternal(true)
+    window.addEventListener('open-floating-chat', handler)
+    return () => window.removeEventListener('open-floating-chat', handler)
+  }, [])
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)

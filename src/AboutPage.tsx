@@ -50,7 +50,7 @@ export default function AboutPage({ lang = 'pt' }: { lang?: AboutLang }) {
         alternateName: ['Paulo Silva', 'Victor'],
         url: 'https://psilva.io',
         image: 'https://psilva.io/foto-avatar.png',
-        email: 'hello@psilva.io',
+        email: 'pvictor.business@gmail.com',
         jobTitle: ['Senior Tech Lead - Data Engineering', 'Data Architect', 'Snowflake & dbt Expert'],
         knowsAbout: [
           { '@type': 'Thing', name: 'Data Engineering', url: 'https://en.wikipedia.org/wiki/Data_engineering' },
