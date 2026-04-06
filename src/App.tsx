@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useReducer, useRef, lazy, Suspense } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Users, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Package, MessageSquare, Receipt, CalendarCheck, FileText, GitBranch, Network, Calendar, Percent, UserCheck, Image, TrendingUp, Timer, SkipForward, List, MessageSquareText } from 'lucide-react'
+import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Network, SkipForward, List, MessageSquareText } from 'lucide-react'
 import { openFloatingChat } from './chat-events'
 import { translations, seo, type Lang } from './i18n'
 import { useHomeSeo } from './articles/use-article-seo'
@@ -1520,7 +1520,7 @@ function App() {
             </h2>
           </AnimatedSection>
 
-          {/* Preámbulo: Cómo trabajo + Competencias */}
+          {/* Competencies preamble */}
           <AnimatedSection delay={0.1}>
             <div className="mb-12 p-6 rounded-2xl bg-card/50">
               <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-6">
@@ -1543,9 +1543,10 @@ function App() {
             </div>
           </AnimatedSection>
 
-          {/* Data Meaning - Bento Grid */}
-          <AnimatedSection delay={0.1}>
-            <div className="mb-12">
+          {/* Zigzag row 1: Data Meaning (left) + Bento mini-grid (right) */}
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            {/* Left: Data Meaning company info */}
+            <AnimatedSection delay={0.1}>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#888] shrink-0">
@@ -1565,7 +1566,6 @@ function App() {
                   </li>
                 ))}
               </ul>
-
               <div className="pt-4 border-t border-border/50">
                 <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-3">{t.experience.dataMeaning.industries.label}</p>
                 <div className="flex flex-wrap gap-2">
@@ -1574,187 +1574,73 @@ function App() {
                   ))}
                 </div>
               </div>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
 
-          {/* Business OS - Full Width Hero Card */}
-          <AnimatedSection delay={0.1} className="mb-8">
-            <div className="p-8 rounded-2xl bg-gradient-to-br from-gold/15 via-gold/5 to-transparent border border-gold/30 hover:border-gold/50 transition-colors duration-200 group">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center shrink-0">
-                      <svg viewBox="0 0 200 170" className="w-6 h-6" aria-hidden="true">
+            {/* Right: Bento mini-grid of sub-projects */}
+            <AnimatedSection delay={0.15}>
+              <div className="flex flex-col gap-4">
+                {/* BusinessOS — full width with metrics */}
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-gold/15 via-gold/5 to-transparent border border-gold/30 hover:border-gold/50 transition-colors duration-200">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-gold/20 flex items-center justify-center shrink-0">
+                      <svg viewBox="0 0 200 170" className="w-5 h-5" aria-hidden="true">
                         <path fill="#FCB400" d="M90.039 12.368 24.079 39.66c-3.667 1.519-3.63 6.729.062 8.192l66.235 26.266a24.58 24.58 0 0 0 18.12 0l66.236-26.266c3.69-1.463 3.729-6.673.062-8.192l-65.96-27.292a24.58 24.58 0 0 0-18.795 0"/>
                         <path fill="#18BFFF" d="M105.312 88.46v65.617c0 3.12 3.147 5.258 6.048 4.108l73.806-28.648a4.42 4.42 0 0 0 2.79-4.108V59.813c0-3.121-3.147-5.258-6.048-4.108l-73.806 28.648a4.42 4.42 0 0 0-2.79 4.108"/>
                         <path fill="#F82B60" d="m88.078 91.846-21.904 10.576-2.224 1.075-46.238 22.155c-2.93 1.414-6.672-.722-6.672-3.978V60.088c0-1.178.604-2.195 1.414-2.96a5 5 0 0 1 1.12-.84c1.104-.663 2.68-.84 4.02-.31L87.71 83.76c3.564 1.414 3.844 6.408.368 8.087"/>
                       </svg>
                     </div>
-                    <span className="badge px-3 py-1 bg-gold/20 text-gold">Source of Truth</span>
+                    <span className="badge px-2 py-0.5 bg-gold/20 text-gold text-[10px]">{t.experience.dataMeaning.businessOS.badge}</span>
                   </div>
-                  <h4 className="font-display text-2xl font-bold mb-4">{t.experience.dataMeaning.businessOS.title}</h4>
-                  <p className="text-muted-foreground mb-6">{t.experience.dataMeaning.businessOS.desc}</p>
-                  <ul className="text-sm text-muted-foreground space-y-2">
-                    {t.experience.dataMeaning.businessOS.modules.map((item, i) => {
-                      const icons: Record<string, React.ReactNode> = {
-                        database: <Database className="w-4 h-4" />,
-                        users: <Users className="w-4 h-4" />,
-                        layout: <Layout className="w-4 h-4" />,
-                        package: <Package className="w-4 h-4" />,
-                        messageSquare: <MessageSquare className="w-4 h-4" />,
-                        receipt: <Receipt className="w-4 h-4" />,
-                        calendarCheck: <CalendarCheck className="w-4 h-4" />
-                      }
-                      return (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="text-gold mt-0.5">{icons[item.icon]}</span>
-                          <span>{item.text}</span>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-                <div className="grid grid-cols-3 lg:flex lg:flex-col gap-2 lg:gap-3 mt-4 lg:mt-0">
-                  {t.experience.dataMeaning.businessOS.metrics.map((metric, i) => (
-                    <div key={i} className="text-center p-2 lg:p-4 rounded-xl bg-background/50 border border-gold/20">
-                      <div className="font-display text-lg lg:text-2xl font-bold text-gold">{metric.value}</div>
-                      <div className="text-[10px] lg:text-xs text-muted-foreground leading-tight">{metric.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Bento Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            {/* Large card - AI Agent */}
-            <AnimatedSection delay={0.15} className="col-span-2 row-span-2">
-              <div className="h-full p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 hover:border-primary/40 transition-colors duration-200 group flex flex-col">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <Bot className="w-6 h-6 text-primary" />
+                  <p className="font-semibold text-sm mb-1">{t.experience.dataMeaning.businessOS.title}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{t.experience.dataMeaning.businessOS.desc}</p>
+                  <div className="flex gap-2">
+                    {t.experience.dataMeaning.businessOS.metrics.map((metric, i) => (
+                      <div key={i} className="flex-1 text-center p-2 rounded-lg bg-background/50 border border-gold/20">
+                        <div className="font-display text-base font-bold text-gold">{metric.value}</div>
+                        <div className="text-[10px] text-muted-foreground leading-tight">{metric.label}</div>
+                      </div>
+                    ))}
                   </div>
-                  <span className="badge px-3 py-1 bg-primary/10 text-primary">{t.experience.dataMeaning.jacobo.badge}</span>
                 </div>
-                <h4 className="font-display text-xl font-bold mb-2 group-hover:text-primary transition-colors">{t.experience.dataMeaning.jacobo.title}</h4>
-                <p className="text-muted-foreground text-sm mb-4">{t.experience.dataMeaning.jacobo.desc}</p>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  {t.experience.dataMeaning.jacobo.items.map((item, i) => {
-                    const icons: Record<string, React.ReactNode> = {
-                      network: <Network className="w-4 h-4" />,
-                      calendar: <Calendar className="w-4 h-4" />,
-                      percent: <Percent className="w-4 h-4" />,
-                      package: <Package className="w-4 h-4" />,
-                      userCheck: <UserCheck className="w-4 h-4" />
-                    }
-                    return (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5 shrink-0">{icons[item.icon]}</span>
-                        <span>{item.text}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </AnimatedSection>
 
-            {/* Large card - Web Programática + SEO */}
-            <AnimatedSection delay={0.2} className="col-span-2 row-span-2">
-              <div className="h-full p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 border border-accent/20 hover:border-accent/40 transition-colors duration-200 group flex flex-col">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
-                    <Layout className="w-6 h-6 text-accent" />
+                {/* Smaller cards row */}
+                <div className="grid grid-cols-2 gap-3">
+                  {/* WebSEO */}
+                  <div className="p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-colors duration-200">
+                    <Layout className="w-4 h-4 text-accent mb-2" />
+                    <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.webSeo.title}</p>
+                    <p className="text-xs text-muted-foreground">{t.experience.dataMeaning.webSeo.desc}</p>
                   </div>
-                  <span className="badge px-3 py-1 bg-accent/10 text-accent">{t.experience.dataMeaning.webSeo.badge}</span>
-                </div>
-                <h4 className="font-display text-xl font-bold mb-2 group-hover:text-accent transition-colors">{t.experience.dataMeaning.webSeo.title}</h4>
-                <p className="text-muted-foreground text-sm mb-4">{t.experience.dataMeaning.webSeo.desc}</p>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  {t.experience.dataMeaning.webSeo.items.map((item, i) => {
-                    const icons: Record<string, React.ReactNode> = {
-                      fileText: <FileText className="w-4 h-4" />,
-                      image: <Image className="w-4 h-4" />,
-                      trendingUp: <TrendingUp className="w-4 h-4" />,
-                      gitBranch: <GitBranch className="w-4 h-4" />,
-                      bot: <Bot className="w-4 h-4" />
-                    }
-                    return (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5 shrink-0">{icons[item.icon]}</span>
-                        <span>{item.text}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </AnimatedSection>
 
+                  {/* ERP */}
+                  <div className="p-4 rounded-2xl bg-card border border-border hover:border-primary/30 transition-colors duration-200">
+                    <Database className="w-4 h-4 text-primary mb-2" />
+                    <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.erp.title}</p>
+                    <p className="text-xs text-muted-foreground">{t.experience.dataMeaning.erp.desc}</p>
+                  </div>
 
-            {/* ERP card */}
-            <AnimatedSection delay={0.3}>
-              <div className="block h-full p-5 rounded-2xl bg-card border border-border transition-all duration-200 flex flex-col">
-                <Database className="w-5 h-5 text-primary mb-3" />
-                <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.erp.title}</p>
-                <p className="text-sm text-muted-foreground">{t.experience.dataMeaning.erp.desc}</p>
-                <div className="flex items-center justify-between mt-auto pt-3">
-                  <span className="text-xs font-medium text-primary">{t.experience.dataMeaning.erp.metric}</span>
-                </div>
-              </div>
-            </AnimatedSection>
+                  {/* Event Pipelines (jacobo) */}
+                  <div className="p-4 rounded-2xl bg-card border border-border hover:border-primary/30 transition-colors duration-200">
+                    <Network className="w-4 h-4 text-primary mb-2" />
+                    <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.jacobo.title}</p>
+                    <p className="text-xs text-muted-foreground">{t.experience.dataMeaning.jacobo.desc}</p>
+                  </div>
 
-            {/* GPTs card */}
-            <AnimatedSection delay={0.35}>
-              <div className="block h-full p-5 rounded-2xl bg-card border border-border transition-all duration-200 flex flex-col">
-                <Bot className="w-5 h-5 text-accent mb-3" />
-                <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.gpts.title}</p>
-                <p className="text-sm text-muted-foreground">{t.experience.dataMeaning.gpts.desc}</p>
-                <div className="flex items-center justify-between mt-auto pt-3">
-                  <span className="text-xs font-medium text-primary">{t.experience.dataMeaning.gpts.metric}</span>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Reservas card */}
-            <AnimatedSection delay={0.4}>
-              <div className="block h-full p-5 rounded-2xl bg-card border border-border transition-all duration-200 flex flex-col">
-                <Timer className="w-5 h-5 text-primary mb-3" />
-                <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.reservas.title}</p>
-                <p className="text-sm text-muted-foreground">{t.experience.dataMeaning.reservas.desc}</p>
-                <div className="flex items-center justify-between mt-auto pt-3">
-                  <span className="text-xs font-medium text-accent">{t.experience.dataMeaning.reservas.metric}</span>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* CRM card */}
-            <AnimatedSection delay={0.45}>
-              <div className="block h-full p-5 rounded-2xl bg-card border border-border transition-all duration-200 flex flex-col">
-                <Users className="w-5 h-5 text-accent mb-3" />
-                <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.crm.title}</p>
-                <p className="text-sm text-muted-foreground">{t.experience.dataMeaning.crm.desc}</p>
-                <div className="flex items-center justify-between mt-auto pt-3">
-                  <span className="text-xs font-medium text-primary">{t.experience.dataMeaning.crm.metric}</span>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* GenAI Marketing card */}
-            <AnimatedSection delay={0.5}>
-              <div className="block h-full p-5 rounded-2xl bg-card border border-border transition-all duration-200 flex flex-col">
-                <Sparkles className="w-5 h-5 text-primary mb-3" />
-                <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.genAI.title}</p>
-                <p className="text-sm text-muted-foreground">{t.experience.dataMeaning.genAI.desc}</p>
-                <div className="flex items-center justify-between mt-auto pt-3">
-                  <span className="text-xs font-medium text-accent">{t.experience.dataMeaning.genAI.metric}</span>
+                  {/* GenAI */}
+                  <div className="p-4 rounded-2xl bg-card border border-border hover:border-accent/30 transition-colors duration-200">
+                    <Sparkles className="w-4 h-4 text-accent mb-2" />
+                    <p className="font-medium text-sm mb-1">{t.experience.dataMeaning.genAI.title}</p>
+                    <p className="text-xs text-muted-foreground">{t.experience.dataMeaning.genAI.desc}</p>
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
           </div>
 
-          {/* LICO Cosmetics */}
-          <AnimatedSection delay={0.5} className="mt-16">
-            <div className="mb-6">
+          {/* Zigzag row 2: Keyrus right-aligned */}
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <div className="hidden md:block" />
+            <AnimatedSection delay={0.2}>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#F5F3EE] flex items-center justify-center shrink-0">
@@ -1767,13 +1653,12 @@ function App() {
               <p className="text-accent font-medium mb-1">{t.experience.lico.role}</p>
               <p className="text-sm text-muted-foreground mb-4">{t.experience.lico.period}</p>
               <p className="text-muted-foreground">{t.experience.lico.desc}</p>
+            </AnimatedSection>
+          </div>
 
-            </div>
-          </AnimatedSection>
-
-          {/* Everis */}
-          <AnimatedSection delay={0.6} className="mt-16">
-            <div className="mb-6">
+          {/* Zigzag row 3: Everis left-aligned */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <AnimatedSection delay={0.2}>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0">
@@ -1785,8 +1670,9 @@ function App() {
               <p className="text-primary font-medium mb-1">{t.experience.everis.role}</p>
               <p className="text-sm text-muted-foreground mb-2">{t.experience.everis.period}</p>
               <p className="text-muted-foreground">{t.experience.everis.desc}</p>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+            <div className="hidden md:block" />
+          </div>
         </div>
       </section>
 
