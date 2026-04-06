@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useMemo, useReducer, useRef, lazy, Suspense } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Users, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Package, MessageSquare, Receipt, CalendarCheck, FileText, GitBranch, Network, Calendar, Percent, UserCheck, Image, TrendingUp, Timer, SkipForward, List } from 'lucide-react'
+import { Mail, ExternalLink, Briefcase, GraduationCap, Award, Code, Users, Globe, Bot, Zap, Database, Layout, BadgeCheck, FolderGit2, Sparkles, Package, MessageSquare, Receipt, CalendarCheck, FileText, GitBranch, Network, Calendar, Percent, UserCheck, Image, TrendingUp, Timer, SkipForward, List, MessageSquareText } from 'lucide-react'
+import { openFloatingChat } from './chat-events'
 import { translations, seo, type Lang } from './i18n'
 import { useHomeSeo } from './articles/use-article-seo'
 import { getTechIcon } from './tech-icons'
@@ -42,43 +43,6 @@ function useInView(threshold = 0.1) {
   }, [ref, threshold])
 
   return { ref: setRef, isInView }
-}
-
-const HEAL_PARTICLES = [
-  { char: '+', left: '10%', delay: '0s', dur: '2.8s', size: '24px' },
-  { char: '·', left: '30%', delay: '0.6s', dur: '2.2s', size: '20px' },
-  { char: '✦', left: '55%', delay: '1.2s', dur: '3s', size: '18px' },
-  { char: '0', left: '75%', delay: '0.3s', dur: '2.5s', size: '22px' },
-  { char: '+', left: '90%', delay: '1.8s', dur: '2.6s', size: '20px' },
-  { char: '1', left: '20%', delay: '2.1s', dur: '2.4s', size: '22px' },
-  { char: '·', left: '65%', delay: '0.9s', dur: '3.2s', size: '18px' },
-  { char: '✦', left: '45%', delay: '1.5s', dur: '2.7s', size: '20px' },
-]
-
-function BeamPill({ children }: { children: React.ReactNode }) {
-  const hydrated = useHydrated()
-  return (
-    <span className={`relative inline-block pl-0 pr-0 ${hydrated ? 'beam-pill' : ''}`}>
-      <span className="relative z-10">{children}</span>
-      {hydrated && HEAL_PARTICLES.map((p, i) => (
-        <span
-          key={i}
-          className="absolute pointer-events-none select-none"
-          style={{
-            left: p.left,
-            bottom: '50%',
-            fontSize: p.size,
-            color: '#4ade80',
-            opacity: 0,
-            animation: `heal-float ${p.dur} ease-out ${p.delay} infinite`,
-          }}
-          aria-hidden="true"
-        >
-          {p.char}
-        </span>
-      ))}
-    </span>
-  )
 }
 
 // Inject animation styles once (avoids hydration mismatch from inline <style> in h1)
@@ -1434,23 +1398,20 @@ function App() {
         <div className="absolute bottom-0 left-[max(0px,calc(50%-40rem))] w-[550px] h-[550px] rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 hidden sm:block animate-[hero-glow_11s_ease-in-out_infinite_reverse]" style={{ backgroundColor: 'hsl(var(--hero-orb-accent))' }} />
 
         <div className="relative max-w-5xl mx-auto px-6 py-20 md:py-32">
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-            {/* Photo */}
+          {/* Asymmetric: small photo + name left-aligned */}
+          <div className="flex items-start gap-6 mb-8">
             <motion.div
               initial={hydrated ? { opacity: 0, scale: 0.8 } : false}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
+              className="relative shrink-0"
             >
-              <div className="relative w-40 h-40 md:w-48 md:h-48">
-                {/* Glow effect */}
-                <div className="absolute inset-0 rounded-full bg-gradient-theme-30 blur-xl" />
-                {/* Glassmorphism frame */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-white/5 md:backdrop-blur-sm border border-white/20 shadow-2xl" />
-                {/* Inner border */}
-                <div className="absolute inset-2 rounded-full bg-gradient-theme-50 p-[2px]">
+              <div className="relative w-20 h-20">
+                <div className="absolute inset-0 rounded-full bg-gradient-theme-30 blur-lg" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/20 shadow-xl" />
+                <div className="absolute inset-1.5 rounded-full bg-gradient-theme-50 p-[2px]">
                   <div className="w-full h-full rounded-full overflow-hidden">
-                    <img src="/foto-avatar-sm.webp" srcSet="/foto-avatar-sm.webp 192w, /foto-avatar.webp 384w" sizes="(max-width: 768px) 160px, 192px" alt="Paulo Victor Silva" className="w-full h-full object-cover" width={192} height={192} fetchPriority="high" />
+                    <img src="/foto-avatar-sm.webp" alt="Paulo Victor Silva" className="w-full h-full object-cover" width={68} height={68} fetchPriority="high" />
                   </div>
                 </div>
               </div>
@@ -1458,9 +1419,9 @@ function App() {
                 initial={hydrated ? { scale: 0 } : false}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
-                className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-gradient-theme flex items-center justify-center shadow-lg border-2 border-background"
+                className="absolute -bottom-0.5 -right-0.5 w-7 h-7 rounded-full bg-gradient-theme flex items-center justify-center shadow-md border-2 border-background"
               >
-                <BadgeCheck className="w-6 h-6 text-white" />
+                <BadgeCheck className="w-4 h-4 text-white" />
               </motion.div>
             </motion.div>
 
@@ -1468,47 +1429,79 @@ function App() {
               initial={hydrated ? { opacity: 0, x: -20 } : false}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center md:text-left"
             >
-              <p className="text-lg text-muted-foreground mb-2">
-                {lang === 'pt' ? 'Olá, eu sou' : "Hi, I'm"} <Link to={lang === 'pt' ? '/sobre-mim' : '/about'} className="text-gradient-theme font-semibold hover:opacity-80 transition-opacity">Paulo Silva</Link>,
+              <p className="text-lg text-muted-foreground mb-1">
+                {lang === 'pt' ? 'Olá, eu sou' : "Hi, I'm"} <Link to={lang === 'pt' ? '/sobre-mim' : '/about'} className="text-gradient-theme font-semibold hover:opacity-80 transition-opacity">Paulo Silva</Link>
               </p>
-              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight">
+              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
                 <span className="text-gradient-theme">{hydrated ? roleText : t.greetingRoles[0]}</span>
                 {hydrated && <span className="inline-block w-[3px] h-[0.85em] bg-primary ml-1 rounded-sm translate-y-[2px]" style={{ animation: 'blink 1s step-end infinite' }} />}
-                <br />
-                {lang === 'pt' ? (
-                  <>
-                    {t.greeting}
-                    <br />
-                    Dados escaláveis, pipelines <BeamPill>confiáveis.</BeamPill>
-                  </>
-                ) : (
-                  <>
-                    {t.greeting}
-                    <br />
-                    Scalable data, <BeamPill>reliable pipelines.</BeamPill>
-                  </>
-                )}
               </h1>
-
-              <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                {t.greetingRoles.map((role, i) => (
-                  <span
-                    key={role}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
-                      hydrated && i === roleIndex
-                        ? 'border border-[#20d6ee] bg-[#20d6ee]/15 text-foreground scale-105'
-                        : 'border border-[#20d6ee]/30 bg-background/80 text-muted-foreground'
-                    }`}
-                  >
-                    {role}
-                  </span>
-                ))}
-              </div>
             </motion.div>
           </div>
 
+          {/* Role pills */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            {t.greetingRoles.map((role, i) => (
+              <span
+                key={role}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
+                  hydrated && i === roleIndex
+                    ? 'border border-[#20d6ee] bg-[#20d6ee]/15 text-foreground scale-105'
+                    : 'border border-[#20d6ee]/30 bg-background/80 text-muted-foreground'
+                }`}
+              >
+                {role}
+              </span>
+            ))}
+          </div>
+
+          {/* Three-pillar cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {t.summary.cards.map((card, i) => (
+              <motion.div
+                key={card.title}
+                initial={hydrated ? { opacity: 0, y: 20 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-colors"
+              >
+                <h3 className="font-display font-bold text-sm mb-1">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* AI CTA button */}
+          <motion.div
+            initial={hydrated ? { opacity: 0, y: 10 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="mb-8"
+          >
+            <button
+              onClick={() => openFloatingChat()}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/30 text-sm font-medium text-primary hover:bg-primary/20 hover:border-primary/50 transition-all"
+            >
+              <MessageSquareText className="w-4 h-4" />
+              {t.heroCta}
+            </button>
+          </motion.div>
+
+          {/* Stats banner */}
+          <motion.div
+            initial={hydrated ? { opacity: 0 } : false}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            className="flex flex-wrap justify-start gap-6 md:gap-10 py-4 border-t border-border/50"
+          >
+            {t.statsBanner.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="font-display text-2xl font-bold text-gradient-theme">{stat.value}</div>
+                <div className="text-xs text-muted-foreground">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </header>
 

@@ -67,11 +67,8 @@ function PageTransition({ children }: { children: ReactNode }) {
 }
 
 // Global event for opening chat from anywhere (hero CTA)
-const OPEN_CHAT_EVENT = 'open-floating-chat'
-
-export function openFloatingChat() {
-  window.dispatchEvent(new CustomEvent(OPEN_CHAT_EVENT))
-}
+export { openFloatingChat } from './chat-events'
+import { OPEN_CHAT_EVENT } from './chat-events'
 
 function GlobalChat() {
   const { pathname } = useLocation()
