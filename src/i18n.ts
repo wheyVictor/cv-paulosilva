@@ -228,6 +228,18 @@ export const translations = {
         { icon: 'barChart', title: 'Relatórios & Dashboards', desc: 'Visibilidade em tempo real, zero trabalho manual' },
       ],
     },
+    aiEngineering: {
+      title: 'AI Engineering',
+      subtitle: 'LLMs, agentes e infraestrutura de IA em produção',
+      highlights: [
+        { icon: 'sparkles', title: 'Claude Code', desc: 'Power user — desenvolvimento assistido por IA com Claude Code CLI' },
+        { icon: 'server', title: 'MCP Servers', desc: 'Desenvolvimento de servidores Model Context Protocol para integração de ferramentas' },
+        { icon: 'database', title: 'RAG Pipelines', desc: 'Arquitetura de pipelines de Retrieval-Augmented Generation em produção' },
+        { icon: 'bot', title: 'Integrações LLM', desc: 'Claude, GPT e modelos open-source integrados a workflows empresariais' },
+        { icon: 'briefcase', title: 'AI Product Management', desc: 'Gestão de produto de IA — do conceito à produção' },
+        { icon: 'cpu', title: 'GPT Integrations', desc: 'Assistentes customizados e fine-tuning para casos de uso específicos' },
+      ],
+    },
     observability: {
       title: 'Observabilidade',
       intro: 'Este portfólio não é apenas uma página — é um produto de dados. Veja o que está acontecendo.',
@@ -796,6 +808,18 @@ export const translations = {
         { icon: 'plug', title: 'ERP Integrations', desc: 'Omie, Bling, Tiny connected to everything' },
         { icon: 'receipt', title: 'Billing & Collections', desc: 'Collections on autopilot, nothing slips' },
         { icon: 'barChart', title: 'Reports & Dashboards', desc: 'Real-time visibility, zero manual work' },
+      ],
+    },
+    aiEngineering: {
+      title: 'AI Engineering',
+      subtitle: 'LLMs, agents, and AI infrastructure in production',
+      highlights: [
+        { icon: 'sparkles', title: 'Claude Code', desc: 'Power user — AI-assisted development with Claude Code CLI' },
+        { icon: 'server', title: 'MCP Servers', desc: 'Model Context Protocol server development for tool integration' },
+        { icon: 'database', title: 'RAG Pipelines', desc: 'Retrieval-Augmented Generation pipeline architecture in production' },
+        { icon: 'bot', title: 'LLM Integrations', desc: 'Claude, GPT, and open-source models integrated into business workflows' },
+        { icon: 'briefcase', title: 'AI Product Management', desc: 'AI product management — from concept to production' },
+        { icon: 'cpu', title: 'GPT Integrations', desc: 'Custom assistants and fine-tuning for specific use cases' },
       ],
     },
     observability: {
