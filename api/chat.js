@@ -50,9 +50,9 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'Too many requests. Try again in a minute.' })
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = process.env.AI_GATEWAY_API_KEY
   if (!apiKey) {
-    return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' })
+    return res.status(500).json({ error: 'AI_GATEWAY_API_KEY not configured' })
   }
 
   try {
@@ -72,7 +72,10 @@ export default async function handler(req, res) {
       ? '\n\nIMPORTANT: Respond in Brazilian Portuguese (PT-BR).'
       : '\n\nIMPORTANT: Respond in English.'
 
-    const client = new Anthropic({ apiKey })
+    const client = new Anthropic({
+      apiKey,
+      baseURL: 'https://ai-gateway.vercel.sh',
+    })
 
     // Stream response via SSE
     res.setHeader('Content-Type', 'text/event-stream')
@@ -81,7 +84,7 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://psilva.io')
 
     const stream = client.messages.stream({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'google/gemini-3-flash',
       max_tokens: 800,
       system: systemPrompt + langNote,
       messages: recentMessages,
