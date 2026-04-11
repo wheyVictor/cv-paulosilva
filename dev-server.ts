@@ -1,7 +1,7 @@
 /**
  * Local dev server plugin for Vite.
- * Proxies /api/chat to Claude API so the chatbot works with `npm run dev`.
- * Reads ANTHROPIC_API_KEY from .env.local.
+ * Proxies /api/chat to Vercel AI Gateway so the chatbot works with `npm run dev`.
+ * Reads AI_GATEWAY_API_KEY from .env.local.
  */
 import type { Plugin } from 'vite'
 import { readFileSync } from 'node:fs'
@@ -35,10 +35,10 @@ export function devApiProxy(): Plugin {
           return
         }
 
-        const apiKey = process.env.ANTHROPIC_API_KEY
+        const apiKey = process.env.AI_GATEWAY_API_KEY
         if (!apiKey) {
           res.writeHead(500, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify({ error: 'ANTHROPIC_API_KEY not set in .env.local' }))
+          res.end(JSON.stringify({ error: 'AI_GATEWAY_API_KEY not set in .env.local' }))
           return
         }
 
@@ -65,7 +65,10 @@ export function devApiProxy(): Plugin {
 
         try {
           const { default: Anthropic } = await import('@anthropic-ai/sdk')
-          const client = new Anthropic({ apiKey })
+          const client = new Anthropic({
+            apiKey,
+            baseURL: 'https://ai-gateway.vercel.sh',
+          })
 
           res.writeHead(200, {
             'Content-Type': 'text/event-stream',
@@ -74,7 +77,7 @@ export function devApiProxy(): Plugin {
           })
 
           const stream = client.messages.stream({
-            model: 'claude-3-haiku-20240307',
+            model: 'google/gemini-3-flash',
             max_tokens: 800,
             system: systemPrompt + langNote,
             messages: recentMessages,
